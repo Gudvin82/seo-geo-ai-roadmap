@@ -37,6 +37,16 @@ ROLE_CHANGES = Counter(
     "Workspace role changes",
     ["role"],
 )
+SOV_RUNS = Counter(
+    "discoverability_sov_runs_total",
+    "AI Share of Voice runs",
+    ["status"],
+)
+NOTIFICATION_DELIVERIES = Counter(
+    "discoverability_notification_deliveries_total",
+    "Notification delivery attempts",
+    ["channel", "status"],
+)
 
 
 def metrics_payload() -> tuple[bytes, str]:

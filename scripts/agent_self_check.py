@@ -87,6 +87,12 @@ def main() -> int:
                     "docs/ru/api-reference.md",
                     "docs/en/provider-matrix.md",
                     "docs/ru/provider-matrix.md",
+                    "docs/en/local-llm-matrix.md",
+                    "docs/ru/local-llm-matrix.md",
+                    "docs/en/provider-benchmarks.md",
+                    "docs/ru/provider-benchmarks.md",
+                    "docs/en/search-data-connectors.md",
+                    "docs/ru/search-data-connectors.md",
                 ]
             ),
         },

@@ -4,9 +4,12 @@ const state = {
   workspaces: [],
   projects: [],
   providerConfigs: [],
+  promptSets: [],
   auditRuns: [],
   reports: [],
   artifacts: [],
+  sovRuns: [],
+  notificationEndpoints: [],
   presets: {},
   selectedWorkspaceId: "",
   selectedProjectId: "",
@@ -24,11 +27,14 @@ const translations = {
     navProjects: "Projects",
     navFacts: "Brand facts",
     navProviders: "Providers",
+    navPrompts: "Prompt library",
     navAudits: "Audit runs",
+    navSov: "AI SoV",
+    navNotifications: "Notifications",
     navReports: "Reports",
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
-    releaseBadge: "v2.2.0 operator-ready platform upgrade",
+    releaseBadge: "v2.3.0 proof-first AI operator upgrade",
     heroTitle:
       "Free and transparent self-hosted platform on top of the methodology repo",
     heroCopy: "Create workspaces, onboard projects, run discoverability checks, manage providers and roles, store evidence, and ship bilingual reports with cloud or local AI support.",
@@ -85,6 +91,16 @@ const translations = {
     apiEnv: "API key env var",
     saveProvider: "Save provider config",
     providerList: "Provider list",
+    promptsTitle: "Prompt library and agent handoff",
+    createPromptSet: "Create prompt set",
+    promptPurpose: "Purpose",
+    outputFormat: "Output format",
+    modelRecommendation: "Model recommendation",
+    riskNotes: "Risk notes",
+    promptItems: "Prompt items, one per line",
+    savePromptSet: "Save prompt set",
+    promptSetList: "Workspace prompt sets",
+    repoPromptLibrary: "Bundled repo prompt library",
     auditsTitle: "Structured audit runs",
     createAudit: "Create audit run",
     reportLanguage: "Report language",
@@ -92,9 +108,27 @@ const translations = {
     checks: "Checks",
     runAudit: "Run audit",
     auditList: "Audit runs",
+    sovTitle: "AI Share of Voice",
+    createSov: "Run SoV check",
+    brandName: "Brand name",
+    queryList: "Queries, comma-separated",
+    providerListInline: "Providers, comma-separated",
+    notesLabel: "Notes",
+    runSov: "Run SoV",
+    sovHistory: "SoV history",
+    notificationsTitle: "Notifications and webhooks",
+    createNotification: "Create notification endpoint",
+    channelType: "Channel type",
+    targetUrl: "Target URL",
+    eventList: "Events, comma-separated",
+    saveNotification: "Save endpoint",
+    notificationList: "Configured endpoints",
     reportsTitle: "Reports and artifacts",
     reportList: "Reports",
     artifactList: "Artifacts",
+    projectExport: "Project export package",
+    exportProject: "Export active project",
+    integrationStarters: "Integration starters",
     repoAssets: "Repo assets reused by the app",
     activityLog: "Activity log",
   },
@@ -109,11 +143,14 @@ const translations = {
     navProjects: "Проекты",
     navFacts: "Бренд-факты",
     navProviders: "Провайдеры",
+    navPrompts: "Промпты",
     navAudits: "Аудиты",
+    navSov: "AI SoV",
+    navNotifications: "Уведомления",
     navReports: "Отчеты",
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
-    releaseBadge: "v2.2.0 operator-ready platform upgrade",
+    releaseBadge: "v2.3.0 proof-first AI operator upgrade",
     heroTitle:
       "Бесплатная и прозрачная self-hosted платформа поверх методологического репозитория",
     heroCopy: "Создавайте воркспейсы, онбордите проекты, запускайте discoverability-проверки, управляйте providers и roles, храните evidence и выпускайте двуязычные отчеты с cloud и local AI.",
@@ -170,6 +207,16 @@ const translations = {
     apiEnv: "Переменная окружения для API ключа",
     saveProvider: "Сохранить конфиг провайдера",
     providerList: "Список провайдеров",
+    promptsTitle: "Prompt library и AI handoff",
+    createPromptSet: "Создать prompt set",
+    promptPurpose: "Назначение",
+    outputFormat: "Формат вывода",
+    modelRecommendation: "Рекомендуемая модель",
+    riskNotes: "Risk notes",
+    promptItems: "Элементы промпта, по одному на строку",
+    savePromptSet: "Сохранить prompt set",
+    promptSetList: "Workspace prompt sets",
+    repoPromptLibrary: "Встроенная prompt library репозитория",
     auditsTitle: "Структурированные audit runs",
     createAudit: "Создать audit run",
     reportLanguage: "Язык отчета",
@@ -177,9 +224,27 @@ const translations = {
     checks: "Проверки",
     runAudit: "Запустить аудит",
     auditList: "Список audit runs",
+    sovTitle: "AI Share of Voice",
+    createSov: "Запустить SoV-проверку",
+    brandName: "Название бренда",
+    queryList: "Запросы через запятую",
+    providerListInline: "Провайдеры через запятую",
+    notesLabel: "Заметки",
+    runSov: "Запустить SoV",
+    sovHistory: "История SoV",
+    notificationsTitle: "Уведомления и webhooks",
+    createNotification: "Создать notification endpoint",
+    channelType: "Тип канала",
+    targetUrl: "Target URL",
+    eventList: "События через запятую",
+    saveNotification: "Сохранить endpoint",
+    notificationList: "Настроенные endpoints",
     reportsTitle: "Отчеты и артефакты",
     reportList: "Отчеты",
     artifactList: "Артефакты",
+    projectExport: "Экспорт project package",
+    exportProject: "Экспортировать активный проект",
+    integrationStarters: "Стартовые интеграции",
     repoAssets: "Репозиторные assets, которые переиспользует приложение",
     activityLog: "Журнал активности",
   },
@@ -293,13 +358,15 @@ function workspaceCard(workspace) {
     <div class="workspace-meta">#${workspace.id} · ${workspace.slug} · ${workspace.default_report_language}</div>
     <div class="workspace-meta">${workspace.client_report_title || "No white-label title yet."}</div>
   `;
-  card.addEventListener("click", () => {
+  card.addEventListener("click", async () => {
     state.selectedWorkspaceId = String(workspace.id);
     document.querySelectorAll("input[name='workspace_id']").forEach((input) => {
       input.value = workspace.id;
     });
     setStatus();
     log(`Workspace #${workspace.id} selected.`);
+    await refreshProjects();
+    await Promise.all([refreshPromptSets(), refreshNotifications()]);
   });
   return card;
 }
@@ -377,6 +444,27 @@ async function refreshProviders() {
   );
 }
 
+async function refreshPromptSets() {
+  if (!state.token || !state.selectedWorkspaceId) {
+    return;
+  }
+  const [promptSets, promptLibrary] = await Promise.all([
+    apiRequest(`/prompt-sets?workspace_id=${state.selectedWorkspaceId}`),
+    apiRequest("/settings/prompt-library"),
+  ]);
+  state.promptSets = promptSets;
+  renderCards("#prompt-set-list", promptSets, (row) =>
+    simpleCard(row.name, [
+      row.purpose || "General-purpose prompt set",
+      row.output_format || "Flexible output",
+      row.model_recommendation || "Bring your own model",
+    ]),
+  );
+  renderCards("#repo-prompt-library", promptLibrary.prompts || [], (row) =>
+    simpleCard(row.id, [row.language, row.purpose, row.path]),
+  );
+}
+
 async function refreshAudits() {
   if (!state.token || !state.selectedProjectId) {
     return;
@@ -395,10 +483,11 @@ async function refreshReportsAndArtifacts() {
   if (!state.token || !state.selectedProjectId) {
     return;
   }
-  const [reports, artifacts, repoAssets] = await Promise.all([
+  const [reports, artifacts, repoAssets, integrationStarters] = await Promise.all([
     apiRequest(`/reports?project_id=${state.selectedProjectId}`),
     apiRequest(`/artifacts?project_id=${state.selectedProjectId}`),
     apiRequest("/settings/repo-assets"),
+    apiRequest("/settings/integration-starters"),
   ]);
   state.reports = reports;
   state.artifacts = artifacts;
@@ -409,7 +498,38 @@ async function refreshReportsAndArtifacts() {
     simpleCard(`${row.artifact_type}`, [`#${row.id} · ${row.format}`, row.file_path, `Audit run #${row.audit_run_id}`]),
   );
   $("#repo-assets").textContent = JSON.stringify(repoAssets, null, 2);
+  $("#integration-starters").textContent = JSON.stringify(integrationStarters, null, 2);
   setStatus();
+}
+
+async function refreshSovRuns() {
+  if (!state.token || !state.selectedProjectId) {
+    return;
+  }
+  state.sovRuns = await apiRequest(`/sov/history?project_id=${state.selectedProjectId}`);
+  renderCards("#sov-list", state.sovRuns, (row) =>
+    simpleCard(`SoV #${row.id}`, [
+      `${row.brand} · ${row.status}`,
+      `Share estimate: ${row.share_estimate ?? "n/a"}`,
+      `Queries: ${(row.queries || []).join(", ")}`,
+    ]),
+  );
+}
+
+async function refreshNotifications() {
+  if (!state.token || !state.selectedWorkspaceId) {
+    return;
+  }
+  state.notificationEndpoints = await apiRequest(
+    `/notifications?workspace_id=${state.selectedWorkspaceId}`,
+  );
+  renderCards("#notification-list", state.notificationEndpoints, (row) =>
+    simpleCard(row.label, [
+      `${row.channel_type} · ${row.is_enabled ? "enabled" : "disabled"}`,
+      row.target_url,
+      `Events: ${(row.events || []).join(", ") || "all"}`,
+    ]),
+  );
 }
 
 function formPayload(form) {
@@ -482,6 +602,21 @@ async function handleProviderCreate(event) {
   await refreshProviders();
 }
 
+async function handlePromptSetCreate(event) {
+  event.preventDefault();
+  const payload = formPayload(event.currentTarget);
+  payload.workspace_id = Number(payload.workspace_id);
+  payload.prompt_items = payload.prompt_items
+    .split("\n")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  payload.human_review_required = true;
+  await apiRequest("/prompt-sets", { method: "POST", body: JSON.stringify(payload) });
+  log(`Prompt set ${payload.name} saved.`);
+  event.currentTarget.reset();
+  await refreshPromptSets();
+}
+
 async function handleAuditCreate(event) {
   event.preventDefault();
   const form = event.currentTarget;
@@ -496,6 +631,41 @@ async function handleAuditCreate(event) {
   await refreshReportsAndArtifacts();
 }
 
+async function handleSovCreate(event) {
+  event.preventDefault();
+  const payload = formPayload(event.currentTarget);
+  payload.workspace_id = Number(payload.workspace_id);
+  payload.project_id = Number(payload.project_id);
+  payload.queries = splitCsv(payload.queries);
+  payload.providers = splitCsv(payload.providers);
+  await apiRequest("/sov/check", { method: "POST", body: JSON.stringify(payload) });
+  log(`AI SoV check completed for ${payload.brand}.`);
+  event.currentTarget.reset();
+  await refreshSovRuns();
+}
+
+async function handleNotificationCreate(event) {
+  event.preventDefault();
+  const payload = formPayload(event.currentTarget);
+  payload.workspace_id = Number(payload.workspace_id);
+  payload.events = splitCsv(payload.events);
+  payload.is_enabled = true;
+  await apiRequest("/notifications", { method: "POST", body: JSON.stringify(payload) });
+  log(`Notification endpoint ${payload.label} saved.`);
+  event.currentTarget.reset();
+  await refreshNotifications();
+}
+
+async function handleProjectExport() {
+  if (!state.token || !state.selectedProjectId) {
+    log("Select a project first.", "warning");
+    return;
+  }
+  const payload = await apiRequest(`/exports/project-package?project_id=${state.selectedProjectId}`);
+  $("#project-export").textContent = JSON.stringify(payload, null, 2);
+  log(`Export package generated for project #${state.selectedProjectId}.`);
+}
+
 async function bootstrapAuthedState() {
   if (!state.token) {
     return;
@@ -506,12 +676,19 @@ async function bootstrapAuthedState() {
   }
   if (state.selectedWorkspaceId) {
     await refreshProjects();
+    await Promise.all([refreshPromptSets(), refreshNotifications()]);
   }
   if (!state.selectedProjectId && state.projects[0]) {
     state.selectedProjectId = String(state.projects[0].id);
   }
   if (state.selectedProjectId) {
-    await Promise.all([refreshFacts(), refreshProviders(), refreshAudits(), refreshReportsAndArtifacts()]);
+    await Promise.all([
+      refreshFacts(),
+      refreshProviders(),
+      refreshAudits(),
+      refreshSovRuns(),
+      refreshReportsAndArtifacts(),
+    ]);
   }
   setStatus();
 }
@@ -532,13 +709,20 @@ function installEventListeners() {
   $("#project-form").addEventListener("submit", handleProjectCreate);
   $("#facts-form").addEventListener("submit", handleFactsCreate);
   $("#provider-form").addEventListener("submit", handleProviderCreate);
+  $("#prompt-set-form").addEventListener("submit", handlePromptSetCreate);
   $("#audit-form").addEventListener("submit", handleAuditCreate);
+  $("#sov-form").addEventListener("submit", handleSovCreate);
+  $("#notification-form").addEventListener("submit", handleNotificationCreate);
   $("#refresh-workspaces").addEventListener("click", () => refreshWorkspaces().catch((error) => log(error.message, "warning")));
   $("#refresh-projects").addEventListener("click", () => refreshProjects().catch((error) => log(error.message, "warning")));
   $("#refresh-facts").addEventListener("click", () => refreshFacts().catch((error) => log(error.message, "warning")));
   $("#refresh-providers").addEventListener("click", () => refreshProviders().catch((error) => log(error.message, "warning")));
+  $("#refresh-prompts").addEventListener("click", () => refreshPromptSets().catch((error) => log(error.message, "warning")));
   $("#refresh-audits").addEventListener("click", () => refreshAudits().catch((error) => log(error.message, "warning")));
+  $("#refresh-sov").addEventListener("click", () => refreshSovRuns().catch((error) => log(error.message, "warning")));
+  $("#refresh-notifications").addEventListener("click", () => refreshNotifications().catch((error) => log(error.message, "warning")));
   $("#refresh-reports").addEventListener("click", () => refreshReportsAndArtifacts().catch((error) => log(error.message, "warning")));
+  $("#export-project").addEventListener("click", () => handleProjectExport().catch((error) => log(error.message, "warning")));
   $("#sign-out").addEventListener("click", () => {
     state.token = "";
     localStorage.removeItem("discoverability-token");

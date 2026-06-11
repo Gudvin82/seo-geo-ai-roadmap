@@ -32,6 +32,9 @@ OpenAPI доступен по `/docs`, ReDoc по `/redoc`.
 - `GET /api/v1/workspaces/{workspace_id}/members`
 - `GET /api/v1/workspaces/{workspace_id}/invites`
 - `POST /api/v1/workspaces/{workspace_id}/invites`
+- `PUT /api/v1/workspaces/{workspace_id}/invites/{invite_id}`
+- `POST /api/v1/workspaces/{workspace_id}/invites/{invite_id}/resend`
+- `POST /api/v1/workspaces/{workspace_id}/invites/{invite_id}/revoke`
 - `POST /api/v1/workspaces/invites/accept`
 
 Правила workspace isolation:
@@ -115,6 +118,12 @@ Artifact download требует workspace access и возвращает сох
 - `GET /api/v1/providers?workspace_id={workspace_id}`
 - `POST /api/v1/providers`
 
+## Prompt library
+
+- `GET /api/v1/prompt-sets?workspace_id={workspace_id}`
+- `POST /api/v1/prompt-sets`
+- `GET /api/v1/settings/prompt-library`
+
 Пример local provider config:
 
 ```json
@@ -131,6 +140,21 @@ Artifact download требует workspace access и возвращает сох
 
 - `GET /api/v1/brand-facts/{project_id}`
 - `POST /api/v1/brand-facts`
+
+## AI Share of Voice
+
+- `POST /api/v1/sov/check`
+- `GET /api/v1/sov/history?project_id={project_id}`
+- `GET /api/v1/sov/{sov_run_id}`
+
+## Notifications
+
+- `GET /api/v1/notifications?workspace_id={workspace_id}`
+- `POST /api/v1/notifications`
+
+## Export package
+
+- `GET /api/v1/exports/project-package?project_id={project_id}`
 
 ## Audit logs
 

@@ -61,6 +61,7 @@ class WorkspaceCreate(BaseModel):
     branding_logo_url: Optional[str] = None
     client_report_title: Optional[str] = None
     client_report_subtitle: Optional[str] = None
+    client_report_footer: Optional[str] = None
 
 
 class WorkspaceUpdate(BaseModel):
@@ -69,6 +70,7 @@ class WorkspaceUpdate(BaseModel):
     branding_logo_url: Optional[str] = None
     client_report_title: Optional[str] = None
     client_report_subtitle: Optional[str] = None
+    client_report_footer: Optional[str] = None
 
 
 class WorkspaceRead(BaseModel):
@@ -79,6 +81,7 @@ class WorkspaceRead(BaseModel):
     branding_logo_url: Optional[str]
     client_report_title: Optional[str]
     client_report_subtitle: Optional[str]
+    client_report_footer: Optional[str]
     created_at: datetime
 
 
@@ -93,6 +96,7 @@ class WorkspaceMembershipRead(BaseModel):
 class WorkspaceInviteCreate(BaseModel):
     email: str
     role: str = "viewer"
+    expires_in_days: int = 7
 
     @field_validator("email")
     @classmethod
@@ -122,8 +126,29 @@ class WorkspaceInviteRead(BaseModel):
     role: str
     invite_token: str
     status: str
+    expires_at: Optional[datetime]
     accepted_at: Optional[datetime]
+    revoked_at: Optional[datetime]
+    last_sent_at: Optional[datetime]
+    sent_count: int
     created_at: datetime
+
+
+class WorkspaceInviteUpdate(BaseModel):
+    role: Optional[str] = None
+
+    @field_validator("role")
+    @classmethod
+    def validate_role(cls, value: Optional[str]) -> Optional[str]:
+        if value is None:
+            return value
+        allowed = {"owner", "admin", "editor", "viewer"}
+        role = value.strip().lower()
+        if role not in allowed:
+            raise ValueError(
+                f"Unsupported role '{value}'. Allowed: {', '.join(sorted(allowed))}."
+            )
+        return role
 
 
 class ProjectCreate(BaseModel):
@@ -233,6 +258,11 @@ class PromptSetCreate(BaseModel):
     workspace_id: int
     name: str
     description: Optional[str] = None
+    purpose: Optional[str] = None
+    output_format: Optional[str] = None
+    model_recommendation: Optional[str] = None
+    risk_notes: Optional[str] = None
+    human_review_required: bool = True
     prompt_items: list[str] = Field(default_factory=list)
 
 
@@ -241,6 +271,11 @@ class PromptSetRead(BaseModel):
     workspace_id: int
     name: str
     description: Optional[str]
+    purpose: Optional[str]
+    output_format: Optional[str]
+    model_recommendation: Optional[str]
+    risk_notes: Optional[str]
+    human_review_required: bool
     prompt_items: list[str]
     created_at: datetime
 
@@ -356,5 +391,45 @@ class SovCheckRequest(BaseModel):
     brand: str
     queries: list[str]
     providers: list[str] = Field(default_factory=list)
+    workspace_id: int
+    project_id: int
     market: Optional[str] = None
     language: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class SovRunRead(BaseModel):
+    id: int
+    workspace_id: int
+    project_id: int
+    brand: str
+    queries: list[str]
+    providers: list[str]
+    results: list[dict[str, Any]]
+    mention_summary: str
+    share_estimate: Optional[float]
+    notes: str
+    status: str
+    report_language: str
+    created_at: datetime
+    completed_at: Optional[datetime]
+
+
+class NotificationEndpointCreate(BaseModel):
+    workspace_id: int
+    channel_type: str
+    label: str
+    target_url: str
+    events: list[str] = Field(default_factory=list)
+    is_enabled: bool = True
+
+
+class NotificationEndpointRead(BaseModel):
+    id: int
+    workspace_id: int
+    channel_type: str
+    label: str
+    target_url: str
+    events: list[str]
+    is_enabled: bool
+    created_at: datetime

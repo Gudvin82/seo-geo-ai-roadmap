@@ -23,7 +23,7 @@ migrate:
 	$(PYTHONPATH_APP) $(VENV_PY) -m alembic upgrade head
 
 seed:
-	$(PYTHONPATH_APP) $(VENV_PY) -m app.seed
+	$(VENV_PY) -m app.backend.app.seed
 
 up:
 	docker compose up --build

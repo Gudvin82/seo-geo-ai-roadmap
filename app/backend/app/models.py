@@ -43,6 +43,9 @@ class Workspace(Base):
     client_report_subtitle: Mapped[Optional[str]] = mapped_column(
         String(255), nullable=True
     )
+    client_report_footer: Mapped[Optional[str]] = mapped_column(
+        String(255), nullable=True
+    )
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
 
     owner: Mapped[User] = relationship(back_populates="workspaces")
@@ -89,7 +92,11 @@ class WorkspaceInvite(Base):
     invite_token: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     invited_by_user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     status: Mapped[str] = mapped_column(String(32), default="pending")
+    expires_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     accepted_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    revoked_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    last_sent_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    sent_count: Mapped[int] = mapped_column(Integer, default=1)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
 
     workspace: Mapped[Workspace] = relationship(back_populates="invites")
@@ -218,6 +225,13 @@ class PromptSet(Base):
     workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"))
     name: Mapped[str] = mapped_column(String(255))
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    purpose: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    output_format: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    model_recommendation: Mapped[Optional[str]] = mapped_column(
+        String(255), nullable=True
+    )
+    risk_notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    human_review_required: Mapped[bool] = mapped_column(Boolean, default=True)
     prompt_items_json: Mapped[str] = mapped_column(Text, default="[]")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
 
@@ -256,6 +270,39 @@ class ScheduledCheck(Base):
 
     workspace: Mapped[Workspace] = relationship(back_populates="scheduled_checks")
     project: Mapped[Project] = relationship(back_populates="scheduled_checks")
+
+
+class NotificationEndpoint(Base):
+    __tablename__ = "notification_endpoints"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"))
+    channel_type: Mapped[str] = mapped_column(String(50))
+    label: Mapped[str] = mapped_column(String(255))
+    target_url: Mapped[str] = mapped_column(String(1000))
+    events_json: Mapped[str] = mapped_column(Text, default="[]")
+    is_enabled: Mapped[bool] = mapped_column(Boolean, default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+
+class SovRun(Base):
+    __tablename__ = "sov_runs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"))
+    project_id: Mapped[int] = mapped_column(ForeignKey("projects.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    brand: Mapped[str] = mapped_column(String(255))
+    queries_json: Mapped[str] = mapped_column(Text, default="[]")
+    providers_json: Mapped[str] = mapped_column(Text, default="[]")
+    results_json: Mapped[str] = mapped_column(Text, default="[]")
+    mention_summary: Mapped[str] = mapped_column(Text, default="")
+    share_estimate: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    notes: Mapped[str] = mapped_column(Text, default="")
+    status: Mapped[str] = mapped_column(String(50), default="completed")
+    report_language: Mapped[str] = mapped_column(String(8), default="en")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+    completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
 
 
 class AuditLog(Base):

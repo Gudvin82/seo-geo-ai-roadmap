@@ -75,6 +75,7 @@ def main() -> int:
         result = {
             "healthz": health,
             "readyz": ready,
+            "readyz_has_safe_database_flag": ready.get("database") == "ok",
             "docs_ok": docs_ok,
             "workspace_id": workspace_id,
             "project_id": project_id,

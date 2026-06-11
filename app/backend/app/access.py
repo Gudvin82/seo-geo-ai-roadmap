@@ -118,6 +118,10 @@ def record_audit_log(
 def accept_invite(
     db: Session, invite: WorkspaceInvite, user: User
 ) -> WorkspaceMembership:
+    if invite.revoked_at is not None or invite.status == "revoked":
+        raise HTTPException(status_code=404, detail="Invite has been revoked.")
+    if invite.expires_at is not None and invite.expires_at <= datetime.utcnow():
+        raise HTTPException(status_code=410, detail="Invite has expired.")
     if invite.email.strip().lower() != user.email.strip().lower():
         raise HTTPException(
             status_code=403, detail="Invite email does not match the current user."

@@ -7,19 +7,38 @@
 [![Script Smoke Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml)
 [![Python Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml)
 [![Docs Build](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml)
+[![Docker](https://img.shields.io/badge/docker-self--hosted-2496ED?logo=docker&logoColor=white)](./docker-compose.yml)
+[![FastAPI](https://img.shields.io/badge/FastAPI-app-009688?logo=fastapi&logoColor=white)](./app/backend/app/main.py)
 ![Self-Hosted Ready](https://img.shields.io/badge/self--hosted-ready-1f6f50)
 
 Бесплатная, прозрачная и self-hosted платформа, которую можно развернуть для
 себя или клиентов и использовать для аудита, улучшения, мониторинга и
 управления SEO, GEO и AI-visible слоем сайта.
 
+## Блок для передачи AI
+
+Дайте этот репозиторий своему AI coding agent и скажите:
+
+1. прочитай [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
+2. следуй [AGENTS.md](./AGENTS.md)
+3. выполни `make turnkey-demo`
+4. выполни `make agent-self-check`
+5. отчитайся, что реально проверено и что еще требует human review
+
+Репозиторий специально собран так, чтобы AI мог развернуть его с нуля,
+подключить ваши провайдеры и сохранить синхронность EN/RU-слоя.
+
 [English version](./README.md)
 
-## Позиционирование v2.2.0
+## Позиционирование v2.3.0
 
-Бесплатная и прозрачная self-hosted платформа, которую можно развернуть для
-себя или клиентов и использовать для аудита, улучшения, мониторинга и
-управления SEO, GEO и AI-visible слоем сайта.
+Бесплатная и прозрачная self-hosted платформа для SEO, GEO и AI-видимости:
+разворачиваете у себя, подключаете свои AI providers и используете для аудита,
+улучшения, мониторинга и ведения своих или клиентских сайтов.
+
+Это не просто документы. Здесь уже есть Docker-развертывание, app-layer,
+скрипты, примеры и AI-first инструкции, которые можно отдать AI coding agent,
+чтобы он поднял систему под ключ.
 
 Базовые принципы:
 
@@ -104,6 +123,11 @@
 - [docs/ru/roles-and-invites.md](./docs/ru/roles-and-invites.md)
 - [docs/ru/patch-mode.md](./docs/ru/patch-mode.md)
 - [docs/ru/cms-connectors.md](./docs/ru/cms-connectors.md)
+- [docs/ru/local-llm-matrix.md](./docs/ru/local-llm-matrix.md)
+- [docs/ru/provider-benchmarks.md](./docs/ru/provider-benchmarks.md)
+- [docs/ru/search-data-connectors.md](./docs/ru/search-data-connectors.md)
+- [docs/ru/notifications-and-webhooks.md](./docs/ru/notifications-and-webhooks.md)
+- [docs/ru/white-label-mode.md](./docs/ru/white-label-mode.md)
 - [SELF_HOSTED_USE_CASES_RU.md](./SELF_HOSTED_USE_CASES_RU.md)
 
 Команда проверки:
@@ -214,6 +238,14 @@ Demo credentials после seed:
 
 - Email: `demo@example.com`
 - Password: `DemoPlatform123`
+
+## Последние изменения
+
+- `v2.3.0`: сохранение AI SoV в приложении, metadata-rich prompt library,
+  webhook notifications, экспорт project package, матрица top-20 local LLM,
+  benchmark/search-data starter docs и усиленный EN/RU AI handoff.
+- `v2.2.0`: operator-ready self-hosted слой, AI handoff path, self-check flow,
+  roles and invites и проверка deployment.
 
 ## SaaS app layer
 

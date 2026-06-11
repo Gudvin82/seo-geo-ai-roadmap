@@ -12,6 +12,8 @@ from .api import (
     audit_runs,
     auth,
     brand_facts,
+    exports,
+    notifications,
     projects,
     prompt_sets,
     providers,
@@ -33,7 +35,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
 
     if settings_obj.auto_create_schema:
         Base.metadata.create_all(bind=initialized_engine)
-    app = FastAPI(title=settings_obj.app_name, version="2.2.0")
+    app = FastAPI(title=settings_obj.app_name, version="2.3.0")
     app.state.settings = settings_obj
     app.add_middleware(
         CORSMiddleware,
@@ -45,11 +47,11 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
 
     @app.get("/healthz")
     def healthz() -> dict:
-        return {"status": "ok", "version": "2.2.0"}
+        return {"status": "ok", "version": "2.3.0"}
 
     @app.get("/readyz")
     def readyz() -> dict:
-        return {"status": "ready", "database": settings_obj.database_url}
+        return {"status": "ready", "database": "ok"}
 
     @app.get("/metrics")
     def metrics() -> Response:
@@ -68,6 +70,8 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
     app.include_router(reports.router, prefix=settings_obj.api_prefix)
     app.include_router(artifacts.router, prefix=settings_obj.api_prefix)
     app.include_router(sov.router, prefix=settings_obj.api_prefix)
+    app.include_router(notifications.router, prefix=settings_obj.api_prefix)
+    app.include_router(exports.router, prefix=settings_obj.api_prefix)
     app.include_router(settings.router, prefix=settings_obj.api_prefix)
     return app
 

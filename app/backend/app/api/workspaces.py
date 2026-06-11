@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import datetime, timedelta
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -20,6 +22,7 @@ from ..schemas import (
     WorkspaceInviteAccept,
     WorkspaceInviteCreate,
     WorkspaceInviteRead,
+    WorkspaceInviteUpdate,
     WorkspaceMembershipRead,
     WorkspaceRead,
     WorkspaceUpdate,
@@ -130,6 +133,8 @@ def create_invite(
         role=normalize_role(payload.role),
         invite_token=issue_invite_token(),
         invited_by_user_id=current_user.id,
+        expires_at=datetime.utcnow() + timedelta(days=payload.expires_in_days),
+        last_sent_at=datetime.utcnow(),
     )
     db.add(invite)
     record_audit_log(
@@ -170,8 +175,12 @@ def accept_workspace_invite(
         .filter(WorkspaceInvite.invite_token == payload.invite_token)
         .first()
     )
-    if not invite or invite.status != "pending":
+    if not invite:
         raise HTTPException(status_code=404, detail="Invite not found or already used.")
+    if invite.status == "accepted":
+        raise HTTPException(status_code=404, detail="Invite not found or already used.")
+    if invite.status == "revoked":
+        raise HTTPException(status_code=404, detail="Invite has been revoked.")
     membership = accept_invite(db, invite, current_user)
     INVITE_ACCEPTANCES.labels(role=membership.role).inc()
     ROLE_CHANGES.labels(role=membership.role).inc()
@@ -185,3 +194,87 @@ def accept_workspace_invite(
     db.commit()
     db.refresh(membership)
     return membership
+
+
+@router.post(
+    "/{workspace_id}/invites/{invite_id}/revoke", response_model=WorkspaceInviteRead
+)
+def revoke_workspace_invite(
+    workspace_id: int,
+    invite_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> WorkspaceInvite:
+    require_workspace_access(db, workspace_id, current_user, minimum_role="admin")
+    invite = db.get(WorkspaceInvite, invite_id)
+    if not invite or invite.workspace_id != workspace_id:
+        raise HTTPException(status_code=404, detail="Invite not found.")
+    invite.status = "revoked"
+    invite.revoked_at = datetime.utcnow()
+    record_audit_log(
+        db,
+        "workspace.invite_revoked",
+        user_id=current_user.id,
+        workspace_id=workspace_id,
+        metadata={"invite_id": invite.id},
+    )
+    db.commit()
+    db.refresh(invite)
+    return invite
+
+
+@router.post(
+    "/{workspace_id}/invites/{invite_id}/resend", response_model=WorkspaceInviteRead
+)
+def resend_workspace_invite(
+    workspace_id: int,
+    invite_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> WorkspaceInvite:
+    require_workspace_access(db, workspace_id, current_user, minimum_role="admin")
+    invite = db.get(WorkspaceInvite, invite_id)
+    if not invite or invite.workspace_id != workspace_id:
+        raise HTTPException(status_code=404, detail="Invite not found.")
+    invite.last_sent_at = datetime.utcnow()
+    invite.sent_count += 1
+    if invite.status == "revoked":
+        invite.status = "pending"
+        invite.revoked_at = None
+    invite.expires_at = datetime.utcnow() + timedelta(days=7)
+    record_audit_log(
+        db,
+        "workspace.invite_resent",
+        user_id=current_user.id,
+        workspace_id=workspace_id,
+        metadata={"invite_id": invite.id, "sent_count": invite.sent_count},
+    )
+    db.commit()
+    db.refresh(invite)
+    return invite
+
+
+@router.put("/{workspace_id}/invites/{invite_id}", response_model=WorkspaceInviteRead)
+def update_workspace_invite(
+    workspace_id: int,
+    invite_id: int,
+    payload: WorkspaceInviteUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> WorkspaceInvite:
+    require_workspace_access(db, workspace_id, current_user, minimum_role="admin")
+    invite = db.get(WorkspaceInvite, invite_id)
+    if not invite or invite.workspace_id != workspace_id:
+        raise HTTPException(status_code=404, detail="Invite not found.")
+    if payload.role:
+        invite.role = normalize_role(payload.role)
+    record_audit_log(
+        db,
+        "workspace.invite_updated",
+        user_id=current_user.id,
+        workspace_id=workspace_id,
+        metadata={"invite_id": invite.id, "role": invite.role},
+    )
+    db.commit()
+    db.refresh(invite)
+    return invite

@@ -39,7 +39,10 @@
           <button class="nav-link" data-pane-target="projects-pane" data-i18n="navProjects">Projects</button>
           <button class="nav-link" data-pane-target="facts-pane" data-i18n="navFacts">Brand facts</button>
           <button class="nav-link" data-pane-target="providers-pane" data-i18n="navProviders">Providers</button>
+          <button class="nav-link" data-pane-target="prompts-pane" data-i18n="navPrompts">Prompt library</button>
           <button class="nav-link" data-pane-target="audits-pane" data-i18n="navAudits">Audit runs</button>
+          <button class="nav-link" data-pane-target="sov-pane" data-i18n="navSov">AI SoV</button>
+          <button class="nav-link" data-pane-target="notifications-pane" data-i18n="navNotifications">Notifications</button>
           <button class="nav-link" data-pane-target="reports-pane" data-i18n="navReports">Reports</button>
         </nav>
 
@@ -61,7 +64,7 @@
       <main class="main">
         <header class="hero">
           <div>
-            <p class="eyebrow" data-i18n="releaseBadge">v2.2.0 operator-ready platform upgrade</p>
+            <p class="eyebrow" data-i18n="releaseBadge">v2.3.0 proof-first AI operator upgrade</p>
             <h2 data-i18n="heroTitle">Free and transparent self-hosted platform on top of the methodology repo</h2>
             <p class="hero-copy" data-i18n="heroCopy">
               Create workspaces, onboard projects, run discoverability checks,
@@ -308,6 +311,54 @@
           </div>
         </section>
 
+        <section class="pane" id="prompts-pane">
+          <div class="pane-header">
+            <h3 data-i18n="promptsTitle">Prompt library and agent handoff</h3>
+            <button id="refresh-prompts" class="ghost-button" data-i18n="refresh">Refresh</button>
+          </div>
+          <div class="split">
+            <form id="prompt-set-form" class="card form-card">
+              <h4 data-i18n="createPromptSet">Create prompt set</h4>
+              <label class="field">
+                <span data-i18n="workspaceId">Workspace ID</span>
+                <input name="workspace_id" type="number" required />
+              </label>
+              <label class="field">
+                <span data-i18n="name">Name</span>
+                <input name="name" required />
+              </label>
+              <label class="field">
+                <span data-i18n="promptPurpose">Purpose</span>
+                <input name="purpose" placeholder="audit reasoning, content brief, QA" />
+              </label>
+              <label class="field">
+                <span data-i18n="outputFormat">Output format</span>
+                <input name="output_format" placeholder="markdown action plan" />
+              </label>
+              <label class="field">
+                <span data-i18n="modelRecommendation">Model recommendation</span>
+                <input name="model_recommendation" placeholder="gpt-4.1 / claude / ollama" />
+              </label>
+              <label class="field">
+                <span data-i18n="riskNotes">Risk notes</span>
+                <textarea name="risk_notes" rows="3"></textarea>
+              </label>
+              <label class="field">
+                <span data-i18n="promptItems">Prompt items, one per line</span>
+                <textarea name="prompt_items" rows="5"></textarea>
+              </label>
+              <button type="submit" data-i18n="savePromptSet">Save prompt set</button>
+            </form>
+
+            <div class="card">
+              <h4 data-i18n="promptSetList">Workspace prompt sets</h4>
+              <div id="prompt-set-list" class="stack"></div>
+              <h4 data-i18n="repoPromptLibrary">Bundled repo prompt library</h4>
+              <div id="repo-prompt-library" class="stack"></div>
+            </div>
+          </div>
+        </section>
+
         <section class="pane" id="audits-pane">
           <div class="pane-header">
             <h3 data-i18n="auditsTitle">Structured audit runs</h3>
@@ -357,6 +408,90 @@
           </div>
         </section>
 
+        <section class="pane" id="sov-pane">
+          <div class="pane-header">
+            <h3 data-i18n="sovTitle">AI Share of Voice</h3>
+            <button id="refresh-sov" class="ghost-button" data-i18n="refresh">Refresh</button>
+          </div>
+          <div class="split">
+            <form id="sov-form" class="card form-card">
+              <h4 data-i18n="createSov">Run SoV check</h4>
+              <label class="field">
+                <span data-i18n="workspaceId">Workspace ID</span>
+                <input name="workspace_id" type="number" required />
+              </label>
+              <label class="field">
+                <span data-i18n="projectId">Project ID</span>
+                <input name="project_id" type="number" required />
+              </label>
+              <label class="field">
+                <span data-i18n="brandName">Brand name</span>
+                <input name="brand" required />
+              </label>
+              <label class="field">
+                <span data-i18n="queryList">Queries, comma-separated</span>
+                <textarea name="queries" rows="4" required></textarea>
+              </label>
+              <label class="field">
+                <span data-i18n="providerListInline">Providers, comma-separated</span>
+                <input name="providers" placeholder="chatgpt, perplexity, gemini, ollama" />
+              </label>
+              <label class="field">
+                <span data-i18n="notesLabel">Notes</span>
+                <textarea name="notes" rows="3"></textarea>
+              </label>
+              <button type="submit" data-i18n="runSov">Run SoV</button>
+            </form>
+
+            <div class="card">
+              <h4 data-i18n="sovHistory">SoV history</h4>
+              <div id="sov-list" class="stack"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane" id="notifications-pane">
+          <div class="pane-header">
+            <h3 data-i18n="notificationsTitle">Notifications and webhooks</h3>
+            <button id="refresh-notifications" class="ghost-button" data-i18n="refresh">Refresh</button>
+          </div>
+          <div class="split">
+            <form id="notification-form" class="card form-card">
+              <h4 data-i18n="createNotification">Create notification endpoint</h4>
+              <label class="field">
+                <span data-i18n="workspaceId">Workspace ID</span>
+                <input name="workspace_id" type="number" required />
+              </label>
+              <label class="field">
+                <span data-i18n="channelType">Channel type</span>
+                <select name="channel_type">
+                  <option value="webhook">Webhook</option>
+                  <option value="slack">Slack webhook</option>
+                  <option value="telegram">Telegram gateway</option>
+                </select>
+              </label>
+              <label class="field">
+                <span data-i18n="label">Label</span>
+                <input name="label" required />
+              </label>
+              <label class="field">
+                <span data-i18n="targetUrl">Target URL</span>
+                <input name="target_url" type="url" required />
+              </label>
+              <label class="field">
+                <span data-i18n="eventList">Events, comma-separated</span>
+                <input name="events" placeholder="audit.run_requested, sov.completed" />
+              </label>
+              <button type="submit" data-i18n="saveNotification">Save endpoint</button>
+            </form>
+
+            <div class="card">
+              <h4 data-i18n="notificationList">Configured endpoints</h4>
+              <div id="notification-list" class="stack"></div>
+            </div>
+          </div>
+        </section>
+
         <section class="pane" id="reports-pane">
           <div class="pane-header">
             <h3 data-i18n="reportsTitle">Reports and artifacts</h3>
@@ -378,6 +513,18 @@
             <div class="card">
               <h4 data-i18n="repoAssets">Repo assets reused by the app</h4>
               <pre id="repo-assets" class="code-block"></pre>
+            </div>
+            <div class="card">
+              <h4 data-i18n="projectExport">Project export package</h4>
+              <button id="export-project" type="button" data-i18n="exportProject">Export active project</button>
+              <pre id="project-export" class="code-block"></pre>
+            </div>
+          </div>
+
+          <div class="split lower-grid">
+            <div class="card">
+              <h4 data-i18n="integrationStarters">Integration starters</h4>
+              <pre id="integration-starters" class="code-block"></pre>
             </div>
             <div class="card">
               <h4 data-i18n="activityLog">Activity log</h4>

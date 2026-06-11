@@ -7,18 +7,38 @@
 [![Script Smoke Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml)
 [![Python Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml)
 [![Docs Build](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml)
+[![Docker](https://img.shields.io/badge/docker-self--hosted-2496ED?logo=docker&logoColor=white)](./docker-compose.yml)
+[![FastAPI](https://img.shields.io/badge/FastAPI-app-009688?logo=fastapi&logoColor=white)](./app/backend/app/main.py)
 ![Self-Hosted Ready](https://img.shields.io/badge/self--hosted-ready-1f6f50)
 
 Free, transparent, self-hosted, and ready for your own AI providers. Deploy it
 for yourself or your clients to audit, improve, monitor, and manage SEO, GEO,
 and AI discoverability.
 
+## AI handoff block
+
+Give this repository to your AI coding agent and tell it:
+
+1. read [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
+2. follow [AGENTS.md](./AGENTS.md)
+3. run `make turnkey-demo`
+4. run `make agent-self-check`
+5. report what was verified and what still needs human review
+
+This repo is intentionally built so an AI can deploy it from scratch, connect
+your own providers, and keep the EN/RU operator layer aligned.
+
 [Русская версия](./README_RU.md)
 
-## v2.2.0 positioning
+## v2.3.0 positioning
 
-A free and transparent self-hosted platform you can deploy for yourself or your
-clients to audit, improve, monitor, and manage SEO, GEO, and AI discoverability.
+A free and transparent self-hosted platform for SEO, GEO, and AI visibility:
+deploy it on your own server, connect your own AI providers, and use it to
+audit, improve, monitor, and operate your own sites or client websites.
+
+This repository includes documentation, Docker deployment, working app
+endpoints, examples, scripts, and AI-first instructions that you can hand to an
+AI coding agent to get the stack deployed end to end.
 
 Core principles:
 
@@ -102,6 +122,11 @@ Useful entrypoints:
 - [docs/en/roles-and-invites.md](./docs/en/roles-and-invites.md)
 - [docs/en/patch-mode.md](./docs/en/patch-mode.md)
 - [docs/en/cms-connectors.md](./docs/en/cms-connectors.md)
+- [docs/en/local-llm-matrix.md](./docs/en/local-llm-matrix.md)
+- [docs/en/provider-benchmarks.md](./docs/en/provider-benchmarks.md)
+- [docs/en/search-data-connectors.md](./docs/en/search-data-connectors.md)
+- [docs/en/notifications-and-webhooks.md](./docs/en/notifications-and-webhooks.md)
+- [docs/en/white-label-mode.md](./docs/en/white-label-mode.md)
 - [SELF_HOSTED_USE_CASES.md](./SELF_HOSTED_USE_CASES.md)
 
 Verification command:
@@ -208,6 +233,14 @@ Demo credentials after seeding:
 
 - Email: `demo@example.com`
 - Password: `DemoPlatform123`
+
+## Latest changes
+
+- `v2.3.0`: AI SoV persistence, prompt library metadata, webhook notifications,
+  project export package, top-20 local LLM matrix, benchmark and search-data
+  starter docs, and stronger EN/RU AI handoff guidance.
+- `v2.2.0`: operator-ready self-hosted layer, AI handoff path, self-check flow,
+  roles and invites, and deployment verification.
 
 ## SaaS app layer
 
