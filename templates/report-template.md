@@ -16,7 +16,7 @@
 
 ## Releases shipped
 
-- 
+- Add shipped releases here
 
 ## Risks and next actions
 
