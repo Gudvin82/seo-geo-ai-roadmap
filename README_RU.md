@@ -130,7 +130,8 @@ CLI-скриптов.
 
 ## Docs-site
 
-- Docs site: [https://gudvin82.github.io/seo-geo-ai-roadmap/](https://gudvin82.github.io/seo-geo-ai-roadmap/)
+- Поставка docs-site настроена через GitHub Pages в
+  [`.github/workflows/docs-site.yml`](./.github/workflows/docs-site.yml)
 - Локальный preview: `pip install mkdocs-material && mkdocs serve`
 
 ## Пример промпта

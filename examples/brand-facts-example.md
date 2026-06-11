@@ -8,7 +8,7 @@ Example OS
 
 ## Website
 
-https://example.com
+<https://example.com>
 
 ## Main markets
 

@@ -125,7 +125,8 @@ See [scripts/README.md](./scripts/README.md) for full CLI usage examples.
 
 ## Docs site
 
-- Docs site: [https://gudvin82.github.io/seo-geo-ai-roadmap/](https://gudvin82.github.io/seo-geo-ai-roadmap/)
+- Docs site delivery is configured through GitHub Pages in
+  [`.github/workflows/docs-site.yml`](./.github/workflows/docs-site.yml)
 - Local preview: `pip install mkdocs-material && mkdocs serve`
 
 ## Example prompt
