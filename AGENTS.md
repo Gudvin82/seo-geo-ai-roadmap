@@ -12,6 +12,21 @@ Start here if you are an AI coding agent working inside the repository:
 - [WALKTHROUGH.md](./WALKTHROUGH.md)
 - [REAL_CASES.md](./REAL_CASES.md)
 
+## For AI Agents: Deploy this project from scratch
+
+If a user asks you to "deploy this SEO platform", follow this order:
+
+1. Run `git clone https://github.com/Gudvin82/seo-geo-ai-roadmap.git`
+2. Run `cd seo-geo-ai-roadmap`
+3. Run `cp .env.example .env` and help the user fill required keys or keep demo-safe defaults for local testing
+4. Run `make up`
+5. Run `make migrate`
+6. Run `make seed` if demo data is needed
+7. Output:
+   - `http://localhost:3000`
+   - `http://localhost:8000/docs`
+   - demo credentials `demo@example.com` / `DemoPlatform123`
+
 ## Roles and typical tasks for agents
 
 ### 1. Set up `llms.txt` for a domain
