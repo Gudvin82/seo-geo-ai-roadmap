@@ -1,7 +1,9 @@
 # SEO + GEO + AI Discoverability OS
 
-[![Релиз](https://img.shields.io/badge/release-v1.0.0-blue)](https://github.com/Gudvin82/seo-geo-ai-roadmap/releases)
-[![Лицензия: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
+[![Version](https://img.shields.io/github/v/tag/Gudvin82/seo-geo-ai-roadmap?label=version)](https://github.com/Gudvin82/seo-geo-ai-roadmap/tags)
+[![License](https://img.shields.io/github/license/Gudvin82/seo-geo-ai-roadmap)](./LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/Gudvin82/seo-geo-ai-roadmap)](https://github.com/Gudvin82/seo-geo-ai-roadmap/commits/main)
+[![Markdown Lint](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml)
 
 Не очередной чеклист по SEO, а рабочая система роста видимости сайта в поиске, AI-ответах и локальных платформах.
 
@@ -44,6 +46,74 @@
 3. Соберите матрицу страниц через [docs/ru/04-page-matrix.md](./docs/ru/04-page-matrix.md).
 4. Настройте AI-видимость через [docs/ru/08-geo-ai-search.md](./docs/ru/08-geo-ai-search.md).
 5. Зафиксируйте отчетность через [docs/ru/18-analytics.md](./docs/ru/18-analytics.md) и [ROADMAP.md](./ROADMAP.md).
+
+## Пример скрипта
+
+В репозитории есть не только документы, но и рабочие helper-скрипты. Один из
+самых полезных —
+[`scripts/generate_llms_txt.py`](./scripts/generate_llms_txt.py), который
+собирает `llms.txt` из sitemap.
+
+### Generate llms.txt from sitemap
+
+```bash
+python scripts/generate_llms_txt.py \
+  --sitemap-url https://example.com/sitemap.xml \
+  --output-file ./llms.txt
+```
+
+Пример вывода:
+
+```text
+Processed URLs: 42
+Output file: llms.txt
+Warnings:
+- Review description for https://example.com/solutions/ai-ops
+```
+
+## Пример промпта
+
+Этот prompt помогает быстро получить черновик `llms.txt`, который затем
+проверяется вручную.
+
+Purpose: превратить sitemap и ключевые страницы в краткий черновик `llms.txt`.
+
+Input: главная, страницы услуг, FAQ, about page и sitemap.
+
+```text
+Роль: technical discoverability specialist
+Входы: https://example.com, главная, страницы услуг, FAQ, about page
+Задача: подготовь production-ready draft llms.txt с короткими описаниями
+Формат ответа: одна строка на URL с кратким описанием
+Критерии оценки: краткость, покрытие, дисциплина canonical
+```
+
+## Как использовать этот framework на живом проекте
+
+1. Запустите стартовый аудит через
+   [docs/ru/01-audit.md](./docs/ru/01-audit.md),
+   [checklists/ru/technical-seo-checklist.md](./checklists/ru/technical-seo-checklist.md)
+   и [`scripts/sitemap-checker.py`](./scripts/sitemap-checker.py).
+2. Исправьте технические блокеры через
+   [docs/ru/05-technical-seo.md](./docs/ru/05-technical-seo.md) и
+   [`scripts/check-robots-ai-bots.py`](./scripts/check-robots-ai-bots.py).
+3. Настройте GEO / AI visibility через
+   [docs/ru/08-geo-ai-search.md](./docs/ru/08-geo-ai-search.md),
+   [`scripts/generate_llms_txt.py`](./scripts/generate_llms_txt.py) и
+   [`prompts/ru/llms-txt-generator-prompt.md`](./prompts/ru/llms-txt-generator-prompt.md).
+4. Адаптируйте стратегию под Яндекс/RU или international сценарий через
+   [docs/ru/13-russia-yandex.md](./docs/ru/13-russia-yandex.md) и
+   [docs/ru/12-international-seo.md](./docs/ru/12-international-seo.md).
+5. Усильте content + answer extraction через
+   [docs/ru/07-content-eeat.md](./docs/ru/07-content-eeat.md) и
+   [prompts/ru/answer-ready-page-prompt.md](./prompts/ru/answer-ready-page-prompt.md).
+6. Отслеживайте аналитику и AI Share of Voice через
+   [docs/ru/18-analytics.md](./docs/ru/18-analytics.md),
+   [`scripts/ai-share-of-voice-tracker.py`](./scripts/ai-share-of-voice-tracker.py)
+   и [examples/ai-share-of-voice-weekly-report.md](./examples/ai-share-of-voice-weekly-report.md).
+7. Управляйте релизами через [docs/ru/20-raci.md](./docs/ru/20-raci.md),
+   [docs/ru/21-definition-of-done.md](./docs/ru/21-definition-of-done.md) и
+   [RELEASE_PROCESS.md](./RELEASE_PROCESS.md).
 
 ## Архитектура
 

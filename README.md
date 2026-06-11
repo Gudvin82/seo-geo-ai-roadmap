@@ -1,7 +1,9 @@
 # SEO + GEO + AI Discoverability OS
 
-[![Release](https://img.shields.io/badge/release-v1.0.0-blue)](https://github.com/Gudvin82/seo-geo-ai-roadmap/releases)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
+[![Version](https://img.shields.io/github/v/tag/Gudvin82/seo-geo-ai-roadmap?label=version)](https://github.com/Gudvin82/seo-geo-ai-roadmap/tags)
+[![License](https://img.shields.io/github/license/Gudvin82/seo-geo-ai-roadmap)](./LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/Gudvin82/seo-geo-ai-roadmap)](https://github.com/Gudvin82/seo-geo-ai-roadmap/commits/main)
+[![Markdown Lint](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml)
 
 Not another SEO checklist. An operating system for search, AI visibility, and multilingual discoverability.
 
@@ -44,6 +46,72 @@ This project is built as an execution-first framework for teams that need one pr
 3. Build the page plan with [docs/en/04-page-matrix.md](./docs/en/04-page-matrix.md).
 4. Implement AI visibility with [docs/en/08-geo-ai-search.md](./docs/en/08-geo-ai-search.md).
 5. Set reporting discipline with [docs/en/18-analytics.md](./docs/en/18-analytics.md) and [ROADMAP.md](./ROADMAP.md).
+
+## Example script
+
+The repository includes real helper scripts, not just documentation. One useful
+entry point is [`scripts/generate_llms_txt.py`](./scripts/generate_llms_txt.py),
+which builds `llms.txt` from a sitemap.
+
+### Generate llms.txt from sitemap
+
+```bash
+python scripts/generate_llms_txt.py \
+  --sitemap-url https://example.com/sitemap.xml \
+  --output-file ./llms.txt
+```
+
+Sample output:
+
+```text
+Processed URLs: 42
+Output file: llms.txt
+Warnings:
+- Review description for https://example.com/solutions/ai-ops
+```
+
+## Example prompt
+
+Use the `llms.txt` generator prompt when you want an AI assistant to draft a
+human-readable `llms.txt` structure before review.
+
+Purpose: turn a sitemap and key pages into a concise `llms.txt` draft.
+
+Input: homepage, service pages, FAQ, about page, and a sitemap.
+
+```text
+Role: technical discoverability specialist
+Inputs: https://example.com, homepage, service pages, FAQ, about page
+Task: produce a production-ready llms.txt draft with concise descriptions
+Output format: one line per URL with a short description
+Evaluation criteria: conciseness, coverage, canonical discipline
+```
+
+## How to use this framework on a real project
+
+1. Run the initial audit with [docs/en/01-audit.md](./docs/en/01-audit.md),
+   [checklists/en/technical-seo-checklist.md](./checklists/en/technical-seo-checklist.md),
+   and [`scripts/sitemap-checker.py`](./scripts/sitemap-checker.py).
+2. Fix technical SEO using
+   [docs/en/05-technical-seo.md](./docs/en/05-technical-seo.md) and
+   [`scripts/check-robots-ai-bots.py`](./scripts/check-robots-ai-bots.py).
+3. Implement GEO / AI visibility with
+   [docs/en/08-geo-ai-search.md](./docs/en/08-geo-ai-search.md),
+   [`scripts/generate_llms_txt.py`](./scripts/generate_llms_txt.py), and
+   [`prompts/en/llms-txt-generator-prompt.md`](./prompts/en/llms-txt-generator-prompt.md).
+4. Adapt the system for local or international markets through
+   [docs/en/13-russia-yandex.md](./docs/en/13-russia-yandex.md) or
+   [docs/en/12-international-seo.md](./docs/en/12-international-seo.md).
+5. Improve content and answer extraction with
+   [docs/en/07-content-eeat.md](./docs/en/07-content-eeat.md) and
+   [prompts/en/answer-ready-page-prompt.md](./prompts/en/answer-ready-page-prompt.md).
+6. Track analytics and AI visibility with
+   [docs/en/18-analytics.md](./docs/en/18-analytics.md),
+   [`scripts/ai-share-of-voice-tracker.py`](./scripts/ai-share-of-voice-tracker.py),
+   and [examples/ai-share-of-voice-weekly-report.md](./examples/ai-share-of-voice-weekly-report.md).
+7. Govern releases with [docs/en/20-raci.md](./docs/en/20-raci.md),
+   [docs/en/21-definition-of-done.md](./docs/en/21-definition-of-done.md), and
+   [RELEASE_PROCESS.md](./RELEASE_PROCESS.md).
 
 ## Architecture
 

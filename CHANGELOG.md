@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.1.0 - 2026-06-11 - Trust, Automation, and Workflow
+
+- Added `generate_llms_txt.py` for sitemap-based `llms.txt` generation
+- Connected Definition of Done to the pull request workflow
+- Expanded `README.md` and `README_RU.md` with badges, example script,
+  example prompt, and a live-project workflow
+- Added an AI Share of Voice weekly report example and linked it from GEO docs
+- Prepared the repository for the `v1.1.0` trust, automation, and workflow release
+
 ## v1.0.0 - 2026-06-11
 
 - Repositioned the project as a discoverability operating system

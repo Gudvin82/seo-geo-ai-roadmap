@@ -75,6 +75,9 @@ Evaluation criteria: clarity, feasibility, business alignment, measurable next s
 
 Example AI Agency applies GEO and AI Search first to audit, GEO service pages, and branded AI prompts before scaling to the full blog.
 
+See [examples/ai-share-of-voice-weekly-report.md](../../examples/ai-share-of-voice-weekly-report.md)
+for a ready weekly reporting structure.
+
 ## Common Mistakes
 
 - Treating the work as a one-time task instead of an operating loop.
