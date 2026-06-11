@@ -6,11 +6,14 @@ Build the first practical open-source operating manual for SEO, GEO, and AI disc
 
 ## Core statement
 
-Not another SEO checklist. An operating system for search, AI visibility, and multilingual discoverability.
+A free and transparent self-hosted platform you can deploy for yourself or your
+clients to audit, improve, monitor, and manage SEO, GEO, and AI discoverability.
 
 ## Russian adaptation
 
-Не очередной чеклист по SEO, а рабочая система роста видимости сайта в поиске, AI-ответах и локальных платформах.
+Бесплатная и прозрачная self-hosted платформа, которую можно развернуть для
+себя или клиентов и использовать для аудита, улучшения, мониторинга и
+управления SEO, GEO и AI-visible слоем сайта.
 
 ## Product framing
 

@@ -2,25 +2,16 @@ from __future__ import annotations
 
 import json
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from ..access import record_audit_log, require_project_access
 from ..database import get_db
 from ..deps import get_current_user
-from ..models import BrandFactsProfile, Project, User, Workspace
+from ..models import BrandFactsProfile, User
 from ..schemas import BrandFactsCreate, BrandFactsRead
 
 router = APIRouter(prefix="/brand-facts", tags=["brand-facts"])
-
-
-def _project_for_user(db: Session, project_id: int, current_user: User) -> Project:
-    project = db.get(Project, project_id)
-    if not project:
-        raise HTTPException(status_code=404, detail="Project not found.")
-    workspace = db.get(Workspace, project.workspace_id)
-    if not workspace or workspace.owner_user_id != current_user.id:
-        raise HTTPException(status_code=404, detail="Project not found.")
-    return project
 
 
 @router.get("/{project_id}", response_model=list[BrandFactsRead])
@@ -29,7 +20,7 @@ def list_brand_facts(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> list[BrandFactsRead]:
-    _project_for_user(db, project_id, current_user)
+    require_project_access(db, project_id, current_user, minimum_role="viewer")
     rows = (
         db.query(BrandFactsProfile)
         .filter(BrandFactsProfile.project_id == project_id)
@@ -59,7 +50,9 @@ def create_brand_facts(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> BrandFactsRead:
-    _project_for_user(db, payload.project_id, current_user)
+    project, _ = require_project_access(
+        db, payload.project_id, current_user, minimum_role="editor"
+    )
     row = BrandFactsProfile(
         project_id=payload.project_id,
         name=payload.name,
@@ -72,6 +65,15 @@ def create_brand_facts(
         primary_cta=payload.primary_cta,
     )
     db.add(row)
+    db.flush()
+    record_audit_log(
+        db,
+        "brand_facts.updated",
+        user_id=current_user.id,
+        workspace_id=project.workspace_id,
+        project_id=project.id,
+        metadata={"profile_name": payload.name},
+    )
     db.commit()
     db.refresh(row)
     return BrandFactsRead(

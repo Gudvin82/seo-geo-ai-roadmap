@@ -14,7 +14,7 @@
 
 ## Что добавляет app layer
 
-`v2.1.0` добавляет разворачиваемый foundation продукта:
+`v2.2.0` добавляет operator-ready foundation продукта:
 
 - авторизацию
 - workspaces и projects
@@ -25,6 +25,8 @@
 - self-hosted deployment foundation
 - expiring auth tokens и более сильную работу с паролями
 - migrations, demo seed data и базовую observability
+- workspace roles, invites, audit logs и canonical audit API
+- local LLM support для Ollama, LocalAI и vLLM-style endpoints
 
 ## Явное обещание платформы
 
@@ -33,7 +35,7 @@
 - бесплатная
 - прозрачная
 - self-hosted first
-- совместима с опциональными AI provider keys
+- совместима с вашими cloud AI providers и local LLM runtimes
 - exportable by design
 
 ## Как работает self-hosting

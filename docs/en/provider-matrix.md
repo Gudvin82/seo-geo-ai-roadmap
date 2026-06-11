@@ -1,17 +1,17 @@
 # Provider Matrix
 
-## Current provider support
+| Provider | Auth | Local or cloud | Strengths | Limitations | Typical use |
+|---|---|---|---|---|---|
+| OpenAI | API key | Cloud | broad model ecosystem | paid cloud dependency | report commentary, structured prompts |
+| Anthropic / Claude | API key | Cloud | strong long-form reasoning | paid cloud dependency | strategy, editorial review |
+| Gemini | API key | Cloud | multilingual and Google ecosystem fit | cloud-only by default | multilingual checks |
+| Perplexity | API key | Cloud | research-oriented answers | cloud dependency | research commentary |
+| Ollama | none by default | Local / self-hosted | privacy-first local inference | depends on local runtime and model pull | private audit commentary |
+| LocalAI | none by default | Local / self-hosted | OpenAI-style local compatibility | operator-managed runtime | local API compatibility |
+| vLLM | optional bearer token | Local / self-hosted | OpenAI-compatible serving for hosted local models | infra-heavy versus Ollama | larger self-hosted model serving |
 
-| Provider | Status | Typical use | Notes |
-|---|---|---|---|
-| OpenAI | Supported | commentary, prompt tasks | requires `OPENAI_API_KEY` |
-| Anthropic / Claude | Supported | commentary, long-form review | requires `ANTHROPIC_API_KEY` |
-| Gemini | Supported | commentary, multilingual workflows | requires `GEMINI_API_KEY` |
-| Perplexity | Supported | commentary, research-oriented prompts | requires `PERPLEXITY_API_KEY` |
+## Notes
 
-## Capability notes
-
-- All providers currently support normalized text generation calls.
-- Fallback logic is conservative and transparent.
-- Missing keys and provider failures are surfaced in artifacts and metadata.
-- Cost-awareness is a placeholder for now, not a billing system.
+- Cloud providers remain optional.
+- Local providers reinforce the free and self-hosted positioning.
+- Provider failures are surfaced in artifacts and metrics rather than hidden.

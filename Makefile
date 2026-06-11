@@ -1,7 +1,7 @@
 PYTHONPATH_APP=PYTHONPATH=app/backend
 VENV_PY=.venv/bin/python
 
-.PHONY: install-backend test lint docs migrate seed up demo
+.PHONY: install-backend test lint docs migrate seed up demo verify-demo
 
 install-backend:
 	python3 -m venv .venv
@@ -31,3 +31,6 @@ up:
 demo:
 	docker compose up --build -d
 	docker compose run --rm backend python -m app.backend.app.seed
+
+verify-demo:
+	$(PYTHONPATH_APP) $(VENV_PY) scripts/verify_demo.py

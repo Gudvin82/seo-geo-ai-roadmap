@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -82,6 +82,50 @@ class WorkspaceRead(BaseModel):
     created_at: datetime
 
 
+class WorkspaceMembershipRead(BaseModel):
+    id: int
+    workspace_id: int
+    user_id: int
+    role: str
+    created_at: datetime
+
+
+class WorkspaceInviteCreate(BaseModel):
+    email: str
+    role: str = "viewer"
+
+    @field_validator("email")
+    @classmethod
+    def normalize_email(cls, value: str) -> str:
+        return value.strip().lower()
+
+    @field_validator("role")
+    @classmethod
+    def validate_role(cls, value: str) -> str:
+        allowed = {"owner", "admin", "editor", "viewer"}
+        role = value.strip().lower()
+        if role not in allowed:
+            raise ValueError(
+                f"Unsupported role '{value}'. Allowed: {', '.join(sorted(allowed))}."
+            )
+        return role
+
+
+class WorkspaceInviteAccept(BaseModel):
+    invite_token: str
+
+
+class WorkspaceInviteRead(BaseModel):
+    id: int
+    workspace_id: int
+    email: str
+    role: str
+    invite_token: str
+    status: str
+    accepted_at: Optional[datetime]
+    created_at: datetime
+
+
 class ProjectCreate(BaseModel):
     workspace_id: int
     name: str
@@ -157,7 +201,15 @@ class ProviderConfigCreate(BaseModel):
     @classmethod
     def validate_provider_name(cls, value: str) -> str:
         provider = value.strip().lower()
-        allowed = {"openai", "anthropic", "gemini", "perplexity"}
+        allowed = {
+            "openai",
+            "anthropic",
+            "gemini",
+            "perplexity",
+            "ollama",
+            "localai",
+            "vllm",
+        }
         if provider not in allowed:
             raise ValueError(
                 f"Unsupported provider '{value}'. Allowed: {', '.join(sorted(allowed))}."
@@ -225,17 +277,53 @@ class AuditRunCreate(BaseModel):
     prompt_set_id: Optional[int] = None
 
 
+class AuditRunRequest(BaseModel):
+    workspace_id: int
+    project_id: int
+    domain_or_url: str
+    selected_checks: list[str] = Field(default_factory=list)
+    selected_providers: list[str] = Field(default_factory=list)
+    report_language: str = "en"
+    market: Optional[str] = None
+    mode: Literal["quick", "full"] = "quick"
+    brand_facts_profile_id: Optional[int] = None
+
+
+class AuditRunAccepted(BaseModel):
+    audit_job_id: int
+    initial_status: str
+    accepted_parameters: dict[str, Any]
+    status_endpoint: str
+    report_endpoint: str
+    artifacts_endpoint: str
+
+
 class AuditRunRead(BaseModel):
     id: int
     project_id: int
     workspace_id: int
     status: str
     report_language: str
+    mode: str
+    market: Optional[str]
+    target_url: Optional[str]
     selected_checks: list[str]
+    selected_providers: list[str] = Field(default_factory=list)
+    accepted_parameters: dict[str, Any] = Field(default_factory=dict)
     finding_groups: list[dict[str, Any]]
     summary_score: Optional[float]
     created_at: datetime
     completed_at: Optional[datetime]
+
+
+class AuditLogRead(BaseModel):
+    id: int
+    event_type: str
+    user_id: Optional[int]
+    workspace_id: Optional[int]
+    project_id: Optional[int]
+    metadata: dict[str, Any]
+    created_at: datetime
 
 
 class ReportRead(BaseModel):

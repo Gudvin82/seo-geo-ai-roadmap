@@ -5,14 +5,21 @@
 [![Last Commit](https://img.shields.io/github/last-commit/Gudvin82/seo-geo-ai-roadmap)](https://github.com/Gudvin82/seo-geo-ai-roadmap/commits/main)
 [![Markdown Lint](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml)
 [![Script Smoke Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml)
+[![Python Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml)
+[![Docs Build](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml)
+![Self-Hosted Ready](https://img.shields.io/badge/self--hosted-ready-1f6f50)
 
-Не очередной чеклист по SEO, а рабочая система роста видимости сайта в поиске, AI-ответах и локальных платформах.
+Бесплатная, прозрачная и self-hosted платформа, которую можно развернуть для
+себя или клиентов и использовать для аудита, улучшения, мониторинга и
+управления SEO, GEO и AI-visible слоем сайта.
 
 [English version](./README.md)
 
-## Позиционирование v2.1.0
+## Позиционирование v2.2.0
 
-Бесплатная и прозрачная self-hosted платформа для аудита, управления и роста SEO, GEO и AI-visible слоя сайта.
+Бесплатная и прозрачная self-hosted платформа, которую можно развернуть для
+себя или клиентов и использовать для аудита, улучшения, мониторинга и
+управления SEO, GEO и AI-visible слоем сайта.
 
 Базовые принципы:
 
@@ -21,7 +28,7 @@
 - без vendor lock-in
 - self-hosted first
 - прозрачные проверки и outputs
-- AI provider keys только опционально
+- можно подключать свои AI providers и local LLM runtimes
 - exportable reports, artifacts и data
 
 ## Зачем нужен этот репозиторий
@@ -56,6 +63,9 @@
 - Pytest-покрытие ключевых helper-скриптов в [`tests`](./tests)
 - SaaS-ready app layer в [`app`](./app)
 - Self-hosted deployment foundation в [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
+- Проверка deployment в [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
+- Ограничения в [KNOWN_LIMITATIONS_RU.md](./KNOWN_LIMITATIONS_RU.md)
+- Runbook в [OPERATIONS_RUNBOOK_RU.md](./OPERATIONS_RUNBOOK_RU.md)
 - Product architecture docs в [ARCHITECTURE_RU.md](./ARCHITECTURE_RU.md)
 - Заполненные примеры в [`examples`](./examples)
 - Глоссарий в [GLOSSARY.md](./GLOSSARY.md) и
@@ -85,9 +95,17 @@
 
 - [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
 - [SECURITY_CHECKLIST_RU.md](./SECURITY_CHECKLIST_RU.md)
+- [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
 - [docs/ru/api-reference.md](./docs/ru/api-reference.md)
 - [docs/ru/ai-operator-mode.md](./docs/ru/ai-operator-mode.md)
+- [docs/ru/roles-and-invites.md](./docs/ru/roles-and-invites.md)
+- [docs/ru/patch-mode.md](./docs/ru/patch-mode.md)
+- [docs/ru/cms-connectors.md](./docs/ru/cms-connectors.md)
 - [SELF_HOSTED_USE_CASES_RU.md](./SELF_HOSTED_USE_CASES_RU.md)
+
+Команда проверки:
+
+- `make verify-demo`
 
 ## Для AI-агентов и IDE
 
@@ -120,6 +138,8 @@ AGENTS.md дает агенту:
 
 ![App overview proof](./docs_site/assets/screenshots/app-overview-proof.svg)
 ![Report flow proof](./docs_site/assets/screenshots/report-flow-proof.svg)
+![Login dashboard proof](./docs_site/assets/screenshots/login-dashboard-proof.svg)
+![Provider access proof](./docs_site/assets/screenshots/provider-access-proof.svg)
 
 ## Что уже поддерживает этот репозиторий
 

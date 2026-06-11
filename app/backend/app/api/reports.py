@@ -2,25 +2,16 @@ from __future__ import annotations
 
 import json
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from ..access import require_project_access
 from ..database import get_db
 from ..deps import get_current_user
-from ..models import Project, Report, User, Workspace
+from ..models import Report, User
 from ..schemas import ReportRead
 
 router = APIRouter(prefix="/reports", tags=["reports"])
-
-
-def _project_for_user(db: Session, project_id: int, current_user: User) -> Project:
-    project = db.get(Project, project_id)
-    if not project:
-        raise HTTPException(status_code=404, detail="Project not found.")
-    workspace = db.get(Workspace, project.workspace_id)
-    if not workspace or workspace.owner_user_id != current_user.id:
-        raise HTTPException(status_code=404, detail="Project not found.")
-    return project
 
 
 @router.get("", response_model=list[ReportRead])
@@ -29,7 +20,7 @@ def list_reports(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> list[ReportRead]:
-    _project_for_user(db, project_id, current_user)
+    require_project_access(db, project_id, current_user, minimum_role="viewer")
     rows = (
         db.query(Report)
         .filter(Report.project_id == project_id)

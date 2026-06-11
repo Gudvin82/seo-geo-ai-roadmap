@@ -19,6 +19,7 @@ class ProviderResponse:
 
 class BaseProvider:
     provider_name = "base"
+    requires_api_key = True
 
     def __init__(
         self, api_key: Optional[str], model: str, base_url: Optional[str] = None
@@ -28,7 +29,7 @@ class BaseProvider:
         self.base_url = base_url
 
     def ensure_configured(self) -> None:
-        if not self.api_key:
+        if self.requires_api_key and not self.api_key:
             raise ProviderError(f"Missing API key for provider {self.provider_name}.")
 
     def generate_text(

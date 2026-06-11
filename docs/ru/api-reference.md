@@ -1,28 +1,47 @@
 # API Reference
 
-OpenAPI документация приложения доступна по `/docs`, ReDoc по `/redoc`.
+OpenAPI доступен по `/docs`, ReDoc по `/redoc`.
 
-## Health и readiness
+## Auth
 
-- `GET /healthz`
-- `GET /readyz`
-- `GET /metrics`
+Авторизация работает через `Authorization: Bearer <token>`.
 
-## Auth endpoints
+### Register
 
-- `POST /api/v1/auth/register`
-- `POST /api/v1/auth/login`
-- `GET /api/v1/auth/me`
-- `POST /api/v1/auth/logout`
+`POST /api/v1/auth/register`
 
-## Workspace endpoints
+```json
+{
+  "email": "operator@example.com",
+  "password": "StrongPass123"
+}
+```
+
+### Login
+
+`POST /api/v1/auth/login`
+
+Возвращает `access_token`, `expires_at` и `expires_in_seconds`.
+
+## Workspaces, roles и invites
 
 - `GET /api/v1/workspaces`
 - `POST /api/v1/workspaces`
 - `GET /api/v1/workspaces/{workspace_id}`
 - `PUT /api/v1/workspaces/{workspace_id}`
+- `GET /api/v1/workspaces/{workspace_id}/members`
+- `GET /api/v1/workspaces/{workspace_id}/invites`
+- `POST /api/v1/workspaces/{workspace_id}/invites`
+- `POST /api/v1/workspaces/invites/accept`
 
-## Project endpoints
+Правила workspace isolation:
+
+- viewers могут читать
+- editors могут создавать project и audit content
+- admins могут управлять provider configs и invites
+- owners сохраняют полный governance-контроль
+
+## Projects и sites
 
 - `GET /api/v1/projects?workspace_id={workspace_id}`
 - `POST /api/v1/projects`
@@ -30,41 +49,97 @@ OpenAPI документация приложения доступна по `/do
 - `GET /api/v1/projects/{project_id}/sites`
 - `POST /api/v1/projects/{project_id}/sites`
 
-## Audit endpoints
+## Canonical audit execution
 
-- `GET /api/v1/audit-runs/presets`
+### Запуск аудита
+
+`POST /api/v1/audit-runs/run`
+
+```json
+{
+  "workspace_id": 1,
+  "project_id": 1,
+  "domain_or_url": "https://example.com",
+  "selected_checks": ["factual_consistency", "llms_txt"],
+  "selected_providers": ["ollama"],
+  "report_language": "ru",
+  "market": "RU",
+  "mode": "quick"
+}
+```
+
+Ответ:
+
+```json
+{
+  "audit_job_id": 12,
+  "initial_status": "queued",
+  "accepted_parameters": {},
+  "status_endpoint": "/api/v1/audit-runs/12",
+  "report_endpoint": "/api/v1/reports?project_id=1",
+  "artifacts_endpoint": "/api/v1/artifacts?project_id=1"
+}
+```
+
+### Жизненный цикл audit job
+
+Поддерживаемые состояния:
+
+- `queued`
+- `running`
+- `partial`
+- `completed`
+- `failed`
+- `canceled`
+
+В текущей реализации активно используются `queued`, `running`, `completed` и
+`failed`.
+
+### Audit status
+
+- `GET /api/v1/audit-runs/{audit_run_id}`
 - `GET /api/v1/audit-runs?project_id={project_id}`
-- `POST /api/v1/audit-runs`
+- `GET /api/v1/audit-runs/presets`
 
-## Report endpoints
+## Reports и artifacts
 
 - `GET /api/v1/reports?project_id={project_id}`
 - `GET /api/v1/artifacts?project_id={project_id}`
 - `GET /api/v1/artifacts/{artifact_id}/download`
 
-## Provider endpoints
+Artifact download требует workspace access и возвращает сохраненный файл
+напрямую.
+
+## Providers
 
 - `GET /api/v1/providers?workspace_id={workspace_id}`
 - `POST /api/v1/providers`
 
-## Brand facts endpoints
+Пример local provider config:
+
+```json
+{
+  "workspace_id": 1,
+  "provider_name": "ollama",
+  "label": "Local Ollama",
+  "model": "llama3.1",
+  "base_url": "http://ollama:11434/v1/chat/completions"
+}
+```
+
+## Brand facts
 
 - `GET /api/v1/brand-facts/{project_id}`
 - `POST /api/v1/brand-facts`
 
-## Prompt set и scheduled check endpoints
+## Audit logs
 
-- `GET /api/v1/prompt-sets?workspace_id={workspace_id}`
-- `POST /api/v1/prompt-sets`
-- `GET /api/v1/scheduled-checks?workspace_id={workspace_id}`
-- `POST /api/v1/scheduled-checks`
+- `GET /api/v1/audit-logs?workspace_id={workspace_id}`
 
-## Пример request flow
+## Error model
 
-1. Зарегистрировать пользователя.
-1. Выполнить login и сохранить bearer token.
-1. Создать workspace.
-1. Создать project.
-1. Добавить brand facts.
-1. Запустить audit.
-1. Получить reports и artifacts.
+- `401`: отсутствует токен или истек срок жизни
+- `403`: роли недостаточно
+- `404`: ресурс не найден в рамках текущего workspace boundary
+- `422`: payload validation failed
+- `429`: сработал login rate limit

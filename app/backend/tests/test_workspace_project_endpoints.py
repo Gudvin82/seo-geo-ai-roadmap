@@ -43,3 +43,10 @@ def test_workspace_update_and_project_listing(
     )
     assert listed.status_code == 200
     assert len(listed.json()) == 1
+
+    members = client.get(
+        f"/api/v1/workspaces/{workspace_id}/members",
+        headers=auth_headers,
+    )
+    assert members.status_code == 200
+    assert members.json()[0]["role"] == "owner"

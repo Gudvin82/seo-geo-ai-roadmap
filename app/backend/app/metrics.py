@@ -27,6 +27,16 @@ REPORT_GENERATIONS = Counter(
     "Reports generated",
     ["language"],
 )
+INVITE_ACCEPTANCES = Counter(
+    "discoverability_invite_acceptances_total",
+    "Workspace invite acceptances",
+    ["role"],
+)
+ROLE_CHANGES = Counter(
+    "discoverability_role_changes_total",
+    "Workspace role changes",
+    ["role"],
+)
 
 
 def metrics_payload() -> tuple[bytes, str]:

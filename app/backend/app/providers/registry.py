@@ -145,12 +145,45 @@ class PerplexityProvider(JsonHttpProvider):
         return body["choices"][0]["message"]["content"]
 
 
+class OllamaProvider(OpenAIProvider):
+    provider_name = "ollama"
+    requires_api_key = False
+    endpoint = "http://localhost:11434/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class LocalAIProvider(OpenAIProvider):
+    provider_name = "localai"
+    requires_api_key = False
+    endpoint = "http://localhost:8080/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class VLLMProvider(OpenAIProvider):
+    provider_name = "vllm"
+    requires_api_key = False
+    endpoint = "http://localhost:8001/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        headers = {"Content-Type": "application/json"}
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
+        return headers
+
+
 PROVIDERS: dict[str, type[BaseProvider]] = {
     "openai": OpenAIProvider,
     "anthropic": AnthropicProvider,
     "claude": AnthropicProvider,
     "gemini": GeminiProvider,
     "perplexity": PerplexityProvider,
+    "ollama": OllamaProvider,
+    "localai": LocalAIProvider,
+    "vllm": VLLMProvider,
 }
 
 

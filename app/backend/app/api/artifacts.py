@@ -7,22 +7,13 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
+from ..access import record_audit_log, require_project_access
 from ..database import get_db
 from ..deps import get_current_user
-from ..models import Artifact, Project, User, Workspace
+from ..models import Artifact, User
 from ..schemas import ArtifactRead
 
 router = APIRouter(prefix="/artifacts", tags=["artifacts"])
-
-
-def _project_for_user(db: Session, project_id: int, current_user: User) -> Project:
-    project = db.get(Project, project_id)
-    if not project:
-        raise HTTPException(status_code=404, detail="Project not found.")
-    workspace = db.get(Workspace, project.workspace_id)
-    if not workspace or workspace.owner_user_id != current_user.id:
-        raise HTTPException(status_code=404, detail="Project not found.")
-    return project
 
 
 @router.get("", response_model=list[ArtifactRead])
@@ -31,7 +22,7 @@ def list_artifacts(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> list[ArtifactRead]:
-    _project_for_user(db, project_id, current_user)
+    require_project_access(db, project_id, current_user, minimum_role="viewer")
     rows = (
         db.query(Artifact)
         .filter(Artifact.project_id == project_id)
@@ -62,8 +53,19 @@ def download_artifact(
     artifact = db.get(Artifact, artifact_id)
     if not artifact:
         raise HTTPException(status_code=404, detail="Artifact not found.")
-    _project_for_user(db, artifact.project_id, current_user)
+    project, _ = require_project_access(
+        db, artifact.project_id, current_user, minimum_role="viewer"
+    )
     path = Path(artifact.file_path)
     if not path.exists():
         raise HTTPException(status_code=404, detail="Artifact file not found.")
+    record_audit_log(
+        db,
+        "artifact.downloaded",
+        user_id=current_user.id,
+        workspace_id=project.workspace_id,
+        project_id=project.id,
+        metadata={"artifact_id": artifact.id, "artifact_type": artifact.artifact_type},
+    )
+    db.commit()
     return FileResponse(path, filename=path.name)

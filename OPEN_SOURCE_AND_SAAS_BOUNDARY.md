@@ -14,7 +14,7 @@ The repository methodology remains fully visible and reusable:
 
 ## What the app layer adds
 
-`v2.1.0` adds a deployable product foundation:
+`v2.2.0` adds an operator-ready product foundation:
 
 - authentication
 - workspaces and projects
@@ -25,6 +25,8 @@ The repository methodology remains fully visible and reusable:
 - self-hosted deployment foundation
 - expiring auth tokens and stronger password handling
 - migrations, demo seed data, and observability basics
+- workspace roles, invites, audit logs, and a canonical audit API
+- local LLM support for Ollama, LocalAI, and vLLM-style endpoints
 
 ## Explicit platform promise
 
@@ -33,7 +35,7 @@ This platform is:
 - free
 - transparent
 - self-hosted first
-- compatible with optional AI provider keys
+- compatible with your own cloud AI providers or local LLM runtimes
 - exportable by design
 
 ## How self-hosting works

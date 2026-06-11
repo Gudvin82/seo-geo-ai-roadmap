@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.2.0 — Operator-Ready Platform Upgrade
+
+- Added a canonical `POST /api/v1/audit-runs/run` entrypoint with explicit job
+  acceptance payloads, lifecycle status exposure, and richer audit metadata
+- Added workspace memberships, invite flow, audit logs, and permission-aware
+  access checks for projects, reports, artifacts, providers, and workspaces
+- Added local provider support for Ollama, LocalAI, and vLLM-compatible
+  endpoints alongside the existing cloud provider model
+- Added deployment verification docs, runbooks, known limitations docs, cloud
+  manifest starters, and a `make verify-demo` operator check
+- Expanded EN/RU API, provider, patch-mode, CMS connector, and role/invite
+  documentation together with more visible proof assets in the README layer
+
 ## v2.1.0 — Turnkey Self-Hosted Hardening
 
 - Hardened authentication with Argon2id password hashing, expiring bearer

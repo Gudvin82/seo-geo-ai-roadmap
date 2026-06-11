@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 
+from ..access import record_audit_log
 from ..config import load_settings
 from ..database import get_db
 from ..deps import create_user_token, get_current_user, revoke_token
@@ -32,6 +33,13 @@ def register(payload: UserCreate, db: Session = Depends(get_db)) -> User:
         password_hash=hash_password(payload.password),
     )
     db.add(user)
+    db.flush()
+    record_audit_log(
+        db,
+        "auth.registered",
+        user_id=user.id,
+        metadata={"email": user.email},
+    )
     db.commit()
     db.refresh(user)
     AUTH_REQUESTS.labels(endpoint="register", status="success").inc()
@@ -53,6 +61,12 @@ def login(
         settings.login_attempt_limit,
         settings.login_attempt_window_seconds,
     ):
+        record_audit_log(
+            db,
+            "auth.login_limited",
+            metadata={"email": payload.email.lower(), "client_host": client_host},
+        )
+        db.commit()
         AUTH_REQUESTS.labels(endpoint="login", status="limited").inc()
         raise HTTPException(
             status_code=429,
@@ -67,10 +81,24 @@ def login(
             limiter_key,
             settings.login_attempt_window_seconds,
         )
+        record_audit_log(
+            db,
+            "auth.failed_login",
+            user_id=user.id if user else None,
+            metadata={"email": payload.email.lower(), "client_host": client_host},
+        )
+        db.commit()
         AUTH_REQUESTS.labels(endpoint="login", status="failure").inc()
         raise HTTPException(status_code=401, detail="Invalid credentials.")
     LOGIN_RATE_LIMITER.reset(limiter_key)
     token_session, token = create_user_token(user, settings)
+    record_audit_log(
+        db,
+        "auth.login",
+        user_id=user.id,
+        metadata={"email": user.email, "client_host": client_host},
+    )
+    db.commit()
     AUTH_REQUESTS.labels(endpoint="login", status="success").inc()
     return TokenResponse(
         access_token=token,
@@ -85,9 +113,20 @@ def me(current_user: User = Depends(get_current_user)) -> User:
 
 
 @router.post("/logout")
-def logout(request: Request) -> dict[str, str]:
+def logout(
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict[str, str]:
     authorization = request.headers.get("Authorization", "")
     if authorization.lower().startswith("bearer "):
         revoke_token(authorization.split(" ", 1)[1].strip())
+    record_audit_log(
+        db,
+        "auth.logout",
+        user_id=current_user.id,
+        metadata={"email": current_user.email},
+    )
+    db.commit()
     AUTH_REQUESTS.labels(endpoint="logout", status="success").inc()
     return {"message": "Signed out."}

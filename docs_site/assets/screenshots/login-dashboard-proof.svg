@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" fill="none">
+  <rect width="1440" height="900" fill="#f4efe6"/>
+  <rect x="48" y="48" width="1344" height="804" rx="28" fill="#fffaf2" stroke="#d7c6aa"/>
+  <rect x="84" y="92" width="310" height="716" rx="24" fill="#163127"/>
+  <text x="118" y="144" fill="#f6ebcf" font-family="Arial, sans-serif" font-size="22">SEO + GEO + AI</text>
+  <text x="118" y="188" fill="#ffffff" font-family="Arial, sans-serif" font-size="34">Discoverability OS App</text>
+  <text x="118" y="236" fill="#d6decf" font-family="Arial, sans-serif" font-size="18">v2.2.0 operator-ready self-hosted console</text>
+  <rect x="118" y="290" width="238" height="64" rx="16" fill="#28533f"/>
+  <text x="138" y="330" fill="#f8f2e8" font-family="Arial, sans-serif" font-size="18">Demo: demo@example.com</text>
+  <rect x="432" y="92" width="904" height="144" rx="24" fill="#fff" stroke="#dcccb4"/>
+  <text x="468" y="142" fill="#184835" font-family="Arial, sans-serif" font-size="18">Free • Transparent • Self-hosted • Own AI providers</text>
+  <text x="468" y="192" fill="#201913" font-family="Arial, sans-serif" font-size="34">Login, workspace selection, audits, reports</text>
+  <rect x="432" y="270" width="430" height="250" rx="24" fill="#fff" stroke="#dcccb4"/>
+  <text x="466" y="318" fill="#184835" font-family="Arial, sans-serif" font-size="24">Operator login</text>
+  <rect x="466" y="350" width="362" height="52" rx="12" fill="#f8f1e7" stroke="#d6c4a5"/>
+  <rect x="466" y="420" width="362" height="52" rx="12" fill="#f8f1e7" stroke="#d6c4a5"/>
+  <rect x="466" y="486" width="180" height="50" rx="14" fill="#216b4b"/>
+  <text x="520" y="518" fill="#fff" font-family="Arial, sans-serif" font-size="18">Log in</text>
+  <rect x="890" y="270" width="446" height="250" rx="24" fill="#fff" stroke="#dcccb4"/>
+  <text x="926" y="318" fill="#184835" font-family="Arial, sans-serif" font-size="24">Workspace snapshot</text>
+  <text x="926" y="360" fill="#3c332b" font-family="Arial, sans-serif" font-size="18">Workspace: Demo Agency Workspace</text>
+  <text x="926" y="394" fill="#3c332b" font-family="Arial, sans-serif" font-size="18">Project: Demo Self-Hosted Site</text>
+  <text x="926" y="428" fill="#3c332b" font-family="Arial, sans-serif" font-size="18">Reports: bilingual</text>
+  <text x="926" y="462" fill="#3c332b" font-family="Arial, sans-serif" font-size="18">Providers: OpenAI / Gemini / Ollama / LocalAI</text>
+  <rect x="432" y="556" width="904" height="252" rx="24" fill="#fff" stroke="#dcccb4"/>
+  <text x="468" y="604" fill="#184835" font-family="Arial, sans-serif" font-size="24">Critical operator path proof</text>
+  <text x="468" y="648" fill="#3c332b" font-family="Arial, sans-serif" font-size="20">1. Login</text>
+  <text x="468" y="684" fill="#3c332b" font-family="Arial, sans-serif" font-size="20">2. Select workspace and project</text>
+  <text x="468" y="720" fill="#3c332b" font-family="Arial, sans-serif" font-size="20">3. Launch canonical audit job</text>
+  <text x="468" y="756" fill="#3c332b" font-family="Arial, sans-serif" font-size="20">4. Review report, artifacts, and logs</text>
+</svg>

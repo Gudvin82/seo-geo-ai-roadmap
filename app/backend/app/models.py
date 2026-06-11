@@ -22,6 +22,10 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
 
     workspaces: Mapped[list["Workspace"]] = relationship(back_populates="owner")
+    memberships: Mapped[list["WorkspaceMembership"]] = relationship(
+        back_populates="user", foreign_keys="WorkspaceMembership.user_id"
+    )
+    audit_logs: Mapped[list["AuditLog"]] = relationship(back_populates="user")
 
 
 class Workspace(Base):
@@ -42,6 +46,10 @@ class Workspace(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
 
     owner: Mapped[User] = relationship(back_populates="workspaces")
+    memberships: Mapped[list["WorkspaceMembership"]] = relationship(
+        back_populates="workspace"
+    )
+    invites: Mapped[list["WorkspaceInvite"]] = relationship(back_populates="workspace")
     projects: Mapped[list["Project"]] = relationship(back_populates="workspace")
     provider_configs: Mapped[list["ProviderConfiguration"]] = relationship(
         back_populates="workspace"
@@ -50,6 +58,41 @@ class Workspace(Base):
     scheduled_checks: Mapped[list["ScheduledCheck"]] = relationship(
         back_populates="workspace"
     )
+    audit_logs: Mapped[list["AuditLog"]] = relationship(back_populates="workspace")
+
+
+class WorkspaceMembership(Base):
+    __tablename__ = "workspace_memberships"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    role: Mapped[str] = mapped_column(String(32), default="viewer")
+    invited_by_user_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("users.id"), nullable=True
+    )
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+    workspace: Mapped[Workspace] = relationship(back_populates="memberships")
+    user: Mapped[User] = relationship(
+        back_populates="memberships", foreign_keys=[user_id]
+    )
+
+
+class WorkspaceInvite(Base):
+    __tablename__ = "workspace_invites"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"))
+    email: Mapped[str] = mapped_column(String(255))
+    role: Mapped[str] = mapped_column(String(32), default="viewer")
+    invite_token: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    invited_by_user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    status: Mapped[str] = mapped_column(String(32), default="pending")
+    accepted_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+    workspace: Mapped[Workspace] = relationship(back_populates="invites")
 
 
 class Project(Base):
@@ -78,6 +121,7 @@ class Project(Base):
     scheduled_checks: Mapped[list["ScheduledCheck"]] = relationship(
         back_populates="project"
     )
+    audit_logs: Mapped[list["AuditLog"]] = relationship(back_populates="project")
 
 
 class Site(Base):
@@ -101,7 +145,12 @@ class AuditRun(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     status: Mapped[str] = mapped_column(String(50), default="queued")
     report_language: Mapped[str] = mapped_column(String(8), default="en")
+    mode: Mapped[str] = mapped_column(String(32), default="quick")
+    market: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    target_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
     selected_checks_json: Mapped[str] = mapped_column(Text, default="[]")
+    provider_names_json: Mapped[str] = mapped_column(Text, default="[]")
+    accepted_parameters_json: Mapped[str] = mapped_column(Text, default="{}")
     finding_groups_json: Mapped[str] = mapped_column(Text, default="[]")
     summary_score: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
@@ -207,3 +256,25 @@ class ScheduledCheck(Base):
 
     workspace: Mapped[Workspace] = relationship(back_populates="scheduled_checks")
     project: Mapped[Project] = relationship(back_populates="scheduled_checks")
+
+
+class AuditLog(Base):
+    __tablename__ = "audit_logs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    event_type: Mapped[str] = mapped_column(String(100))
+    user_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("users.id"), nullable=True
+    )
+    workspace_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("workspaces.id"), nullable=True
+    )
+    project_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("projects.id"), nullable=True
+    )
+    metadata_json: Mapped[str] = mapped_column(Text, default="{}")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+    user: Mapped[Optional[User]] = relationship(back_populates="audit_logs")
+    workspace: Mapped[Optional[Workspace]] = relationship(back_populates="audit_logs")
+    project: Mapped[Optional[Project]] = relationship(back_populates="audit_logs")

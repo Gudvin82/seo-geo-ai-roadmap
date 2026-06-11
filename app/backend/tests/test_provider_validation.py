@@ -38,3 +38,16 @@ def test_provider_config_validation(
         headers=auth_headers,
     )
     assert valid.status_code == 200
+
+    local_provider = client.post(
+        "/api/v1/providers",
+        json={
+            "workspace_id": workspace_id,
+            "provider_name": "ollama",
+            "label": "Local Ollama",
+            "model": "llama3.1",
+            "base_url": "http://ollama:11434/v1/chat/completions",
+        },
+        headers=auth_headers,
+    )
+    assert local_provider.status_code == 200

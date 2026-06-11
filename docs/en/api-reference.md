@@ -1,28 +1,47 @@
 # API Reference
 
-The app exposes OpenAPI documentation at `/docs` and ReDoc at `/redoc`.
+OpenAPI is available at `/docs` and ReDoc at `/redoc`.
 
-## Health and readiness
+## Auth
 
-- `GET /healthz`
-- `GET /readyz`
-- `GET /metrics`
+Auth uses `Authorization: Bearer <token>`.
 
-## Auth endpoints
+### Register
 
-- `POST /api/v1/auth/register`
-- `POST /api/v1/auth/login`
-- `GET /api/v1/auth/me`
-- `POST /api/v1/auth/logout`
+`POST /api/v1/auth/register`
 
-## Workspace endpoints
+```json
+{
+  "email": "operator@example.com",
+  "password": "StrongPass123"
+}
+```
+
+### Login
+
+`POST /api/v1/auth/login`
+
+Returns `access_token`, `expires_at`, and `expires_in_seconds`.
+
+## Workspaces, roles, and invites
 
 - `GET /api/v1/workspaces`
 - `POST /api/v1/workspaces`
 - `GET /api/v1/workspaces/{workspace_id}`
 - `PUT /api/v1/workspaces/{workspace_id}`
+- `GET /api/v1/workspaces/{workspace_id}/members`
+- `GET /api/v1/workspaces/{workspace_id}/invites`
+- `POST /api/v1/workspaces/{workspace_id}/invites`
+- `POST /api/v1/workspaces/invites/accept`
 
-## Project endpoints
+Workspace isolation rules:
+
+- viewers can read
+- editors can create project and audit content
+- admins can manage provider configs and invites
+- owners keep full governance
+
+## Projects and sites
 
 - `GET /api/v1/projects?workspace_id={workspace_id}`
 - `POST /api/v1/projects`
@@ -30,53 +49,96 @@ The app exposes OpenAPI documentation at `/docs` and ReDoc at `/redoc`.
 - `GET /api/v1/projects/{project_id}/sites`
 - `POST /api/v1/projects/{project_id}/sites`
 
-## Audit endpoints
+## Canonical audit execution
 
-- `GET /api/v1/audit-runs/presets`
+### Launch an audit
+
+`POST /api/v1/audit-runs/run`
+
+```json
+{
+  "workspace_id": 1,
+  "project_id": 1,
+  "domain_or_url": "https://example.com",
+  "selected_checks": ["factual_consistency", "llms_txt"],
+  "selected_providers": ["ollama"],
+  "report_language": "en",
+  "market": "Global",
+  "mode": "quick"
+}
+```
+
+Response:
+
+```json
+{
+  "audit_job_id": 12,
+  "initial_status": "queued",
+  "accepted_parameters": {},
+  "status_endpoint": "/api/v1/audit-runs/12",
+  "report_endpoint": "/api/v1/reports?project_id=1",
+  "artifacts_endpoint": "/api/v1/artifacts?project_id=1"
+}
+```
+
+### Audit lifecycle
+
+Supported states:
+
+- `queued`
+- `running`
+- `partial`
+- `completed`
+- `failed`
+- `canceled`
+
+Current implementation actively uses `queued`, `running`, `completed`, and
+`failed`.
+
+### Audit status
+
+- `GET /api/v1/audit-runs/{audit_run_id}`
 - `GET /api/v1/audit-runs?project_id={project_id}`
-- `POST /api/v1/audit-runs`
+- `GET /api/v1/audit-runs/presets`
 
-## Report endpoints
+## Reports and artifacts
 
 - `GET /api/v1/reports?project_id={project_id}`
 - `GET /api/v1/artifacts?project_id={project_id}`
 - `GET /api/v1/artifacts/{artifact_id}/download`
 
-## Provider endpoints
+Artifact downloads require workspace access and return the stored file directly.
+
+## Providers
 
 - `GET /api/v1/providers?workspace_id={workspace_id}`
 - `POST /api/v1/providers`
 
-## Brand facts endpoints
+Example local provider config:
+
+```json
+{
+  "workspace_id": 1,
+  "provider_name": "ollama",
+  "label": "Local Ollama",
+  "model": "llama3.1",
+  "base_url": "http://ollama:11434/v1/chat/completions"
+}
+```
+
+## Brand facts
 
 - `GET /api/v1/brand-facts/{project_id}`
 - `POST /api/v1/brand-facts`
 
-## Prompt set and scheduled check endpoints
+## Audit logs
 
-- `GET /api/v1/prompt-sets?workspace_id={workspace_id}`
-- `POST /api/v1/prompt-sets`
-- `GET /api/v1/scheduled-checks?workspace_id={workspace_id}`
-- `POST /api/v1/scheduled-checks`
+- `GET /api/v1/audit-logs?workspace_id={workspace_id}`
 
-## Example request flow
+## Error model
 
-1. Register a user.
-1. Log in and store the bearer token.
-1. Create a workspace.
-1. Create a project.
-1. Add brand facts.
-1. Launch an audit.
-1. Fetch reports and artifacts.
-
-## Example cURL flow
-
-```bash
-curl -X POST http://localhost:8000/api/v1/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"email":"demo@example.com","password":"StrongPass123"}'
-
-curl -X POST http://localhost:8000/api/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"demo@example.com","password":"StrongPass123"}'
-```
+- `401`: missing or expired token
+- `403`: role is insufficient
+- `404`: resource not found within the current workspace boundary
+- `422`: payload validation failed
+- `429`: login rate limit triggered

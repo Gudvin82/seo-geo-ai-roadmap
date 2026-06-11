@@ -5,14 +5,20 @@
 [![Last Commit](https://img.shields.io/github/last-commit/Gudvin82/seo-geo-ai-roadmap)](https://github.com/Gudvin82/seo-geo-ai-roadmap/commits/main)
 [![Markdown Lint](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml)
 [![Script Smoke Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml)
+[![Python Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml)
+[![Docs Build](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml)
+![Self-Hosted Ready](https://img.shields.io/badge/self--hosted-ready-1f6f50)
 
-Not another SEO checklist. An operating system for search, AI visibility, and multilingual discoverability.
+Free, transparent, self-hosted, and ready for your own AI providers. Deploy it
+for yourself or your clients to audit, improve, monitor, and manage SEO, GEO,
+and AI discoverability.
 
 [Русская версия](./README_RU.md)
 
-## v2.1.0 positioning
+## v2.2.0 positioning
 
-A free and transparent self-hosted platform for SEO, GEO, and AI discoverability audits, workflows, and reports.
+A free and transparent self-hosted platform you can deploy for yourself or your
+clients to audit, improve, monitor, and manage SEO, GEO, and AI discoverability.
 
 Core principles:
 
@@ -21,7 +27,7 @@ Core principles:
 - no vendor lock-in
 - self-hosted first
 - transparent checks and outputs
-- optional AI provider keys only
+- own AI providers or local LLM runtimes
 - exportable reports, artifacts, and data
 
 ## Why this repository exists
@@ -55,6 +61,9 @@ This project is built as an execution-first framework for teams that need one pr
 - Pytest coverage for key helpers in [`tests`](./tests)
 - SaaS-ready app layer in [`app`](./app)
 - Self-hosted deployment foundation in [DEPLOYMENT.md](./DEPLOYMENT.md)
+- Deployment verification in [VERIFY_DEPLOYMENT.md](./VERIFY_DEPLOYMENT.md)
+- Known limitations in [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md)
+- Operations runbook in [OPERATIONS_RUNBOOK.md](./OPERATIONS_RUNBOOK.md)
 - Product architecture docs in [ARCHITECTURE.md](./ARCHITECTURE.md)
 - Filled samples in [`examples`](./examples)
 - Glossaries in [GLOSSARY.md](./GLOSSARY.md) and
@@ -84,9 +93,17 @@ Useful entrypoints:
 
 - [DEPLOYMENT.md](./DEPLOYMENT.md)
 - [SECURITY_CHECKLIST.md](./SECURITY_CHECKLIST.md)
+- [VERIFY_DEPLOYMENT.md](./VERIFY_DEPLOYMENT.md)
 - [docs/en/api-reference.md](./docs/en/api-reference.md)
 - [docs/en/ai-operator-mode.md](./docs/en/ai-operator-mode.md)
+- [docs/en/roles-and-invites.md](./docs/en/roles-and-invites.md)
+- [docs/en/patch-mode.md](./docs/en/patch-mode.md)
+- [docs/en/cms-connectors.md](./docs/en/cms-connectors.md)
 - [SELF_HOSTED_USE_CASES.md](./SELF_HOSTED_USE_CASES.md)
+
+Verification command:
+
+- `make verify-demo`
 
 ## For AI coding agents
 
@@ -118,6 +135,8 @@ AGENTS.md gives agents:
 
 ![App overview proof](./docs_site/assets/screenshots/app-overview-proof.svg)
 ![Report flow proof](./docs_site/assets/screenshots/report-flow-proof.svg)
+![Login dashboard proof](./docs_site/assets/screenshots/login-dashboard-proof.svg)
+![Provider access proof](./docs_site/assets/screenshots/provider-access-proof.svg)
 
 ## What this repo already powers
 

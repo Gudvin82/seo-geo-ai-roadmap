@@ -46,17 +46,26 @@ def test_workspace_project_and_audit_flow(
     assert facts.status_code == 200
 
     audit = client.post(
-        "/api/v1/audit-runs",
+        "/api/v1/audit-runs/run",
         json={
-            "project_id": project_id,
             "workspace_id": workspace_id,
+            "project_id": project_id,
+            "domain_or_url": "https://example.com",
             "report_language": "en",
             "selected_checks": ["factual_consistency", "entity_hierarchy_review"],
+            "selected_providers": ["ollama"],
+            "mode": "quick",
         },
         headers=auth_headers,
     )
     assert audit.status_code == 200
-    assert audit.json()["status"] in {"queued", "completed"}
+    assert audit.json()["initial_status"] in {"queued", "completed"}
+
+    audit_status = client.get(
+        f"/api/v1/audit-runs/{audit.json()['audit_job_id']}",
+        headers=auth_headers,
+    )
+    assert audit_status.status_code == 200
 
     reports = client.get(
         f"/api/v1/reports?project_id={project_id}", headers=auth_headers
@@ -71,3 +80,9 @@ def test_workspace_project_and_audit_flow(
     metrics = client.get("/metrics")
     assert metrics.status_code == 200
     assert "discoverability_report_generations_total" in metrics.text
+
+    logs = client.get(
+        f"/api/v1/audit-logs?workspace_id={workspace_id}",
+        headers=auth_headers,
+    )
+    assert logs.status_code == 200

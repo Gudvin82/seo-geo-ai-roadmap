@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from .access import ensure_owner_membership
 from .config import Settings, load_settings
 from .database import create_session, init_database
 from .models import (
@@ -58,6 +59,7 @@ def seed_demo_data(settings: Settings | None = None) -> dict[str, str | int]:
         )
         db.add(workspace)
         db.flush()
+        ensure_owner_membership(db, workspace)
 
         project = Project(
             workspace_id=workspace.id,
