@@ -18,19 +18,19 @@ Supported deployment paths:
 cp .env.example .env
 ```
 
-2. Adjust at least:
+1. Adjust at least:
 
 - `APP_SECRET_KEY`
 - `OPENAI_API_KEY` and other provider keys if needed
 - `APP_CORS_ORIGINS` if frontend runs on another host
 
-3. Start the stack:
+1. Start the stack:
 
 ```bash
 docker compose up --build
 ```
 
-4. Open:
+1. Open:
 
 - frontend: `http://localhost:3000`
 - backend API: `http://localhost:8000`

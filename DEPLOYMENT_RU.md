@@ -18,19 +18,19 @@
 cp .env.example .env
 ```
 
-2. Обязательно проверьте:
+1. Обязательно проверьте:
 
 - `APP_SECRET_KEY`
 - `OPENAI_API_KEY` и другие ключи провайдеров при необходимости
 - `APP_CORS_ORIGINS`, если frontend будет на другом хосте
 
-3. Поднимите стек:
+1. Поднимите стек:
 
 ```bash
 docker compose up --build
 ```
 
-4. Откройте:
+1. Откройте:
 
 - frontend: `http://localhost:3000`
 - backend API: `http://localhost:8000`
