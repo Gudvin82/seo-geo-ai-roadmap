@@ -4,6 +4,7 @@
 [![License](https://img.shields.io/github/license/Gudvin82/seo-geo-ai-roadmap)](./LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/Gudvin82/seo-geo-ai-roadmap)](https://github.com/Gudvin82/seo-geo-ai-roadmap/commits/main)
 [![Markdown Lint](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml)
+[![Script Smoke Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml)
 
 Not another SEO checklist. An operating system for search, AI visibility, and multilingual discoverability.
 
@@ -37,10 +38,13 @@ This project is built as an execution-first framework for teams that need one pr
 - Reusable templates in [`templates`](./templates)
 - Validation and helper scripts in [`scripts`](./scripts)
 - Full script usage docs in [`scripts/README.md`](./scripts/README.md)
+- Pytest coverage for key helpers in [`tests`](./tests)
 - Filled samples in [`examples`](./examples)
 - Glossaries in [GLOSSARY.md](./GLOSSARY.md) and
   [GLOSSARY_RU.md](./GLOSSARY_RU.md)
 - Positioning, governance, ecosystem, and release documentation in the repository root
+- Optional environment contract in [`.env.example`](./.env.example)
+- Real implementation notes in [REAL_CASES.md](./REAL_CASES.md)
 
 ## Quick start
 
@@ -63,6 +67,30 @@ AGENTS.md gives agents:
 - the key scripts to use before inventing new flows
 - a short Definition of Done summary
 - clarification rules for vague user instructions
+
+## Proof and examples
+
+- Real-world implementation patterns: [REAL_CASES.md](./REAL_CASES.md)
+- Repo walkthrough: [WALKTHROUGH.md](./WALKTHROUGH.md)
+- Canonical facts guidance:
+  [docs/en/canonical-facts-and-entity-consistency.md](./docs/en/canonical-facts-and-entity-consistency.md)
+- Entity hierarchy guidance:
+  [docs/en/entity-hierarchy-and-brand-focus.md](./docs/en/entity-hierarchy-and-brand-focus.md)
+- Brand facts starter: [templates/brand-facts-template.md](./templates/brand-facts-template.md)
+- Hallucination monitoring starter:
+  [examples/hallucination-report-example.md](./examples/hallucination-report-example.md)
+
+## What this repo already powers
+
+- product-led audit service architecture
+- expert-led AI discoverability hubs
+- bilingual SEO + GEO + AI execution workflows
+- factual consistency and entity-governance operating patterns
+
+## Real-world implementations
+
+See [REAL_CASES.md](./REAL_CASES.md) for high-level patterns based on
+`sitepravo.ru`, `auditguard.ru`, and `anmalishev.ru`.
 
 ## Example script
 
@@ -88,6 +116,17 @@ Warnings:
 ```
 
 See [scripts/README.md](./scripts/README.md) for full CLI usage examples.
+
+## ROI visibility
+
+- ROI calculator: [`scripts/roi_calculator.py`](./scripts/roi_calculator.py)
+- ROI model template: [templates/roi-model-template.md](./templates/roi-model-template.md)
+- ROI example: [examples/roi-calculation-example.md](./examples/roi-calculation-example.md)
+
+## Docs site
+
+- Docs site: [https://gudvin82.github.io/seo-geo-ai-roadmap/](https://gudvin82.github.io/seo-geo-ai-roadmap/)
+- Local preview: `pip install mkdocs-material && mkdocs serve`
 
 ## Example prompt
 
@@ -181,6 +220,9 @@ live, Vibe Coding Protocols is a natural add-on.
   `vibe-coding-protocols` companion link.
 - `v1.3.0`: added scripts documentation, glossary, AI SoV sample datasets,
   stronger `llms.txt` validation, and ROI tooling.
+- `v1.4.0`: added tests, docs-site delivery, real cases, factual consistency
+  guidance, entity hierarchy docs, freshness checking, and hallucination
+  monitoring starters.
 
 ## Visibility additions
 
@@ -193,4 +235,4 @@ live, Vibe Coding Protocols is a natural add-on.
 
 ## Contributing
 
-Read [CONTRIBUTING.md](./CONTRIBUTING.md), [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md), and the pull request template in [`.github/PULL_REQUEST_TEMPLATE.md`](./.github/PULL_REQUEST_TEMPLATE.md).
+Read [CONTRIBUTING.md](./CONTRIBUTING.md), [CONTRIBUTORS.md](./CONTRIBUTORS.md), [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md), and the pull request template in [`.github/PULL_REQUEST_TEMPLATE.md`](./.github/PULL_REQUEST_TEMPLATE.md).

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import sys
 
 
 def parse_args() -> argparse.Namespace:
@@ -53,6 +54,18 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    if args.traffic < 0 or args.average_check < 0 or args.seo_cost < 0:
+        print("Traffic, average check, and cost must be non-negative.", file=sys.stderr)
+        return 1
+    for label, value in (
+        ("conversion-rate", args.conversion_rate),
+        ("lead-to-sale-rate", args.lead_to_sale_rate),
+        ("margin-rate", args.margin_rate),
+        ("ai-referred-share", args.ai_referred_share),
+    ):
+        if value < 0 or value > 1:
+            print(f"{label} must be between 0 and 1.", file=sys.stderr)
+            return 1
     visits = args.traffic
     leads = visits * args.conversion_rate
     sales = leads * args.lead_to_sale_rate

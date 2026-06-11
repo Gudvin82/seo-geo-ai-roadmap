@@ -13,6 +13,8 @@
 | `serp-intent-cluster-helper.py` | Group keywords by rough search intent | `python scripts/serp-intent-cluster-helper.py "best ai agency" "what is geo"` |
 | `content-inventory-helper.py` | Create a markdown content inventory table from URLs | `python scripts/content-inventory-helper.py https://example.com/ https://example.com/faq` |
 | `roi_calculator.py` | Estimate business ROI / ROMI for SEO and AI traffic | `python scripts/roi_calculator.py --traffic 5000 --conversion-rate 0.03 --lead-to-sale-rate 0.2 --average-check 1200 --margin-rate 0.45 --seo-cost 1500` |
+| `content_freshness_checker.py` | Classify sitemap URLs as fresh, stale, or unknown | `python scripts/content_freshness_checker.py --sitemap-url https://example.com/sitemap.xml --days-stale 180 --output-file freshness.md` |
+| `check_hallucinations.py` | Create a starter hallucination-checking report from brand facts and questions | `python scripts/check_hallucinations.py --brand-facts-file examples/brand-facts-example.md --questions-file examples/hallucination-questions-example.md --output-file hallucination-report.md` |
 
 ## `generate_llms_txt.py`
 
@@ -232,3 +234,73 @@ python scripts/roi_calculator.py \
   - unrealistic rate values supplied by the user
 - Notes / limitations:
   - this is a simple planning tool, not an attribution model
+  - pair it with [templates/roi-model-template.md](../templates/roi-model-template.md)
+    for documented assumptions
+
+## `content_freshness_checker.py`
+
+- Purpose: classify sitemap URLs as fresh, stale, or unknown freshness.
+- Input parameters:
+  - `--sitemap-url`
+  - `--sitemap-file`
+  - `--days-stale`
+  - `--output-file`
+  - `--format markdown|csv|json`
+- Example command:
+
+```bash
+python scripts/content_freshness_checker.py \
+  --sitemap-url https://example.com/sitemap.xml \
+  --days-stale 180 \
+  --output-file ./freshness-report.md \
+  --format markdown
+```
+
+- Expected output:
+  - URL
+  - detected `lastmod`
+  - status
+  - recommendation
+- Common failure cases:
+  - unreadable sitemap
+  - invalid XML
+  - zero URLs parsed
+  - CSV mode without `--output-file`
+- Notes / limitations:
+  - depends on sitemap `lastmod` quality
+  - see [examples/content-freshness-report-example.md](../examples/content-freshness-report-example.md)
+
+## `check_hallucinations.py`
+
+- Purpose: create a starter hallucination-checking report from canonical brand
+  facts and a question set.
+- Input parameters:
+  - `--brand-facts-file`
+  - `--questions-file`
+  - `--output-file`
+  - `--format markdown|csv|json`
+  - optional `--provider`
+  - optional `--model`
+- Example command:
+
+```bash
+python scripts/check_hallucinations.py \
+  --brand-facts-file examples/brand-facts-example.md \
+  --questions-file examples/hallucination-questions-example.md \
+  --output-file ./hallucination-report.md \
+  --format markdown
+```
+
+- Expected output:
+  - question
+  - expected facts
+  - answer placeholder
+  - discrepancy status
+  - next action
+- Common failure cases:
+  - missing inputs
+  - no questions parsed
+  - unreadable JSON or markdown files
+- Notes / limitations:
+  - provider integration is optional and intentionally lightweight
+  - works well with [templates/brand-facts-template.md](../templates/brand-facts-template.md)

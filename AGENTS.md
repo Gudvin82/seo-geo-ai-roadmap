@@ -9,6 +9,8 @@ Start here if you are an AI coding agent working inside the repository:
 
 - [README.md](./README.md)
 - [README_RU.md](./README_RU.md)
+- [WALKTHROUGH.md](./WALKTHROUGH.md)
+- [REAL_CASES.md](./REAL_CASES.md)
 
 ## Roles and typical tasks for agents
 
@@ -56,6 +58,8 @@ Use:
 - `templates/`: reusable assets and starter files
 - `scripts/`: validation and automation helpers
 - `examples/`: realistic filled examples
+- `tests/`: pytest validation for key scripts
+- `automation/`: starter automation assets
 
 ### What to read first
 
@@ -64,6 +68,8 @@ Use:
 3. [RELEASE_PROCESS.md](./RELEASE_PROCESS.md)
 4. [docs/en/01-audit.md](./docs/en/01-audit.md) for audits
 5. [docs/en/08-geo-ai-search.md](./docs/en/08-geo-ai-search.md) for GEO / AI work
+6. [docs/en/canonical-facts-and-entity-consistency.md](./docs/en/canonical-facts-and-entity-consistency.md)
+7. [docs/en/entity-hierarchy-and-brand-focus.md](./docs/en/entity-hierarchy-and-brand-focus.md)
 
 ## Execution rules
 
@@ -101,6 +107,22 @@ the repo", or "take the best option", use this default order:
 6. matching `scripts/`
 7. matching `examples/`
 8. Definition of Done and the PR template
+9. tests and validation output
+
+## Default workflow for implementation or audit tasks
+
+Use this order by default:
+
+1. README
+2. AGENTS
+3. glossary
+4. relevant docs
+5. matching checklist
+6. matching prompts
+7. matching scripts
+8. matching examples
+9. tests and validation
+10. PR template and Definition of Done
 
 ## Commands and scripts
 
@@ -112,6 +134,9 @@ python scripts/generate_llms_txt.py --sitemap-url https://example.com/sitemap.xm
 python scripts/ai-share-of-voice-tracker.py "Example AI Agency" --queries "best GEO agency,ai visibility audit"
 python scripts/sitemap-checker.py --url https://example.com/sitemap.xml
 python scripts/roi_calculator.py --traffic 5000 --conversion-rate 0.03 --lead-to-sale-rate 0.2 --average-check 1200 --margin-rate 0.45 --seo-cost 1500
+python scripts/content_freshness_checker.py --sitemap-file ./sitemap.xml --days-stale 180 --output-file ./freshness.md
+python scripts/check_hallucinations.py --brand-facts-file examples/brand-facts-example.md --questions-file examples/hallucination-questions-example.md --output-file ./hallucination-report.md
+python -m pytest
 ```
 
 ### Before pushing changes
@@ -120,9 +145,32 @@ Prefer to:
 
 ```bash
 python -m py_compile scripts/*.py
+python -m pytest
 ```
 
 and make sure repository workflows and markdown checks still make sense.
+
+## Docs-site workflow
+
+Local preview:
+
+```bash
+pip install mkdocs-material
+mkdocs serve
+```
+
+Build only:
+
+```bash
+mkdocs build
+```
+
+If GitHub Pages fails:
+
+- inspect `mkdocs.yml`
+- confirm navigation paths exist
+- check the Pages workflow on `main`
+- rebuild locally before editing workflow YAML
 
 ## Definition of Done
 
@@ -164,6 +212,8 @@ Ask for clarification when:
 - [checklists/ru](./checklists/ru)
 - [prompts/ru](./prompts/ru)
 - [scripts](./scripts)
+- [REAL_CASES_RU.md](./REAL_CASES_RU.md)
+- [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
 
 DoD, release discipline и execution rules не меняются: агент должен работать
 через существующие шаблоны, чеклисты и сценарии, а не изобретать новую

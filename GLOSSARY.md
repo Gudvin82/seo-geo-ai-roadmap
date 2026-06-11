@@ -46,6 +46,7 @@ Automated agents such as GPTBot, ChatGPT-User, PerplexityBot, or Bingbot that
 fetch or interpret web content.
 
 See also: [scripts/check-robots-ai-bots.py](./scripts/check-robots-ai-bots.py)
+See also: [docs/en/canonical-facts-and-entity-consistency.md](./docs/en/canonical-facts-and-entity-consistency.md)
 
 ## answer-ready content
 
@@ -67,6 +68,7 @@ The strength and consistency of a brand, person, or organization as a known
 entity across site content and external citations.
 
 See also: [templates/entity-authority-profile-template.md](./templates/entity-authority-profile-template.md)
+See also: [docs/en/entity-hierarchy-and-brand-focus.md](./docs/en/entity-hierarchy-and-brand-focus.md)
 
 ## Yandex commercial factors
 

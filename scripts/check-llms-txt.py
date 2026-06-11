@@ -34,11 +34,17 @@ def main() -> int:
         return 1
     lines = [line.strip() for line in content.splitlines() if line.strip()]
     missing = [hint for hint in REQUIRED_HINTS if not any(hint in line.lower() for line in lines)]
+    has_header = any(line.startswith("#") for line in lines)
+    bullet_like = [line for line in lines if line.startswith(("-", "*", ">")) or " - " in line]
     print(f"Checked {len(lines)} non-empty lines")
-    if missing:
+    if missing or not has_header or not bullet_like:
         print("Missing sections:")
         for item in missing:
             print(f"- {item}")
+        if not has_header:
+            print("- top-level heading")
+        if not bullet_like:
+            print("- structured entries or bullet-like URL lines")
         print("FAIL")
         return 1
     print("PASS")

@@ -4,6 +4,7 @@
 [![License](https://img.shields.io/github/license/Gudvin82/seo-geo-ai-roadmap)](./LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/Gudvin82/seo-geo-ai-roadmap)](https://github.com/Gudvin82/seo-geo-ai-roadmap/commits/main)
 [![Markdown Lint](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml)
+[![Script Smoke Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml)
 
 Не очередной чеклист по SEO, а рабочая система роста видимости сайта в поиске, AI-ответах и локальных платформах.
 
@@ -38,10 +39,13 @@
 - Скрипты проверки и helper-утилиты в [`scripts`](./scripts)
 - Полная документация по CLI-скриптам в
   [`scripts/README_RU.md`](./scripts/README_RU.md)
+- Pytest-покрытие ключевых helper-скриптов в [`tests`](./tests)
 - Заполненные примеры в [`examples`](./examples)
 - Глоссарий в [GLOSSARY.md](./GLOSSARY.md) и
   [GLOSSARY_RU.md](./GLOSSARY_RU.md)
 - Отдельные файлы с positioning, governance, ecosystem и release logic в корне репозитория
+- Опциональный env-контракт в [`.env.example`](./.env.example)
+- Реальные implementation notes в [REAL_CASES_RU.md](./REAL_CASES_RU.md)
 
 ## Быстрый старт
 
@@ -64,6 +68,31 @@ AGENTS.md дает агенту:
 - список ключевых скриптов, с которых надо начинать
 - краткий DoD для проверки готовности
 - правила, когда надо запрашивать уточнение у пользователя
+
+## Proof и примеры
+
+- Паттерны реальных внедрений: [REAL_CASES_RU.md](./REAL_CASES_RU.md)
+- Пошаговый walkthrough: [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
+- Guidance по canonical facts:
+  [docs/ru/canonical-facts-and-entity-consistency.md](./docs/ru/canonical-facts-and-entity-consistency.md)
+- Guidance по entity hierarchy:
+  [docs/ru/entity-hierarchy-and-brand-focus.md](./docs/ru/entity-hierarchy-and-brand-focus.md)
+- Starter по brand facts:
+  [templates/brand-facts-template-ru.md](./templates/brand-facts-template-ru.md)
+- Starter по мониторингу галлюцинаций:
+  [examples/hallucination-report-example.md](./examples/hallucination-report-example.md)
+
+## Что уже поддерживает этот репозиторий
+
+- архитектуру product-led audit-сервисов
+- экспертные AI discoverability hubs
+- двуязычные SEO + GEO + AI execution workflows
+- factual consistency и entity-governance практики
+
+## Реальные внедрения
+
+См. [REAL_CASES_RU.md](./REAL_CASES_RU.md) для high-level паттернов по
+`sitepravo.ru`, `auditguard.ru` и `anmalishev.ru`.
 
 ## Пример скрипта
 
@@ -91,6 +120,18 @@ Warnings:
 
 Смотрите [scripts/README_RU.md](./scripts/README_RU.md) для полного описания
 CLI-скриптов.
+
+## ROI-видимость
+
+- ROI-калькулятор: [`scripts/roi_calculator.py`](./scripts/roi_calculator.py)
+- Шаблон ROI-модели:
+  [templates/roi-model-template-ru.md](./templates/roi-model-template-ru.md)
+- Пример расчета: [examples/roi-calculation-example.md](./examples/roi-calculation-example.md)
+
+## Docs-site
+
+- Docs site: [https://gudvin82.github.io/seo-geo-ai-roadmap/](https://gudvin82.github.io/seo-geo-ai-roadmap/)
+- Локальный preview: `pip install mkdocs-material && mkdocs serve`
 
 ## Пример промпта
 
@@ -185,6 +226,9 @@ Discoverability OS.
   `vibe-coding-protocols`.
 - `v1.3.0`: добавлены docs по скриптам, глоссарий, sample AI SoV datasets,
   более строгая валидация `llms.txt` и ROI tooling.
+- `v1.4.0`: добавлены тесты, docs-site, real cases, guidance по factual
+  consistency и entity hierarchy, freshness checker и starter для мониторинга
+  AI-галлюцинаций.
 
 ## Что стало заметнее
 
@@ -197,4 +241,4 @@ Discoverability OS.
 
 ## Участие
 
-См. [CONTRIBUTING.md](./CONTRIBUTING.md), [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) и шаблон PR в [`.github/PULL_REQUEST_TEMPLATE.md`](./.github/PULL_REQUEST_TEMPLATE.md).
+См. [CONTRIBUTING.md](./CONTRIBUTING.md), [CONTRIBUTORS.md](./CONTRIBUTORS.md), [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) и шаблон PR в [`.github/PULL_REQUEST_TEMPLATE.md`](./.github/PULL_REQUEST_TEMPLATE.md).

@@ -1,0 +1,52 @@
+{
+  "name": "weekly-report-notification",
+  "meta": {
+    "status": "starter",
+    "note": "Experimental reminder scaffold for report delivery."
+  },
+  "nodes": [
+    {
+      "name": "Cron",
+      "type": "n8n-nodes-base.cron",
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyWeek",
+              "hour": 10,
+              "minute": 30,
+              "weekday": "friday"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Report Reminder",
+      "type": "n8n-nodes-base.set",
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "message",
+              "value": "Review weekly discoverability outputs, factual consistency notes, and ROI assumptions."
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Cron": {
+      "main": [
+        [
+          {
+            "node": "Report Reminder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

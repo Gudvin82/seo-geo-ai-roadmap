@@ -18,3 +18,12 @@
 - Add richer RU/CIS marketplace and directory patterns
 - Expand international localization and hreflang decision trees
 - Add contribution lanes for vertical-specific playbooks
+
+## Future SaaS direction
+
+- The repository remains the open-source methodology, execution, and validation
+  layer. A future SaaS product may build on top of it for managed audits,
+  dashboards, multi-client workflows, and white-label reporting.
+- Репозиторий остаётся open-source слоем методологии, исполнения и валидации.
+  Будущий SaaS-продукт может строиться поверх него для managed-аудитов,
+  дашбордов, мультиклиентских процессов и white-label отчётности.

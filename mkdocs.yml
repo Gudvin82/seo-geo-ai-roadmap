@@ -1,0 +1,24 @@
+site_name: SEO + GEO + AI Discoverability OS
+site_description: Bilingual discoverability framework for Google, Yandex, and LLM-era visibility
+site_url: https://gudvin82.github.io/seo-geo-ai-roadmap/
+repo_url: https://github.com/Gudvin82/seo-geo-ai-roadmap
+repo_name: Gudvin82/seo-geo-ai-roadmap
+docs_dir: docs_site
+theme:
+  name: material
+  language: en
+markdown_extensions:
+  - tables
+  - toc:
+      permalink: true
+nav:
+  - Home: index.md
+  - English: english.md
+  - Russian: russian.md
+  - Scripts: scripts.md
+  - Checklists: checklists.md
+  - Prompts: prompts.md
+  - Templates: templates.md
+  - Glossary: glossary.md
+  - Real Cases: real-cases.md
+  - Agents: agents.md

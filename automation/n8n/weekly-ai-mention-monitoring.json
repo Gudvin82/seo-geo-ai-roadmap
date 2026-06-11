@@ -1,0 +1,52 @@
+{
+  "name": "weekly-ai-mention-monitoring",
+  "meta": {
+    "status": "starter",
+    "note": "Experimental starter. Adapt before production use."
+  },
+  "nodes": [
+    {
+      "name": "Cron",
+      "type": "n8n-nodes-base.cron",
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyWeek",
+              "hour": 9,
+              "minute": 0,
+              "weekday": "monday"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Prepare Questions",
+      "type": "n8n-nodes-base.set",
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "note",
+              "value": "Run the repo hallucination and AI SoV workflow with your brand question set."
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Cron": {
+      "main": [
+        [
+          {
+            "node": "Prepare Questions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

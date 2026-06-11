@@ -115,3 +115,5 @@ Sample-данные в машинно-читаемом формате:
 - [05-technical-seo.md](./05-technical-seo.md)
 - [14-neural-search-ai.md](./14-neural-search-ai.md)
 - [18-analytics.md](./18-analytics.md)
+- [canonical-facts-and-entity-consistency.md](./canonical-facts-and-entity-consistency.md)
+- [entity-hierarchy-and-brand-focus.md](./entity-hierarchy-and-brand-focus.md)

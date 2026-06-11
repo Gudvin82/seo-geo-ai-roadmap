@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.0 — Proof, Testing, and Distribution
+
+- Added pytest coverage for key scripts and wired test execution into CI
+- Added `.env.example`, content freshness checking, and a hallucination-checking starter
+- Added real-world implementation docs, factual consistency docs, and entity hierarchy guidance in EN and RU
+- Added ROI templates, brand-facts templates, walkthroughs, contributor guidance, and automation starters
+- Added MkDocs configuration and GitHub Pages delivery for public documentation distribution
+
 ## v1.3.0 - 2026-06-11 - Documentation, Reliability, and AI Readability
 
 - Added English and Russian script documentation under `scripts/README*.md`
