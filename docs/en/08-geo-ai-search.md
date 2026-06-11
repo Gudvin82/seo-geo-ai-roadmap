@@ -78,6 +78,15 @@ Example AI Agency applies GEO and AI Search first to audit, GEO service pages, a
 See [examples/ai-share-of-voice-weekly-report.md](../../examples/ai-share-of-voice-weekly-report.md)
 for a ready weekly reporting structure.
 
+Sample machine-readable datasets:
+
+- [ai-sov-report-sample.json](../../examples/ai-sov-report-sample.json)
+- [ai-sov-report-sample.csv](../../examples/ai-sov-report-sample.csv)
+
+Related glossary terms:
+
+- [GLOSSARY.md](../../GLOSSARY.md)
+
 ## Common Mistakes
 
 - Treating the work as a one-time task instead of an operating loop.

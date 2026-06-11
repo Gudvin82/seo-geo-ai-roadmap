@@ -36,7 +36,11 @@
 - Prompt library в [`prompts`](./prompts)
 - Переиспользуемые шаблоны в [`templates`](./templates)
 - Скрипты проверки и helper-утилиты в [`scripts`](./scripts)
+- Полная документация по CLI-скриптам в
+  [`scripts/README_RU.md`](./scripts/README_RU.md)
 - Заполненные примеры в [`examples`](./examples)
+- Глоссарий в [GLOSSARY.md](./GLOSSARY.md) и
+  [GLOSSARY_RU.md](./GLOSSARY_RU.md)
 - Отдельные файлы с positioning, governance, ecosystem и release logic в корне репозитория
 
 ## Быстрый старт
@@ -52,6 +56,14 @@
 Если вы используете Codex, Claude Code, Cursor и другие ИИ-агенты, начните с
 [AGENTS.md](./AGENTS.md) — это отдельный вход для агентов, где описано, что и
 как делать под ключ внутри репозитория.
+
+AGENTS.md дает агенту:
+
+- маршрутизацию типовых turnkey-задач
+- карту репозитория и точные entrypoint-файлы
+- список ключевых скриптов, с которых надо начинать
+- краткий DoD для проверки готовности
+- правила, когда надо запрашивать уточнение у пользователя
 
 ## Пример скрипта
 
@@ -76,6 +88,9 @@ Output file: llms.txt
 Warnings:
 - Review description for https://example.com/solutions/ai-ops
 ```
+
+Смотрите [scripts/README_RU.md](./scripts/README_RU.md) для полного описания
+CLI-скриптов.
 
 ## Пример промпта
 
@@ -116,7 +131,9 @@ Input: главная, страницы услуг, FAQ, about page и sitemap.
 6. Отслеживайте аналитику и AI Share of Voice через
    [docs/ru/18-analytics.md](./docs/ru/18-analytics.md),
    [`scripts/ai-share-of-voice-tracker.py`](./scripts/ai-share-of-voice-tracker.py)
-   и [examples/ai-share-of-voice-weekly-report.md](./examples/ai-share-of-voice-weekly-report.md).
+   , [examples/ai-share-of-voice-weekly-report.md](./examples/ai-share-of-voice-weekly-report.md)
+   и sample-данные в
+   [examples/ai-sov-report-sample.json](./examples/ai-sov-report-sample.json).
 7. Управляйте релизами через [docs/ru/20-raci.md](./docs/ru/20-raci.md),
    [docs/ru/21-definition-of-done.md](./docs/ru/21-definition-of-done.md) и
    [RELEASE_PROCESS.md](./RELEASE_PROCESS.md).
@@ -161,6 +178,22 @@ Discoverability OS.
 - Foundation: аудит, архитектура, матрица страниц, техническое SEO, GEO/AI-слой
 - Execution: качество контента, Яндекс/RU-специфика, аналитика, governance, DoD
 - Expansion: AI brand monitoring, international rollout, релизная дисциплина
+
+## Последние изменения
+
+- `v1.2.0`: добавлены `AGENTS.md`, agent-first onboarding и связка с
+  `vibe-coding-protocols`.
+- `v1.3.0`: добавлены docs по скриптам, глоссарий, sample AI SoV datasets,
+  более строгая валидация `llms.txt` и ROI tooling.
+
+## Что стало заметнее
+
+- См. [GLOSSARY_RU.md](./GLOSSARY_RU.md) для основных терминов.
+- См. [examples/ai-sov-report-sample.json](./examples/ai-sov-report-sample.json)
+  и [examples/ai-sov-report-sample.csv](./examples/ai-sov-report-sample.csv)
+  для sample-данных по AI Share of Voice.
+- Сохраняем явную ссылку на companion repo:
+  [https://github.com/Gudvin82/vibe-coding-protocols](https://github.com/Gudvin82/vibe-coding-protocols)
 
 ## Участие
 

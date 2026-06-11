@@ -12,9 +12,12 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
+      - name: Compile scripts
+        run: python -m py_compile scripts/*.py
       - name: Smoke test script help
         run: |
           python scripts/generate_llms_txt.py --help
+          python scripts/roi_calculator.py --help
           python scripts/check-robots-ai-bots.py --help
           python scripts/check-llms-txt.py --help
           python scripts/sitemap-checker.py --help
@@ -22,3 +25,14 @@ jobs:
           python scripts/ai-share-of-voice-tracker.py --help
           python scripts/serp-intent-cluster-helper.py --help
           python scripts/content-inventory-helper.py --help
+      - name: Dry-run script behavior
+        run: |
+          cat > /tmp/sample-sitemap.xml <<'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+            <url><loc>https://example.com/</loc></url>
+            <url><loc>https://example.com/faq</loc></url>
+          </urlset>
+          EOF
+          python scripts/generate_llms_txt.py --sitemap-file /tmp/sample-sitemap.xml --output-file /tmp/llms.txt
+          python scripts/check-llms-txt.py --file /tmp/llms.txt

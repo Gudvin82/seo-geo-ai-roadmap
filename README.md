@@ -36,7 +36,10 @@ This project is built as an execution-first framework for teams that need one pr
 - Prompt library in [`prompts`](./prompts)
 - Reusable templates in [`templates`](./templates)
 - Validation and helper scripts in [`scripts`](./scripts)
+- Full script usage docs in [`scripts/README.md`](./scripts/README.md)
 - Filled samples in [`examples`](./examples)
+- Glossaries in [GLOSSARY.md](./GLOSSARY.md) and
+  [GLOSSARY_RU.md](./GLOSSARY_RU.md)
 - Positioning, governance, ecosystem, and release documentation in the repository root
 
 ## Quick start
@@ -52,6 +55,14 @@ This project is built as an execution-first framework for teams that need one pr
 If you are using Codex, Claude Code, Cursor, or other AI coding agents, start
 from [AGENTS.md](./AGENTS.md). It is the dedicated entrypoint for agents and
 explains how to work end to end inside this repository.
+
+AGENTS.md gives agents:
+
+- task routing for common turnkey requests
+- a repo map and the exact entrypoints to read first
+- the key scripts to use before inventing new flows
+- a short Definition of Done summary
+- clarification rules for vague user instructions
 
 ## Example script
 
@@ -75,6 +86,8 @@ Output file: llms.txt
 Warnings:
 - Review description for https://example.com/solutions/ai-ops
 ```
+
+See [scripts/README.md](./scripts/README.md) for full CLI usage examples.
 
 ## Example prompt
 
@@ -114,7 +127,9 @@ Evaluation criteria: conciseness, coverage, canonical discipline
 6. Track analytics and AI visibility with
    [docs/en/18-analytics.md](./docs/en/18-analytics.md),
    [`scripts/ai-share-of-voice-tracker.py`](./scripts/ai-share-of-voice-tracker.py),
-   and [examples/ai-share-of-voice-weekly-report.md](./examples/ai-share-of-voice-weekly-report.md).
+   [examples/ai-share-of-voice-weekly-report.md](./examples/ai-share-of-voice-weekly-report.md),
+   and sample data in
+   [examples/ai-sov-report-sample.json](./examples/ai-sov-report-sample.json).
 7. Govern releases with [docs/en/20-raci.md](./docs/en/20-raci.md),
    [docs/en/21-definition-of-done.md](./docs/en/21-definition-of-done.md), and
    [RELEASE_PROCESS.md](./RELEASE_PROCESS.md).
@@ -159,6 +174,22 @@ live, Vibe Coding Protocols is a natural add-on.
 - Foundation: audit, architecture, page matrix, technical SEO, GEO/AI layer
 - Execution: content quality, Yandex/RU specifics, analytics, governance, DoD
 - Expansion: AI brand monitoring, international rollout, ongoing release discipline
+
+## Latest changes
+
+- `v1.2.0`: added `AGENTS.md` and agent-first onboarding plus the
+  `vibe-coding-protocols` companion link.
+- `v1.3.0`: added scripts documentation, glossary, AI SoV sample datasets,
+  stronger `llms.txt` validation, and ROI tooling.
+
+## Visibility additions
+
+- See [GLOSSARY.md](./GLOSSARY.md) for core terms used by humans and LLMs.
+- See [examples/ai-sov-report-sample.json](./examples/ai-sov-report-sample.json)
+  and [examples/ai-sov-report-sample.csv](./examples/ai-sov-report-sample.csv)
+  for sample AI Share of Voice data.
+- Keep using the companion repo:
+  [https://github.com/Gudvin82/vibe-coding-protocols](https://github.com/Gudvin82/vibe-coding-protocols)
 
 ## Contributing
 

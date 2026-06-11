@@ -1,0 +1,234 @@
+# Scripts Reference
+
+## Overview
+
+| Script | Purpose | Example |
+|---|---|---|
+| `generate_llms_txt.py` | Generate `llms.txt` from a sitemap | `python scripts/generate_llms_txt.py --sitemap-url https://example.com/sitemap.xml` |
+| `check-llms-txt.py` | Validate `llms.txt` structure from file or URL | `python scripts/check-llms-txt.py --file examples/sample-llms.txt` |
+| `check-robots-ai-bots.py` | Check AI/search bot access in `robots.txt` | `python scripts/check-robots-ai-bots.py --url https://example.com` |
+| `sitemap-checker.py` | Fetch a sitemap and count entries | `python scripts/sitemap-checker.py --url https://example.com/sitemap.xml` |
+| `schema-validator.py` | Validate JSON schema files | `python scripts/schema-validator.py --file templates/schema/service-schema.json` |
+| `ai-share-of-voice-tracker.py` | Create AI Share of Voice tracking scaffolds | `python scripts/ai-share-of-voice-tracker.py "Example AI Agency" --queries "best GEO agency,ai visibility audit"` |
+| `serp-intent-cluster-helper.py` | Group keywords by rough search intent | `python scripts/serp-intent-cluster-helper.py "best ai agency" "what is geo"` |
+| `content-inventory-helper.py` | Create a markdown content inventory table from URLs | `python scripts/content-inventory-helper.py https://example.com/ https://example.com/faq` |
+| `roi_calculator.py` | Estimate business ROI / ROMI for SEO and AI traffic | `python scripts/roi_calculator.py --traffic 5000 --conversion-rate 0.03 --lead-to-sale-rate 0.2 --average-check 1200 --margin-rate 0.45 --seo-cost 1500` |
+
+## `generate_llms_txt.py`
+
+- Purpose: generate a draft `llms.txt` from a sitemap URL or local sitemap file.
+- Input parameters:
+  - `--sitemap-url`
+  - `--sitemap-file`
+  - `--output-file`
+- Example command:
+
+```bash
+python scripts/generate_llms_txt.py \
+  --sitemap-url https://example.com/sitemap.xml \
+  --output-file ./llms.txt
+```
+
+- Expected output:
+  - source used
+  - number of processed / included / skipped URLs
+  - destination output file
+  - warnings for URLs with generic descriptions
+- Common failure cases:
+  - missing `--sitemap-url` and `--sitemap-file`
+  - unreadable local file
+  - network failure
+  - invalid XML
+  - zero URLs parsed
+- Notes / limitations:
+  - path descriptions are inferred by heuristics
+  - archive-like paths such as `/tag/` and `/author/` are skipped by default
+
+## `check-llms-txt.py`
+
+- Purpose: validate whether `llms.txt` contains basic expected sections.
+- Input parameters:
+  - `--url`
+  - `--file`
+- Example command:
+
+```bash
+python scripts/check-llms-txt.py --file examples/sample-llms.txt
+```
+
+- Expected output:
+  - number of non-empty lines checked
+  - `PASS` or `FAIL`
+  - missing sections when validation fails
+- Common failure cases:
+  - file not found
+  - URL fetch error
+  - missing `faq` or `about` references
+- Notes / limitations:
+  - this is a lightweight structure check, not a semantic audit
+
+## `check-robots-ai-bots.py`
+
+- Purpose: inspect `robots.txt` and summarize access for major AI/search bots.
+- Input parameters:
+  - `--url`
+- Example command:
+
+```bash
+python scripts/check-robots-ai-bots.py --url https://example.com
+```
+
+- Expected output:
+  - robots URL used
+  - markdown table with bot, status, and recommendation
+- Common failure cases:
+  - `robots.txt` missing or unreachable
+  - malformed or incomplete robots rules
+- Notes / limitations:
+  - partial path rules still require manual review
+
+## `sitemap-checker.py`
+
+- Purpose: fetch a sitemap and count XML URL entries.
+- Input parameters:
+  - `--url`
+- Example command:
+
+```bash
+python scripts/sitemap-checker.py --url https://example.com/sitemap.xml
+```
+
+- Expected output:
+  - total URL count
+- Common failure cases:
+  - network error
+  - invalid sitemap XML
+- Notes / limitations:
+  - does not validate sitemap quality, only accessibility and count
+
+## `schema-validator.py`
+
+- Purpose: verify that a JSON schema file can be parsed.
+- Input parameters:
+  - `--file`
+- Example command:
+
+```bash
+python scripts/schema-validator.py --file templates/schema/service-schema.json
+```
+
+- Expected output:
+  - `Valid JSON`
+- Common failure cases:
+  - file missing
+  - invalid JSON syntax
+- Notes / limitations:
+  - validates JSON syntax, not external schema correctness
+
+## `ai-share-of-voice-tracker.py`
+
+- Purpose: create markdown or CSV scaffolds for manual AI Share of Voice tracking.
+- Input parameters:
+  - positional `brand`
+  - `--queries`
+  - `--format`
+  - `--output`
+- Example command:
+
+```bash
+python scripts/ai-share-of-voice-tracker.py \
+  "Example AI Agency" \
+  --queries "best GEO agency,ai visibility audit" \
+  --format markdown
+```
+
+- Expected output:
+  - markdown table or CSV rows for repeated tracking
+- Common failure cases:
+  - empty query list
+  - missing `--output` for CSV mode
+- Notes / limitations:
+  - designed for manual or semi-manual collection
+
+## `serp-intent-cluster-helper.py`
+
+- Purpose: group keywords by rough intent labels.
+- Input parameters:
+  - positional keywords
+- Example command:
+
+```bash
+python scripts/serp-intent-cluster-helper.py \
+  "best ai agency" \
+  "what is geo" \
+  "ai visibility price"
+```
+
+- Expected output:
+  - markdown table with intent clusters
+- Common failure cases:
+  - no keywords provided
+- Notes / limitations:
+  - heuristic only; always review with SERP context
+
+## `content-inventory-helper.py`
+
+- Purpose: create a markdown inventory table from a URL list.
+- Input parameters:
+  - positional URLs
+- Example command:
+
+```bash
+python scripts/content-inventory-helper.py \
+  https://example.com/ \
+  https://example.com/faq \
+  https://example.com/services/ai-visibility
+```
+
+- Expected output:
+  - markdown table ready for content inventory work
+- Common failure cases:
+  - no URLs provided
+- Notes / limitations:
+  - fills structure only; humans still need to classify intent and ownership
+
+## `roi_calculator.py`
+
+- Purpose: estimate visits, leads, sales, revenue, gross margin, and ROI / ROMI.
+- Input parameters:
+  - `--traffic`
+  - `--conversion-rate`
+  - `--lead-to-sale-rate`
+  - `--average-check`
+  - `--margin-rate`
+  - `--seo-cost`
+  - `--ai-referred-share`
+  - `--period`
+- Example command:
+
+```bash
+python scripts/roi_calculator.py \
+  --traffic 5000 \
+  --conversion-rate 0.03 \
+  --lead-to-sale-rate 0.2 \
+  --average-check 1200 \
+  --margin-rate 0.45 \
+  --seo-cost 1500 \
+  --ai-referred-share 0.1 \
+  --period monthly
+```
+
+- Expected output:
+  - visits
+  - AI-referred visits
+  - leads
+  - sales
+  - revenue
+  - gross margin
+  - cost
+  - estimated ROI / ROMI
+- Common failure cases:
+  - missing required numeric inputs
+  - unrealistic rate values supplied by the user
+- Notes / limitations:
+  - this is a simple planning tool, not an attribution model

@@ -1,0 +1,3 @@
+week,date,brand,query,platform,mentioned,sentiment,cited_sources,notes,next_action
+2026-W24,2026-06-11,Example AI Agency,best AI visibility agency in Moscow,ChatGPT,yes,positive,"example.com; industry-blog.test","Brand appears with strong service framing.","Add more proof blocks to service page."
+2026-W24,2026-06-11,Example AI Agency,geo audit for SaaS,Perplexity,no,neutral,"competitor.test; docs-site.test","Competitor cited instead of the brand.","Create comparison page and answer-ready FAQ."

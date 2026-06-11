@@ -78,6 +78,15 @@
 См. [examples/ai-share-of-voice-weekly-report.md](../../examples/ai-share-of-voice-weekly-report.md)
 для готовой weekly-структуры отчета по AI Share of Voice.
 
+Sample-данные в машинно-читаемом формате:
+
+- [ai-sov-report-sample.json](../../examples/ai-sov-report-sample.json)
+- [ai-sov-report-sample.csv](../../examples/ai-sov-report-sample.csv)
+
+Связанные термины:
+
+- [GLOSSARY_RU.md](../../GLOSSARY_RU.md)
+
 ## Типичные Ошибки
 
 - Считать эту работу разовой задачей, а не операционным циклом.

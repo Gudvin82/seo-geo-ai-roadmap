@@ -74,6 +74,7 @@ Agents should:
 - update relevant examples or docs when behavior changes
 - respect [docs/en/21-definition-of-done.md](./docs/en/21-definition-of-done.md)
   and [`.github/PULL_REQUEST_TEMPLATE.md`](./.github/PULL_REQUEST_TEMPLATE.md)
+- prefer repository defaults before inventing a new workflow
 
 If the user gives a broad command such as:
 
@@ -87,6 +88,20 @@ then default to the project workflow already described in:
 - [docs/en/21-definition-of-done.md](./docs/en/21-definition-of-done.md)
 - [RELEASE_PROCESS.md](./RELEASE_PROCESS.md)
 
+## Default execution path for turnkey tasks
+
+When a task sounds like "set everything up", "do it turnkey", "adapt this under
+the repo", or "take the best option", use this default order:
+
+1. `README.md` or `README_RU.md` for framing
+2. `AGENTS.md` for execution rules
+3. the relevant file in `docs/`
+4. matching `checklists/`
+5. matching `prompts/`
+6. matching `scripts/`
+7. matching `examples/`
+8. Definition of Done and the PR template
+
 ## Commands and scripts
 
 ### Core scripts
@@ -96,6 +111,7 @@ python scripts/check-robots-ai-bots.py --url https://example.com
 python scripts/generate_llms_txt.py --sitemap-url https://example.com/sitemap.xml
 python scripts/ai-share-of-voice-tracker.py "Example AI Agency" --queries "best GEO agency,ai visibility audit"
 python scripts/sitemap-checker.py --url https://example.com/sitemap.xml
+python scripts/roi_calculator.py --traffic 5000 --conversion-rate 0.03 --lead-to-sale-rate 0.2 --average-check 1200 --margin-rate 0.45 --seo-cost 1500
 ```
 
 ### Before pushing changes
@@ -135,6 +151,7 @@ Ask for clarification when:
 - sitemap access or source files are missing
 - the request says "take the best option" without decision criteria
 - the repository or production target introduces destructive risk
+- a turnkey request could be implemented in more than one high-impact way
 
 ## Russian quick note
 

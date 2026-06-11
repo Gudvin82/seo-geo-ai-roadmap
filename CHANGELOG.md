@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.3.0 - 2026-06-11 - Documentation, Reliability, and AI Readability
+
+- Added English and Russian script documentation under `scripts/README*.md`
+- Hardened `generate_llms_txt.py` with louder failure modes and clearer summaries
+- Added glossary files, AI SoV sample datasets, ROI tooling, and case-study templates
+- Improved AGENTS onboarding, README visibility, and CI coverage for links, llms, and smoke tests
+
 ## v1.2.0 - 2026-06-11 - Agent Mode and Vibe Coding
 
 - Added `AGENTS.md` as a dedicated agent-first entrypoint for coding agents

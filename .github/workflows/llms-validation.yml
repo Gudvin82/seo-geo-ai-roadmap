@@ -1,0 +1,30 @@
+name: llms-validation
+
+on:
+  push:
+    paths:
+      - "templates/llms*"
+      - "scripts/generate_llms_txt.py"
+      - "scripts/check-llms-txt.py"
+      - "examples/sample-llms.txt"
+      - "examples/sample-llms-full.txt"
+  pull_request:
+    paths:
+      - "templates/llms*"
+      - "scripts/generate_llms_txt.py"
+      - "scripts/check-llms-txt.py"
+      - "examples/sample-llms.txt"
+      - "examples/sample-llms-full.txt"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Validate example llms files
+        run: |
+          python scripts/check-llms-txt.py --file examples/sample-llms.txt
+          python scripts/check-llms-txt.py --file templates/llms.txt.example

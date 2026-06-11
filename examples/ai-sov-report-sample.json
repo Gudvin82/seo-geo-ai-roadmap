@@ -1,0 +1,26 @@
+[
+  {
+    "week": "2026-W24",
+    "date": "2026-06-11",
+    "brand": "Example AI Agency",
+    "query": "best AI visibility agency in Moscow",
+    "platform": "ChatGPT",
+    "mentioned": "yes",
+    "sentiment": "positive",
+    "cited_sources": ["example.com", "industry-blog.test"],
+    "notes": "Brand appears with strong service framing.",
+    "next_action": "Add more proof blocks to service page."
+  },
+  {
+    "week": "2026-W24",
+    "date": "2026-06-11",
+    "brand": "Example AI Agency",
+    "query": "geo audit for SaaS",
+    "platform": "Perplexity",
+    "mentioned": "no",
+    "sentiment": "neutral",
+    "cited_sources": ["competitor.test", "docs-site.test"],
+    "notes": "Competitor cited instead of the brand.",
+    "next_action": "Create comparison page and answer-ready FAQ."
+  }
+]
