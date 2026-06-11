@@ -32,6 +32,7 @@ jobs:
           <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             <url><loc>https://example.com/</loc></url>
             <url><loc>https://example.com/faq</loc></url>
+            <url><loc>https://example.com/about</loc></url>
           </urlset>
           EOF
           python scripts/generate_llms_txt.py --sitemap-file /tmp/sample-sitemap.xml --output-file /tmp/llms.txt
