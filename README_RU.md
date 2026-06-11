@@ -96,6 +96,9 @@
 - [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
 - [SECURITY_CHECKLIST_RU.md](./SECURITY_CHECKLIST_RU.md)
 - [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
+- [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
+- [CLIENT_SETUP_PLAYBOOK_RU.md](./CLIENT_SETUP_PLAYBOOK_RU.md)
+- [AI_HANDOFF_PROMPT_RU.md](./AI_HANDOFF_PROMPT_RU.md)
 - [docs/ru/api-reference.md](./docs/ru/api-reference.md)
 - [docs/ru/ai-operator-mode.md](./docs/ru/ai-operator-mode.md)
 - [docs/ru/roles-and-invites.md](./docs/ru/roles-and-invites.md)
@@ -106,6 +109,8 @@
 Команда проверки:
 
 - `make verify-demo`
+- `make agent-self-check`
+- `make turnkey-demo`
 
 ## Для AI-агентов и IDE
 

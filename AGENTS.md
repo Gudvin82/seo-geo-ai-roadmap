@@ -9,6 +9,8 @@ Start here if you are an AI coding agent working inside the repository:
 
 - [README.md](./README.md)
 - [README_RU.md](./README_RU.md)
+- [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
+- [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
 - [WALKTHROUGH.md](./WALKTHROUGH.md)
 - [REAL_CASES.md](./REAL_CASES.md)
 
@@ -26,6 +28,26 @@ If a user asks you to "deploy this SEO platform", follow this order:
    - `http://localhost:3000`
    - `http://localhost:8000/docs`
    - demo credentials `demo@example.com` / `DemoPlatform123`
+
+Fastest all-in-one option for a lazy demo deployment:
+
+- run `make turnkey-demo`
+
+## For AI Agents: Mandatory self-check before claiming "done"
+
+Before saying the project is ready, deployed, or turnkey, run:
+
+1. `make agent-self-check`
+2. `make verify-demo` if the stack is running
+3. `python -m pytest` or the repo-equivalent validation path if code changed
+
+The agent must then self-report:
+
+- what was actually verified
+- what was not verified
+- whether the result is safe for demo only or production-like self-hosting
+- whether EN and RU layers were both updated when user-facing scope changed
+- whether `START_HERE_FOR_AI*.md`, handoff prompts, and client playbooks still match reality
 
 ## Roles and typical tasks for agents
 
@@ -134,14 +156,15 @@ Use this order by default:
 
 1. README
 2. AGENTS
-3. glossary
-4. relevant docs
-5. matching checklist
-6. matching prompts
-7. matching scripts
-8. matching examples
-9. tests and validation
-10. PR template and Definition of Done
+3. START_HERE_FOR_AI
+4. glossary
+5. relevant docs
+6. matching checklist
+7. matching prompts
+8. matching scripts
+9. matching examples
+10. tests and validation
+11. PR template and Definition of Done
 
 ## Commands and scripts
 
@@ -186,6 +209,26 @@ python -m pytest
 ```
 
 and make sure repository workflows and markdown checks still make sense.
+
+### Agent self-check
+
+```bash
+make agent-self-check
+```
+
+This script is a repository-level sanity check for AI agents. It verifies that
+the core turnkey promises still exist: README framing, AGENTS entrypoint, app
+layer, deployment docs, operator docs, proof assets, local LLM layer, and the
+self-check mechanism itself.
+
+### Handoff files for lazy or delegated AI execution
+
+- [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
+- [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
+- [CLIENT_SETUP_PLAYBOOK.md](./CLIENT_SETUP_PLAYBOOK.md)
+- [CLIENT_SETUP_PLAYBOOK_RU.md](./CLIENT_SETUP_PLAYBOOK_RU.md)
+- [AI_HANDOFF_PROMPT.md](./AI_HANDOFF_PROMPT.md)
+- [AI_HANDOFF_PROMPT_RU.md](./AI_HANDOFF_PROMPT_RU.md)
 
 ## Docs-site workflow
 

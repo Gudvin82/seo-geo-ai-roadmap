@@ -1,7 +1,7 @@
 PYTHONPATH_APP=PYTHONPATH=app/backend
 VENV_PY=.venv/bin/python
 
-.PHONY: install-backend test lint docs migrate seed up demo verify-demo
+.PHONY: install-backend test lint docs migrate seed up demo turnkey-demo verify-demo agent-self-check
 
 install-backend:
 	python3 -m venv .venv
@@ -32,5 +32,16 @@ demo:
 	docker compose up --build -d
 	docker compose run --rm backend python -m app.backend.app.seed
 
+turnkey-demo:
+	docker compose up --build -d
+	docker compose run --rm backend python -m alembic upgrade head
+	docker compose run --rm backend python -m app.backend.app.seed
+	@echo "Frontend: http://localhost:3000"
+	@echo "API docs: http://localhost:8000/docs"
+	@echo "Demo login: demo@example.com / DemoPlatform123"
+
 verify-demo:
 	$(PYTHONPATH_APP) $(VENV_PY) scripts/verify_demo.py
+
+agent-self-check:
+	$(VENV_PY) scripts/agent_self_check.py

@@ -94,6 +94,9 @@ Useful entrypoints:
 - [DEPLOYMENT.md](./DEPLOYMENT.md)
 - [SECURITY_CHECKLIST.md](./SECURITY_CHECKLIST.md)
 - [VERIFY_DEPLOYMENT.md](./VERIFY_DEPLOYMENT.md)
+- [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
+- [CLIENT_SETUP_PLAYBOOK.md](./CLIENT_SETUP_PLAYBOOK.md)
+- [AI_HANDOFF_PROMPT.md](./AI_HANDOFF_PROMPT.md)
 - [docs/en/api-reference.md](./docs/en/api-reference.md)
 - [docs/en/ai-operator-mode.md](./docs/en/ai-operator-mode.md)
 - [docs/en/roles-and-invites.md](./docs/en/roles-and-invites.md)
@@ -104,6 +107,8 @@ Useful entrypoints:
 Verification command:
 
 - `make verify-demo`
+- `make agent-self-check`
+- `make turnkey-demo`
 
 ## For AI coding agents
 
