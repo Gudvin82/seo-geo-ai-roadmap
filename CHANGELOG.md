@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.2.0 - 2026-06-11 - Agent Mode and Vibe Coding
+
+- Added `AGENTS.md` as a dedicated agent-first entrypoint for coding agents
+- Updated `README.md` and `README_RU.md` with agent onboarding sections
+- Added a companion integration block for `vibe-coding-protocols`
+- Extended the repository onboarding layer without changing the existing structure
+
 ## v1.1.0 - 2026-06-11 - Trust, Automation, and Workflow
 
 - Added `generate_llms_txt.py` for sitemap-based `llms.txt` generation

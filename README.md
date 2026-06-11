@@ -47,6 +47,12 @@ This project is built as an execution-first framework for teams that need one pr
 4. Implement AI visibility with [docs/en/08-geo-ai-search.md](./docs/en/08-geo-ai-search.md).
 5. Set reporting discipline with [docs/en/18-analytics.md](./docs/en/18-analytics.md) and [ROADMAP.md](./ROADMAP.md).
 
+## For AI coding agents
+
+If you are using Codex, Claude Code, Cursor, or other AI coding agents, start
+from [AGENTS.md](./AGENTS.md). It is the dedicated entrypoint for agents and
+explains how to work end to end inside this repository.
+
 ## Example script
 
 The repository includes real helper scripts, not just documentation. One useful
@@ -132,6 +138,21 @@ repo/
 ## Ecosystem references
 
 This repository complements, not replaces, adjacent products and platforms. See [ECOSYSTEM_MAP.md](./ECOSYSTEM_MAP.md) for OpenSEO, Perplexica, Open WebUI, Trieve, Onyx, and Flowise.
+
+## Vibe Coding Protocols
+
+For teams and developers who want to combine this discoverability OS with a
+more experimental, vibe-first way of building, there is a companion repository:
+[Vibe Coding Protocols](https://github.com/Gudvin82/vibe-coding-protocols).
+
+It focuses on:
+
+- lightweight iterative workflows for AI-assisted coding and experimentation
+- protocols for live vibecoding sessions in IDEs and terminals
+- patterns for combining structured SOPs from this repo with creative exploration
+
+If you prefer to design your SEO + GEO + AI systems while you code and explore
+live, Vibe Coding Protocols is a natural add-on.
 
 ## Roadmap preview
 
