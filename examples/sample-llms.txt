@@ -1,4 +1,5 @@
 / - Brand overview and navigation
-/services/seo-audit - Technical SEO audits
-/services/geo-ai-visibility - GEO and AI visibility service
-/faq/ - Common questions and direct answers
+/services/seo-geo-audit - SEO + GEO audit service
+/services/ai-visibility - AI visibility implementation service
+/faq/ - Direct answers and objections
+/about/ - Company profile and proof

@@ -1,7 +1,7 @@
 # Filled Page Matrix Example
 
-| URL | Intent | Funnel | Main CTA |
-|---|---|---|---|
-| `/services/seo-audit` | commercial | BOFU | book audit |
-| `/blog/what-is-geo-seo` | informational | TOFU | download checklist |
-| `/compare/agency-vs-freelancer` | comparative | MOFU | request consultation |
+| URL | Intent | Funnel | Main CTA | Owner |
+|---|---|---|---|---|
+| /services/seo-geo-audit | commercial | BOFU | book audit | SEO lead |
+| /blog/what-is-ai-discoverability | informational | TOFU | download checklist | Content lead |
+| /compare/agency-vs-freelancer | comparison | MOFU | request consultation | Growth lead |

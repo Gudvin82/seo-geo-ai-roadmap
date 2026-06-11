@@ -1,13 +1,14 @@
-brand: Example Company
-core_topics:
-  - SEO
-  - GEO
-  - AI visibility
-primary_regions:
+brand: Example AI Agency
+website: https://example.com
+primary_markets:
   - Russia
   - CIS
   - International
-trust_signals:
+core_topics:
+  - SEO
+  - GEO
+  - AI discoverability
+trust_assets:
   - case studies
-  - expert authors
+  - expert pages
   - public reviews

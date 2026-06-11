@@ -1,0 +1,23 @@
+name: script-smoke-tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Smoke test script help
+        run: |
+          python scripts/check-robots-ai-bots.py --help
+          python scripts/check-llms-txt.py --help
+          python scripts/sitemap-checker.py --help
+          python scripts/schema-validator.py --help
+          python scripts/ai-share-of-voice-tracker.py --help
+          python scripts/serp-intent-cluster-helper.py --help
+          python scripts/content-inventory-helper.py --help

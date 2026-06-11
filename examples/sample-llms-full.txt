@@ -1,6 +1,8 @@
-Site: Example Company
+Site: Example AI Agency
 Topics: SEO, GEO, AI discoverability
 Important URLs:
 - /
-- /services/seo-audit
-- /services/geo-ai-visibility
+- /services/seo-geo-audit
+- /services/ai-visibility
+- /faq/
+- /about/

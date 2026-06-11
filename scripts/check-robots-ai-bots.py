@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check how robots.txt treats major AI and search bots."""
+"""Check robots.txt access for major search and AI bots."""
 
 from __future__ import annotations
 
@@ -8,9 +8,6 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-from dataclasses import dataclass
-from urllib.robotparser import RobotFileParser
-
 
 BOTS = [
     "GPTBot",
@@ -18,15 +15,10 @@ BOTS = [
     "PerplexityBot",
     "ClaudeBot",
     "Google-Extended",
+    "Googlebot",
+    "Bingbot",
     "YandexBot",
 ]
-
-
-@dataclass
-class BotResult:
-    bot: str
-    status: str
-    recommendation: str
 
 
 def normalize_url(url: str) -> str:
@@ -36,8 +28,8 @@ def normalize_url(url: str) -> str:
     return url
 
 
-def fetch_robots(url: str) -> tuple[str, str]:
-    site_url = normalize_url(url)
+def fetch_robots(site_url: str) -> tuple[str, str]:
+    site_url = normalize_url(site_url)
     parsed = urllib.parse.urlparse(site_url)
     robots_url = f"{parsed.scheme}://{parsed.netloc}/robots.txt"
     with urllib.request.urlopen(robots_url, timeout=15) as response:
@@ -45,43 +37,69 @@ def fetch_robots(url: str) -> tuple[str, str]:
     return robots_url, content
 
 
-def check_bots(robots_url: str) -> list[BotResult]:
-    parser = RobotFileParser()
-    parser.set_url(robots_url)
-    parser.read()
+def parse_groups(content: str) -> list[dict[str, list[str]]]:
+    groups: list[dict[str, list[str]]] = []
+    current: dict[str, list[str]] | None = None
+    for raw_line in content.splitlines():
+        line = raw_line.split("#", 1)[0].strip()
+        if not line or ":" not in line:
+            continue
+        key, value = [part.strip() for part in line.split(":", 1)]
+        key_lower = key.lower()
+        if key_lower == "user-agent":
+            current = {"agents": [value], "allow": [], "disallow": []}
+            groups.append(current)
+            continue
+        if current is None:
+            continue
+        if key_lower == "allow":
+            current["allow"].append(value)
+        elif key_lower == "disallow":
+            current["disallow"].append(value)
+    merged: dict[str, dict[str, list[str]]] = {}
+    for group in groups:
+        agent = group["agents"][0]
+        bucket = merged.setdefault(agent, {"allow": [], "disallow": []})
+        bucket["allow"].extend(group["allow"])
+        bucket["disallow"].extend(group["disallow"])
+    return [{"agent": agent, **rules} for agent, rules in merged.items()]
 
-    results: list[BotResult] = []
-    for bot in BOTS:
-        allowed = parser.can_fetch(bot, "/")
-        if allowed:
-            status = "allowed"
-            recommendation = "No action needed unless policy requires tighter control."
-        else:
-            status = "blocked"
-            recommendation = "Review robots.txt if you want this bot to access public content."
-        results.append(BotResult(bot=bot, status=status, recommendation=recommendation))
-    return results
+
+def evaluate_bot(groups: list[dict[str, list[str]]], bot: str) -> tuple[str, str]:
+    exact = next((group for group in groups if group["agent"].lower() == bot.lower()), None)
+    wildcard = next((group for group in groups if group["agent"] == "*"), None)
+    target = exact or wildcard
+    if target is None:
+        return "unspecified", "No matching group found. Add an explicit rule if this bot matters to your strategy."
+    allows = target.get("allow", [])
+    disallows = target.get("disallow", [])
+    if "/" in disallows and "/" not in allows:
+        return "blocked", "Public content is blocked for this bot. Review whether that matches policy."
+    if "/" in allows:
+        return "allowed", "Top-level access is explicitly allowed."
+    if not allows and not disallows:
+        return "unspecified", "The group exists but has no path rules. Make intent explicit."
+    return "unspecified", "There are partial rules. Manually review whether key public pages are reachable."
 
 
-def print_table(results: list[BotResult]) -> None:
+def print_table(results: list[tuple[str, str, str]]) -> None:
     print("| Bot | Status | Recommendation |")
     print("|---|---|---|")
-    for result in results:
-        print(f"| {result.bot} | {result.status} | {result.recommendation} |")
+    for bot, status, recommendation in results:
+        print(f"| {bot} | {status} | {recommendation} |")
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Check robots.txt access for AI bots.")
-    parser.add_argument("url", help="Website URL, for example example.com or https://example.com")
+    parser = argparse.ArgumentParser(description="Check robots.txt access for AI and search bots.")
+    parser.add_argument("--url", required=True, help="Site URL, for example https://example.com")
     args = parser.parse_args()
-
     try:
-        robots_url, _content = fetch_robots(args.url)
-        results = check_bots(robots_url)
+        robots_url, content = fetch_robots(args.url)
     except urllib.error.URLError as exc:
         print(f"Failed to fetch robots.txt: {exc}", file=sys.stderr)
         return 1
-
+    groups = parse_groups(content)
+    results = [(bot, *evaluate_bot(groups, bot)) for bot in BOTS]
     print(f"Robots file: {robots_url}")
     print_table(results)
     return 0

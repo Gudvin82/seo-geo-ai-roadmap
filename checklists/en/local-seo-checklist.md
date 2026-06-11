@@ -1,7 +1,8 @@
-# Local SEO Checklist
+# Local Seo Checklist
 
-- [ ] NAP is consistent across website and listings
-- [ ] Local landing pages have real proof
-- [ ] Map and directory profiles updated
-- [ ] Reviews strategy active
-- [ ] LocalBusiness schema checked
+- [ ] NAP consistency checked
+- [ ] Map listings updated
+- [ ] Local landing pages supported by real proof
+- [ ] Review acquisition plan active
+- [ ] LocalBusiness schema validated
+- [ ] Regional contacts visible

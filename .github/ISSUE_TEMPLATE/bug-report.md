@@ -1,19 +1,23 @@
 ---
 name: Bug report
-about: Report a problem in docs, prompts, templates, or scripts
+about: Report an issue in docs, prompts, templates, workflows, or scripts
 title: "[Bug] "
 labels: bug
 assignees: ''
 ---
 
-## What is wrong
+## Problem
 
-Describe the issue clearly.
+Describe what is broken.
 
-## Where it happens
+## Location
 
-Link the file path or section.
+File path, section, or workflow name.
 
-## Suggested fix
+## Expected behavior
+
+Explain what should happen instead.
+
+## Validation notes
 
 Optional, but helpful.

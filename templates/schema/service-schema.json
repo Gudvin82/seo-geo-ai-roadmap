@@ -1,0 +1,9 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Example AI Visibility Audit",
+  "provider": {
+    "@type": "Organization",
+    "name": "Example AI Agency"
+  }
+}

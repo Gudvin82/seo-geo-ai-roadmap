@@ -1,0 +1,10 @@
+brand: Example AI Agency
+website: https://example.com
+core_topics:
+  - SEO
+  - GEO
+  - AI discoverability
+proof:
+  - case studies
+  - author pages
+  - testimonials

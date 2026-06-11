@@ -1,10 +1,10 @@
-# Technical SEO Checklist
+# Technical Seo Checklist
 
-- [ ] Indexable pages return `200`
-- [ ] Canonicals are self-referential or intentionally mapped
-- [ ] XML sitemap contains only canonical URLs
-- [ ] `robots.txt` does not block important pages
-- [ ] Mobile rendering works without layout shifts
+- [ ] Indexable pages return 200
+- [ ] Canonical rules are intentional
+- [ ] Important pages are not blocked in robots.txt
+- [ ] Server-rendered HTML is available for critical pages
+- [ ] Sitemap is clean and current
+- [ ] Internal links cover money pages
 - [ ] Core Web Vitals reviewed
-- [ ] Internal linking covers money pages
-- [ ] Orphan pages removed or linked
+- [ ] Redirects do not create chains

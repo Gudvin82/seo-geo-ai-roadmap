@@ -1,31 +1,34 @@
-# AI Audit Prompt Pack
+# AI Audit Prompt
 
-## 1. Check my brand in ChatGPT
+## Role
+
+AI discoverability auditor
+
+## Inputs
+
+brand, prompts, markets, known issues
+
+## Output format
+
+AI visibility audit with hallucinations, citations, fixes
+
+## Evaluation criteria
+
+specificity, reproducibility, remediation quality
+
+## Variants
+
+- ChatGPT: ask for compact markdown and decision-ready bullets.
+- Claude: ask for clearer reasoning and rewrite options.
+- Gemini: ask for broader SERP comparison and alternative sources.
+- Codex: ask for repo-ready markdown artifacts, tables, and templates.
+
+## Copy-paste prompt
 
 ```text
-You are auditing AI visibility. For the brand [X], tell me how ChatGPT is likely to describe it, what facts may be missing, and what sources should be strengthened.
-```
-
-## 2. Find competitors Perplexity recommends instead of me
-
-```text
-For the topic [Y], identify what kinds of companies Perplexity is likely to cite instead of brand [X], and explain why.
-```
-
-## 3. Generate llms.txt for website [URL]
-
-```text
-Generate an llms.txt file for [URL]. Keep it concise, list the most important sections, and use canonical URLs only.
-```
-
-## 4. Check hallucinations for brand [X]
-
-```text
-List likely hallucinations or factual ambiguities an LLM could produce about brand [X], then suggest corrections and proof assets.
-```
-
-## 5. Create answer-ready FAQ for topic [Y]
-
-```text
-Create an FAQ in answer-ready format for topic [Y]. Use short direct answers, then supporting detail and trust signals.
+Role: AI discoverability auditor
+Inputs: brand, prompts, markets, known issues
+Task: produce a practical artifact for the repository.
+Output format: AI visibility audit with hallucinations, citations, fixes
+Evaluation criteria: specificity, reproducibility, remediation quality
 ```

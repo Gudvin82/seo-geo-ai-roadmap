@@ -1,11 +1,10 @@
-# Example llms-full.txt
-
-Site: Example Company
+Site: Example AI Agency
 Primary markets: Russia, CIS, International
-Main topics: SEO, GEO, AI visibility, Yandex, Local SEO
-Key URLs:
+Main topics: SEO, GEO, AI discoverability, Yandex, local SEO
+Important URLs:
 - /
-- /services/seo-audit
-- /services/geo-ai-visibility
+- /services/seo-geo-audit
+- /services/ai-visibility
 - /blog/
 - /faq/
+- /about/
