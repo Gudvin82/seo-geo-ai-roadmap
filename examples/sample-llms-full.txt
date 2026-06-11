@@ -1,0 +1,6 @@
+Site: Example Company
+Topics: SEO, GEO, AI discoverability
+Important URLs:
+- /
+- /services/seo-audit
+- /services/geo-ai-visibility

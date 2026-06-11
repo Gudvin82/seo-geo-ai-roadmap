@@ -1,0 +1,4 @@
+/ - Brand overview and navigation
+/services/seo-audit - Technical SEO audits
+/services/geo-ai-visibility - GEO and AI visibility service
+/faq/ - Common questions and direct answers
