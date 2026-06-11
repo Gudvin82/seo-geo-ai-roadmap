@@ -29,7 +29,10 @@ def parse_args() -> argparse.Namespace:
         description="Check sitemap freshness and output a markdown, CSV, or JSON report."
     )
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("--sitemap-url", help="Remote sitemap URL, for example https://example.com/sitemap.xml")
+    group.add_argument(
+        "--sitemap-url",
+        help="Remote sitemap URL, for example https://example.com/sitemap.xml",
+    )
     group.add_argument("--sitemap-file", help="Local sitemap file path")
     parser.add_argument(
         "--days-stale",
@@ -56,9 +59,13 @@ def load_sitemap(url: str | None, file_path: str | None) -> bytes:
             with urllib.request.urlopen(url, timeout=20) as response:
                 return response.read()
         except urllib.error.URLError as exc:
-            raise RuntimeError(f"Network failure while fetching sitemap URL: {exc}") from exc
+            raise RuntimeError(
+                f"Network failure while fetching sitemap URL: {exc}"
+            ) from exc
     if not file_path:
-        raise RuntimeError("Missing sitemap source: pass --sitemap-url or --sitemap-file.")
+        raise RuntimeError(
+            "Missing sitemap source: pass --sitemap-url or --sitemap-file."
+        )
     path = Path(file_path)
     if not path.exists() or not path.is_file():
         raise RuntimeError(f"Unreadable sitemap file: {path}")
@@ -98,7 +105,9 @@ def parse_lastmod(raw: str) -> date | None:
         return None
 
 
-def classify_rows(entries: list[tuple[str, str]], days_stale: int) -> list[FreshnessRow]:
+def classify_rows(
+    entries: list[tuple[str, str]], days_stale: int
+) -> list[FreshnessRow]:
     today = datetime.now(timezone.utc).date()
     rows: list[FreshnessRow] = []
     for url, lastmod_raw in entries:
@@ -120,7 +129,9 @@ def classify_rows(entries: list[tuple[str, str]], days_stale: int) -> list[Fresh
             recommendation = "Review the page, refresh proof, and update numbers or examples if needed."
         else:
             status = "fresh"
-            recommendation = "Keep monitoring and refresh only when facts or offers change."
+            recommendation = (
+                "Keep monitoring and refresh only when facts or offers change."
+            )
         rows.append(
             FreshnessRow(
                 url=url,
@@ -161,7 +172,13 @@ def write_csv(rows: list[FreshnessRow], output_path: Path) -> None:
     with output_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(
             handle,
-            fieldnames=["url", "detected_lastmod", "status", "recommendation", "age_days"],
+            fieldnames=[
+                "url",
+                "detected_lastmod",
+                "status",
+                "recommendation",
+                "age_days",
+            ],
         )
         writer.writeheader()
         for row in rows:

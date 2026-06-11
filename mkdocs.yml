@@ -19,6 +19,7 @@ nav:
   - App Architecture: architecture.md
   - Deployment: deployment.md
   - API Overview: api.md
+  - Operator Mode: operator-mode.md
   - Scripts: scripts.md
   - Checklists: checklists.md
   - Prompts: prompts.md

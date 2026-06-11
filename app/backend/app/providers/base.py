@@ -20,7 +20,9 @@ class ProviderResponse:
 class BaseProvider:
     provider_name = "base"
 
-    def __init__(self, api_key: Optional[str], model: str, base_url: Optional[str] = None):
+    def __init__(
+        self, api_key: Optional[str], model: str, base_url: Optional[str] = None
+    ):
         self.api_key = api_key or ""
         self.model = model
         self.base_url = base_url
@@ -29,5 +31,7 @@ class BaseProvider:
         if not self.api_key:
             raise ProviderError(f"Missing API key for provider {self.provider_name}.")
 
-    def generate_text(self, prompt: str, system_prompt: Optional[str] = None) -> ProviderResponse:
+    def generate_text(
+        self, prompt: str, system_prompt: Optional[str] = None
+    ) -> ProviderResponse:
         raise NotImplementedError

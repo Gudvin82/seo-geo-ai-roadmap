@@ -11,7 +11,9 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Calculate visits, leads, sales, revenue, margin, and ROI."
     )
-    parser.add_argument("--traffic", type=float, required=True, help="Visits in the period.")
+    parser.add_argument(
+        "--traffic", type=float, required=True, help="Visits in the period."
+    )
     parser.add_argument(
         "--conversion-rate",
         type=float,
@@ -36,7 +38,9 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help="Gross margin rate as a decimal, for example 0.4.",
     )
-    parser.add_argument("--seo-cost", type=float, required=True, help="Channel cost for the period.")
+    parser.add_argument(
+        "--seo-cost", type=float, required=True, help="Channel cost for the period."
+    )
     parser.add_argument(
         "--ai-referred-share",
         type=float,

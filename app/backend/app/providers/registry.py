@@ -21,7 +21,9 @@ class JsonHttpProvider(BaseProvider):
     def parse_content(self, body: dict) -> str:
         raise NotImplementedError
 
-    def generate_text(self, prompt: str, system_prompt: Optional[str] = None) -> ProviderResponse:
+    def generate_text(
+        self, prompt: str, system_prompt: Optional[str] = None
+    ) -> ProviderResponse:
         self.ensure_configured()
         payload = json.dumps(self.build_payload(prompt, system_prompt)).encode("utf-8")
         request = urllib.request.Request(
@@ -34,9 +36,13 @@ class JsonHttpProvider(BaseProvider):
             with urllib.request.urlopen(request, timeout=30) as response:
                 body = json.loads(response.read().decode("utf-8"))
         except urllib.error.HTTPError as exc:
-            raise ProviderError(f"{self.provider_name} quota or auth error: {exc}") from exc
+            raise ProviderError(
+                f"{self.provider_name} quota or auth error: {exc}"
+            ) from exc
         except urllib.error.URLError as exc:
-            raise ProviderError(f"{self.provider_name} timeout or network error: {exc}") from exc
+            raise ProviderError(
+                f"{self.provider_name} timeout or network error: {exc}"
+            ) from exc
         content = self.parse_content(body)
         return ProviderResponse(
             provider=self.provider_name,
@@ -59,7 +65,10 @@ class OpenAIProvider(JsonHttpProvider):
         return {"model": self.model, "messages": messages}
 
     def build_headers(self) -> dict[str, str]:
-        return {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
+        return {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+        }
 
     def parse_content(self, body: dict) -> str:
         return body["choices"][0]["message"]["content"]
@@ -101,7 +110,9 @@ class GeminiProvider(JsonHttpProvider):
     def build_headers(self) -> dict[str, str]:
         return {"Content-Type": "application/json"}
 
-    def generate_text(self, prompt: str, system_prompt: Optional[str] = None) -> ProviderResponse:
+    def generate_text(
+        self, prompt: str, system_prompt: Optional[str] = None
+    ) -> ProviderResponse:
         self.ensure_configured()
         self.base_url = (
             self.base_url
@@ -125,7 +136,10 @@ class PerplexityProvider(JsonHttpProvider):
         return {"model": self.model, "messages": messages}
 
     def build_headers(self) -> dict[str, str]:
-        return {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
+        return {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+        }
 
     def parse_content(self, body: dict) -> str:
         return body["choices"][0]["message"]["content"]
@@ -140,7 +154,12 @@ PROVIDERS: dict[str, type[BaseProvider]] = {
 }
 
 
-def build_provider(provider_name: str, api_key: Optional[str], model: str, base_url: Optional[str] = None) -> BaseProvider:
+def build_provider(
+    provider_name: str,
+    api_key: Optional[str],
+    model: str,
+    base_url: Optional[str] = None,
+) -> BaseProvider:
     provider_cls = PROVIDERS.get(provider_name.lower())
     if not provider_cls:
         raise ProviderError(f"Unsupported provider: {provider_name}")

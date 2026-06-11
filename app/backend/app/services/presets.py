@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-
 AUDIT_PRESETS = {
     "local_business": [
         "robots_ai_bots",

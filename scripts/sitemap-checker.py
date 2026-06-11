@@ -21,7 +21,7 @@ def main() -> int:
         print(f"Failed to fetch sitemap: {exc}", file=sys.stderr)
         return 1
     root = ET.fromstring(data)
-    urls = root.findall('.//{*}loc')
+    urls = root.findall(".//{*}loc")
     print(f"Found {len(urls)} URLs")
     return 0
 

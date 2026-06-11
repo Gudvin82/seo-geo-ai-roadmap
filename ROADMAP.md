@@ -19,11 +19,16 @@
 - Expand international localization and hreflang decision trees
 - Add contribution lanes for vertical-specific playbooks
 
-## Future SaaS direction
+## v2.1.x Turnkey self-hosted hardening
 
-- The repository remains the open-source methodology, execution, and validation
-  layer. A future SaaS product may build on top of it for managed audits,
-  dashboards, multi-client workflows, and white-label reporting.
-- Репозиторий остаётся open-source слоем методологии, исполнения и валидации.
-  Будущий SaaS-продукт может строиться поверх него для managed-аудитов,
-  дашбордов, мультиклиентских процессов и white-label отчётности.
+- strengthen auth, token lifecycle, and production-safe configuration
+- add migrations, demo seed flow, and one-command startup paths
+- improve API visibility, observability, and AI operator workflows
+- keep the repo free, transparent, open-source, and self-hosted first
+
+## Future product direction
+
+- keep the methodology layer first-class
+- keep the app layer transparent and adaptable by humans and AI coding agents
+- avoid mandatory cloud lock-in
+- expand optional orchestration, reporting depth, and provider coverage

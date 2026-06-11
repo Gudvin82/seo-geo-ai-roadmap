@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" fill="none">
+  <rect width="1440" height="900" fill="#f4efe6"/>
+  <rect x="0" y="0" width="320" height="900" fill="#fff7ef"/>
+  <rect x="24" y="32" width="272" height="116" rx="24" fill="#ffffff" stroke="#d7d0c7"/>
+  <text x="44" y="64" fill="#0f766e" font-family="Arial, sans-serif" font-size="18">SEO + GEO + AI</text>
+  <text x="44" y="98" fill="#172225" font-family="Arial, sans-serif" font-size="28" font-weight="700">Discoverability OS App</text>
+  <text x="44" y="130" fill="#596468" font-family="Arial, sans-serif" font-size="16">Free and transparent self-hosted control panel</text>
+
+  <rect x="24" y="186" width="272" height="240" rx="24" fill="#ffffff" stroke="#d7d0c7"/>
+  <text x="44" y="222" fill="#172225" font-family="Arial, sans-serif" font-size="20" font-weight="700">Navigation</text>
+  <text x="44" y="258" fill="#0f766e" font-family="Arial, sans-serif" font-size="16">Auth</text>
+  <text x="44" y="288" fill="#172225" font-family="Arial, sans-serif" font-size="16">Workspaces</text>
+  <text x="44" y="318" fill="#172225" font-family="Arial, sans-serif" font-size="16">Projects</text>
+  <text x="44" y="348" fill="#172225" font-family="Arial, sans-serif" font-size="16">Brand facts</text>
+  <text x="44" y="378" fill="#172225" font-family="Arial, sans-serif" font-size="16">Providers</text>
+  <text x="44" y="408" fill="#172225" font-family="Arial, sans-serif" font-size="16">Audit runs</text>
+
+  <rect x="24" y="454" width="272" height="132" rx="24" fill="#ffffff" stroke="#d7d0c7"/>
+  <text x="44" y="490" fill="#172225" font-family="Arial, sans-serif" font-size="20" font-weight="700">Demo access</text>
+  <text x="44" y="524" fill="#596468" font-family="Arial, sans-serif" font-size="16">make demo</text>
+  <text x="44" y="552" fill="#596468" font-family="Arial, sans-serif" font-size="16">demo@example.com</text>
+  <text x="44" y="580" fill="#596468" font-family="Arial, sans-serif" font-size="16">DemoPlatform123</text>
+
+  <rect x="352" y="32" width="1064" height="170" rx="28" fill="#fffaf3" stroke="#d7d0c7"/>
+  <text x="392" y="80" fill="#0f766e" font-family="Arial, sans-serif" font-size="18">v2.1.0 self-hosted hardening</text>
+  <text x="392" y="124" fill="#172225" font-family="Arial, sans-serif" font-size="34" font-weight="700">Free and transparent self-hosted platform</text>
+  <text x="392" y="160" fill="#596468" font-family="Arial, sans-serif" font-size="18">Create workspaces, onboard projects, run audits, store evidence, and export bilingual reports.</text>
+
+  <rect x="352" y="228" width="248" height="112" rx="24" fill="#ffffff" stroke="#d7d0c7"/>
+  <rect x="620" y="228" width="248" height="112" rx="24" fill="#ffffff" stroke="#d7d0c7"/>
+  <rect x="888" y="228" width="248" height="112" rx="24" fill="#ffffff" stroke="#d7d0c7"/>
+  <rect x="1156" y="228" width="260" height="112" rx="24" fill="#ffffff" stroke="#d7d0c7"/>
+  <text x="376" y="270" fill="#596468" font-family="Arial, sans-serif" font-size="16">Auth status</text>
+  <text x="376" y="306" fill="#172225" font-family="Arial, sans-serif" font-size="26" font-weight="700">Signed in</text>
+  <text x="644" y="270" fill="#596468" font-family="Arial, sans-serif" font-size="16">Active workspace</text>
+  <text x="644" y="306" fill="#172225" font-family="Arial, sans-serif" font-size="26" font-weight="700">Demo Agency</text>
+  <text x="912" y="270" fill="#596468" font-family="Arial, sans-serif" font-size="16">Active project</text>
+  <text x="912" y="306" fill="#172225" font-family="Arial, sans-serif" font-size="26" font-weight="700">Demo Site</text>
+  <text x="1180" y="270" fill="#596468" font-family="Arial, sans-serif" font-size="16">Latest report</text>
+  <text x="1180" y="306" fill="#172225" font-family="Arial, sans-serif" font-size="26" font-weight="700">EN Markdown</text>
+
+  <rect x="352" y="372" width="500" height="480" rx="28" fill="#ffffff" stroke="#d7d0c7"/>
+  <text x="388" y="416" fill="#172225" font-family="Arial, sans-serif" font-size="24" font-weight="700">Project onboarding</text>
+  <text x="388" y="456" fill="#596468" font-family="Arial, sans-serif" font-size="16">Workspace ID, site URL, market, language, project type, and preset</text>
+  <rect x="388" y="486" width="428" height="48" rx="12" fill="#fffaf3" stroke="#d7d0c7"/>
+  <rect x="388" y="548" width="428" height="48" rx="12" fill="#fffaf3" stroke="#d7d0c7"/>
+  <rect x="388" y="610" width="428" height="48" rx="12" fill="#fffaf3" stroke="#d7d0c7"/>
+  <rect x="388" y="672" width="428" height="48" rx="12" fill="#fffaf3" stroke="#d7d0c7"/>
+  <rect x="388" y="744" width="220" height="48" rx="24" fill="#0f766e"/>
+  <text x="445" y="775" fill="#ffffff" font-family="Arial, sans-serif" font-size="18" font-weight="700">Save project</text>
+
+  <rect x="880" y="372" width="536" height="480" rx="28" fill="#ffffff" stroke="#d7d0c7"/>
+  <text x="916" y="416" fill="#172225" font-family="Arial, sans-serif" font-size="24" font-weight="700">Audit runs and reports</text>
+  <rect x="916" y="454" width="464" height="96" rx="20" fill="#fffaf3" stroke="#d7d0c7"/>
+  <text x="944" y="492" fill="#172225" font-family="Arial, sans-serif" font-size="20" font-weight="700">Audit #12</text>
+  <text x="944" y="522" fill="#596468" font-family="Arial, sans-serif" font-size="16">completed · score 92 · factual consistency, llms.txt, robots</text>
+  <rect x="916" y="574" width="464" height="96" rx="20" fill="#fffaf3" stroke="#d7d0c7"/>
+  <text x="944" y="612" fill="#172225" font-family="Arial, sans-serif" font-size="20" font-weight="700">Report #7</text>
+  <text x="944" y="642" fill="#596468" font-family="Arial, sans-serif" font-size="16">Executive summary, findings, next actions, artifact exports</text>
+  <rect x="916" y="694" width="464" height="96" rx="20" fill="#fffaf3" stroke="#d7d0c7"/>
+  <text x="944" y="732" fill="#172225" font-family="Arial, sans-serif" font-size="20" font-weight="700">Provider settings</text>
+  <text x="944" y="762" fill="#596468" font-family="Arial, sans-serif" font-size="16">OpenAI / Claude / Gemini / Perplexity with optional keys</text>
+</svg>

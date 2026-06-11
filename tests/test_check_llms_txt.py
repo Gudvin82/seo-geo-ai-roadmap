@@ -4,7 +4,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = REPO_ROOT / "scripts" / "check-llms-txt.py"
 
@@ -35,7 +34,9 @@ def test_valid_llms_file_passes(tmp_path: Path) -> None:
 
 def test_missing_required_sections_fails(tmp_path: Path) -> None:
     llms_file = tmp_path / "llms.txt"
-    llms_file.write_text("# Example\n> https://example.com/ - Homepage\n", encoding="utf-8")
+    llms_file.write_text(
+        "# Example\n> https://example.com/ - Homepage\n", encoding="utf-8"
+    )
     result = run_command("--file", str(llms_file))
     assert result.returncode == 1
     assert "faq" in result.stdout.lower()
@@ -47,4 +48,7 @@ def test_malformed_structure_fails(tmp_path: Path) -> None:
     llms_file.write_text("homepage\nfaq\nabout\n", encoding="utf-8")
     result = run_command("--file", str(llms_file))
     assert result.returncode == 1
-    assert "top-level heading" in result.stdout.lower() or "structured entries" in result.stdout.lower()
+    assert (
+        "top-level heading" in result.stdout.lower()
+        or "structured entries" in result.stdout.lower()
+    )

@@ -33,15 +33,23 @@ class Workspace(Base):
     slug: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     default_report_language: Mapped[str] = mapped_column(String(8), default="en")
     branding_logo_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
-    client_report_title: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
-    client_report_subtitle: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    client_report_title: Mapped[Optional[str]] = mapped_column(
+        String(255), nullable=True
+    )
+    client_report_subtitle: Mapped[Optional[str]] = mapped_column(
+        String(255), nullable=True
+    )
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
 
     owner: Mapped[User] = relationship(back_populates="workspaces")
     projects: Mapped[list["Project"]] = relationship(back_populates="workspace")
-    provider_configs: Mapped[list["ProviderConfiguration"]] = relationship(back_populates="workspace")
+    provider_configs: Mapped[list["ProviderConfiguration"]] = relationship(
+        back_populates="workspace"
+    )
     prompt_sets: Mapped[list["PromptSet"]] = relationship(back_populates="workspace")
-    scheduled_checks: Mapped[list["ScheduledCheck"]] = relationship(back_populates="workspace")
+    scheduled_checks: Mapped[list["ScheduledCheck"]] = relationship(
+        back_populates="workspace"
+    )
 
 
 class Project(Base):
@@ -54,16 +62,22 @@ class Project(Base):
     market: Mapped[str] = mapped_column(String(100))
     language: Mapped[str] = mapped_column(String(32))
     project_type: Mapped[str] = mapped_column(String(100))
-    audit_preset: Mapped[str] = mapped_column(String(100), default="global_multilingual")
+    audit_preset: Mapped[str] = mapped_column(
+        String(100), default="global_multilingual"
+    )
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
 
     workspace: Mapped[Workspace] = relationship(back_populates="projects")
     sites: Mapped[list["Site"]] = relationship(back_populates="project")
     audit_runs: Mapped[list["AuditRun"]] = relationship(back_populates="project")
     reports: Mapped[list["Report"]] = relationship(back_populates="project")
-    brand_facts_profiles: Mapped[list["BrandFactsProfile"]] = relationship(back_populates="project")
+    brand_facts_profiles: Mapped[list["BrandFactsProfile"]] = relationship(
+        back_populates="project"
+    )
     artifacts: Mapped[list["Artifact"]] = relationship(back_populates="project")
-    scheduled_checks: Mapped[list["ScheduledCheck"]] = relationship(back_populates="project")
+    scheduled_checks: Mapped[list["ScheduledCheck"]] = relationship(
+        back_populates="project"
+    )
 
 
 class Site(Base):

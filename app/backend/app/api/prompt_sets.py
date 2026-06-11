@@ -13,7 +13,9 @@ from ..schemas import PromptSetCreate, PromptSetRead
 router = APIRouter(prefix="/prompt-sets", tags=["prompts"])
 
 
-def _workspace_for_user(db: Session, workspace_id: int, current_user: User) -> Workspace:
+def _workspace_for_user(
+    db: Session, workspace_id: int, current_user: User
+) -> Workspace:
     workspace = db.get(Workspace, workspace_id)
     if not workspace or workspace.owner_user_id != current_user.id:
         raise HTTPException(status_code=404, detail="Workspace not found.")
@@ -21,7 +23,11 @@ def _workspace_for_user(db: Session, workspace_id: int, current_user: User) -> W
 
 
 @router.get("", response_model=list[PromptSetRead])
-def list_prompt_sets(workspace_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)) -> list[PromptSetRead]:
+def list_prompt_sets(
+    workspace_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> list[PromptSetRead]:
     _workspace_for_user(db, workspace_id, current_user)
     rows = db.query(PromptSet).filter(PromptSet.workspace_id == workspace_id).all()
     return [

@@ -11,6 +11,8 @@ What it adds:
 - provider configurations
 - structured audit runs
 - reports and artifacts
+- demo seed mode
+- self-hosted hardening and security guidance
 
 Core paths:
 
@@ -24,6 +26,7 @@ Detailed docs:
 - [Architecture](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/ARCHITECTURE.md)
 - [Deployment](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/DEPLOYMENT.md)
 - [Open-source vs SaaS boundary](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/OPEN_SOURCE_AND_SAAS_BOUNDARY.md)
+- [Security checklist](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/SECURITY_CHECKLIST.md)
 
 Russian equivalents:
 

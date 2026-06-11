@@ -18,6 +18,10 @@ class Settings:
     anthropic_api_key: str = ""
     gemini_api_key: str = ""
     perplexity_api_key: str = ""
+    token_ttl_minutes: int = 720
+    login_attempt_window_seconds: int = 900
+    login_attempt_limit: int = 5
+    auto_create_schema: bool = True
 
     def cors_origin_list(self) -> list[str]:
         if self.cors_origins.strip() == "*":
@@ -36,7 +40,9 @@ def load_settings() -> Settings:
     artifact_root = repo_root / "app" / "backend" / "artifacts"
     artifact_root.mkdir(parents=True, exist_ok=True)
     return Settings(
-        database_url=os.getenv("APP_DATABASE_URL", f"sqlite:///{data_dir / 'discoverability.db'}"),
+        database_url=os.getenv(
+            "APP_DATABASE_URL", f"sqlite:///{data_dir / 'discoverability.db'}"
+        ),
         secret_key=os.getenv("APP_SECRET_KEY", "dev-secret-key"),
         artifact_root=os.getenv("APP_ARTIFACT_ROOT", str(artifact_root)),
         default_report_language=os.getenv("APP_DEFAULT_REPORT_LANGUAGE", "en"),
@@ -45,4 +51,11 @@ def load_settings() -> Settings:
         anthropic_api_key=os.getenv("ANTHROPIC_API_KEY", ""),
         gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
         perplexity_api_key=os.getenv("PERPLEXITY_API_KEY", ""),
+        token_ttl_minutes=int(os.getenv("APP_TOKEN_TTL_MINUTES", "720")),
+        login_attempt_window_seconds=int(
+            os.getenv("APP_LOGIN_ATTEMPT_WINDOW_SECONDS", "900")
+        ),
+        login_attempt_limit=int(os.getenv("APP_LOGIN_ATTEMPT_LIMIT", "5")),
+        auto_create_schema=os.getenv("APP_AUTO_CREATE_SCHEMA", "true").lower()
+        == "true",
     )

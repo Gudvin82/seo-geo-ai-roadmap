@@ -23,7 +23,9 @@ def build_markdown_report(
             f"- Category: {finding['category']}\n"
             f"- Summary: {finding['summary']}\n"
         )
-    top_actions = "\n".join(f"- {finding['recommendation']}" for finding in findings[:5])
+    top_actions = "\n".join(
+        f"- {finding['recommendation']}" for finding in findings[:5]
+    )
     return (
         f"# {title}: {project_name}\n\n"
         f"- Generated at: {datetime.utcnow().isoformat()}Z\n"
@@ -36,7 +38,9 @@ def build_markdown_report(
     )
 
 
-def build_json_report(project_name: str, findings: list[dict], score: Optional[float]) -> dict:
+def build_json_report(
+    project_name: str, findings: list[dict], score: Optional[float]
+) -> dict:
     return {
         "project_name": project_name,
         "generated_at": f"{datetime.utcnow().isoformat()}Z",

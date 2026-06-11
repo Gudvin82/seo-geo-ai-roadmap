@@ -15,7 +15,8 @@ const state = {
 const translations = {
   en: {
     appTitle: "Discoverability OS App",
-    appSubtitle: "SaaS-ready control panel for discoverability audits, multi-provider AI, and bilingual reporting.",
+    appSubtitle:
+      "Free and transparent self-hosted control panel for discoverability audits, multi-provider AI, and bilingual reporting.",
     apiBase: "API base",
     language: "Language",
     navAuth: "Auth",
@@ -26,8 +27,10 @@ const translations = {
     navAudits: "Audit runs",
     navReports: "Reports",
     quickChecks: "Audit presets",
-    releaseBadge: "v2.0.0 SaaS foundation",
-    heroTitle: "Believable product layer on top of the methodology repo",
+    demoAccess: "Demo access",
+    releaseBadge: "v2.1.0 self-hosted hardening",
+    heroTitle:
+      "Free and transparent self-hosted platform on top of the methodology repo",
     heroCopy: "Create workspaces, onboard projects, run discoverability checks, store evidence, and ship bilingual reports with multi-provider AI support.",
     badgeRepo: "Repo methodology",
     badgeApp: "App workflow",
@@ -97,7 +100,8 @@ const translations = {
   },
   ru: {
     appTitle: "Discoverability OS App",
-    appSubtitle: "SaaS-ready панель для discoverability-аудитов, мультипровайдерного AI и двуязычной отчетности.",
+    appSubtitle:
+      "Бесплатная и прозрачная self-hosted панель для discoverability-аудитов, мультипровайдерного AI и двуязычной отчетности.",
     apiBase: "База API",
     language: "Язык",
     navAuth: "Авторизация",
@@ -108,8 +112,10 @@ const translations = {
     navAudits: "Аудиты",
     navReports: "Отчеты",
     quickChecks: "Audit presets",
-    releaseBadge: "v2.0.0 SaaS foundation",
-    heroTitle: "Правдоподобный продуктовый слой поверх методологического репозитория",
+    demoAccess: "Demo access",
+    releaseBadge: "v2.1.0 self-hosted hardening",
+    heroTitle:
+      "Бесплатная и прозрачная self-hosted платформа поверх методологического репозитория",
     heroCopy: "Создавайте воркспейсы, онбордите проекты, запускайте discoverability-проверки, храните evidence и выпускайте двуязычные отчеты с multi-provider AI.",
     badgeRepo: "Методология репо",
     badgeApp: "Продуктовый workflow",

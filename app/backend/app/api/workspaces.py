@@ -12,7 +12,9 @@ router = APIRouter(prefix="/workspaces", tags=["workspaces"])
 
 
 @router.get("", response_model=list[WorkspaceRead])
-def list_workspaces(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)) -> list[Workspace]:
+def list_workspaces(
+    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+) -> list[Workspace]:
     return db.query(Workspace).filter(Workspace.owner_user_id == current_user.id).all()
 
 

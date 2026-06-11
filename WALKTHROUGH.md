@@ -1,5 +1,10 @@
 # Walkthrough
 
+## UI proof
+
+![App overview proof](./docs_site/assets/screenshots/app-overview-proof.svg)
+![Report flow proof](./docs_site/assets/screenshots/report-flow-proof.svg)
+
 ## Where to start
 
 1. Read [README.md](./README.md) for positioning.

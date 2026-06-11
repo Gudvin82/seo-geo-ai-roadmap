@@ -60,6 +60,7 @@ Use:
 - `app/`: SaaS-ready backend, frontend, and shared product layer
 - `docker-compose.yml`: self-hosted product stack
 - `infra/` and `docker/`: deployment notes and container assets
+- `alembic/`: database migration layer
 - `examples/`: realistic filled examples
 - `tests/`: pytest validation for key scripts
 - `automation/`: starter automation assets
@@ -152,6 +153,9 @@ python -m pytest app/backend/tests
 - `app/frontend/index.html`
 - `DEPLOYMENT.md`
 - `ARCHITECTURE.md`
+- `SECURITY_CHECKLIST.md`
+- `docs/en/api-reference.md`
+- `docs/en/ai-operator-mode.md`
 
 If the user asks for a turnkey product foundation or self-hosted SaaS setup,
 agents should preserve the methodology layer and extend the app layer instead of

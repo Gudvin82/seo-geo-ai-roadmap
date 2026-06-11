@@ -26,9 +26,18 @@ def _project_for_user(db: Session, project_id: int, current_user: User) -> Proje
 
 
 @router.get("", response_model=list[ArtifactRead])
-def list_artifacts(project_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)) -> list[ArtifactRead]:
+def list_artifacts(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> list[ArtifactRead]:
     _project_for_user(db, project_id, current_user)
-    rows = db.query(Artifact).filter(Artifact.project_id == project_id).order_by(Artifact.id.desc()).all()
+    rows = (
+        db.query(Artifact)
+        .filter(Artifact.project_id == project_id)
+        .order_by(Artifact.id.desc())
+        .all()
+    )
     return [
         ArtifactRead(
             id=row.id,
@@ -45,7 +54,11 @@ def list_artifacts(project_id: int, db: Session = Depends(get_db), current_user:
 
 
 @router.get("/{artifact_id}/download")
-def download_artifact(artifact_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)) -> FileResponse:
+def download_artifact(
+    artifact_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> FileResponse:
     artifact = db.get(Artifact, artifact_id)
     if not artifact:
         raise HTTPException(status_code=404, detail="Artifact not found.")

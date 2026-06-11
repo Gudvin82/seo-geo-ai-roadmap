@@ -4,7 +4,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = REPO_ROOT / "scripts" / "content_freshness_checker.py"
 
@@ -44,4 +43,3 @@ def test_generates_markdown_report(tmp_path: Path) -> None:
     assert "Content freshness report" in content
     assert "stale" in content
     assert "unknown freshness" in content
-

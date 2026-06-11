@@ -3,7 +3,9 @@ from __future__ import annotations
 from fastapi.testclient import TestClient
 
 
-def test_workspace_project_and_audit_flow(client: TestClient, auth_headers: dict[str, str]) -> None:
+def test_workspace_project_and_audit_flow(
+    client: TestClient, auth_headers: dict[str, str]
+) -> None:
     workspace = client.post(
         "/api/v1/workspaces",
         json={"name": "Agency", "slug": "agency"},
@@ -56,8 +58,16 @@ def test_workspace_project_and_audit_flow(client: TestClient, auth_headers: dict
     assert audit.status_code == 200
     assert audit.json()["status"] in {"queued", "completed"}
 
-    reports = client.get(f"/api/v1/reports?project_id={project_id}", headers=auth_headers)
+    reports = client.get(
+        f"/api/v1/reports?project_id={project_id}", headers=auth_headers
+    )
     assert reports.status_code == 200
 
-    artifacts = client.get(f"/api/v1/artifacts?project_id={project_id}", headers=auth_headers)
+    artifacts = client.get(
+        f"/api/v1/artifacts?project_id={project_id}", headers=auth_headers
+    )
     assert artifacts.status_code == 200
+
+    metrics = client.get("/metrics")
+    assert metrics.status_code == 200
+    assert "discoverability_report_generations_total" in metrics.text

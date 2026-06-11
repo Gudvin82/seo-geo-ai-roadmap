@@ -43,7 +43,11 @@ def create_project(
 
 
 @router.get("/{project_id}", response_model=ProjectRead)
-def get_project(project_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)) -> Project:
+def get_project(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> Project:
     project = db.get(Project, project_id)
     if not project:
         raise HTTPException(status_code=404, detail="Project not found.")
@@ -62,7 +66,9 @@ def create_site(
     if not project:
         raise HTTPException(status_code=404, detail="Project not found.")
     _check_workspace(db, project.workspace_id, current_user)
-    site = Site(project_id=project_id, canonical_url=payload.canonical_url, notes=payload.notes)
+    site = Site(
+        project_id=project_id, canonical_url=payload.canonical_url, notes=payload.notes
+    )
     db.add(site)
     db.commit()
     db.refresh(site)
@@ -70,7 +76,11 @@ def create_site(
 
 
 @router.get("/{project_id}/sites", response_model=list[SiteRead])
-def list_sites(project_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)) -> list[Site]:
+def list_sites(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> list[Site]:
     project = db.get(Project, project_id)
     if not project:
         raise HTTPException(status_code=404, detail="Project not found.")

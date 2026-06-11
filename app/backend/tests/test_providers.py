@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pytest
-
 from app.providers.base import ProviderError
 from app.providers.registry import PROVIDERS, build_provider
 

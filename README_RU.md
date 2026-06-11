@@ -10,6 +10,20 @@
 
 [English version](./README.md)
 
+## Позиционирование v2.1.0
+
+Бесплатная и прозрачная self-hosted платформа для аудита, управления и роста SEO, GEO и AI-visible слоя сайта.
+
+Базовые принципы:
+
+- без обязательного paid cloud
+- без обязательной подписки
+- без vendor lock-in
+- self-hosted first
+- прозрачные проверки и outputs
+- AI provider keys только опционально
+- exportable reports, artifacts и data
+
 ## Зачем нужен этот репозиторий
 
 Этот репозиторий собран как execution-first framework для команд, которым нужна единая практическая система на стыке классического SEO, GEO, AI discoverability, Яндекса, контент-операций, governance, отчетности и релизной дисциплины.
@@ -58,6 +72,23 @@
 4. Настройте AI-видимость через [docs/ru/08-geo-ai-search.md](./docs/ru/08-geo-ai-search.md).
 5. Зафиксируйте отчетность через [docs/ru/18-analytics.md](./docs/ru/18-analytics.md) и [ROADMAP.md](./ROADMAP.md).
 
+## App quickstart
+
+- Frontend: `http://localhost:3000`
+- API docs: `http://localhost:8000/docs`
+- ReDoc: `http://localhost:8000/redoc`
+- Health: `http://localhost:8000/healthz`
+- Readiness: `http://localhost:8000/readyz`
+- Metrics: `http://localhost:8000/metrics`
+
+Ключевые entrypoints:
+
+- [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
+- [SECURITY_CHECKLIST_RU.md](./SECURITY_CHECKLIST_RU.md)
+- [docs/ru/api-reference.md](./docs/ru/api-reference.md)
+- [docs/ru/ai-operator-mode.md](./docs/ru/ai-operator-mode.md)
+- [SELF_HOSTED_USE_CASES_RU.md](./SELF_HOSTED_USE_CASES_RU.md)
+
 ## Для AI-агентов и IDE
 
 Если вы используете Codex, Claude Code, Cursor и другие ИИ-агенты, начните с
@@ -84,6 +115,11 @@ AGENTS.md дает агенту:
   [templates/brand-facts-template-ru.md](./templates/brand-facts-template-ru.md)
 - Starter по мониторингу галлюцинаций:
   [examples/hallucination-report-example.md](./examples/hallucination-report-example.md)
+
+### Product proof
+
+![App overview proof](./docs_site/assets/screenshots/app-overview-proof.svg)
+![Report flow proof](./docs_site/assets/screenshots/report-flow-proof.svg)
 
 ## Что уже поддерживает этот репозиторий
 
@@ -141,6 +177,19 @@ CLI-скриптов.
 - В docs-site теперь добавлены app layer, deployment, architecture и API
   overview
 
+## Demo и self-hosted запуск
+
+- `make up` поднимает Docker stack
+- `make demo` поднимает Docker stack и загружает demo data
+- `make migrate` запускает Alembic migrations
+- `make seed` загружает локальный demo seed
+- `./run-local.sh` печатает минимальный локальный startup flow для backend и frontend
+
+Demo credentials после seed:
+
+- Email: `demo@example.com`
+- Password: `DemoPlatform123`
+
 ## SaaS app layer
 
 `v2.0.0` добавляет первый продуктовый слой, не заменяя методологический
@@ -155,12 +204,18 @@ CLI-скриптов.
   Perplexity
 - генерация EN/RU отчетов
 - Docker Compose deployment для self-hosted сценария
+- expiring auth tokens, Argon2id password hashing и basic brute-force protection
+- Alembic migrations и demo seed data
+- Prometheus-style endpoint `/metrics`
 
 Ключевые документы:
 
 - [ARCHITECTURE_RU.md](./ARCHITECTURE_RU.md)
 - [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
 - [OPEN_SOURCE_AND_SAAS_BOUNDARY_RU.md](./OPEN_SOURCE_AND_SAAS_BOUNDARY_RU.md)
+- [SECURITY_CHECKLIST_RU.md](./SECURITY_CHECKLIST_RU.md)
+- [docs/ru/provider-matrix.md](./docs/ru/provider-matrix.md)
+- [docs/ru/cloud-deployments.md](./docs/ru/cloud-deployments.md)
 
 ## Пример промпта
 
@@ -264,6 +319,9 @@ Discoverability OS.
 - `v2.0.0`: добавлены SaaS app layer, multi-provider AI foundation,
   структурированные audit workflows, Docker deployment и EN/RU docs по
   архитектуре и развёртыванию.
+- `v2.1.0`: добавлены более сильная auth security, Alembic migrations,
+  demo seed flow, `/metrics`, API reference docs, operator-mode docs и
+  явное free transparent self-hosted positioning.
 
 ## Что стало заметнее
 

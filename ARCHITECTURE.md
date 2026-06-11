@@ -1,6 +1,6 @@
 # Architecture
 
-## v2.0.0 layer model
+## v2.1.0 layer model
 
 `seo-geo-ai-roadmap` now has four clear layers:
 
@@ -30,6 +30,7 @@ Stack:
 - SQLAlchemy
 - SQLite fallback for local development
 - PostgreSQL-ready deployment through Docker
+- Alembic migrations for production-style schema management
 
 Structure:
 
@@ -38,6 +39,7 @@ Structure:
 - `app/backend/app/providers/` for multi-provider AI abstraction
 - `app/backend/app/models.py` for durable domain entities
 - `app/backend/tests/` for backend and API validation
+- `app/backend/app/seed.py` for demo seed data
 
 ## Frontend architecture
 
@@ -47,6 +49,7 @@ The initial frontend is intentionally simple:
 - no build pipeline required
 - bilingual labels for EN/RU operation
 - direct API integration with the FastAPI backend
+- explicit self-hosted MVP workflow rather than a cloud-only dashboard
 
 This keeps the product layer deployable in self-hosted environments without
 frontend framework sprawl.
@@ -106,6 +109,7 @@ Goals:
 - provider-specific model configuration
 - env-based or config-based credential routing
 - normalized error handling
+- capability-matrix-first documentation
 
 ## Reporting and evidence flow
 
@@ -128,6 +132,7 @@ The supported foundation for `v2.0.0` is:
 - backend container
 - PostgreSQL container
 - optional worker container
+- optional one-command startup through `make up` and `make demo`
 
 See:
 

@@ -24,9 +24,18 @@ def _project_for_user(db: Session, project_id: int, current_user: User) -> Proje
 
 
 @router.get("", response_model=list[ReportRead])
-def list_reports(project_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)) -> list[ReportRead]:
+def list_reports(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> list[ReportRead]:
     _project_for_user(db, project_id, current_user)
-    rows = db.query(Report).filter(Report.project_id == project_id).order_by(Report.id.desc()).all()
+    rows = (
+        db.query(Report)
+        .filter(Report.project_id == project_id)
+        .order_by(Report.id.desc())
+        .all()
+    )
     return [
         ReportRead(
             id=row.id,

@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.1.0 — Turnkey Self-Hosted Hardening
+
+- Hardened authentication with Argon2id password hashing, expiring bearer
+  tokens, and basic brute-force protection
+- Added `SECURITY_CHECKLIST*.md`, `.env.production.example`, and safer
+  environment defaults for production-minded self-hosted deployment
+- Added Alembic migrations, demo seed data, `make` shortcuts, and local startup
+  guidance
+- Added `/metrics`, observability docs, provider matrix docs, AI operator mode
+  docs, API reference docs, and self-hosted use case docs in EN and RU
+- Expanded backend tests and CI quality checks for Python formatting, YAML
+  readability, migrations, and app reliability
+- Repositioned the app layer as a free, transparent, self-hosted platform
+  rather than a cloud-first SaaS claim
+
 ## v2.0.0 — SaaS Foundation and Multi-Provider AI
 
 - Added a first app layer under `app/` with a FastAPI backend, static frontend,

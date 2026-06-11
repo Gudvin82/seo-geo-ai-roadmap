@@ -1,24 +1,34 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime
 from pathlib import Path
 from tempfile import NamedTemporaryFile
-import os
 from typing import Optional
 
 from sqlalchemy.orm import Session
 
 from ..config import Settings
 from ..database import create_session
-from ..models import Artifact, AuditRun, BrandFactsProfile, Project, ProviderConfiguration, Report
+from ..metrics import PROVIDER_CALLS, PROVIDER_FAILURES, REPORT_GENERATIONS
+from ..models import (
+    Artifact,
+    AuditRun,
+    BrandFactsProfile,
+    Project,
+    ProviderConfiguration,
+    Report,
+)
 from ..providers.base import ProviderError
 from ..providers.registry import build_provider
 from .reporting import build_json_report, build_markdown_report, dumps_json
 from .script_runner import run_script
 
 
-def _artifact_path(settings: Settings, audit_run_id: int, slug: str, extension: str) -> Path:
+def _artifact_path(
+    settings: Settings, audit_run_id: int, slug: str, extension: str
+) -> Path:
     artifact_dir = Path(settings.artifact_root) / f"audit-run-{audit_run_id}"
     artifact_dir.mkdir(parents=True, exist_ok=True)
     return artifact_dir / f"{slug}.{extension}"
@@ -59,20 +69,50 @@ def _brand_profile(db: Session, project_id: int) -> Optional[BrandFactsProfile]:
     )
 
 
-def _provider_note(provider: Optional[ProviderConfiguration], prompt: str, settings: Settings) -> tuple[str, dict]:
+def _provider_note(
+    provider: Optional[ProviderConfiguration], prompt: str, settings: Settings
+) -> tuple[str, dict]:
     if not provider or not provider.is_enabled:
-        return "Provider commentary skipped: no enabled provider configuration.", {"status": "skipped"}
+        return "Provider commentary skipped: no enabled provider configuration.", {
+            "status": "skipped"
+        }
     env_var = provider.api_key_env_var or f"{provider.provider_name.upper()}_API_KEY"
-    api_key = getattr(settings, f"{provider.provider_name.lower()}_api_key", "") or os.getenv(env_var, "")
+    api_key = getattr(
+        settings, f"{provider.provider_name.lower()}_api_key", ""
+    ) or os.getenv(env_var, "")
     try:
-        client = build_provider(provider.provider_name, api_key=api_key, model=provider.model, base_url=provider.base_url)
-        response = client.generate_text(prompt, system_prompt="You are a discoverability audit assistant.")
-        return response.content, {"status": response.status, "provider": response.provider, "model": response.model}
+        client = build_provider(
+            provider.provider_name,
+            api_key=api_key,
+            model=provider.model,
+            base_url=provider.base_url,
+        )
+        response = client.generate_text(
+            prompt, system_prompt="You are a discoverability audit assistant."
+        )
+        PROVIDER_CALLS.labels(
+            provider=provider.provider_name, status=response.status
+        ).inc()
+        return response.content, {
+            "status": response.status,
+            "provider": response.provider,
+            "model": response.model,
+        }
     except ProviderError as exc:
-        return f"Provider commentary unavailable: {exc}", {"status": "error", "error": str(exc)}
+        PROVIDER_CALLS.labels(provider=provider.provider_name, status="error").inc()
+        PROVIDER_FAILURES.labels(provider=provider.provider_name).inc()
+        return f"Provider commentary unavailable: {exc}", {
+            "status": "error",
+            "error": str(exc),
+        }
 
 
-def execute_audit_run(db: Session, audit_run: AuditRun, settings: Settings, provider_config_id: Optional[int] = None) -> None:
+def execute_audit_run(
+    db: Session,
+    audit_run: AuditRun,
+    settings: Settings,
+    provider_config_id: Optional[int] = None,
+) -> None:
     project = db.get(Project, audit_run.project_id)
     if not project:
         audit_run.status = "failed"
@@ -80,7 +120,11 @@ def execute_audit_run(db: Session, audit_run: AuditRun, settings: Settings, prov
         return
     selected_checks = json.loads(audit_run.selected_checks_json)
     findings: list[dict] = []
-    provider_config = db.get(ProviderConfiguration, provider_config_id) if provider_config_id else None
+    provider_config = (
+        db.get(ProviderConfiguration, provider_config_id)
+        if provider_config_id
+        else None
+    )
     brand_profile = _brand_profile(db, project.id)
 
     for check_name in selected_checks:
@@ -89,17 +133,25 @@ def execute_audit_run(db: Session, audit_run: AuditRun, settings: Settings, prov
         raw_output = ""
         metadata: dict = {"check": check_name}
         if check_name == "robots_ai_bots":
-            code, stdout, stderr = run_script("check-robots-ai-bots.py", ["--url", project.website_url])
+            code, stdout, stderr = run_script(
+                "check-robots-ai-bots.py", ["--url", project.website_url]
+            )
             raw_output = stdout or stderr
             severity = "medium" if code else "low"
             summary = "Reviewed robots access for AI and search bots."
         elif check_name == "sitemap":
-            code, stdout, stderr = run_script("sitemap-checker.py", ["--url", f"{project.website_url.rstrip('/')}/sitemap.xml"])
+            code, stdout, stderr = run_script(
+                "sitemap-checker.py",
+                ["--url", f"{project.website_url.rstrip('/')}/sitemap.xml"],
+            )
             raw_output = stdout or stderr
             severity = "medium" if code else "low"
             summary = "Validated sitemap accessibility and URL count."
         elif check_name == "llms_txt":
-            code, stdout, stderr = run_script("check-llms-txt.py", ["--url", f"{project.website_url.rstrip('/')}/llms.txt"])
+            code, stdout, stderr = run_script(
+                "check-llms-txt.py",
+                ["--url", f"{project.website_url.rstrip('/')}/llms.txt"],
+            )
             raw_output = stdout or stderr
             severity = "high" if code else "low"
             summary = "Validated llms.txt structure for public AI discovery."
@@ -116,7 +168,9 @@ def execute_audit_run(db: Session, audit_run: AuditRun, settings: Settings, prov
                     str(path),
                 ],
             )
-            raw_output = path.read_text(encoding="utf-8") if path.exists() else stdout or stderr
+            raw_output = (
+                path.read_text(encoding="utf-8") if path.exists() else stdout or stderr
+            )
             severity = "medium" if code else "low"
             summary = "Checked whether content signals look fresh or stale."
         elif check_name == "factual_consistency":
@@ -134,19 +188,29 @@ def execute_audit_run(db: Session, audit_run: AuditRun, settings: Settings, prov
                 f"- Approved claims present: {'yes' if brand_profile and brand_profile.approved_claims.strip() else 'no'}\n"
                 f"- Numeric facts present: {'yes' if brand_profile and brand_profile.numeric_facts_json not in {'[]', ''} else 'no'}\n"
             )
-            summary = "Reviewed the project truth center and factual consistency readiness."
+            summary = (
+                "Reviewed the project truth center and factual consistency readiness."
+            )
         elif check_name == "hallucination_framework":
-            facts_text = brand_profile.facts_markdown if brand_profile else "# Brand facts\nReview manually."
+            facts_text = (
+                brand_profile.facts_markdown
+                if brand_profile
+                else "# Brand facts\nReview manually."
+            )
             questions_text = (
                 "# Questions\n"
                 f"- What does {project.name} do?\n"
                 f"- What markets and languages does {project.name} support?\n"
                 f"- What should users trust most about {project.name}?\n"
             )
-            with NamedTemporaryFile("w", suffix=".md", encoding="utf-8", delete=False) as facts_file:
+            with NamedTemporaryFile(
+                "w", suffix=".md", encoding="utf-8", delete=False
+            ) as facts_file:
                 facts_file.write(facts_text)
                 facts_path = facts_file.name
-            with NamedTemporaryFile("w", suffix=".md", encoding="utf-8", delete=False) as questions_file:
+            with NamedTemporaryFile(
+                "w", suffix=".md", encoding="utf-8", delete=False
+            ) as questions_file:
                 questions_file.write(questions_text)
                 questions_path = questions_file.name
             path = _artifact_path(settings, audit_run.id, "hallucination-report", "md")
@@ -164,15 +228,25 @@ def execute_audit_run(db: Session, audit_run: AuditRun, settings: Settings, prov
                 ],
             )
             provider_prompt = f"Summarize hallucination risk for {project.name} using the truth center."
-            provider_output, provider_meta = _provider_note(provider_config, provider_prompt, settings)
-            raw_output = (path.read_text(encoding="utf-8") if path.exists() else stdout or stderr) + f"\n\nProvider note:\n{provider_output}\n"
+            provider_output, provider_meta = _provider_note(
+                provider_config, provider_prompt, settings
+            )
+            raw_output = (
+                path.read_text(encoding="utf-8") if path.exists() else stdout or stderr
+            ) + f"\n\nProvider note:\n{provider_output}\n"
             metadata.update(provider_meta)
             severity = "medium" if code else "low"
             summary = "Generated a starter hallucination review pack."
         elif check_name == "ai_sov_starter":
             code, stdout, stderr = run_script(
                 "ai-share-of-voice-tracker.py",
-                [project.name, "--queries", "best geo agency,ai visibility audit", "--format", "markdown"],
+                [
+                    project.name,
+                    "--queries",
+                    "best geo agency,ai visibility audit",
+                    "--format",
+                    "markdown",
+                ],
             )
             provider_output, provider_meta = _provider_note(
                 provider_config,
@@ -184,7 +258,11 @@ def execute_audit_run(db: Session, audit_run: AuditRun, settings: Settings, prov
             severity = "medium" if code else "low"
             summary = "Prepared an AI Share of Voice starter workflow."
         elif check_name == "local_yandex_readiness":
-            severity = "low" if "ru" in project.language.lower() or "ru" in project.market.lower() else "medium"
+            severity = (
+                "low"
+                if "ru" in project.language.lower() or "ru" in project.market.lower()
+                else "medium"
+            )
             raw_output = (
                 f"Project market: {project.market}\n"
                 f"Project language: {project.language}\n"
@@ -228,7 +306,9 @@ def execute_audit_run(db: Session, audit_run: AuditRun, settings: Settings, prov
 
     penalties = {"critical": 30, "high": 15, "medium": 7, "low": 3}
     score = max(0, 100 - sum(penalties[item["severity"]] for item in findings))
-    report_markdown = build_markdown_report(audit_run.report_language, project.name, findings, score)
+    report_markdown = build_markdown_report(
+        audit_run.report_language, project.name, findings, score
+    )
     report_json = build_json_report(project.name, findings, score)
     _persist_artifact(
         db,
@@ -263,10 +343,13 @@ def execute_audit_run(db: Session, audit_run: AuditRun, settings: Settings, prov
     audit_run.finding_groups_json = json.dumps(findings, ensure_ascii=False)
     audit_run.completed_at = datetime.utcnow()
     db.add(report)
+    REPORT_GENERATIONS.labels(language=audit_run.report_language).inc()
     db.commit()
 
 
-def execute_audit_run_by_id(settings: Settings, audit_run_id: int, provider_config_id: Optional[int] = None) -> None:
+def execute_audit_run_by_id(
+    settings: Settings, audit_run_id: int, provider_config_id: Optional[int] = None
+) -> None:
     db = create_session()
     try:
         audit_run = db.get(AuditRun, audit_run_id)

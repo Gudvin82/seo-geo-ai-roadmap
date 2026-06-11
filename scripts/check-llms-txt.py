@@ -22,7 +22,9 @@ def load_from_file(path: str) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate llms.txt structure from --url or --file.")
+    parser = argparse.ArgumentParser(
+        description="Validate llms.txt structure from --url or --file."
+    )
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--url", help="URL to llms.txt")
     group.add_argument("--file", help="Local llms.txt path")
@@ -33,9 +35,15 @@ def main() -> int:
         print(f"Unable to load llms.txt: {exc}", file=sys.stderr)
         return 1
     lines = [line.strip() for line in content.splitlines() if line.strip()]
-    missing = [hint for hint in REQUIRED_HINTS if not any(hint in line.lower() for line in lines)]
+    missing = [
+        hint
+        for hint in REQUIRED_HINTS
+        if not any(hint in line.lower() for line in lines)
+    ]
     has_header = any(line.startswith("#") for line in lines)
-    bullet_like = [line for line in lines if line.startswith(("-", "*", ">")) or " - " in line]
+    bullet_like = [
+        line for line in lines if line.startswith(("-", "*", ">")) or " - " in line
+    ]
     print(f"Checked {len(lines)} non-empty lines")
     if missing or not has_header or not bullet_like:
         print("Missing sections:")

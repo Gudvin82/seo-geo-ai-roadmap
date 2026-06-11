@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" fill="none">
+  <rect width="1440" height="900" fill="#f4efe6"/>
+  <rect x="48" y="48" width="1344" height="804" rx="32" fill="#fffaf3" stroke="#d7d0c7"/>
+  <text x="92" y="108" fill="#0f766e" font-family="Arial, sans-serif" font-size="20">Proof asset for v2.1.0</text>
+  <text x="92" y="156" fill="#172225" font-family="Arial, sans-serif" font-size="38" font-weight="700">Audit flow from self-hosted project to exportable report</text>
+
+  <rect x="92" y="212" width="280" height="560" rx="28" fill="#ffffff" stroke="#d7d0c7"/>
+  <text x="120" y="260" fill="#172225" font-family="Arial, sans-serif" font-size="24" font-weight="700">1. Input layer</text>
+  <text x="120" y="304" fill="#596468" font-family="Arial, sans-serif" font-size="18">Workspace</text>
+  <text x="120" y="336" fill="#596468" font-family="Arial, sans-serif" font-size="18">Project</text>
+  <text x="120" y="368" fill="#596468" font-family="Arial, sans-serif" font-size="18">Brand facts</text>
+  <text x="120" y="400" fill="#596468" font-family="Arial, sans-serif" font-size="18">Provider config</text>
+  <text x="120" y="432" fill="#596468" font-family="Arial, sans-serif" font-size="18">Audit preset</text>
+  <text x="120" y="500" fill="#172225" font-family="Arial, sans-serif" font-size="24" font-weight="700">Transparent inputs</text>
+  <text x="120" y="536" fill="#596468" font-family="Arial, sans-serif" font-size="18">No mandatory cloud</text>
+  <text x="120" y="568" fill="#596468" font-family="Arial, sans-serif" font-size="18">Optional AI provider keys</text>
+  <text x="120" y="600" fill="#596468" font-family="Arial, sans-serif" font-size="18">Self-hosted first</text>
+
+  <rect x="432" y="212" width="576" height="560" rx="28" fill="#ffffff" stroke="#d7d0c7"/>
+  <text x="464" y="260" fill="#172225" font-family="Arial, sans-serif" font-size="24" font-weight="700">2. Audit execution layer</text>
+  <rect x="464" y="300" width="512" height="84" rx="20" fill="#fffaf3" stroke="#d7d0c7"/>
+  <text x="492" y="348" fill="#596468" font-family="Arial, sans-serif" font-size="18">robots / AI bots, sitemap, llms.txt, factual consistency, freshness</text>
+  <rect x="464" y="410" width="512" height="84" rx="20" fill="#fffaf3" stroke="#d7d0c7"/>
+  <text x="492" y="458" fill="#596468" font-family="Arial, sans-serif" font-size="18">AI commentary via OpenAI / Claude / Gemini / Perplexity if keys are present</text>
+  <rect x="464" y="520" width="512" height="84" rx="20" fill="#fffaf3" stroke="#d7d0c7"/>
+  <text x="492" y="568" fill="#596468" font-family="Arial, sans-serif" font-size="18">Metrics, artifacts, and report counters remain inspectable</text>
+  <rect x="464" y="630" width="240" height="48" rx="24" fill="#0f766e"/>
+  <text x="524" y="662" fill="#ffffff" font-family="Arial, sans-serif" font-size="18" font-weight="700">Run audit</text>
+
+  <rect x="1068" y="212" width="292" height="560" rx="28" fill="#ffffff" stroke="#d7d0c7"/>
+  <text x="1098" y="260" fill="#172225" font-family="Arial, sans-serif" font-size="24" font-weight="700">3. Outputs</text>
+  <text x="1098" y="310" fill="#596468" font-family="Arial, sans-serif" font-size="18">Markdown report</text>
+  <text x="1098" y="344" fill="#596468" font-family="Arial, sans-serif" font-size="18">JSON report</text>
+  <text x="1098" y="378" fill="#596468" font-family="Arial, sans-serif" font-size="18">Artifacts</text>
+  <text x="1098" y="412" fill="#596468" font-family="Arial, sans-serif" font-size="18">Metrics</text>
+  <text x="1098" y="446" fill="#596468" font-family="Arial, sans-serif" font-size="18">Implementation tasks</text>
+  <text x="1098" y="520" fill="#172225" font-family="Arial, sans-serif" font-size="24" font-weight="700">Exportable by design</text>
+  <text x="1098" y="556" fill="#596468" font-family="Arial, sans-serif" font-size="18">The user owns deployment, data, and adaptation logic.</text>
+</svg>

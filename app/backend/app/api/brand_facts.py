@@ -24,9 +24,17 @@ def _project_for_user(db: Session, project_id: int, current_user: User) -> Proje
 
 
 @router.get("/{project_id}", response_model=list[BrandFactsRead])
-def list_brand_facts(project_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)) -> list[BrandFactsRead]:
+def list_brand_facts(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> list[BrandFactsRead]:
     _project_for_user(db, project_id, current_user)
-    rows = db.query(BrandFactsProfile).filter(BrandFactsProfile.project_id == project_id).all()
+    rows = (
+        db.query(BrandFactsProfile)
+        .filter(BrandFactsProfile.project_id == project_id)
+        .all()
+    )
     return [
         BrandFactsRead(
             id=row.id,

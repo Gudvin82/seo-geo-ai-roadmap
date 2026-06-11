@@ -1,6 +1,6 @@
 # Архитектура
 
-## Модель слоев v2.0.0
+## Модель слоев v2.1.0
 
 Теперь `seo-geo-ai-roadmap` состоит из четырех понятных слоев:
 
@@ -29,6 +29,7 @@
 - SQLAlchemy
 - SQLite как fallback для локальной разработки
 - готовность к PostgreSQL через Docker
+- Alembic migrations для production-style управления схемой
 
 Структура:
 
@@ -37,6 +38,7 @@
 - `app/backend/app/providers/` для мультипровайдерной AI-абстракции
 - `app/backend/app/models.py` для доменной модели
 - `app/backend/tests/` для backend и API-валидации
+- `app/backend/app/seed.py` для demo seed data
 
 ## Архитектура frontend
 
@@ -46,6 +48,7 @@
 - без обязательного build-step
 - двуязычные EN/RU labels
 - прямое подключение к FastAPI backend
+- явный self-hosted MVP workflow вместо cloud-only дашборда
 
 Это делает продуктовый слой разворачиваемым без лишнего frontend-спrawl.
 
@@ -104,6 +107,7 @@
 - настройка модели на уровне провайдера
 - маршрутизация ключей через env или config
 - нормализованная обработка ошибок
+- документация capability matrix как часть прозрачности
 
 ## Reporting и evidence flow
 
@@ -126,6 +130,7 @@
 - контейнер backend
 - контейнер PostgreSQL
 - опциональный worker
+- опциональный one-command startup через `make up` и `make demo`
 
 См.:
 

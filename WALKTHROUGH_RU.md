@@ -1,5 +1,10 @@
 # Пошаговый Разбор
 
+## UI proof
+
+![App overview proof](./docs_site/assets/screenshots/app-overview-proof.svg)
+![Report flow proof](./docs_site/assets/screenshots/report-flow-proof.svg)
+
 ## С чего начать
 
 1. Прочитайте [README_RU.md](./README_RU.md) для positioning.

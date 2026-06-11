@@ -14,7 +14,7 @@ The repository methodology remains fully visible and reusable:
 
 ## What the app layer adds
 
-`v2.0.0` adds a deployable product foundation:
+`v2.1.0` adds a deployable product foundation:
 
 - authentication
 - workspaces and projects
@@ -23,6 +23,18 @@ The repository methodology remains fully visible and reusable:
 - EN/RU report generation
 - provider configuration
 - self-hosted deployment foundation
+- expiring auth tokens and stronger password handling
+- migrations, demo seed data, and observability basics
+
+## Explicit platform promise
+
+This platform is:
+
+- free
+- transparent
+- self-hosted first
+- compatible with optional AI provider keys
+- exportable by design
 
 ## How self-hosting works
 

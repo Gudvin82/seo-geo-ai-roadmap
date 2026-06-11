@@ -14,7 +14,7 @@
 
 ## Что добавляет app layer
 
-`v2.0.0` добавляет разворачиваемый foundation продукта:
+`v2.1.0` добавляет разворачиваемый foundation продукта:
 
 - авторизацию
 - workspaces и projects
@@ -23,6 +23,18 @@
 - генерацию EN/RU отчетов
 - конфигурацию провайдеров
 - self-hosted deployment foundation
+- expiring auth tokens и более сильную работу с паролями
+- migrations, demo seed data и базовую observability
+
+## Явное обещание платформы
+
+Эта платформа:
+
+- бесплатная
+- прозрачная
+- self-hosted first
+- совместима с опциональными AI provider keys
+- exportable by design
 
 ## Как работает self-hosting
 

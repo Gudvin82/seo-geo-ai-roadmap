@@ -12,7 +12,6 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-
 TYPE_HINTS = [
     ("/faq", "FAQ and direct answers"),
     ("/about", "Company profile and expert proof"),
@@ -56,9 +55,13 @@ def load_sitemap(url: str | None, file_path: str | None) -> bytes:
             with urllib.request.urlopen(url, timeout=20) as response:
                 return response.read()
         except urllib.error.URLError as exc:
-            raise RuntimeError(f"Network failure while fetching sitemap URL: {exc}") from exc
+            raise RuntimeError(
+                f"Network failure while fetching sitemap URL: {exc}"
+            ) from exc
     if not file_path:
-        raise RuntimeError("Missing sitemap source: pass --sitemap-url or --sitemap-file.")
+        raise RuntimeError(
+            "Missing sitemap source: pass --sitemap-url or --sitemap-file."
+        )
     path = Path(file_path)
     if not path.exists():
         raise RuntimeError(f"Unreadable sitemap file: {path} does not exist.")
@@ -120,7 +123,9 @@ def main() -> int:
         data = load_sitemap(args.sitemap_url, args.sitemap_file)
         entries = extract_entries(data)
         if not entries:
-            raise RuntimeError("Zero URLs parsed from sitemap. Aborting llms.txt generation.")
+            raise RuntimeError(
+                "Zero URLs parsed from sitemap. Aborting llms.txt generation."
+            )
     except RuntimeError as exc:
         print(f"Failed to generate llms.txt: {exc}", file=sys.stderr)
         return 1
@@ -130,7 +135,9 @@ def main() -> int:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(output, encoding="utf-8")
 
-    source_label = args.sitemap_url or os.fspath(Path(args.sitemap_file or "").resolve())
+    source_label = args.sitemap_url or os.fspath(
+        Path(args.sitemap_file or "").resolve()
+    )
     included = len(entries) - skipped
     print(f"Source: {source_label}")
     print(f"Processed URLs: {len(entries)}")

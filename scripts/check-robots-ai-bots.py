@@ -66,20 +66,34 @@ def parse_groups(content: str) -> list[dict[str, list[str]]]:
 
 
 def evaluate_bot(groups: list[dict[str, list[str]]], bot: str) -> tuple[str, str]:
-    exact = next((group for group in groups if group["agent"].lower() == bot.lower()), None)
+    exact = next(
+        (group for group in groups if group["agent"].lower() == bot.lower()), None
+    )
     wildcard = next((group for group in groups if group["agent"] == "*"), None)
     target = exact or wildcard
     if target is None:
-        return "unspecified", "No matching group found. Add an explicit rule if this bot matters to your strategy."
+        return (
+            "unspecified",
+            "No matching group found. Add an explicit rule if this bot matters to your strategy.",
+        )
     allows = target.get("allow", [])
     disallows = target.get("disallow", [])
     if "/" in disallows and "/" not in allows:
-        return "blocked", "Public content is blocked for this bot. Review whether that matches policy."
+        return (
+            "blocked",
+            "Public content is blocked for this bot. Review whether that matches policy.",
+        )
     if "/" in allows:
         return "allowed", "Top-level access is explicitly allowed."
     if not allows and not disallows:
-        return "unspecified", "The group exists but has no path rules. Make intent explicit."
-    return "unspecified", "There are partial rules. Manually review whether key public pages are reachable."
+        return (
+            "unspecified",
+            "The group exists but has no path rules. Make intent explicit.",
+        )
+    return (
+        "unspecified",
+        "There are partial rules. Manually review whether key public pages are reachable.",
+    )
 
 
 def print_table(results: list[tuple[str, str, str]]) -> None:
@@ -90,8 +104,12 @@ def print_table(results: list[tuple[str, str, str]]) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Check robots.txt access for AI and search bots.")
-    parser.add_argument("--url", required=True, help="Site URL, for example https://example.com")
+    parser = argparse.ArgumentParser(
+        description="Check robots.txt access for AI and search bots."
+    )
+    parser.add_argument(
+        "--url", required=True, help="Site URL, for example https://example.com"
+    )
     args = parser.parse_args()
     try:
         robots_url, content = fetch_robots(args.url)

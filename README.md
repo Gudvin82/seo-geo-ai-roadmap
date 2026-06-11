@@ -10,6 +10,20 @@ Not another SEO checklist. An operating system for search, AI visibility, and mu
 
 [Русская версия](./README_RU.md)
 
+## v2.1.0 positioning
+
+A free and transparent self-hosted platform for SEO, GEO, and AI discoverability audits, workflows, and reports.
+
+Core principles:
+
+- no mandatory paid cloud
+- no mandatory subscription
+- no vendor lock-in
+- self-hosted first
+- transparent checks and outputs
+- optional AI provider keys only
+- exportable reports, artifacts, and data
+
 ## Why this repository exists
 
 This project is built as an execution-first framework for teams that need one practical system across classic SEO, GEO, AI discoverability, Yandex, content operations, governance, reporting, and release discipline.
@@ -57,6 +71,23 @@ This project is built as an execution-first framework for teams that need one pr
 4. Implement AI visibility with [docs/en/08-geo-ai-search.md](./docs/en/08-geo-ai-search.md).
 5. Set reporting discipline with [docs/en/18-analytics.md](./docs/en/18-analytics.md) and [ROADMAP.md](./ROADMAP.md).
 
+## App quickstart
+
+- Frontend: `http://localhost:3000`
+- API docs: `http://localhost:8000/docs`
+- ReDoc: `http://localhost:8000/redoc`
+- Health: `http://localhost:8000/healthz`
+- Readiness: `http://localhost:8000/readyz`
+- Metrics: `http://localhost:8000/metrics`
+
+Useful entrypoints:
+
+- [DEPLOYMENT.md](./DEPLOYMENT.md)
+- [SECURITY_CHECKLIST.md](./SECURITY_CHECKLIST.md)
+- [docs/en/api-reference.md](./docs/en/api-reference.md)
+- [docs/en/ai-operator-mode.md](./docs/en/ai-operator-mode.md)
+- [SELF_HOSTED_USE_CASES.md](./SELF_HOSTED_USE_CASES.md)
+
 ## For AI coding agents
 
 If you are using Codex, Claude Code, Cursor, or other AI coding agents, start
@@ -82,6 +113,11 @@ AGENTS.md gives agents:
 - Brand facts starter: [templates/brand-facts-template.md](./templates/brand-facts-template.md)
 - Hallucination monitoring starter:
   [examples/hallucination-report-example.md](./examples/hallucination-report-example.md)
+
+### Product proof
+
+![App overview proof](./docs_site/assets/screenshots/app-overview-proof.svg)
+![Report flow proof](./docs_site/assets/screenshots/report-flow-proof.svg)
 
 ## What this repo already powers
 
@@ -136,6 +172,19 @@ See [scripts/README.md](./scripts/README.md) for full CLI usage examples.
 - The docs-site now includes the app layer, deployment, architecture, and API
   overview
 
+## Demo and self-hosted startup
+
+- `make up` runs the Docker stack
+- `make demo` starts the Docker stack and seeds demo data
+- `make migrate` runs Alembic migrations
+- `make seed` loads demo seed data locally
+- `./run-local.sh` prints the minimal local backend + frontend startup flow
+
+Demo credentials after seeding:
+
+- Email: `demo@example.com`
+- Password: `DemoPlatform123`
+
 ## SaaS app layer
 
 `v2.0.0` introduces the first product layer without replacing the methodology
@@ -150,12 +199,18 @@ What it includes:
   Perplexity
 - EN/RU report generation
 - Docker Compose deployment for self-hosted usage
+- expiring auth tokens, Argon2id password hashing, and basic brute-force protection
+- Alembic migrations and demo seed data
+- Prometheus-style `/metrics` endpoint
 
 Key docs:
 
 - [ARCHITECTURE.md](./ARCHITECTURE.md)
 - [DEPLOYMENT.md](./DEPLOYMENT.md)
 - [OPEN_SOURCE_AND_SAAS_BOUNDARY.md](./OPEN_SOURCE_AND_SAAS_BOUNDARY.md)
+- [SECURITY_CHECKLIST.md](./SECURITY_CHECKLIST.md)
+- [docs/en/provider-matrix.md](./docs/en/provider-matrix.md)
+- [docs/en/cloud-deployments.md](./docs/en/cloud-deployments.md)
 
 ## Example prompt
 
@@ -258,6 +313,9 @@ live, Vibe Coding Protocols is a natural add-on.
 - `v2.0.0`: added the SaaS app layer, multi-provider AI foundation, structured
   audit workflows, Docker deployment, and EN/RU architecture and deployment
   docs.
+- `v2.1.0`: hardens the self-hosted platform with stronger auth security,
+  Alembic migrations, demo seed flow, `/metrics`, API reference docs,
+  operator-mode docs, and explicit free transparent deployment framing.
 
 ## Visibility additions
 

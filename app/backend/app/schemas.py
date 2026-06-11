@@ -9,11 +9,13 @@ from pydantic import BaseModel, Field, field_validator
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+    expires_at: datetime
+    expires_in_seconds: int
 
 
 class UserCreate(BaseModel):
     email: str
-    password: str = Field(min_length=8)
+    password: str = Field(min_length=12)
 
     @field_validator("email")
     @classmethod
@@ -22,6 +24,18 @@ class UserCreate(BaseModel):
         if "@" not in email or email.startswith("@") or email.endswith("@"):
             raise ValueError("A valid email address is required.")
         return email
+
+    @field_validator("password")
+    @classmethod
+    def validate_password(cls, value: str) -> str:
+        has_upper = any(ch.isupper() for ch in value)
+        has_lower = any(ch.islower() for ch in value)
+        has_digit = any(ch.isdigit() for ch in value)
+        if not (has_upper and has_lower and has_digit):
+            raise ValueError(
+                "Password must include uppercase, lowercase, and numeric characters."
+            )
+        return value
 
 
 class UserRead(BaseModel):
@@ -139,6 +153,17 @@ class ProviderConfigCreate(BaseModel):
     base_url: Optional[str] = None
     is_enabled: bool = True
 
+    @field_validator("provider_name")
+    @classmethod
+    def validate_provider_name(cls, value: str) -> str:
+        provider = value.strip().lower()
+        allowed = {"openai", "anthropic", "gemini", "perplexity"}
+        if provider not in allowed:
+            raise ValueError(
+                f"Unsupported provider '{value}'. Allowed: {', '.join(sorted(allowed))}."
+            )
+        return provider
+
 
 class ProviderConfigRead(BaseModel):
     id: int
@@ -237,3 +262,11 @@ class ArtifactRead(BaseModel):
 
 class ApiMessage(BaseModel):
     message: str
+
+
+class SovCheckRequest(BaseModel):
+    brand: str
+    queries: list[str]
+    providers: list[str] = Field(default_factory=list)
+    market: Optional[str] = None
+    language: Optional[str] = None

@@ -24,9 +24,15 @@ def _project_for_user(db: Session, project_id: int, current_user: User) -> Proje
 
 
 @router.get("", response_model=list[ScheduledCheckRead])
-def list_scheduled_checks(project_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)) -> list[ScheduledCheckRead]:
+def list_scheduled_checks(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> list[ScheduledCheckRead]:
     _project_for_user(db, project_id, current_user)
-    rows = db.query(ScheduledCheck).filter(ScheduledCheck.project_id == project_id).all()
+    rows = (
+        db.query(ScheduledCheck).filter(ScheduledCheck.project_id == project_id).all()
+    )
     return [
         ScheduledCheckRead(
             id=row.id,

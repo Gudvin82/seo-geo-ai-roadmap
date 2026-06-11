@@ -11,7 +11,10 @@ def classify(keyword: str) -> str:
     text = keyword.lower()
     if any(token in text for token in ["buy", "price", "cost", "заказать", "цена"]):
         return "commercial"
-    if any(token in text for token in ["best", "vs", "compare", "alternative", "лучший", "сравнение"]):
+    if any(
+        token in text
+        for token in ["best", "vs", "compare", "alternative", "лучший", "сравнение"]
+    ):
         return "comparison"
     if any(token in text for token in ["what is", "how", "guide", "что такое", "как"]):
         return "informational"
@@ -19,7 +22,9 @@ def classify(keyword: str) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Group keywords by rough search intent.")
+    parser = argparse.ArgumentParser(
+        description="Group keywords by rough search intent."
+    )
     parser.add_argument("keywords", nargs="+", help="Keyword list")
     args = parser.parse_args()
     clusters: dict[str, list[str]] = defaultdict(list)

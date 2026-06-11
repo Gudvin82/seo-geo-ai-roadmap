@@ -1,14 +1,16 @@
 # Деплой
 
-## Что поддерживает v2.0.0
+## Что поддерживает v2.1.0
 
-`v2.0.0` — это первый self-hostable продуктовый слой репозитория.
+`v2.1.0` — это turnkey self-hosted hardening релиз продуктового слоя.
 
 Поддерживаемые сценарии:
 
 - локальный backend с SQLite
 - Docker Compose с PostgreSQL
 - self-hosted foundation из frontend + backend + worker
+- demo seed mode
+- production-style migration flow
 
 ## Быстрый старт через Docker Compose
 
@@ -23,6 +25,8 @@ cp .env.example .env
 - `APP_SECRET_KEY`
 - `OPENAI_API_KEY` и другие ключи провайдеров при необходимости
 - `APP_CORS_ORIGINS`, если frontend будет на другом хосте
+- `POSTGRES_PASSWORD`
+- `APP_AUTO_CREATE_SCHEMA=false` для production-style migration discipline
 
 1. Поднимите стек:
 
@@ -35,6 +39,24 @@ docker compose up --build
 - frontend: `http://localhost:3000`
 - backend API: `http://localhost:8000`
 - health check: `http://localhost:8000/healthz`
+- readiness check: `http://localhost:8000/readyz`
+- metrics: `http://localhost:8000/metrics`
+- API docs: `http://localhost:8000/docs`
+
+## Demo mode
+
+1. Поднимите стек:
+
+```bash
+make demo
+```
+
+1. Войдите с данными:
+
+- `demo@example.com`
+- `DemoPlatform123`
+
+1. Откройте frontend и посмотрите seeded workspace, project, report и artifact data.
 
 ## Локальная разработка backend без Docker
 
@@ -50,6 +72,20 @@ uvicorn app.backend.app.main:app --reload
 - SQLite
 - путь: `app/backend/data/discoverability.db`
 
+## Migrations
+
+Для явного обновления схемы используйте Alembic:
+
+```bash
+PYTHONPATH=app/backend ./.venv/bin/python -m alembic upgrade head
+```
+
+Shortcut:
+
+```bash
+make migrate
+```
+
 ## Переменные окружения
 
 Основные настройки приложения:
@@ -59,6 +95,10 @@ uvicorn app.backend.app.main:app --reload
 - `APP_ARTIFACT_ROOT`
 - `APP_DEFAULT_REPORT_LANGUAGE`
 - `APP_CORS_ORIGINS`
+- `APP_TOKEN_TTL_MINUTES`
+- `APP_LOGIN_ATTEMPT_WINDOW_SECONDS`
+- `APP_LOGIN_ATTEMPT_LIMIT`
+- `APP_AUTO_CREATE_SCHEMA`
 
 Провайдеры:
 
@@ -110,7 +150,29 @@ Docker / infra:
 - готовность database service
 - креды в `.env`
 
+## Production mode notes
+
+- ставьте `APP_AUTO_CREATE_SCHEMA=false`
+- прогоняйте Alembic migrations до подачи трафика
+- терминируйте HTTPS через reverse proxy или load balancer
+- регулярно ротируйте secrets и provider keys
+- делайте backup PostgreSQL и artifact storage
+
+## Reverse proxy note
+
+Для production ставьте стек за Nginx, Caddy, Traefik или аналогичный reverse proxy,
+чтобы HTTPS, headers и routing были явными и проверяемыми.
+
+## Backup note
+
+Минимум нужно резервировать:
+
+- PostgreSQL data
+- `APP_ARTIFACT_ROOT`
+- deployment secrets вне репозитория
+
 ## Связанные документы
 
 - [ARCHITECTURE_RU.md](./ARCHITECTURE_RU.md)
 - [OPEN_SOURCE_AND_SAAS_BOUNDARY_RU.md](./OPEN_SOURCE_AND_SAAS_BOUNDARY_RU.md)
+- [SECURITY_CHECKLIST_RU.md](./SECURITY_CHECKLIST_RU.md)

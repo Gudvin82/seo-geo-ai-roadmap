@@ -15,8 +15,16 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Create a hallucination-checking scaffold from brand facts and question prompts."
     )
-    parser.add_argument("--brand-facts-file", required=True, help="Markdown or JSON file with canonical brand facts.")
-    parser.add_argument("--questions-file", required=True, help="Markdown, TXT, or JSON file with question prompts.")
+    parser.add_argument(
+        "--brand-facts-file",
+        required=True,
+        help="Markdown or JSON file with canonical brand facts.",
+    )
+    parser.add_argument(
+        "--questions-file",
+        required=True,
+        help="Markdown, TXT, or JSON file with question prompts.",
+    )
     parser.add_argument("--output-file", required=True, help="Report output path.")
     parser.add_argument(
         "--format",
@@ -24,8 +32,12 @@ def parse_args() -> argparse.Namespace:
         default="markdown",
         help="Report output format (default: markdown)",
     )
-    parser.add_argument("--provider", help="Optional provider label for future live integrations.")
-    parser.add_argument("--model", help="Optional model label for future live integrations.")
+    parser.add_argument(
+        "--provider", help="Optional provider label for future live integrations."
+    )
+    parser.add_argument(
+        "--model", help="Optional model label for future live integrations."
+    )
     return parser.parse_args()
 
 
@@ -68,7 +80,9 @@ def parse_brand_facts(value: str | dict) -> dict[str, list[str]]:
 def parse_questions(value: str | dict) -> list[str]:
     if isinstance(value, dict):
         if isinstance(value.get("questions"), list):
-            return [str(item).strip() for item in value["questions"] if str(item).strip()]
+            return [
+                str(item).strip() for item in value["questions"] if str(item).strip()
+            ]
         return [str(val).strip() for val in value.values() if str(val).strip()]
     questions: list[str] = []
     for raw_line in value.splitlines():
@@ -88,21 +102,36 @@ def infer_expected_facts(question: str, brand_facts: dict[str, list[str]]) -> st
         if key in normalized:
             matches.extend(values)
     if not matches:
-        for key in ("official brand name", "preferred short name", "website", "core products", "core services"):
+        for key in (
+            "official brand name",
+            "preferred short name",
+            "website",
+            "core products",
+            "core services",
+        ):
             matches.extend(brand_facts.get(key, []))
     if not matches:
         flat = [item for values in brand_facts.values() for item in values]
         matches = flat[:3]
-    return "; ".join(matches[:5]) if matches else "Review manually against canonical facts."
+    return (
+        "; ".join(matches[:5])
+        if matches
+        else "Review manually against canonical facts."
+    )
 
 
-def build_rows(brand_facts: dict[str, list[str]], questions: list[str], provider: str | None, model: str | None) -> list[dict[str, str]]:
-    answer_placeholder = "Manual answer capture or optional provider integration goes here."
+def build_rows(
+    brand_facts: dict[str, list[str]],
+    questions: list[str],
+    provider: str | None,
+    model: str | None,
+) -> list[dict[str, str]]:
+    answer_placeholder = (
+        "Manual answer capture or optional provider integration goes here."
+    )
     next_action = "Compare the answer against the expected facts and log any drift."
     if provider or model:
-        next_action = (
-            "Capture the live answer from the configured provider/model, then compare it against canonical facts."
-        )
+        next_action = "Capture the live answer from the configured provider/model, then compare it against canonical facts."
     rows: list[dict[str, str]] = []
     for question in questions:
         rows.append(
@@ -117,7 +146,9 @@ def build_rows(brand_facts: dict[str, list[str]], questions: list[str], provider
     return rows
 
 
-def render_markdown(rows: list[dict[str, str]], provider: str | None, model: str | None) -> str:
+def render_markdown(
+    rows: list[dict[str, str]], provider: str | None, model: str | None
+) -> str:
     lines = ["# Hallucination checking report", ""]
     if provider or model:
         lines.append(f"Provider context: {provider or 'manual'} / {model or 'default'}")
@@ -141,7 +172,13 @@ def write_csv(rows: list[dict[str, str]], output_path: Path) -> None:
     with output_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(
             handle,
-            fieldnames=["question", "expected_facts", "answer_placeholder", "discrepancy_status", "next_action"],
+            fieldnames=[
+                "question",
+                "expected_facts",
+                "answer_placeholder",
+                "discrepancy_status",
+                "next_action",
+            ],
         )
         writer.writeheader()
         for row in rows:
@@ -171,9 +208,14 @@ def main() -> int:
     if args.format == "csv":
         write_csv(rows, output_path)
     elif args.format == "json":
-        output_path.write_text(json.dumps({"rows": rows}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        output_path.write_text(
+            json.dumps({"rows": rows}, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
     else:
-        output_path.write_text(render_markdown(rows, args.provider, args.model), encoding="utf-8")
+        output_path.write_text(
+            render_markdown(rows, args.provider, args.model), encoding="utf-8"
+        )
     print(f"Questions processed: {len(rows)}")
     print(f"Output file: {output_path}")
     return 0

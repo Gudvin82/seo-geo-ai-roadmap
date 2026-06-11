@@ -7,7 +7,9 @@ import argparse
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Create a content inventory table from URLs.")
+    parser = argparse.ArgumentParser(
+        description="Create a content inventory table from URLs."
+    )
     parser.add_argument("urls", nargs="+", help="List of URLs")
     args = parser.parse_args()
     print("| URL | Intent | Funnel | Owner | Refresh rule | Notes |")
