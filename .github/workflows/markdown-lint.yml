@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DavidAnson/markdownlint-cli2-action@v18
+      - uses: actions/setup-node@v4
         with:
-          globs: |
-            **/*.md
+          node-version: "20"
+      - name: Run markdownlint
+        run: npx markdownlint-cli2 "**/*.md"
