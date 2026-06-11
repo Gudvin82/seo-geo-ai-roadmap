@@ -170,6 +170,8 @@ If GitHub Pages fails:
 - inspect `mkdocs.yml`
 - confirm navigation paths exist
 - check the Pages workflow on `main`
+- enable repository Pages settings and set `ENABLE_GITHUB_PAGES=true` before
+  expecting deploy to run
 - rebuild locally before editing workflow YAML
 
 ## Definition of Done

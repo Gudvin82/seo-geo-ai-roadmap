@@ -132,6 +132,8 @@ CLI-скриптов.
 
 - Поставка docs-site настроена через GitHub Pages в
   [`.github/workflows/docs-site.yml`](./.github/workflows/docs-site.yml)
+- Build запускается на каждом push, а deploy включается после настройки Pages и
+  установки переменной репозитория `ENABLE_GITHUB_PAGES=true`
 - Локальный preview: `pip install mkdocs-material && mkdocs serve`
 
 ## Пример промпта

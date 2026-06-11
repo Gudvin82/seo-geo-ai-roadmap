@@ -127,6 +127,8 @@ See [scripts/README.md](./scripts/README.md) for full CLI usage examples.
 
 - Docs site delivery is configured through GitHub Pages in
   [`.github/workflows/docs-site.yml`](./.github/workflows/docs-site.yml)
+- Build runs on every push; deployment is opt-in after Pages is enabled and the
+  repository variable `ENABLE_GITHUB_PAGES=true` is set
 - Local preview: `pip install mkdocs-material && mkdocs serve`
 
 ## Example prompt
