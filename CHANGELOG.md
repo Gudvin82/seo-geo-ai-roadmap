@@ -1,5 +1,24 @@
 # Changelog
 
+## v2.0.0 — SaaS Foundation and Multi-Provider AI
+
+- Added a first app layer under `app/` with a FastAPI backend, static frontend,
+  shared folder, and worker stub
+- Introduced user, workspace, project, site, audit run, report, provider,
+  brand-facts, prompt-set, artifact, and scheduled-check domain foundations
+- Added multi-provider AI abstraction for OpenAI, Anthropic/Claude, Gemini, and
+  Perplexity with normalized provider handling
+- Added structured audit execution, evidence storage, EN/RU reporting, and
+  repo-asset reuse through API endpoints
+- Added Dockerized self-hosted deployment foundations for backend, frontend,
+  worker, and PostgreSQL
+- Added architecture, deployment, and open-source vs SaaS boundary docs in
+  English and Russian
+- Extended CI coverage to run repository tests, backend API tests, and frontend
+  asset sanity checks
+- Extended the docs site and repository documentation to explain the new SaaS
+  foundation without replacing the methodology layer
+
 ## v1.4.0 — Proof, Testing, and Distribution
 
 - Added pytest coverage for key scripts and wired test execution into CI

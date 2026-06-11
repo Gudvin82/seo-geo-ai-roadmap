@@ -2,24 +2,28 @@ name: python-tests
 
 on:
   push:
-    branches:
-      - main
   pull_request:
 
 jobs:
   pytest:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: app/backend
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
-      - name: Install pytest
-        run: python -m pip install --upgrade pip pytest
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r app/backend/requirements.txt
 
-      - name: Run pytest
-        run: python -m pytest
+      - name: Run repository and app tests
+        run: |
+          python -m pytest tests
+          python -m pytest app/backend/tests

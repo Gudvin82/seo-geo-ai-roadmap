@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
 .DS_Store
+.venv/
+site/
+app/backend/data/
+app/backend/artifacts/

@@ -1,0 +1,67 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-discoverability}
+      POSTGRES_USER: ${POSTGRES_USER:-discoverability}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-discoverability}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: app/backend/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      APP_DATABASE_URL: ${APP_DATABASE_URL:-postgresql://discoverability:discoverability@db:5432/discoverability}
+      APP_SECRET_KEY: ${APP_SECRET_KEY:-change-me}
+      APP_ARTIFACT_ROOT: ${APP_ARTIFACT_ROOT:-/app/app/backend/artifacts}
+      APP_DEFAULT_REPORT_LANGUAGE: ${APP_DEFAULT_REPORT_LANGUAGE:-en}
+      APP_CORS_ORIGINS: ${APP_CORS_ORIGINS:-http://localhost:3000,http://localhost:8080}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      PERPLEXITY_API_KEY: ${PERPLEXITY_API_KEY:-}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - backend_artifacts:/app/app/backend/artifacts
+
+  worker:
+    build:
+      context: .
+      dockerfile: app/backend/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - backend
+    command: ["python", "-m", "app.backend.app.worker_stub"]
+    environment:
+      APP_DATABASE_URL: ${APP_DATABASE_URL:-postgresql://discoverability:discoverability@db:5432/discoverability}
+      APP_SECRET_KEY: ${APP_SECRET_KEY:-change-me}
+      APP_ARTIFACT_ROOT: ${APP_ARTIFACT_ROOT:-/app/app/backend/artifacts}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      PERPLEXITY_API_KEY: ${PERPLEXITY_API_KEY:-}
+    volumes:
+      - backend_artifacts:/app/app/backend/artifacts
+
+  frontend:
+    build:
+      context: .
+      dockerfile: app/frontend/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+
+volumes:
+  postgres_data:
+  backend_artifacts:

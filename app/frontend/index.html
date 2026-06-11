@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Discoverability OS App</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <p class="eyebrow">SEO + GEO + AI</p>
+          <h1 data-i18n="appTitle">Discoverability OS App</h1>
+          <p class="brand-copy" data-i18n="appSubtitle">
+            SaaS-ready control panel for discoverability audits, multi-provider
+            AI, and bilingual reporting.
+          </p>
+        </div>
+
+        <div class="stack">
+          <label class="field">
+            <span data-i18n="apiBase">API base</span>
+            <input id="api-base" type="text" value="http://localhost:8000/api/v1" />
+          </label>
+
+          <label class="field">
+            <span data-i18n="language">Language</span>
+            <select id="language-switcher">
+              <option value="en">English</option>
+              <option value="ru">Русский</option>
+            </select>
+          </label>
+        </div>
+
+        <nav class="nav">
+          <button class="nav-link is-active" data-pane-target="auth-pane" data-i18n="navAuth">Auth</button>
+          <button class="nav-link" data-pane-target="workspaces-pane" data-i18n="navWorkspaces">Workspaces</button>
+          <button class="nav-link" data-pane-target="projects-pane" data-i18n="navProjects">Projects</button>
+          <button class="nav-link" data-pane-target="facts-pane" data-i18n="navFacts">Brand facts</button>
+          <button class="nav-link" data-pane-target="providers-pane" data-i18n="navProviders">Providers</button>
+          <button class="nav-link" data-pane-target="audits-pane" data-i18n="navAudits">Audit runs</button>
+          <button class="nav-link" data-pane-target="reports-pane" data-i18n="navReports">Reports</button>
+        </nav>
+
+        <section class="sidebar-card">
+          <h2 data-i18n="quickChecks">Audit presets</h2>
+          <ul id="preset-list" class="compact-list"></ul>
+        </section>
+      </aside>
+
+      <main class="main">
+        <header class="hero">
+          <div>
+            <p class="eyebrow" data-i18n="releaseBadge">v2.0.0 SaaS foundation</p>
+            <h2 data-i18n="heroTitle">Believable product layer on top of the methodology repo</h2>
+            <p class="hero-copy" data-i18n="heroCopy">
+              Create workspaces, onboard projects, run discoverability checks,
+              store evidence, and ship bilingual reports with multi-provider AI support.
+            </p>
+          </div>
+          <div class="hero-badges">
+            <span class="badge" data-i18n="badgeRepo">Repo methodology</span>
+            <span class="badge" data-i18n="badgeApp">App workflow</span>
+            <span class="badge" data-i18n="badgeProviders">OpenAI / Claude / Gemini / Perplexity</span>
+          </div>
+        </header>
+
+        <section class="dashboard-grid">
+          <article class="metric-card">
+            <span class="metric-label" data-i18n="metricAuth">Auth status</span>
+            <strong id="auth-status">Signed out</strong>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label" data-i18n="metricWorkspace">Active workspace</span>
+            <strong id="workspace-status">n/a</strong>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label" data-i18n="metricProject">Active project</span>
+            <strong id="project-status">n/a</strong>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label" data-i18n="metricReports">Latest report language</span>
+            <strong id="report-language-status">n/a</strong>
+          </article>
+        </section>
+
+        <section class="pane is-active" id="auth-pane">
+          <div class="pane-header">
+            <h3 data-i18n="authTitle">Sign in / sign up</h3>
+            <button id="sign-out" class="ghost-button" data-i18n="signOut">Sign out</button>
+          </div>
+          <div class="split">
+            <form id="register-form" class="card form-card">
+              <h4 data-i18n="registerTitle">Create account</h4>
+              <label class="field">
+                <span>Email</span>
+                <input name="email" type="email" required />
+              </label>
+              <label class="field">
+                <span data-i18n="password">Password</span>
+                <input name="password" type="password" minlength="8" required />
+              </label>
+              <button type="submit" data-i18n="registerAction">Register</button>
+            </form>
+
+            <form id="login-form" class="card form-card">
+              <h4 data-i18n="loginTitle">Sign in</h4>
+              <label class="field">
+                <span>Email</span>
+                <input name="email" type="email" required />
+              </label>
+              <label class="field">
+                <span data-i18n="password">Password</span>
+                <input name="password" type="password" required />
+              </label>
+              <button type="submit" data-i18n="loginAction">Log in</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="pane" id="workspaces-pane">
+          <div class="pane-header">
+            <h3 data-i18n="workspaceTitle">Workspaces</h3>
+            <button id="refresh-workspaces" class="ghost-button" data-i18n="refresh">Refresh</button>
+          </div>
+          <div class="split">
+            <form id="workspace-form" class="card form-card">
+              <h4 data-i18n="createWorkspace">Create workspace</h4>
+              <label class="field">
+                <span data-i18n="name">Name</span>
+                <input name="name" required />
+              </label>
+              <label class="field">
+                <span>Slug</span>
+                <input name="slug" required />
+              </label>
+              <label class="field">
+                <span data-i18n="defaultReportLanguage">Default report language</span>
+                <select name="default_report_language">
+                  <option value="en">English</option>
+                  <option value="ru">Русский</option>
+                </select>
+              </label>
+              <label class="field">
+                <span data-i18n="reportTitle">Client report title</span>
+                <input name="client_report_title" />
+              </label>
+              <label class="field">
+                <span data-i18n="reportSubtitle">Client report subtitle</span>
+                <input name="client_report_subtitle" />
+              </label>
+              <button type="submit" data-i18n="saveWorkspace">Save workspace</button>
+            </form>
+
+            <div class="card">
+              <h4 data-i18n="workspaceList">Workspace list</h4>
+              <div id="workspace-list" class="stack"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane" id="projects-pane">
+          <div class="pane-header">
+            <h3 data-i18n="projectTitle">Projects and sites</h3>
+            <button id="refresh-projects" class="ghost-button" data-i18n="refresh">Refresh</button>
+          </div>
+          <div class="split">
+            <form id="project-form" class="card form-card">
+              <h4 data-i18n="createProject">Create project</h4>
+              <label class="field">
+                <span data-i18n="workspaceId">Workspace ID</span>
+                <input name="workspace_id" type="number" required />
+              </label>
+              <label class="field">
+                <span data-i18n="name">Name</span>
+                <input name="name" required />
+              </label>
+              <label class="field">
+                <span data-i18n="websiteUrl">Website URL</span>
+                <input name="website_url" type="url" required />
+              </label>
+              <label class="field">
+                <span data-i18n="market">Market</span>
+                <input name="market" placeholder="RU, Global, CIS" required />
+              </label>
+              <label class="field">
+                <span data-i18n="projectLanguage">Language</span>
+                <input name="language" placeholder="en, ru" required />
+              </label>
+              <label class="field">
+                <span data-i18n="projectType">Project type</span>
+                <input name="project_type" placeholder="legal, saas, personal brand" required />
+              </label>
+              <label class="field">
+                <span data-i18n="auditPreset">Audit preset</span>
+                <select name="audit_preset" id="project-preset"></select>
+              </label>
+              <button type="submit" data-i18n="saveProject">Save project</button>
+            </form>
+
+            <div class="card">
+              <h4 data-i18n="projectList">Project list</h4>
+              <div id="project-list" class="stack"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane" id="facts-pane">
+          <div class="pane-header">
+            <h3 data-i18n="factsTitle">Brand truth center</h3>
+            <button id="refresh-facts" class="ghost-button" data-i18n="refresh">Refresh</button>
+          </div>
+          <div class="split">
+            <form id="facts-form" class="card form-card">
+              <h4 data-i18n="createFacts">Create facts profile</h4>
+              <label class="field">
+                <span data-i18n="projectId">Project ID</span>
+                <input name="project_id" type="number" required />
+              </label>
+              <label class="field">
+                <span data-i18n="profileName">Profile name</span>
+                <input name="name" required />
+              </label>
+              <label class="field">
+                <span data-i18n="factsMarkdown">Facts markdown</span>
+                <textarea name="facts_markdown" rows="6" required></textarea>
+              </label>
+              <label class="field">
+                <span data-i18n="approvedClaims">Approved claims</span>
+                <textarea name="approved_claims" rows="3"></textarea>
+              </label>
+              <label class="field">
+                <span data-i18n="forbiddenClaims">Forbidden claims</span>
+                <textarea name="forbidden_claims" rows="3"></textarea>
+              </label>
+              <label class="field">
+                <span data-i18n="numericFacts">Numeric facts, comma-separated</span>
+                <input name="numeric_facts" />
+              </label>
+              <label class="field">
+                <span data-i18n="markets">Markets, comma-separated</span>
+                <input name="markets" />
+              </label>
+              <label class="field">
+                <span data-i18n="languages">Languages, comma-separated</span>
+                <input name="languages" />
+              </label>
+              <button type="submit" data-i18n="saveFacts">Save facts profile</button>
+            </form>
+
+            <div class="card">
+              <h4 data-i18n="factsList">Facts profiles</h4>
+              <div id="facts-list" class="stack"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane" id="providers-pane">
+          <div class="pane-header">
+            <h3 data-i18n="providersTitle">Provider settings</h3>
+            <button id="refresh-providers" class="ghost-button" data-i18n="refresh">Refresh</button>
+          </div>
+          <div class="split">
+            <form id="provider-form" class="card form-card">
+              <h4 data-i18n="createProvider">Create provider config</h4>
+              <label class="field">
+                <span data-i18n="workspaceId">Workspace ID</span>
+                <input name="workspace_id" type="number" required />
+              </label>
+              <label class="field">
+                <span data-i18n="providerName">Provider</span>
+                <select name="provider_name">
+                  <option value="openai">OpenAI</option>
+                  <option value="anthropic">Anthropic / Claude</option>
+                  <option value="gemini">Gemini</option>
+                  <option value="perplexity">Perplexity</option>
+                </select>
+              </label>
+              <label class="field">
+                <span data-i18n="label">Label</span>
+                <input name="label" required />
+              </label>
+              <label class="field">
+                <span data-i18n="model">Model</span>
+                <input name="model" placeholder="gpt-4.1-mini, claude-sonnet, gemini-2.5-pro" required />
+              </label>
+              <label class="field">
+                <span data-i18n="apiEnv">API key env var</span>
+                <input name="api_key_env_var" placeholder="OPENAI_API_KEY" />
+              </label>
+              <button type="submit" data-i18n="saveProvider">Save provider config</button>
+            </form>
+
+            <div class="card">
+              <h4 data-i18n="providerList">Provider list</h4>
+              <div id="provider-list" class="stack"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane" id="audits-pane">
+          <div class="pane-header">
+            <h3 data-i18n="auditsTitle">Structured audit runs</h3>
+            <button id="refresh-audits" class="ghost-button" data-i18n="refresh">Refresh</button>
+          </div>
+          <div class="split">
+            <form id="audit-form" class="card form-card">
+              <h4 data-i18n="createAudit">Create audit run</h4>
+              <label class="field">
+                <span data-i18n="workspaceId">Workspace ID</span>
+                <input name="workspace_id" type="number" required />
+              </label>
+              <label class="field">
+                <span data-i18n="projectId">Project ID</span>
+                <input name="project_id" type="number" required />
+              </label>
+              <label class="field">
+                <span data-i18n="reportLanguage">Report language</span>
+                <select name="report_language">
+                  <option value="en">English</option>
+                  <option value="ru">Русский</option>
+                </select>
+              </label>
+              <label class="field">
+                <span data-i18n="providerConfig">Provider config ID</span>
+                <input name="provider_config_id" type="number" />
+              </label>
+              <fieldset class="check-grid">
+                <legend data-i18n="checks">Checks</legend>
+                <label><input type="checkbox" value="robots_ai_bots" checked /> robots / AI bots</label>
+                <label><input type="checkbox" value="sitemap" checked /> sitemap</label>
+                <label><input type="checkbox" value="llms_txt" checked /> llms.txt</label>
+                <label><input type="checkbox" value="factual_consistency" checked /> factual consistency</label>
+                <label><input type="checkbox" value="content_freshness" checked /> content freshness</label>
+                <label><input type="checkbox" value="hallucination_framework" checked /> hallucination framework</label>
+                <label><input type="checkbox" value="ai_sov_starter" /> AI SoV starter</label>
+                <label><input type="checkbox" value="local_yandex_readiness" /> local / Yandex readiness</label>
+                <label><input type="checkbox" value="entity_hierarchy_review" /> entity hierarchy review</label>
+              </fieldset>
+              <button type="submit" data-i18n="runAudit">Run audit</button>
+            </form>
+
+            <div class="card">
+              <h4 data-i18n="auditList">Audit runs</h4>
+              <div id="audit-list" class="stack"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane" id="reports-pane">
+          <div class="pane-header">
+            <h3 data-i18n="reportsTitle">Reports and artifacts</h3>
+            <button id="refresh-reports" class="ghost-button" data-i18n="refresh">Refresh</button>
+          </div>
+          <div class="split">
+            <div class="card">
+              <h4 data-i18n="reportList">Reports</h4>
+              <div id="report-list" class="stack"></div>
+            </div>
+
+            <div class="card">
+              <h4 data-i18n="artifactList">Artifacts</h4>
+              <div id="artifact-list" class="stack"></div>
+            </div>
+          </div>
+
+          <div class="split lower-grid">
+            <div class="card">
+              <h4 data-i18n="repoAssets">Repo assets reused by the app</h4>
+              <pre id="repo-assets" class="code-block"></pre>
+            </div>
+            <div class="card">
+              <h4 data-i18n="activityLog">Activity log</h4>
+              <div id="activity-log" class="activity-log"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

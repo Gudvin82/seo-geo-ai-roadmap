@@ -15,6 +15,10 @@ nav:
   - Home: index.md
   - English: english.md
   - Russian: russian.md
+  - SaaS App: saas-app.md
+  - App Architecture: architecture.md
+  - Deployment: deployment.md
+  - API Overview: api.md
   - Scripts: scripts.md
   - Checklists: checklists.md
   - Prompts: prompts.md

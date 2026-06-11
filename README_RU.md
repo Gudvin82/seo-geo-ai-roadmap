@@ -40,6 +40,9 @@
 - Полная документация по CLI-скриптам в
   [`scripts/README_RU.md`](./scripts/README_RU.md)
 - Pytest-покрытие ключевых helper-скриптов в [`tests`](./tests)
+- SaaS-ready app layer в [`app`](./app)
+- Self-hosted deployment foundation в [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
+- Product architecture docs в [ARCHITECTURE_RU.md](./ARCHITECTURE_RU.md)
 - Заполненные примеры в [`examples`](./examples)
 - Глоссарий в [GLOSSARY.md](./GLOSSARY.md) и
   [GLOSSARY_RU.md](./GLOSSARY_RU.md)
@@ -135,6 +138,29 @@ CLI-скриптов.
 - Build запускается на каждом push, а deploy включается после настройки Pages и
   установки переменной репозитория `ENABLE_GITHUB_PAGES=true`
 - Локальный preview: `pip install mkdocs-material && mkdocs serve`
+- В docs-site теперь добавлены app layer, deployment, architecture и API
+  overview
+
+## SaaS app layer
+
+`v2.0.0` добавляет первый продуктовый слой, не заменяя методологический
+репозиторий.
+
+Что входит:
+
+- FastAPI backend для auth, workspaces, projects, audits, reports, providers,
+  artifacts и brand facts
+- статическая frontend-панель для ключевых продуктовых workflows
+- multi-provider AI abstraction для OpenAI, Anthropic/Claude, Gemini и
+  Perplexity
+- генерация EN/RU отчетов
+- Docker Compose deployment для self-hosted сценария
+
+Ключевые документы:
+
+- [ARCHITECTURE_RU.md](./ARCHITECTURE_RU.md)
+- [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
+- [OPEN_SOURCE_AND_SAAS_BOUNDARY_RU.md](./OPEN_SOURCE_AND_SAAS_BOUNDARY_RU.md)
 
 ## Пример промпта
 
@@ -189,6 +215,9 @@ repo/
 ├── README.md / README_RU.md
 ├── POSITIONING.md / DIFFERENTIATORS.md / ECOSYSTEM_MAP.md
 ├── ROADMAP.md / RELEASE_PROCESS.md / CHANGELOG.md
+├── ARCHITECTURE*.md / DEPLOYMENT*.md / OPEN_SOURCE_AND_SAAS_BOUNDARY*.md
+├── app/backend / app/frontend / app/shared
+├── docker-compose.yml / docker/ / infra/
 ├── docs/en и docs/ru
 ├── checklists/en и checklists/ru
 ├── prompts/en и prompts/ru
@@ -232,6 +261,9 @@ Discoverability OS.
 - `v1.4.0`: добавлены тесты, docs-site, real cases, guidance по factual
   consistency и entity hierarchy, freshness checker и starter для мониторинга
   AI-галлюцинаций.
+- `v2.0.0`: добавлены SaaS app layer, multi-provider AI foundation,
+  структурированные audit workflows, Docker deployment и EN/RU docs по
+  архитектуре и развёртыванию.
 
 ## Что стало заметнее
 

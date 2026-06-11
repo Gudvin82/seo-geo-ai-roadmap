@@ -57,6 +57,9 @@ Use:
 - `prompts/`: reusable AI prompts
 - `templates/`: reusable assets and starter files
 - `scripts/`: validation and automation helpers
+- `app/`: SaaS-ready backend, frontend, and shared product layer
+- `docker-compose.yml`: self-hosted product stack
+- `infra/` and `docker/`: deployment notes and container assets
 - `examples/`: realistic filled examples
 - `tests/`: pytest validation for key scripts
 - `automation/`: starter automation assets
@@ -137,7 +140,22 @@ python scripts/roi_calculator.py --traffic 5000 --conversion-rate 0.03 --lead-to
 python scripts/content_freshness_checker.py --sitemap-file ./sitemap.xml --days-stale 180 --output-file ./freshness.md
 python scripts/check_hallucinations.py --brand-facts-file examples/brand-facts-example.md --questions-file examples/hallucination-questions-example.md --output-file ./hallucination-report.md
 python -m pytest
+python -m pytest app/backend/tests
 ```
+
+### App-layer entrypoints
+
+- `app/backend/app/main.py`
+- `app/backend/app/api/`
+- `app/backend/app/services/`
+- `app/backend/app/providers/`
+- `app/frontend/index.html`
+- `DEPLOYMENT.md`
+- `ARCHITECTURE.md`
+
+If the user asks for a turnkey product foundation or self-hosted SaaS setup,
+agents should preserve the methodology layer and extend the app layer instead of
+replacing the repository with a standalone application.
 
 ### Before pushing changes
 

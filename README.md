@@ -39,6 +39,9 @@ This project is built as an execution-first framework for teams that need one pr
 - Validation and helper scripts in [`scripts`](./scripts)
 - Full script usage docs in [`scripts/README.md`](./scripts/README.md)
 - Pytest coverage for key helpers in [`tests`](./tests)
+- SaaS-ready app layer in [`app`](./app)
+- Self-hosted deployment foundation in [DEPLOYMENT.md](./DEPLOYMENT.md)
+- Product architecture docs in [ARCHITECTURE.md](./ARCHITECTURE.md)
 - Filled samples in [`examples`](./examples)
 - Glossaries in [GLOSSARY.md](./GLOSSARY.md) and
   [GLOSSARY_RU.md](./GLOSSARY_RU.md)
@@ -130,6 +133,29 @@ See [scripts/README.md](./scripts/README.md) for full CLI usage examples.
 - Build runs on every push; deployment is opt-in after Pages is enabled and the
   repository variable `ENABLE_GITHUB_PAGES=true` is set
 - Local preview: `pip install mkdocs-material && mkdocs serve`
+- The docs-site now includes the app layer, deployment, architecture, and API
+  overview
+
+## SaaS app layer
+
+`v2.0.0` introduces the first product layer without replacing the methodology
+repository.
+
+What it includes:
+
+- FastAPI backend for auth, workspaces, projects, audits, reports, providers,
+  artifacts, and brand facts
+- static frontend control panel for core product workflows
+- multi-provider AI abstraction for OpenAI, Anthropic/Claude, Gemini, and
+  Perplexity
+- EN/RU report generation
+- Docker Compose deployment for self-hosted usage
+
+Key docs:
+
+- [ARCHITECTURE.md](./ARCHITECTURE.md)
+- [DEPLOYMENT.md](./DEPLOYMENT.md)
+- [OPEN_SOURCE_AND_SAAS_BOUNDARY.md](./OPEN_SOURCE_AND_SAAS_BOUNDARY.md)
 
 ## Example prompt
 
@@ -183,6 +209,9 @@ repo/
 ├── README.md / README_RU.md
 ├── POSITIONING.md / DIFFERENTIATORS.md / ECOSYSTEM_MAP.md
 ├── ROADMAP.md / RELEASE_PROCESS.md / CHANGELOG.md
+├── ARCHITECTURE*.md / DEPLOYMENT*.md / OPEN_SOURCE_AND_SAAS_BOUNDARY*.md
+├── app/backend / app/frontend / app/shared
+├── docker-compose.yml / docker/ / infra/
 ├── docs/en and docs/ru
 ├── checklists/en and checklists/ru
 ├── prompts/en and prompts/ru
@@ -226,6 +255,9 @@ live, Vibe Coding Protocols is a natural add-on.
 - `v1.4.0`: added tests, docs-site delivery, real cases, factual consistency
   guidance, entity hierarchy docs, freshness checking, and hallucination
   monitoring starters.
+- `v2.0.0`: added the SaaS app layer, multi-provider AI foundation, structured
+  audit workflows, Docker deployment, and EN/RU architecture and deployment
+  docs.
 
 ## Visibility additions
 
