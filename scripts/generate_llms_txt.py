@@ -113,7 +113,7 @@ def build_output(entries: list[dict[str, str]]) -> tuple[str, list[str], int]:
         if path.startswith("/tag/") or path.startswith("/author/"):
             skipped += 1
             continue
-        lines.append(f"{path} - {description}{suffix}")
+        lines.append(f"{entry['loc']} - {description}{suffix}")
     return "\n".join(lines) + "\n", warnings, skipped
 
 
