@@ -58,7 +58,9 @@ def run_with_retry(
         except Exception as exc:  # noqa: BLE001
             is_terminal = attempt_number >= active_policy.max_attempts
             status = "dead" if is_terminal else "retrying"
-            next_delay = None if is_terminal else min(delay, active_policy.max_delay_seconds)
+            next_delay = (
+                None if is_terminal else min(delay, active_policy.max_delay_seconds)
+            )
             attempts.append(
                 RetryAttempt(
                     attempt=attempt_number,
@@ -83,7 +85,10 @@ def run_with_retry(
                     error=str(exc),
                 )
             sleep(next_delay or 0)
-            delay = min(delay * active_policy.backoff_multiplier, active_policy.max_delay_seconds)
+            delay = min(
+                delay * active_policy.backoff_multiplier,
+                active_policy.max_delay_seconds,
+            )
 
     return RetryOutcome(
         status="dead",

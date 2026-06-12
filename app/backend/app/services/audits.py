@@ -33,8 +33,8 @@ from ..models import (
 from ..providers.base import ProviderError
 from ..providers.registry import build_provider
 from .logging import log_event
-from .retries import RetryPolicy, run_with_retry
 from .reporting import build_json_report, build_markdown_report, dumps_json
+from .retries import RetryPolicy, run_with_retry
 from .scoring import (
     ai_citation_score,
     benchmark_status,

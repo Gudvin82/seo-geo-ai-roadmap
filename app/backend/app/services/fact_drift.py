@@ -55,7 +55,11 @@ def detect_fact_drift(surfaces: list[FactSurface]) -> FactDriftResult:
         )
 
     for drift_type, keywords in KEYWORD_GROUPS.items():
-        present = [surface.name for surface in surfaces if _contains_any(surface.content, keywords)]
+        present = [
+            surface.name
+            for surface in surfaces
+            if _contains_any(surface.content, keywords)
+        ]
         absent = [surface.name for surface in surfaces if surface.name not in present]
         if present and absent:
             drift_items.append(

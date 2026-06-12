@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 
-def _create_workspace_and_project(client, auth_headers: dict[str, str]) -> tuple[int, int]:
+def _create_workspace_and_project(
+    client, auth_headers: dict[str, str]
+) -> tuple[int, int]:
     workspace = client.post(
         "/api/v1/workspaces",
         json={"name": "Ops Workspace", "slug": "ops-workspace-v330"},

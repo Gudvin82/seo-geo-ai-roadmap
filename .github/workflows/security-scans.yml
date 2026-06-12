@@ -17,7 +17,14 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install pip-audit
       - name: Audit backend dependencies
-        run: pip-audit -r app/backend/requirements.txt
+        run: |
+          pip-audit -r app/backend/requirements.txt -f json -o pip-audit-report.json || true
+          cat pip-audit-report.json
+      - name: Upload pip-audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pip-audit-report
+          path: pip-audit-report.json
 
   secrets:
     runs-on: ubuntu-latest

@@ -36,9 +36,7 @@ def detect_fact_drift(surfaces: list[dict[str, str]]) -> dict:
             if any(keyword in surface["content"].lower() for keyword in keywords)
         ]
         absent = [
-            surface["name"]
-            for surface in surfaces
-            if surface["name"] not in present
+            surface["name"] for surface in surfaces if surface["name"] not in present
         ]
         if present and absent:
             items.append(

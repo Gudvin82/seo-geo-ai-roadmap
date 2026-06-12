@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from ..access import record_audit_log, require_project_access
@@ -64,7 +64,9 @@ def create_scheduled_check(
     )
     config = {
         "schedule_mode": payload.config.get("schedule_mode", "cron"),
-        "schedule_expression": payload.config.get("schedule_expression", payload.frequency),
+        "schedule_expression": payload.config.get(
+            "schedule_expression", payload.frequency
+        ),
         "target": payload.config.get("target", payload.check_type),
         "last_status": "queued" if payload.is_enabled else "disabled",
         **payload.config,
