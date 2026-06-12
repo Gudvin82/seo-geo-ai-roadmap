@@ -22,7 +22,7 @@ Public signals observed:
 - legal documents, operator identity, and policy links are visible
 - cross-linking with sister entities is already present
 
-### Snapshot score
+### SitePravo snapshot score
 
 - Technical SEO and crawl readiness: `16/20`
 - Factual consistency and truth-center discipline: `15/20`
@@ -31,7 +31,7 @@ Public signals observed:
 - Reporting and operator packaging: `17/20`
 - Total public snapshot: `82/100`
 
-### Bounded before/after model
+### SitePravo bounded before/after model
 
 - Before first v3-style pass: `82/100`
 - After first 30-day truth-center and AI-surface sync target: `88/100`
@@ -53,7 +53,7 @@ Public signals observed:
 - service explains scope, legal basis, and public-only audit boundary
 - trust and evidence framing are strong
 
-### Snapshot score
+### AuditGuard snapshot score
 
 - Technical SEO and crawl readiness: `17/20`
 - Factual consistency and truth-center discipline: `14/20`
@@ -62,7 +62,7 @@ Public signals observed:
 - Reporting and operator packaging: `18/20`
 - Total public snapshot: `80/100`
 
-### Bounded before/after model
+### AuditGuard bounded before/after model
 
 - Before first v3-style pass: `80/100`
 - After first 30-day fact-sync and entity-governance target: `86/100`
@@ -84,7 +84,7 @@ Public signals observed:
 - the site links consulting, products, case studies, and methodology assets
 - "practical AI for business" positioning is clear and commercially grounded
 
-### Snapshot score
+### anmalishev.ru snapshot score
 
 - Technical SEO and crawl readiness: `15/20`
 - Factual consistency and truth-center discipline: `14/20`
@@ -93,7 +93,7 @@ Public signals observed:
 - Reporting and operator packaging: `15/20`
 - Total public snapshot: `78/100`
 
-### Bounded before/after model
+### anmalishev.ru bounded before/after model
 
 - Before first v3-style pass: `78/100`
 - After first 30-day entity-hierarchy and bilingual fact-sync target: `85/100`

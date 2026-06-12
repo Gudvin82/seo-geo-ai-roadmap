@@ -22,7 +22,7 @@
 - видны юридические документы, данные оператора и policy links
 - уже присутствует cross-linking с sister entities
 
-### Snapshot score
+### Snapshot score SitePravo
 
 - Technical SEO и crawl readiness: `16/20`
 - Factual consistency и truth-center discipline: `15/20`
@@ -31,7 +31,7 @@
 - Reporting и operator packaging: `17/20`
 - Total public snapshot: `82/100`
 
-### Ограниченная before/after модель
+### Ограниченная before/after модель SitePravo
 
 - До первого v3-style pass: `82/100`
 - После первой 30-day цели по truth-center и AI-surface sync: `88/100`
@@ -54,7 +54,7 @@
 - сервис объясняет scope, legal basis и boundary "только публичный контур"
 - trust и evidence framing сильные
 
-### Snapshot score
+### Snapshot score AuditGuard
 
 - Technical SEO и crawl readiness: `17/20`
 - Factual consistency и truth-center discipline: `14/20`
@@ -63,7 +63,7 @@
 - Reporting и operator packaging: `18/20`
 - Total public snapshot: `80/100`
 
-### Ограниченная before/after модель
+### Ограниченная before/after модель AuditGuard
 
 - До первого v3-style pass: `80/100`
 - После первой 30-day цели по fact-sync и entity-governance: `86/100`
@@ -86,7 +86,7 @@
 - позиционирование "практический AI для бизнеса" звучит ясно и коммерчески
   предметно
 
-### Snapshot score
+### Snapshot score anmalishev.ru
 
 - Technical SEO и crawl readiness: `15/20`
 - Factual consistency и truth-center discipline: `14/20`
@@ -95,7 +95,7 @@
 - Reporting и operator packaging: `15/20`
 - Total public snapshot: `78/100`
 
-### Ограниченная before/after модель
+### Ограниченная before/after модель anmalishev.ru
 
 - До первого v3-style pass: `78/100`
 - После первой 30-day цели по entity-hierarchy и bilingual fact-sync: `85/100`
