@@ -210,6 +210,9 @@ Read more:
 - [docs/en/answer-ready-patterns.md](./docs/en/answer-ready-patterns.md)
 - [docs/en/entity-seo-and-kg.md](./docs/en/entity-seo-and-kg.md)
 - [docs/en/geo-red-team-and-risks.md](./docs/en/geo-red-team-and-risks.md)
+- [docs/en/llms-validator.md](./docs/en/llms-validator.md)
+- [docs/en/ai-visibility-check-action.md](./docs/en/ai-visibility-check-action.md)
+- [docs/en/telegram-sov-alerts.md](./docs/en/telegram-sov-alerts.md)
 - [app/frontend/llms-validator.html](./app/frontend/llms-validator.html)
 
 ## Real cases

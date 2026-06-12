@@ -14,6 +14,8 @@
   linkable free tool
 - Added an example GitHub Action for AI Visibility Check and expanded JSON-LD
   schema starters for GEO/AI operator use
+- Finalized the release with stricter `llms.txt` asset consistency across
+  validator logic, examples, templates, smoke checks, and operator docs
 
 ## v3.1.0 — Integrations, Patch Flows, and Client Delivery
 

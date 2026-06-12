@@ -214,6 +214,9 @@ make agent-self-check
 - [docs/ru/answer-ready-patterns.md](./docs/ru/answer-ready-patterns.md)
 - [docs/ru/entity-seo-and-kg.md](./docs/ru/entity-seo-and-kg.md)
 - [docs/ru/geo-red-team-and-risks.md](./docs/ru/geo-red-team-and-risks.md)
+- [docs/ru/llms-validator.md](./docs/ru/llms-validator.md)
+- [docs/ru/ai-visibility-check-action.md](./docs/ru/ai-visibility-check-action.md)
+- [docs/ru/telegram-sov-alerts.md](./docs/ru/telegram-sov-alerts.md)
 - [app/frontend/llms-validator.html](./app/frontend/llms-validator.html)
 
 ## Реальные кейсы

@@ -19,6 +19,17 @@
         </div>
       </header>
 
+      <section class="card" style="margin-bottom: 24px;">
+        <h3>What this checks</h3>
+        <ul>
+          <li>Top-level heading</li>
+          <li>Structured bullet-like entries</li>
+          <li>Absolute URLs</li>
+          <li>Minimum file depth</li>
+          <li>Common trust hints such as home, FAQ, and about</li>
+        </ul>
+      </section>
+
       <section class="split">
         <form id="validator-form" class="card form-card">
           <h3>Validate</h3>
@@ -43,6 +54,7 @@
 
         <section class="card">
           <h3>Result</h3>
+          <p id="status" class="eyebrow">No validation run yet.</p>
           <pre id="result" class="code-block">No validation run yet.</pre>
         </section>
       </section>
@@ -51,12 +63,47 @@
     <script>
       const form = document.getElementById("validator-form");
       const result = document.getElementById("result");
+      const status = document.getElementById("status");
+
+      function renderResult(payload) {
+        const lines = [];
+        lines.push(`Valid: ${payload.is_valid ? "yes" : "no"}`);
+        lines.push(`Checked source: ${payload.checked_source}`);
+        lines.push(`Non-empty lines: ${payload.line_count}`);
+
+        if (payload.observed_facts?.length) {
+          lines.push("");
+          lines.push("Observed facts:");
+          for (const item of payload.observed_facts) {
+            lines.push(`- ${item}`);
+          }
+        }
+
+        if (payload.warnings?.length) {
+          lines.push("");
+          lines.push("Warnings:");
+          for (const item of payload.warnings) {
+            lines.push(`- ${item}`);
+          }
+        }
+
+        if (payload.recommendations?.length) {
+          lines.push("");
+          lines.push("Recommendations:");
+          for (const item of payload.recommendations) {
+            lines.push(`- ${item}`);
+          }
+        }
+
+        return lines.join("\n");
+      }
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
         const apiBase = document.getElementById("api-base").value.trim().replace(/\/$/, "");
         const url = document.getElementById("url").value.trim();
         const content = document.getElementById("content").value;
+        status.textContent = "Running validation...";
         result.textContent = "Running validation...";
 
         try {
@@ -69,13 +116,13 @@
           if (!response.ok) {
             throw new Error(payload.detail || "Validation failed.");
           }
-          result.textContent = JSON.stringify(payload, null, 2);
+          status.textContent = payload.is_valid
+            ? "PASS: minimum structure looks good."
+            : "FAIL: fix the warnings below and run again.";
+          result.textContent = renderResult(payload);
         } catch (error) {
-          result.textContent = JSON.stringify(
-            { is_valid: false, error: error.message },
-            null,
-            2,
-          );
+          status.textContent = "FAIL: validator request failed.";
+          result.textContent = `Error: ${error.message}`;
         }
       });
     </script>
