@@ -138,7 +138,11 @@ def vertical_packs() -> dict:
             },
             {
                 "id": "multilingual_b2b",
-                "common_audits": ["llms_txt", "entity_hierarchy_review", "international_localization"],
+                "common_audits": [
+                    "llms_txt",
+                    "entity_hierarchy_review",
+                    "international_localization",
+                ],
                 "reporting_angle": "cross-market positioning and factual alignment",
             },
         ]

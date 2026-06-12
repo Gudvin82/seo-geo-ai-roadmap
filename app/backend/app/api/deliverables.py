@@ -16,7 +16,9 @@ from ..services.delivery import build_client_delivery_pack, build_patch_pack
 router = APIRouter(prefix="/deliverables", tags=["deliverables"])
 
 
-def _latest_audit(db: Session, project_id: int, audit_run_id: int | None) -> AuditRun | None:
+def _latest_audit(
+    db: Session, project_id: int, audit_run_id: int | None
+) -> AuditRun | None:
     if audit_run_id is not None:
         return db.get(AuditRun, audit_run_id)
     return (
@@ -35,20 +37,22 @@ def _write_artifact(
     artifact_type: str,
     payload: dict,
 ) -> Artifact:
-    artifact_root = Path(
-        getattr(db.bind.url, "database", "") or "."
-    )
+    artifact_root = Path(getattr(db.bind.url, "database", "") or ".")
     output_dir = artifact_root.parent / "deliverables"
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / f"{artifact_type}-{project.id}.json"
-    output_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    output_path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     row = Artifact(
         audit_run_id=audit_run.id,
         project_id=project.id,
         artifact_type=artifact_type,
         format="json",
         file_path=str(output_path),
-        metadata_json=json.dumps({"generated": True, "artifact_type": artifact_type}, ensure_ascii=False),
+        metadata_json=json.dumps(
+            {"generated": True, "artifact_type": artifact_type}, ensure_ascii=False
+        ),
     )
     db.add(row)
     return row
@@ -64,7 +68,9 @@ def generate_patch_pack(
         db, payload.project_id, current_user, minimum_role="editor"
     )
     if project.workspace_id != payload.workspace_id:
-        raise HTTPException(status_code=400, detail="Project and workspace do not match.")
+        raise HTTPException(
+            status_code=400, detail="Project and workspace do not match."
+        )
     audit_run = _latest_audit(db, project.id, payload.audit_run_id)
     if not audit_run:
         raise HTTPException(
@@ -121,16 +127,33 @@ def generate_client_pack(
         db, payload.project_id, current_user, minimum_role="editor"
     )
     if project.workspace_id != payload.workspace_id:
-        raise HTTPException(status_code=400, detail="Project and workspace do not match.")
+        raise HTTPException(
+            status_code=400, detail="Project and workspace do not match."
+        )
     audit_run = _latest_audit(db, project.id, payload.audit_run_id)
     if not audit_run:
         raise HTTPException(
             status_code=400,
             detail="Run at least one audit before generating a client pack.",
         )
-    reports = db.query(Report).filter(Report.project_id == project.id).order_by(Report.id.desc()).all()
-    artifacts = db.query(Artifact).filter(Artifact.project_id == project.id).order_by(Artifact.id.desc()).all()
-    sov_runs = db.query(SovRun).filter(SovRun.project_id == project.id).order_by(SovRun.id.desc()).all()
+    reports = (
+        db.query(Report)
+        .filter(Report.project_id == project.id)
+        .order_by(Report.id.desc())
+        .all()
+    )
+    artifacts = (
+        db.query(Artifact)
+        .filter(Artifact.project_id == project.id)
+        .order_by(Artifact.id.desc())
+        .all()
+    )
+    sov_runs = (
+        db.query(SovRun)
+        .filter(SovRun.project_id == project.id)
+        .order_by(SovRun.id.desc())
+        .all()
+    )
     workspace = db.get(Workspace, project.workspace_id)
     branding = {
         "client_report_title": getattr(workspace, "client_report_title", None),

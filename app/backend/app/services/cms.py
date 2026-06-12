@@ -27,7 +27,8 @@ def inventory_cms(
             "base_url": base_url,
             "cms_type": "wordpress",
             "status": "starter_fallback",
-            "note": stderr or "Live WordPress inventory unavailable; returning starter fallback.",
+            "note": stderr
+            or "Live WordPress inventory unavailable; returning starter fallback.",
             "pages": [],
             "posts": [],
             "mapping": ["title", "slug", "status", "link"],
