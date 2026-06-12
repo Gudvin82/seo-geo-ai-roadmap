@@ -182,7 +182,7 @@ make agent-self-check
 9. Повторно прогнать после изменений
 10. Экспортировать client или internal delivery pack
 
-## Прозрачный scoring
+## Прозрачный scoring и implementation output
 
 В `v3.0.0` зафиксированы два proof-first слоя:
 
@@ -197,6 +197,10 @@ make agent-self-check
 
 - [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
 - [docs/ru/api-reference.md](./docs/ru/api-reference.md)
+- [docs/ru/patch-mode.md](./docs/ru/patch-mode.md)
+- [docs/ru/client-delivery.md](./docs/ru/client-delivery.md)
+- [docs/ru/search-data-connectors.md](./docs/ru/search-data-connectors.md)
+- [docs/ru/cms-connectors.md](./docs/ru/cms-connectors.md)
 
 ## Реальные кейсы
 
@@ -231,6 +235,9 @@ snapshot-оценками для:
 
 ## Latest changes
 
+- `v3.1.0`: starter-интеграции с search/analytics, CMS connector flows,
+  patch packs, client delivery packs, import project package, более сильный
+  white-label слой, review-mode guidance и расширенный EN/RU operator layer
 - `v3.0.0`: proof-first positioning rewrite, stronger onboarding, реальные
   app-скриншоты, документация по AI Citation Score, prioritization engine,
   provider-backed AI SoV, structured observability, role/invite hardening и

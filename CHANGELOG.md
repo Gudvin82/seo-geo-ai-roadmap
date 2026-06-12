@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.1.0 — Integrations, Patch Flows, and Client Delivery
+
+- Added persisted search and analytics integrations for Google Search Console,
+  GA4, Yandex Webmaster, and Yandex Metrica starter sync flows
+- Added CMS connector flows for WordPress, Tilda, Bitrix, and Webflow together
+  with inventory sync and governed writeback modes
+- Added patch packs and client delivery packs with issue-ready backlog items,
+  developer briefs, content briefs, schema suggestions, and llms.txt guidance
+- Added project package import to complement export and improve portability
+- Expanded EN/RU docs for search-data connectors, patch mode, client delivery,
+  review mode, white-label use, and CMS operator workflows
+
 ## v3.0.0 — Proof-First Discoverability Platform
 
 - Repositioned the project as a proof-first daily operating system for SEO,

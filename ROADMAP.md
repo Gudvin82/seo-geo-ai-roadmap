@@ -1,11 +1,11 @@
 # Repository Roadmap
 
-## v3.0.x stabilization
+## v3.1.x stabilization
 
-- keep the proof-first onboarding and screenshots current
-- deepen fresh-clone verification and demo reproducibility
-- expand role isolation and multi-tenant hardening tests
-- keep AI SoV and prioritization outputs stable across EN/RU reporting
+- keep integrations, CMS flows, and delivery packs stable
+- deepen export/import verification
+- expand review gates around writeback and patch flows
+- keep EN/RU docs aligned with new operator features
 
 ## Near-term product direction
 

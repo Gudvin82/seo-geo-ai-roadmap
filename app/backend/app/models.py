@@ -129,6 +129,12 @@ class Project(Base):
         back_populates="project"
     )
     audit_logs: Mapped[list["AuditLog"]] = relationship(back_populates="project")
+    integration_connections: Mapped[list["IntegrationConnection"]] = relationship(
+        back_populates="project"
+    )
+    cms_connectors: Mapped[list["CmsConnector"]] = relationship(
+        back_populates="project"
+    )
 
 
 class Site(Base):
@@ -270,6 +276,48 @@ class ScheduledCheck(Base):
 
     workspace: Mapped[Workspace] = relationship(back_populates="scheduled_checks")
     project: Mapped[Project] = relationship(back_populates="scheduled_checks")
+
+
+class IntegrationConnection(Base):
+    __tablename__ = "integration_connections"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"))
+    project_id: Mapped[int] = mapped_column(ForeignKey("projects.id"))
+    source_type: Mapped[str] = mapped_column(String(64))
+    label: Mapped[str] = mapped_column(String(255))
+    property_identifier: Mapped[Optional[str]] = mapped_column(
+        String(255), nullable=True
+    )
+    credentials_env_var: Mapped[Optional[str]] = mapped_column(
+        String(255), nullable=True
+    )
+    config_json: Mapped[str] = mapped_column(Text, default="{}")
+    latest_snapshot_json: Mapped[str] = mapped_column(Text, default="{}")
+    last_sync_status: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    last_sync_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+    project: Mapped[Project] = relationship(back_populates="integration_connections")
+
+
+class CmsConnector(Base):
+    __tablename__ = "cms_connectors"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"))
+    project_id: Mapped[int] = mapped_column(ForeignKey("projects.id"))
+    cms_type: Mapped[str] = mapped_column(String(64))
+    label: Mapped[str] = mapped_column(String(255))
+    base_url: Mapped[str] = mapped_column(String(500))
+    auth_env_var: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    writeback_mode: Mapped[str] = mapped_column(String(64), default="read_only")
+    last_inventory_json: Mapped[str] = mapped_column(Text, default="{}")
+    last_sync_status: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    last_sync_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+    project: Mapped[Project] = relationship(back_populates="cms_connectors")
 
 
 class NotificationEndpoint(Base):

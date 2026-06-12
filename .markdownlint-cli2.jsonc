@@ -1,0 +1,8 @@
+{
+  "globs": [
+    "**/*.md",
+    "!.venv/**",
+    "!node_modules/**",
+    "!site/**"
+  ]
+}

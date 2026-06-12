@@ -179,7 +179,7 @@ Expected demo credentials:
 9. Re-run after changes
 10. Export client or internal delivery pack
 
-## Transparent scoring
+## Transparent scoring and implementation output
 
 `v3.0.0` formalizes two proof-first layers:
 
@@ -193,6 +193,10 @@ Read more:
 
 - [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
 - [docs/en/api-reference.md](./docs/en/api-reference.md)
+- [docs/en/patch-mode.md](./docs/en/patch-mode.md)
+- [docs/en/client-delivery.md](./docs/en/client-delivery.md)
+- [docs/en/search-data-connectors.md](./docs/en/search-data-connectors.md)
+- [docs/en/cms-connectors.md](./docs/en/cms-connectors.md)
 
 ## Real cases
 
@@ -227,6 +231,9 @@ See [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md).
 
 ## Latest changes
 
+- `v3.1.0`: search and analytics integration starters, CMS connector flows,
+  patch packs, client delivery packs, project package import, stronger
+  white-label framing, review-mode guidance, and richer EN/RU operator docs
 - `v3.0.0`: proof-first positioning rewrite, stronger onboarding, real app
   screenshots, AI Citation Score documentation, prioritization engine,
   provider-backed AI SoV, structured observability, role/invite hardening, and

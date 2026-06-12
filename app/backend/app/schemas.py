@@ -283,6 +283,109 @@ class ProviderConfigUpdate(BaseModel):
     is_enabled: Optional[bool] = None
 
 
+class IntegrationConnectionCreate(BaseModel):
+    workspace_id: int
+    project_id: int
+    source_type: str
+    label: str
+    property_identifier: Optional[str] = None
+    credentials_env_var: Optional[str] = None
+    config: dict[str, Any] = Field(default_factory=dict)
+
+    @field_validator("source_type")
+    @classmethod
+    def validate_source_type(cls, value: str) -> str:
+        source = value.strip().lower()
+        allowed = {"gsc", "ga4", "yandex_webmaster", "yandex_metrica"}
+        if source not in allowed:
+            raise ValueError(
+                f"Unsupported source_type '{value}'. Allowed: {', '.join(sorted(allowed))}."
+            )
+        return source
+
+
+class IntegrationConnectionRead(BaseModel):
+    id: int
+    workspace_id: int
+    project_id: int
+    source_type: str
+    label: str
+    property_identifier: Optional[str]
+    credentials_env_var: Optional[str]
+    config: dict[str, Any]
+    latest_snapshot: dict[str, Any]
+    last_sync_status: Optional[str]
+    last_sync_at: Optional[datetime]
+    created_at: datetime
+
+
+class CmsConnectorCreate(BaseModel):
+    workspace_id: int
+    project_id: int
+    cms_type: str
+    label: str
+    base_url: str
+    auth_env_var: Optional[str] = None
+    writeback_mode: Literal["read_only", "draft", "human_approved_publish"] = (
+        "read_only"
+    )
+
+    @field_validator("cms_type")
+    @classmethod
+    def validate_cms_type(cls, value: str) -> str:
+        cms_type = value.strip().lower()
+        allowed = {"wordpress", "tilda", "bitrix", "webflow"}
+        if cms_type not in allowed:
+            raise ValueError(
+                f"Unsupported cms_type '{value}'. Allowed: {', '.join(sorted(allowed))}."
+            )
+        return cms_type
+
+
+class CmsConnectorRead(BaseModel):
+    id: int
+    workspace_id: int
+    project_id: int
+    cms_type: str
+    label: str
+    base_url: str
+    auth_env_var: Optional[str]
+    writeback_mode: str
+    last_inventory: dict[str, Any]
+    last_sync_status: Optional[str]
+    last_sync_at: Optional[datetime]
+    created_at: datetime
+
+
+class PatchPackRequest(BaseModel):
+    project_id: int
+    workspace_id: int
+    audit_run_id: Optional[int] = None
+    report_language: str = "en"
+    mode: Literal["read_only", "draft", "human_approved_publish"] = "draft"
+    audience: Literal["agency", "in_house", "founder"] = "agency"
+
+
+class PatchPackRead(BaseModel):
+    project_id: int
+    workspace_id: int
+    report_language: str
+    audience: str
+    review_mode: str
+    outputs: dict[str, Any]
+
+
+class ProjectImportRequest(BaseModel):
+    workspace_id: int
+    payload: dict[str, Any]
+
+
+class ProjectImportRead(BaseModel):
+    project_id: int
+    imported_sections: list[str]
+    message: str
+
+
 class PromptSetCreate(BaseModel):
     workspace_id: int
     name: str

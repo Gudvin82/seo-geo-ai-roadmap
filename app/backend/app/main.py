@@ -13,7 +13,10 @@ from .api import (
     audit_runs,
     auth,
     brand_facts,
+    cms,
+    deliverables,
     exports,
+    integrations,
     notifications,
     projects,
     prompt_sets,
@@ -99,6 +102,8 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
     app.include_router(workspaces.router, prefix=settings_obj.api_prefix)
     app.include_router(projects.router, prefix=settings_obj.api_prefix)
     app.include_router(brand_facts.router, prefix=settings_obj.api_prefix)
+    app.include_router(integrations.router, prefix=settings_obj.api_prefix)
+    app.include_router(cms.router, prefix=settings_obj.api_prefix)
     app.include_router(providers.router, prefix=settings_obj.api_prefix)
     app.include_router(prompt_sets.router, prefix=settings_obj.api_prefix)
     app.include_router(scheduled_checks.router, prefix=settings_obj.api_prefix)
@@ -108,6 +113,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
     app.include_router(artifacts.router, prefix=settings_obj.api_prefix)
     app.include_router(sov.router, prefix=settings_obj.api_prefix)
     app.include_router(notifications.router, prefix=settings_obj.api_prefix)
+    app.include_router(deliverables.router, prefix=settings_obj.api_prefix)
     app.include_router(exports.router, prefix=settings_obj.api_prefix)
     app.include_router(settings.router, prefix=settings_obj.api_prefix)
     return app

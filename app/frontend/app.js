@@ -4,6 +4,8 @@ const state = {
   workspaces: [],
   projects: [],
   providerConfigs: [],
+  integrationConnections: [],
+  cmsConnectors: [],
   promptSets: [],
   auditRuns: [],
   reports: [],
@@ -28,14 +30,17 @@ const translations = {
     navProjects: "Projects",
     navFacts: "Brand facts",
     navProviders: "Providers",
+    navIntegrations: "Integrations",
+    navCms: "CMS",
     navPrompts: "Prompt library",
     navAudits: "Audit runs",
     navSov: "AI SoV",
     navNotifications: "Notifications",
+    navDeliverables: "Deliverables",
     navReports: "Reports",
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
-    releaseBadge: "v3.0.0 proof-first discoverability platform",
+    releaseBadge: "v3.1.0 integrations patch flows and client delivery",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -94,6 +99,8 @@ const translations = {
     defaultReportLanguage: "Default report language",
     reportTitle: "Client report title",
     reportSubtitle: "Client report subtitle",
+    reportFooter: "Client report footer",
+    logoUrl: "Logo URL",
     saveWorkspace: "Save workspace",
     workspaceList: "Workspace list",
     projectTitle: "Projects and sites",
@@ -121,6 +128,18 @@ const translations = {
     providersTitle: "Provider settings",
     createProvider: "Create provider config",
     providerName: "Provider",
+    integrationsTitle: "Search and analytics integrations",
+    createIntegration: "Create integration",
+    integrationSource: "Source",
+    propertyId: "Property / counter ID",
+    saveIntegration: "Save integration",
+    integrationList: "Integration list",
+    cmsTitle: "CMS connectors and writeback gates",
+    createCms: "Create CMS connector",
+    cmsType: "CMS type",
+    writebackMode: "Writeback mode",
+    saveCms: "Save CMS connector",
+    cmsList: "CMS connector list",
     label: "Label",
     model: "Model",
     apiEnv: "API key env var",
@@ -158,6 +177,14 @@ const translations = {
     eventList: "Events, comma-separated",
     saveNotification: "Save endpoint",
     notificationList: "Configured endpoints",
+    deliverablesTitle: "Patch flows and client delivery",
+    createPatchPack: "Generate patch pack",
+    createClientPack: "Generate client delivery pack",
+    audience: "Audience",
+    generatePatchPack: "Generate patch pack",
+    generateClientPack: "Generate client pack",
+    patchPackOutput: "Patch pack output",
+    clientPackOutput: "Client pack output",
     reportsTitle: "Reports and artifacts",
     reportList: "Reports",
     artifactList: "Artifacts",
@@ -179,14 +206,17 @@ const translations = {
     navProjects: "Проекты",
     navFacts: "Бренд-факты",
     navProviders: "Провайдеры",
+    navIntegrations: "Интеграции",
+    navCms: "CMS",
     navPrompts: "Промпты",
     navAudits: "Аудиты",
     navSov: "AI SoV",
     navNotifications: "Уведомления",
+    navDeliverables: "Выдача",
     navReports: "Отчеты",
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
-    releaseBadge: "v3.0.0 proof-first discoverability platform",
+    releaseBadge: "v3.1.0 integrations patch flows and client delivery",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -245,6 +275,8 @@ const translations = {
     defaultReportLanguage: "Язык отчетов по умолчанию",
     reportTitle: "Заголовок клиентского отчета",
     reportSubtitle: "Подзаголовок клиентского отчета",
+    reportFooter: "Футер клиентского отчета",
+    logoUrl: "URL логотипа",
     saveWorkspace: "Сохранить воркспейс",
     workspaceList: "Список воркспейсов",
     projectTitle: "Проекты и сайты",
@@ -272,6 +304,18 @@ const translations = {
     providersTitle: "Настройки провайдеров",
     createProvider: "Создать конфиг провайдера",
     providerName: "Провайдер",
+    integrationsTitle: "Поисковые и аналитические интеграции",
+    createIntegration: "Создать интеграцию",
+    integrationSource: "Источник",
+    propertyId: "Property / counter ID",
+    saveIntegration: "Сохранить интеграцию",
+    integrationList: "Список интеграций",
+    cmsTitle: "CMS connectors и writeback-gates",
+    createCms: "Создать CMS connector",
+    cmsType: "Тип CMS",
+    writebackMode: "Режим writeback",
+    saveCms: "Сохранить CMS connector",
+    cmsList: "Список CMS connectors",
     label: "Label",
     model: "Модель",
     apiEnv: "Переменная окружения для API ключа",
@@ -309,6 +353,14 @@ const translations = {
     eventList: "События через запятую",
     saveNotification: "Сохранить endpoint",
     notificationList: "Настроенные endpoints",
+    deliverablesTitle: "Patch flows и client delivery",
+    createPatchPack: "Сгенерировать patch pack",
+    createClientPack: "Сгенерировать client delivery pack",
+    audience: "Аудитория",
+    generatePatchPack: "Сгенерировать patch pack",
+    generateClientPack: "Сгенерировать client pack",
+    patchPackOutput: "Вывод patch pack",
+    clientPackOutput: "Вывод client pack",
     reportsTitle: "Отчеты и артефакты",
     reportList: "Отчеты",
     artifactList: "Артефакты",
@@ -511,10 +563,16 @@ function renderOverview() {
 function workspaceCard(workspace) {
   const card = document.createElement("article");
   card.className = "entity-card";
+  const branding = [
+    workspace.client_report_title || "No white-label title yet.",
+    workspace.client_report_subtitle || "No client subtitle yet.",
+    workspace.client_report_footer || "No client footer yet.",
+  ];
   card.innerHTML = `
     <strong>${workspace.name}</strong>
     <div class="workspace-meta">#${workspace.id} · ${workspace.slug} · ${workspace.default_report_language}</div>
-    <div class="workspace-meta">${workspace.client_report_title || "No white-label title yet."}</div>
+    <div class="workspace-meta">${branding.join(" · ")}</div>
+    <div class="workspace-meta">${workspace.branding_logo_url || "No logo URL yet."}</div>
   `;
   card.addEventListener("click", async () => {
     state.selectedWorkspaceId = String(workspace.id);
@@ -544,7 +602,11 @@ function projectCard(project) {
     });
     setStatus();
     log(`Project #${project.id} selected.`);
-    await refreshReportsAndArtifacts();
+    await Promise.all([
+      refreshReportsAndArtifacts(),
+      refreshIntegrations(),
+      refreshCmsConnectors(),
+    ]);
   });
   return card;
 }
@@ -603,6 +665,36 @@ async function refreshProviders() {
     simpleCard(row.label, [`#${row.id}`, `${row.provider_name} · ${row.model}`, row.api_key_env_var || "default env routing"]),
   );
   renderOverview();
+}
+
+async function refreshIntegrations() {
+  if (!state.token || !state.selectedProjectId) {
+    return;
+  }
+  state.integrationConnections = await apiRequest(
+    `/integrations?project_id=${state.selectedProjectId}`,
+  );
+  renderCards("#integration-list", state.integrationConnections, (row) =>
+    simpleCard(row.label, [
+      `${row.source_type} · #${row.id}`,
+      row.property_identifier || "starter property",
+      row.last_sync_status || "not synced yet",
+    ]),
+  );
+}
+
+async function refreshCmsConnectors() {
+  if (!state.token || !state.selectedProjectId) {
+    return;
+  }
+  state.cmsConnectors = await apiRequest(`/cms?project_id=${state.selectedProjectId}`);
+  renderCards("#cms-list", state.cmsConnectors, (row) =>
+    simpleCard(row.label, [
+      `${row.cms_type} · #${row.id}`,
+      row.writeback_mode,
+      row.last_sync_status || "not synced yet",
+    ]),
+  );
 }
 
 async function refreshPromptSets() {
@@ -783,6 +875,37 @@ async function handlePromptSetCreate(event) {
   await refreshPromptSets();
 }
 
+async function handleIntegrationCreate(event) {
+  event.preventDefault();
+  const payload = formPayload(event.currentTarget);
+  payload.workspace_id = Number(payload.workspace_id);
+  payload.project_id = Number(payload.project_id);
+  payload.config = {};
+  const row = await apiRequest("/integrations", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  await apiRequest(`/integrations/${row.id}/sync`, { method: "POST" });
+  log(`Integration ${payload.label} created and synced.`);
+  event.currentTarget.reset();
+  await refreshIntegrations();
+}
+
+async function handleCmsCreate(event) {
+  event.preventDefault();
+  const payload = formPayload(event.currentTarget);
+  payload.workspace_id = Number(payload.workspace_id);
+  payload.project_id = Number(payload.project_id);
+  const row = await apiRequest("/cms", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  await apiRequest(`/cms/${row.id}/inventory`, { method: "POST" });
+  log(`CMS connector ${payload.label} created and inventoried.`);
+  event.currentTarget.reset();
+  await refreshCmsConnectors();
+}
+
 async function handleAuditCreate(event) {
   event.preventDefault();
   const form = event.currentTarget;
@@ -832,6 +955,34 @@ async function handleProjectExport() {
   log(`Export package generated for project #${state.selectedProjectId}.`);
 }
 
+async function handlePatchPackCreate(event) {
+  event.preventDefault();
+  const payload = formPayload(event.currentTarget);
+  payload.workspace_id = Number(payload.workspace_id);
+  payload.project_id = Number(payload.project_id);
+  const pack = await apiRequest("/deliverables/patch-pack", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  $("#patch-pack-output").textContent = JSON.stringify(pack, null, 2);
+  log(`Patch pack generated for project #${payload.project_id}.`);
+  await refreshReportsAndArtifacts();
+}
+
+async function handleClientPackCreate(event) {
+  event.preventDefault();
+  const payload = formPayload(event.currentTarget);
+  payload.workspace_id = Number(payload.workspace_id);
+  payload.project_id = Number(payload.project_id);
+  const pack = await apiRequest("/deliverables/client-pack", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  $("#client-pack-output").textContent = JSON.stringify(pack, null, 2);
+  log(`Client delivery pack generated for project #${payload.project_id}.`);
+  await refreshReportsAndArtifacts();
+}
+
 async function bootstrapAuthedState() {
   if (!state.token) {
     return;
@@ -851,6 +1002,8 @@ async function bootstrapAuthedState() {
     await Promise.all([
       refreshFacts(),
       refreshProviders(),
+      refreshIntegrations(),
+      refreshCmsConnectors(),
       refreshAudits(),
       refreshSovRuns(),
       refreshReportsAndArtifacts(),
@@ -875,14 +1028,20 @@ function installEventListeners() {
   $("#project-form").addEventListener("submit", handleProjectCreate);
   $("#facts-form").addEventListener("submit", handleFactsCreate);
   $("#provider-form").addEventListener("submit", handleProviderCreate);
+  $("#integration-form").addEventListener("submit", handleIntegrationCreate);
+  $("#cms-form").addEventListener("submit", handleCmsCreate);
   $("#prompt-set-form").addEventListener("submit", handlePromptSetCreate);
   $("#audit-form").addEventListener("submit", handleAuditCreate);
   $("#sov-form").addEventListener("submit", handleSovCreate);
   $("#notification-form").addEventListener("submit", handleNotificationCreate);
+  $("#patch-pack-form").addEventListener("submit", handlePatchPackCreate);
+  $("#client-pack-form").addEventListener("submit", handleClientPackCreate);
   $("#refresh-workspaces").addEventListener("click", () => refreshWorkspaces().catch((error) => log(error.message, "warning")));
   $("#refresh-projects").addEventListener("click", () => refreshProjects().catch((error) => log(error.message, "warning")));
   $("#refresh-facts").addEventListener("click", () => refreshFacts().catch((error) => log(error.message, "warning")));
   $("#refresh-providers").addEventListener("click", () => refreshProviders().catch((error) => log(error.message, "warning")));
+  $("#refresh-integrations").addEventListener("click", () => refreshIntegrations().catch((error) => log(error.message, "warning")));
+  $("#refresh-cms").addEventListener("click", () => refreshCmsConnectors().catch((error) => log(error.message, "warning")));
   $("#refresh-prompts").addEventListener("click", () => refreshPromptSets().catch((error) => log(error.message, "warning")));
   $("#refresh-audits").addEventListener("click", () => refreshAudits().catch((error) => log(error.message, "warning")));
   $("#refresh-sov").addEventListener("click", () => refreshSovRuns().catch((error) => log(error.message, "warning")));

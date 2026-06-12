@@ -84,7 +84,9 @@ def integration_starters() -> dict:
     return {
         "search_data": [
             "scripts/gsc_data_stub.py",
+            "scripts/ga4_data_stub.py",
             "scripts/yandex_data_stub.py",
+            "scripts/yandex_metrica_stub.py",
         ],
         "notifications": [
             "Slack webhook",
@@ -96,5 +98,72 @@ def integration_starters() -> dict:
             "LocalAI",
             "vLLM-compatible OpenAI endpoint",
             "OpenAI-compatible local gateway",
+        ],
+    }
+
+
+@router.get("/vertical-packs")
+def vertical_packs() -> dict:
+    return {
+        "verticals": [
+            {
+                "id": "legal",
+                "common_audits": ["factual_consistency", "entity_hierarchy_review"],
+                "reporting_angle": "trust, risk, and legal proof",
+            },
+            {
+                "id": "saas",
+                "common_audits": ["llms_txt", "content_freshness", "schema_review"],
+                "reporting_angle": "product discoverability and conversion clarity",
+            },
+            {
+                "id": "local_service_business",
+                "common_audits": ["local_yandex_readiness", "factual_consistency"],
+                "reporting_angle": "regional proof and commercial factors",
+            },
+            {
+                "id": "agency",
+                "common_audits": ["report_pack", "patch_pack", "brand_facts"],
+                "reporting_angle": "delivery consistency and client-safe outputs",
+            },
+            {
+                "id": "expert_business",
+                "common_audits": ["entity_hierarchy_review", "ai_sov_starter"],
+                "reporting_angle": "founder authority and offer clarity",
+            },
+            {
+                "id": "healthcare",
+                "common_audits": ["factual_consistency", "trust_review"],
+                "reporting_angle": "accuracy, safety, and YMYL guardrails",
+            },
+            {
+                "id": "multilingual_b2b",
+                "common_audits": ["llms_txt", "entity_hierarchy_review", "international_localization"],
+                "reporting_angle": "cross-market positioning and factual alignment",
+            },
+        ]
+    }
+
+
+@router.get("/review-mode")
+def review_mode() -> dict:
+    return {
+        "automatic": [
+            "inventory sync",
+            "starter data import",
+            "artifact generation",
+            "draft patch packs",
+        ],
+        "requires_human_review": [
+            "title rewrites",
+            "schema changes",
+            "brand facts approval",
+            "client-facing report framing",
+            "human-approved publish",
+        ],
+        "must_not_auto_apply": [
+            "silent destructive updates",
+            "publish without review",
+            "legal or medical claims without approval",
         ],
     }

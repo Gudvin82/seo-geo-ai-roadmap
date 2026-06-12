@@ -176,9 +176,59 @@ market и language claims.
 - `GET /api/v1/notifications?workspace_id={workspace_id}`
 - `POST /api/v1/notifications`
 
-## Export package
+## Search и analytics integrations
+
+- `GET /api/v1/integrations?project_id={project_id}`
+- `POST /api/v1/integrations`
+- `POST /api/v1/integrations/{integration_id}/sync`
+
+Допустимые starter source values:
+
+- `gsc`
+- `ga4`
+- `yandex_webmaster`
+- `yandex_metrica`
+
+## CMS connectors и patch-package flow
+
+- `GET /api/v1/cms?project_id={project_id}`
+- `POST /api/v1/cms`
+- `POST /api/v1/cms/{connector_id}/inventory`
+- `POST /api/v1/cms/{connector_id}/patch-package`
+
+Режимы writeback:
+
+- `read_only`
+- `draft`
+- `human_approved_publish`
+
+## Deliverables
+
+- `POST /api/v1/deliverables/patch-pack`
+- `POST /api/v1/deliverables/client-pack`
+
+Допустимые audience values:
+
+- `agency`
+- `in_house`
+- `founder`
+
+Deliverables возвращают структурированные outputs: issue backlog items,
+developer-ready briefs, content briefs, schema suggestions и client delivery
+summaries.
+
+## Export и import package
 
 - `GET /api/v1/exports/project-package?project_id={project_id}`
+- `POST /api/v1/exports/project-package/import`
+
+## Operator settings helpers
+
+- `GET /api/v1/settings/repo-assets`
+- `GET /api/v1/settings/prompt-library`
+- `GET /api/v1/settings/integration-starters`
+- `GET /api/v1/settings/vertical-packs`
+- `GET /api/v1/settings/review-mode`
 
 ## Audit logs
 

@@ -1,17 +1,25 @@
 # Patch Mode
 
-Patch mode moves the platform from "find issues" to "prepare implementation."
+Patch mode in `v3.1.0` moves the platform from "find issues" to "prepare
+implementation work".
 
-## Artifact types
+## Output types
 
-- issue-ready markdown
-- developer task brief
-- content brief
-- schema or `llms.txt` suggestion
-- FAQ or answer-ready draft
+- issue-ready backlog items
+- developer-ready implementation briefs
+- content briefs
+- schema patch suggestions
+- llms.txt and AI visibility suggestions
+- client-safe patch pack artifacts
 
-## Current behavior
+## Review stance
 
 - outputs are explicit artifacts
-- human review remains required
-- CMS writeback is not automatic in `v2.2.0`
+- review mode is always visible
+- CMS writeback is governed by `read_only`, `draft`, or
+  `human_approved_publish`
+
+## Current API flow
+
+- `POST /api/v1/deliverables/patch-pack`
+- `POST /api/v1/cms/{connector_id}/patch-package`

@@ -5,17 +5,19 @@ import json
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from ..access import record_audit_log, require_project_access
+from ..access import record_audit_log, require_project_access, require_workspace_access
 from ..database import get_db
 from ..deps import get_current_user
 from ..models import (
     Artifact,
     BrandFactsProfile,
+    Project,
     ProviderConfiguration,
     Report,
     SovRun,
     User,
 )
+from ..schemas import ProjectImportRead, ProjectImportRequest
 
 router = APIRouter(prefix="/exports", tags=["exports"])
 
@@ -122,3 +124,58 @@ def export_project_package(
             for row in sov_runs
         ],
     }
+
+
+@router.post("/project-package/import", response_model=ProjectImportRead)
+def import_project_package(
+    payload: ProjectImportRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> ProjectImportRead:
+    require_workspace_access(
+        db, payload.workspace_id, current_user, minimum_role="editor"
+    )
+    project_payload = payload.payload.get("project") or {}
+    project = Project(
+        workspace_id=payload.workspace_id,
+        name=project_payload.get("name", "Imported project"),
+        website_url=project_payload.get("website_url", "https://example.com"),
+        market=project_payload.get("market", "Global"),
+        language=project_payload.get("language", "en"),
+        project_type=project_payload.get("project_type", "imported_project"),
+        audit_preset=project_payload.get("audit_preset", "global_multilingual"),
+    )
+    db.add(project)
+    db.flush()
+    for facts in payload.payload.get("brand_facts", []):
+        db.add(
+            BrandFactsProfile(
+                project_id=project.id,
+                name=facts.get("name", "Imported facts"),
+                facts_markdown=facts.get("facts_markdown", ""),
+                approved_claims=facts.get("approved_claims", ""),
+                forbidden_claims=facts.get("forbidden_claims", ""),
+                numeric_facts_json=json.dumps(
+                    facts.get("numeric_facts", []), ensure_ascii=False
+                ),
+                markets_json=json.dumps(facts.get("markets", []), ensure_ascii=False),
+                languages_json=json.dumps(
+                    facts.get("languages", []), ensure_ascii=False
+                ),
+                primary_cta=facts.get("primary_cta"),
+            )
+        )
+    record_audit_log(
+        db,
+        "project.package_imported",
+        user_id=current_user.id,
+        workspace_id=payload.workspace_id,
+        project_id=project.id,
+        metadata={"imported_sections": list(payload.payload.keys())},
+    )
+    db.commit()
+    return ProjectImportRead(
+        project_id=project.id,
+        imported_sections=list(payload.payload.keys()),
+        message="Project package imported.",
+    )

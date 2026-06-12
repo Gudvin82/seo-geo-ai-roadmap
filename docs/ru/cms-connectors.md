@@ -1,26 +1,59 @@
 # CMS Connectors
 
-## Текущий scope
+`v3.1.0` делает CMS connectors более операционными и явно фиксирует безопасные
+границы writeback.
 
-`v2.2.0` задает WordPress-first направление и фиксирует ожидаемый patch-flow.
+## Поддерживаемые connectors
 
-## WordPress
+- WordPress
+- Tilda
+- Bitrix
+- Webflow
 
-- забирать списки страниц и постов через REST API
-- маппить URL, titles и statuses в audit workflows
-- экспортировать implementation notes в draft-ready формате
-- оставлять human review обязательным перед публикацией
-- starter script: `scripts/wordpress_connector_starter.py`
-- starter script: `scripts/wordpress_connector_starter.py`
+## Текущий полезный scope
 
-## Webflow
+- создать connector на каждый project
+- синхронизировать inventory
+- маппить titles, slugs, status, URL и metadata fields
+- генерировать governed patch packages
+- экспортировать suggested changes для человека или AI-агента
 
-- пока описан как starter path
-- сначала рекомендуется read-only inventory и export-first workflow
-- direct writeback остается задачей roadmap
+## Режимы writeback
 
-## Что ожидается от patch mode
+- `read_only`
+- `draft`
+- `human_approved_publish`
 
-- read-only inventory безопасен по умолчанию
-- generated changes должны становиться задачами, draft-черновиками или diff-like suggestions
-- прямая публикация должна быть opt-in и проходить human review
+## Безопасные границы
+
+Безопасно:
+
+- inventory content
+- mapping metadata/title/status
+- patch suggestions
+- schema и llms.txt suggestions
+- exportable implementation payloads
+
+Требует human review:
+
+- переписывание titles
+- изменения schema
+- publish operations
+- изменения клиентских формулировок
+
+Не поддерживается:
+
+- silent destructive updates
+- автоматический publish без review
+
+## WordPress notes
+
+WordPress starter connector сейчас самый полезный путь в релизе. Он рассчитан
+на page fetching, metadata mapping и exportable suggested changes до любого
+шага publish.
+
+## RU-market notes
+
+Tilda и Bitrix стратегически важны для RU-market operator flows. В `v3.1.0`
+они документированы как starter connectors с inventory и governed patch package
+support.

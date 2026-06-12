@@ -1,27 +1,59 @@
 # CMS Connectors
 
-## Current scope
+`v3.1.0` makes CMS connectors more operational and more explicit about safe
+writeback boundaries.
 
-`v2.2.0` introduces a WordPress-first connector direction and documents the
-expected patch workflow.
+## Supported connectors
 
-## WordPress
+- WordPress
+- Tilda
+- Bitrix
+- Webflow
 
-- fetch page and post lists through the REST API
-- map URLs, titles, and statuses into audit workflows
-- export draft-ready implementation notes
-- keep human review mandatory before publication
-- starter script: `scripts/wordpress_connector_starter.py`
-- starter script: `scripts/wordpress_connector_starter.py`
+## Current useful scope
 
-## Webflow
+- create a connector per project
+- sync inventory
+- map titles, slugs, status, URL, and metadata fields
+- generate governed patch packages
+- export suggested changes for human or AI implementation
 
-- documented as a starter path
-- recommended for read-only inventory and export-first workflows first
-- direct writeback remains roadmap work
+## Writeback modes
 
-## Patch mode expectations
+- `read_only`
+- `draft`
+- `human_approved_publish`
 
-- read-only inventory is safe by default
-- generated changes should become tasks, drafts, or diff-like suggestions
-- direct publishing should be opt-in and human-reviewed
+## Safe boundaries
+
+Safe:
+
+- content inventory
+- metadata/title/status mapping
+- patch suggestions
+- schema and llms.txt suggestions
+- exportable implementation payloads
+
+Needs human review:
+
+- title rewrites
+- schema changes
+- publish operations
+- client-facing messaging changes
+
+Not supported:
+
+- silent destructive updates
+- automatic publish without review
+
+## WordPress notes
+
+The WordPress starter connector is the most useful path in this release. It is
+intended to support page fetching, metadata mapping, and exportable suggested
+changes before any publishing step is considered.
+
+## RU-market notes
+
+Tilda and Bitrix remain strategically important for RU-market operator flows.
+`v3.1.0` documents them as starter connectors with inventory and governed patch
+package support.

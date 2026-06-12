@@ -1,18 +1,17 @@
-# White-Label режим
+# White-Label Mode
 
-Используйте workspace branding fields, когда нужен client-facing слой поверх
-той же общей платформы.
+Используйте workspace branding fields, когда вам нужен client-facing слой
+поверх той же платформы.
 
-## Какие поля уже есть
+## Текущие white-label поля
 
 - `client_report_title`
 - `client_report_subtitle`
 - `client_report_footer`
 - `branding_logo_url`
 
-## Рекомендуемый workflow
+## Использование в v3.1.0
 
-1. Создавайте отдельный workspace на каждого клиента.
-2. Заполняйте white-label поля до экспорта отчетов.
-3. Держите отдельный brand-facts profile под каждый сайт или бизнес-линейку.
-4. Экспортируйте артефакты только после human review.
+- применяйте workspace branding fields для client-safe naming в отчетах
+- комбинируйте их с delivery packs и project package export
+- полноценный app-reskin по-прежнему вне scope, если вы не строите его сами

@@ -99,3 +99,93 @@ def test_workspace_project_and_audit_flow(
         headers=auth_headers,
     )
     assert logs.status_code == 200
+
+    integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "gsc",
+            "label": "Primary GSC",
+            "property_identifier": "sc-domain:example.com",
+            "credentials_env_var": "GSC_SERVICE_ACCOUNT_JSON",
+            "config": {},
+        },
+        headers=auth_headers,
+    )
+    assert integration.status_code == 200
+    integration_id = integration.json()["id"]
+
+    integration_sync = client.post(
+        f"/api/v1/integrations/{integration_id}/sync",
+        headers=auth_headers,
+    )
+    assert integration_sync.status_code == 200
+    assert integration_sync.json()["last_sync_status"] == "completed"
+
+    cms = client.post(
+        "/api/v1/cms",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "cms_type": "webflow",
+            "label": "Marketing Webflow",
+            "base_url": "https://example.com",
+            "writeback_mode": "draft",
+        },
+        headers=auth_headers,
+    )
+    assert cms.status_code == 200
+    cms_id = cms.json()["id"]
+
+    cms_inventory = client.post(
+        f"/api/v1/cms/{cms_id}/inventory",
+        headers=auth_headers,
+    )
+    assert cms_inventory.status_code == 200
+    assert cms_inventory.json()["last_sync_status"] == "completed"
+
+    patch_pack = client.post(
+        "/api/v1/deliverables/patch-pack",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "report_language": "en",
+            "mode": "draft",
+            "audience": "agency",
+        },
+        headers=auth_headers,
+    )
+    assert patch_pack.status_code == 200
+    assert "issue_backlog" in patch_pack.json()["outputs"]
+
+    client_pack = client.post(
+        "/api/v1/deliverables/client-pack",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "report_language": "en",
+            "mode": "draft",
+            "audience": "founder",
+        },
+        headers=auth_headers,
+    )
+    assert client_pack.status_code == 200
+    assert "delivery_summary" in client_pack.json()["outputs"]
+
+    project_package = client.get(
+        f"/api/v1/exports/project-package?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert project_package.status_code == 200
+
+    imported = client.post(
+        "/api/v1/exports/project-package/import",
+        json={
+            "workspace_id": workspace_id,
+            "payload": project_package.json(),
+        },
+        headers=auth_headers,
+    )
+    assert imported.status_code == 200
+    assert imported.json()["project_id"] > 0
