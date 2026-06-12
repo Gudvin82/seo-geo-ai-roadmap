@@ -230,6 +230,26 @@ summaries.
 - `GET /api/v1/settings/vertical-packs`
 - `GET /api/v1/settings/review-mode`
 
+## Tools
+
+- `POST /api/v1/tools/llms-validator`
+
+Пример payload:
+
+```json
+{
+  "url": "https://example.com/llms.txt"
+}
+```
+
+Или:
+
+```json
+{
+  "content": "# Example llms.txt\n- Home: https://example.com/\n- FAQ: https://example.com/faq"
+}
+```
+
 ## Audit logs
 
 - `GET /api/v1/audit-logs?workspace_id={workspace_id}`

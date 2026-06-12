@@ -1,119 +1,75 @@
 # GEO и AI Search
 
-> **Tags:** [AI/GEO] [INT] [RU]  
-> **Priority:** High  
-> **Roadmap phase:** Месяц 0-3
+`v3.2.0` делает GEO/AI-слой более конкретным, более измеримым, более
+сценарным и более честным по отношению к волатильности AI-поверхностей.
 
-## Зачем Это Нужно
+## Три outcome-слоя
 
-Этот раздел важен, потому что discoverability растет только тогда, когда llms.txt, доступ AI-ботов, prompt monitoring, answer extraction управляются как единая система исполнения, а не как набор разрозненных задач.
+GEO/AI-работу нужно оценивать через три разных outcome-слоя:
 
-## Когда Использовать
+| Outcome layer | Что это значит | Стабильные метрики | Proxy-метрики | Главный риск |
+|---|---|---|---|---|
+| Rankings | Классическая поисковая видимость и квалифицированный organic traffic | indexation, CWV, schema coverage, rankings, CTR | рост branded queries | попытка заменить SEO одним GEO |
+| AI citations / AI visibility | Упоминают ли LLM-поверхности бренд, цитируют ли его и правильно ли его описывают | полностью стабильных метрик почти нет | AI SoV, AI Citation Score, answer-surface coverage | продажа волатильных proxy-метрик как истины |
+| Conversion & trust | Превращается ли discoverability в лиды, pipeline и доверие к бренду | формы, звонки, assisted conversions | обратная связь sales, branded demand | visibility без коммерческого намерения и доверия |
 
-Используйте его для сценариев: бренды, которым нужна видимость в ассистентах и AI-ответах. Ставьте в приоритет в начале, если сайт запускается, перезапускается или выходит из просадки трафика и доверия.
+## Что влияет на какой слой
 
-## Результаты
-
-- Понятные решения вместо допущений
-- Повторяемый workstream с owner и QA
-- Входные данные для отчетности, приоритизации и релизного плана
-
-## Что Нужно На Входе
-
-- Текущие URL сайта, доступы к аналитике и бизнес-цели
-- Список приоритетных офферов, регионов и сегментов аудитории
-- Доступ хотя бы к одному SEO-краулеру и одному AI-сценарию проверки
-
-## Пошаговые Инструкции
-
-1. Зафиксируйте текущее состояние и желаемый бизнес-результат.
-2. Отдельно зафиксируйте последствия для поисковых систем и AI-поверхностей до того, как выбирать, что релизить.
-3. Разбейте работу на действия вокруг: llms.txt, доступ AI-ботов, prompt monitoring, answer extraction.
-4. Назначьте одного owner, один QA-gate и одну метрику отчета на каждое действие.
-5. Релизьте изменения небольшими партиями с заметками по валидации.
-6. Ежемесячно проверяйте эффект и возвращайте выводы в roadmap.
-
-## Валидация / QA
-
-- Проверьте, что у каждого действия есть страница, owner и KPI.
-- Подтвердите, что изменения видны в HTML, аналитике или отчетных артефактах.
-- Отклоняйте работу, которую не может перепроверить другой участник команды.
-- Храните доказательства before/after в скриншотах, экспортируемых файлах или markdown-заметках.
-
-## Чеклист
-
-- [ ] Scope зафиксирован
-- [ ] Owner назначен
-- [ ] Способ валидации определен
-- [ ] Expected output подготовлен
-- [ ] Release note готов
-
-## Decision Tree
-
-- Если раздел влияет на обход, сначала исправьте технические блокеры, а потом масштабируйте контент.
-- Если раздел влияет на trust или конверсию, сначала релизьте на money pages, а потом на второстепенные.
-- Если AI-ответы нестабильны, добавьте proof-активы и более строгий answer-ready формат.
-
-## Промпты Для AI / Codex
-
-```text
-Роль: Senior discoverability strategist.
-Входы: контекст бизнеса, целевой рынок, текущие страницы, известные блокеры.
-Задача: составь action plan для раздела GEO и AI Search с приоритетами, QA-шагами, рисками и expected outputs.
-Формат ответа: markdown-таблица и bullet-действия.
-Критерии оценки: ясность, реализуемость, связь с бизнесом и измеримые следующие шаги.
-```
-
-## Ожидаемые Артефакты
-
-- Приоритизированная задача в backlog
-- Owner и правило валидации
-- Переиспользуемый артефакт: чеклист, бриф или заметка в отчет
-- Короткий decision log для следующих релизов
-
-## Примеры
-
-Пример AI Агентство сначала применяет раздел GEO и AI Search к аудиту, GEO-страницам услуг и брендовым AI-промптам, а уже потом масштабирует на весь блог.
-
-См. [examples/ai-share-of-voice-weekly-report.md](../../examples/ai-share-of-voice-weekly-report.md)
-для готовой weekly-структуры отчета по AI Share of Voice.
-
-Sample-данные в машинно-читаемом формате:
-
-- [ai-sov-report-sample.json](../../examples/ai-sov-report-sample.json)
-- [ai-sov-report-sample.csv](../../examples/ai-sov-report-sample.csv)
-
-Связанные термины:
-
-- [GLOSSARY_RU.md](../../GLOSSARY_RU.md)
-
-## Типичные Ошибки
-
-- Считать эту работу разовой задачей, а не операционным циклом.
-- Релизить изменения без owner на валидацию.
-- Смешивать несколько интентов или рынков в одной странице или отчете.
-
-## Анти-Паттерны
-
-- Framework theater: длинные документы без пути к исполнению.
-- Метрики без бизнес-интерпретации.
-- AI-генерация без proof, примеров и ревью.
-
-## Инструменты
-
-| Инструмент | Рынок | Бесплатно | Для чего |
+| Действие | Rankings | AI visibility | Conversion & trust |
 |---|---|---|---|
-| Google Search Console | Global | Да | запросы, индексация, coverage |
-| Bing Webmaster Tools | Global | Да | видимость в Bing и диагностика обхода |
-| Яндекс Вебмастер | RU/CIS | Да | индексация и диагностика Яндекса |
-| Яндекс Метрика | RU/CIS | Да | поведенческая аналитика и цели |
-| Screaming Frog | Global | Частично | краул-аудиты и извлечение данных |
-| ChatGPT / Claude / Gemini / Codex | Global | Частично | анализ, черновики, QA и prompt testing |
+| Техническая SEO-гигиена | High | Medium | Medium |
+| Canonical fact consistency | Medium | High | High |
+| Answer-ready структура страниц | Medium | High | High |
+| JSON-LD и entity clarity | High | High | Medium |
+| llms.txt / доступ AI-ботов | Low | High | Low |
+| Сильный оффер, proof и CTA | Medium | Medium | High |
+| Согласованные внешние упоминания бренда | Medium | High | Medium |
 
-## Связанные Разделы
+## Минимальная программа при ограничениях
 
-- [05-technical-seo.md](./05-technical-seo.md)
-- [14-neural-search-ai.md](./14-neural-search-ai.md)
-- [18-analytics.md](./18-analytics.md)
-- [canonical-facts-and-entity-consistency.md](./canonical-facts-and-entity-consistency.md)
-- [entity-hierarchy-and-brand-focus.md](./entity-hierarchy-and-brand-focus.md)
+Если времени или ресурса мало:
+
+1. Исправьте crawlability, rendering, speed, canonicalization и indexability.
+2. Синхронизируйте homepage, about, service, FAQ, contacts и policy pages по
+   фактам.
+3. Добавьте answer-ready sections и structured data на money pages.
+4. Опубликуйте `llms.txt`, проверьте robots-правила для AI-ботов и отслеживайте
+   AI SoV как proxy, а не как ground truth.
+5. Привяжите каждое GEO/AI-действие к бизнес-странице или к buyer journey.
+
+## Decision tree
+
+- Если техническая SEO-слабая, сначала чините её, а потом масштабируйте GEO.
+- Если бренд цитируют, но искажают, приоритет — fact consistency и entity
+  clarity.
+- Если сайт понятен ботам, но слаб для людей, усиливайте proof, offer clarity и
+  conversion flow.
+- Если AI visibility растёт без бизнес-эффекта, пересоберите intent и
+  коммерческую framing-логику страниц.
+
+## GEO/AI execution loop
+
+1. Зафиксируйте baseline по technical SEO и business goals.
+2. Зафиксируйте baseline по AI surfaces и citation proxies.
+3. Разметьте entity facts, offer clarity и answer-ready gaps.
+4. Обновите ключевые страницы и structured data.
+5. Отслеживайте изменения отдельно в search, AI и business слоях.
+6. Помечайте выводы как observed fact, inferred issue, hypothesis или
+   recommended action.
+
+## Чего нельзя обещать
+
+- гарантированные AI citations
+- детерминированные rankings от одного `llms.txt`
+- универсальный GEO-playbook для любой ниши
+- “AI optimization” без technical SEO, facts и trust assets
+
+## Связанные документы
+
+- [geo-measurement-maturity.md](./geo-measurement-maturity.md)
+- [geo-business-outcomes.md](./geo-business-outcomes.md)
+- [geo-priority-maps.md](./geo-priority-maps.md)
+- [geo-ai-surfaces.md](./geo-ai-surfaces.md)
+- [answer-ready-patterns.md](./answer-ready-patterns.md)
+- [entity-seo-and-kg.md](./entity-seo-and-kg.md)
+- [geo-red-team-and-risks.md](./geo-red-team-and-risks.md)

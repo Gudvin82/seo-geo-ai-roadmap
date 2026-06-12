@@ -2,8 +2,18 @@
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "Example AI Visibility Audit",
+  "description": "Align this description with the visible service-page promise.",
+  "url": "https://example.com/services/ai-visibility-audit",
+  "areaServed": "Global",
+  "serviceType": "AI visibility audit",
   "provider": {
     "@type": "Organization",
     "name": "Example AI Agency"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "https://example.com/services/ai-visibility-audit",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
   }
 }

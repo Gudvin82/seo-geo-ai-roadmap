@@ -1,5 +1,14 @@
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": []
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does this service do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Replace this with the same direct answer users can read on the page."
+      }
+    }
+  ]
 }

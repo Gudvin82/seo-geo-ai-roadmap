@@ -6,6 +6,17 @@
 platform and methodology for teams that need one operating system across
 technical SEO, GEO, AI visibility, factual consistency, and bilingual reporting.
 
+## Three outcome layers
+
+The repo is intentionally built around three connected outcomes:
+
+- Rankings: classical SEO visibility
+- AI citations / AI visibility: GEO/AEO surface presence and citation quality
+- Conversion and trust: leads, pipeline, branded demand, and human confidence
+
+The project is strongest when users treat these as linked but non-identical
+layers.
+
 ## Primary ICPs
 
 - Agency operators managing multiple client sites
@@ -19,6 +30,8 @@ technical SEO, GEO, AI visibility, factual consistency, and bilingual reporting.
 - It combines methodology, platform, and operator workflow in one repo
 - It is built to be usable by humans and by AI coding agents
 - It measures and re-runs, instead of only describing best practices
+- It treats GEO/AI as measurable, scenario-based, and anti-hype rather than as
+  a vague AI add-on
 
 ## Framework vs platform vs service system
 

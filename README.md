@@ -181,7 +181,14 @@ Expected demo credentials:
 
 ## Transparent scoring and implementation output
 
-`v3.0.0` formalizes two proof-first layers:
+`v3.2.0` makes the GEO/AI layer more decision-grade:
+
+- three explicit outcome layers: rankings, AI visibility, and conversion trust
+- measurement maturity framing so proxy metrics are not sold as absolute truth
+- priority maps, AI-surface playbooks, RU LLM context, and anti-hype guardrails
+- linkable operator tool: standalone `llms.txt` validator backed by public API
+
+`v3.0.0` formalized two proof-first layers:
 
 - AI Citation Score: a transparent 0-100 signal based on whether a brand is
   mentioned, cited, and described well in structured AI SoV checks
@@ -197,6 +204,13 @@ Read more:
 - [docs/en/client-delivery.md](./docs/en/client-delivery.md)
 - [docs/en/search-data-connectors.md](./docs/en/search-data-connectors.md)
 - [docs/en/cms-connectors.md](./docs/en/cms-connectors.md)
+- [docs/en/geo-measurement-maturity.md](./docs/en/geo-measurement-maturity.md)
+- [docs/en/geo-priority-maps.md](./docs/en/geo-priority-maps.md)
+- [docs/en/geo-ai-surfaces.md](./docs/en/geo-ai-surfaces.md)
+- [docs/en/answer-ready-patterns.md](./docs/en/answer-ready-patterns.md)
+- [docs/en/entity-seo-and-kg.md](./docs/en/entity-seo-and-kg.md)
+- [docs/en/geo-red-team-and-risks.md](./docs/en/geo-red-team-and-risks.md)
+- [app/frontend/llms-validator.html](./app/frontend/llms-validator.html)
 
 ## Real cases
 
@@ -231,6 +245,10 @@ See [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md).
 
 ## Latest changes
 
+- `v3.2.0`: GEO/AI deep-dive docs, measurement maturity, priority maps,
+  AI-surface playbooks, answer-ready and entity/KG layers, anti-hype docs,
+  RU LLM guidance, `llms.txt` validator, AI Visibility Check example, and
+  expanded JSON-LD templates
 - `v3.1.0`: search and analytics integration starters, CMS connector flows,
   patch packs, client delivery packs, project package import, stronger
   white-label framing, review-mode guidance, and richer EN/RU operator docs

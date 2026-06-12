@@ -1,18 +1,18 @@
 # Repository Roadmap
 
-## v3.1.x stabilization
+## v3.2.x stabilization
 
-- keep integrations, CMS flows, and delivery packs stable
-- deepen export/import verification
-- expand review gates around writeback and patch flows
-- keep EN/RU docs aligned with new operator features
+- keep the GEO/AI deep-dive layer measurable and decision-grade
+- stabilize the `llms.txt` validator and AI Visibility Check example
+- deepen RU/EN parity across playbooks, surfaces, and maturity docs
+- keep anti-hype and business-outcome framing visible in future releases
 
 ## Near-term product direction
 
-- optional Google Search Console and Yandex data imports
-- stronger CMS connector starters for WordPress, Tilda, Bitrix, and Webflow
-- safer patch mode with read-only, draft, and human-approved publish stages
-- client delivery packs and import/export depth for agencies
+- richer answer-surface monitoring and evidence tagging
+- stronger reusable validators and lightweight operator tools
+- deeper business reporting templates for GEO, AI visibility, and pipeline
+- more scenario packs by niche, site type, and market
 
 ## Guardrails for future work
 

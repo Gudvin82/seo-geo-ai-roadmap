@@ -184,7 +184,14 @@ make agent-self-check
 
 ## Прозрачный scoring и implementation output
 
-В `v3.0.0` зафиксированы два proof-first слоя:
+`v3.2.0` делает GEO/AI-слой более decision-grade:
+
+- три явных outcome-слоя: rankings, AI visibility и conversion trust
+- measurement maturity framing, чтобы proxy-метрики не продавались как абсолютная правда
+- priority maps, AI-surface playbooks, RU LLM context и anti-hype guardrails
+- linkable operator tool: standalone `llms.txt` validator с public API
+
+В `v3.0.0` были зафиксированы два proof-first слоя:
 
 - AI Citation Score: прозрачный сигнал 0-100, показывающий, упоминается ли
   бренд, цитируется ли он и насколько качественно описан в структурированных AI
@@ -195,12 +202,19 @@ make agent-self-check
 
 Подробнее:
 
-- [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
+- [docs/ru/ai-citation-score.md](./docs/ru/ai-citation-score.md)
 - [docs/ru/api-reference.md](./docs/ru/api-reference.md)
 - [docs/ru/patch-mode.md](./docs/ru/patch-mode.md)
 - [docs/ru/client-delivery.md](./docs/ru/client-delivery.md)
 - [docs/ru/search-data-connectors.md](./docs/ru/search-data-connectors.md)
 - [docs/ru/cms-connectors.md](./docs/ru/cms-connectors.md)
+- [docs/ru/geo-measurement-maturity.md](./docs/ru/geo-measurement-maturity.md)
+- [docs/ru/geo-priority-maps.md](./docs/ru/geo-priority-maps.md)
+- [docs/ru/geo-ai-surfaces.md](./docs/ru/geo-ai-surfaces.md)
+- [docs/ru/answer-ready-patterns.md](./docs/ru/answer-ready-patterns.md)
+- [docs/ru/entity-seo-and-kg.md](./docs/ru/entity-seo-and-kg.md)
+- [docs/ru/geo-red-team-and-risks.md](./docs/ru/geo-red-team-and-risks.md)
+- [app/frontend/llms-validator.html](./app/frontend/llms-validator.html)
 
 ## Реальные кейсы
 
@@ -235,6 +249,10 @@ snapshot-оценками для:
 
 ## Latest changes
 
+- `v3.2.0`: GEO/AI deep-dive docs, measurement maturity, priority maps,
+  AI-surface playbooks, answer-ready и entity/KG layers, anti-hype docs,
+  RU LLM guidance, `llms.txt` validator, AI Visibility Check example и
+  расширенные JSON-LD templates
 - `v3.1.0`: starter-интеграции с search/analytics, CMS connector flows,
   patch packs, client delivery packs, import project package, более сильный
   white-label слой, review-mode guidance и расширенный EN/RU operator layer

@@ -386,6 +386,20 @@ class ProjectImportRead(BaseModel):
     message: str
 
 
+class LlmsValidatorRequest(BaseModel):
+    url: Optional[str] = None
+    content: Optional[str] = None
+
+
+class LlmsValidatorResponse(BaseModel):
+    is_valid: bool
+    line_count: int
+    checked_source: str
+    warnings: list[str]
+    recommendations: list[str]
+    observed_facts: list[str]
+
+
 class PromptSetCreate(BaseModel):
     workspace_id: int
     name: str

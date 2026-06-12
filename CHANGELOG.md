@@ -1,5 +1,20 @@
 # Changelog
 
+## v3.2.0 — GEO/AI Deep Dive
+
+- Reworked the GEO/AI methodology around three explicit outcome layers:
+  rankings, AI visibility, and conversion trust
+- Added EN/RU deep-dive docs for measurement maturity, business outcomes,
+  priority maps, AI surfaces, bots and robots policy, answer-ready patterns,
+  entity SEO, competitive gap, conversion layer, maturity model, anti-hype,
+  meta-case analysis, and RU LLM context
+- Added five EN/RU GEO playbooks for launch, citation recovery, fact
+  consistency, multilingual governance, and Yandex-plus-LLM execution
+- Added a public `llms.txt` validator API plus standalone frontend page as a
+  linkable free tool
+- Added an example GitHub Action for AI Visibility Check and expanded JSON-LD
+  schema starters for GEO/AI operator use
+
 ## v3.1.0 — Integrations, Patch Flows, and Client Delivery
 
 - Added persisted search and analytics integrations for Google Search Console,

@@ -15,6 +15,11 @@ operator flows.
 - `sov.completed`
 - `project.package_exported`
 
+## Telegram AI SoV starter
+
+Для GEO/AI operator workflows Telegram — удобный первый канал для
+`sov.completed` alerts. См. [telegram-sov-alerts.md](./telegram-sov-alerts.md).
+
 ## Текущие ограничения
 
 - пока нет durable retry queue

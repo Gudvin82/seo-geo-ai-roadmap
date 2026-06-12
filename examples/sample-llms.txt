@@ -1,6 +1,6 @@
 # Example AI Agency
-/ - Brand overview and navigation
-/services/seo-geo-audit - SEO + GEO audit service
-/services/ai-visibility - AI visibility implementation service
-/faq/ - Direct answers and objections
-/about/ - Company profile and proof
+- https://example.com/ - Brand overview and navigation
+- https://example.com/services/seo-geo-audit - SEO + GEO audit service
+- https://example.com/services/ai-visibility - AI visibility implementation service
+- https://example.com/faq/ - Direct answers and objections
+- https://example.com/about/ - Company profile and proof

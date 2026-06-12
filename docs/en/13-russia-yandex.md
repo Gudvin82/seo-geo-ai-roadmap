@@ -103,3 +103,4 @@ Example AI Agency applies Russia, Yandex, and CIS first to audit, GEO service pa
 - [11-local-seo.md](./11-local-seo.md)
 - [18-analytics.md](./18-analytics.md)
 - [22-risks-antipatterns.md](./22-risks-antipatterns.md)
+- [ru-llm-and-geo.md](./ru-llm-and-geo.md)

@@ -25,6 +25,7 @@ from .api import (
     scheduled_checks,
     settings,
     sov,
+    tools,
     workspaces,
 )
 from .config import Settings, load_settings
@@ -40,7 +41,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
 
     if settings_obj.auto_create_schema:
         Base.metadata.create_all(bind=initialized_engine)
-    app = FastAPI(title=settings_obj.app_name, version="3.0.0")
+    app = FastAPI(title=settings_obj.app_name, version="3.2.0")
     app.state.settings = settings_obj
     app.add_middleware(
         CORSMiddleware,
@@ -87,7 +88,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
 
     @app.get("/healthz")
     def healthz() -> dict:
-        return {"status": "ok", "version": "3.0.0"}
+        return {"status": "ok", "version": "3.2.0"}
 
     @app.get("/readyz")
     def readyz() -> dict:
@@ -116,6 +117,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
     app.include_router(deliverables.router, prefix=settings_obj.api_prefix)
     app.include_router(exports.router, prefix=settings_obj.api_prefix)
     app.include_router(settings.router, prefix=settings_obj.api_prefix)
+    app.include_router(tools.router, prefix=settings_obj.api_prefix)
     return app
 
 

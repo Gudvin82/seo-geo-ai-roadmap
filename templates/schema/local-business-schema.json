@@ -2,5 +2,14 @@
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "Example Local Business",
-  "address": {}
+  "url": "https://example.com",
+  "telephone": "+1-555-0100",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "123 Example Street",
+    "addressLocality": "Example City",
+    "addressRegion": "Example Region",
+    "postalCode": "10000",
+    "addressCountry": "US"
+  }
 }

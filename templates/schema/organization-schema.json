@@ -2,5 +2,11 @@
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Example Company",
-  "url": "https://example.com"
+  "url": "https://example.com",
+  "logo": "https://example.com/logo.png",
+  "sameAs": [
+    "https://www.linkedin.com/company/example",
+    "https://t.me/example"
+  ],
+  "description": "Use a visible description that matches the page copy and brand facts."
 }

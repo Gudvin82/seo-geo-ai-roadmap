@@ -1,119 +1,74 @@
 # GEO and AI Search
 
-> **Tags:** [AI/GEO] [INT] [RU]  
-> **Priority:** High  
-> **Roadmap phase:** Month 0-3
+`v3.2.0` makes the GEO/AI layer more concrete, more measurable, more scenario
+driven, and more honest about volatility.
 
-## Why It Matters
+## Three outcome layers
 
-This section matters because discoverability grows only when llms.txt, AI bot access, prompt monitoring, answer extraction are handled as an execution system rather than isolated tasks.
+GEO/AI work should be judged through three distinct outcome layers:
 
-## When to Use
+| Outcome layer | What it means | Stable metrics | Proxy metrics | Main risk |
+|---|---|---|---|---|
+| Rankings | Classical search visibility and qualified organic traffic | indexation, CWV, schema coverage, rankings, CTR | branded query lift | treating GEO as a substitute for SEO |
+| AI citations / AI visibility | Whether LLM answer surfaces mention, cite, and correctly frame the brand | none are fully stable across vendors | AI SoV, AI Citation Score, answer-surface coverage | overclaiming volatile proxy metrics |
+| Conversion and trust | Whether discoverability turns into leads, pipeline, or brand trust | form submissions, calls, assisted conversions | qualitative sales feedback, branded demand | visibility with no commercial intent or trust |
 
-Use it for brands that want visibility in assistants and AI summaries. Prioritize it early if the site is launching, relaunching, or recovering from a traffic or trust problem.
+## What affects which layer
 
-## Outcomes
-
-- Clear decisions instead of assumptions
-- Repeatable workstream with owners and QA
-- Inputs for reporting, prioritization, and release planning
-
-## Inputs Required
-
-- Current site URLs, analytics access, and business goals
-- List of priority offers, regions, and audience segments
-- Access to at least one SEO crawl and one AI testing workflow
-
-## Step-by-Step Instructions
-
-1. Document the current state and desired business outcome.
-2. Capture both search-engine and AI-surface implications before deciding what to ship.
-3. Break the work into actions around llms.txt, AI bot access, prompt monitoring, answer extraction.
-4. Assign one owner, one QA gate, and one reporting metric for each action.
-5. Ship changes in small batches with validation notes.
-6. Review impact monthly and feed learnings back into the roadmap.
-
-## Validation / QA
-
-- Check that every action can be traced to a page, owner, and KPI.
-- Confirm the changes are visible in HTML, analytics, or reporting artifacts.
-- Reject work that cannot be rechecked by another teammate.
-- Keep before/after evidence in screenshots, exports, or markdown notes.
-
-## Checklist
-
-- [ ] Scope documented
-- [ ] Owner assigned
-- [ ] Validation method defined
-- [ ] Expected output prepared
-- [ ] Release note ready
-
-## Decision Tree
-
-- If the section affects crawling, fix technical blockers before content expansion.
-- If the section affects trust or conversion, ship to money pages before secondary pages.
-- If AI outputs are unstable, add proof assets and stricter answer-ready formatting.
-
-## Prompts for AI / Codex
-
-```text
-Role: Senior discoverability strategist.
-Inputs: business context, target market, current pages, known blockers.
-Task: produce an action plan for GEO and AI Search with priorities, QA steps, risks, and expected outputs.
-Output format: markdown table plus bullet actions.
-Evaluation criteria: clarity, feasibility, business alignment, measurable next steps.
-```
-
-## Expected Outputs
-
-- Prioritized backlog entry
-- Owner and validation rule
-- Reusable artifact such as checklist, brief, or report note
-- Short decision log for future releases
-
-## Examples
-
-Example AI Agency applies GEO and AI Search first to audit, GEO service pages, and branded AI prompts before scaling to the full blog.
-
-See [examples/ai-share-of-voice-weekly-report.md](../../examples/ai-share-of-voice-weekly-report.md)
-for a ready weekly reporting structure.
-
-Sample machine-readable datasets:
-
-- [ai-sov-report-sample.json](../../examples/ai-sov-report-sample.json)
-- [ai-sov-report-sample.csv](../../examples/ai-sov-report-sample.csv)
-
-Related glossary terms:
-
-- [GLOSSARY.md](../../GLOSSARY.md)
-
-## Common Mistakes
-
-- Treating the work as a one-time task instead of an operating loop.
-- Shipping changes without a validation owner.
-- Mixing several intents or markets into one page or report.
-
-## Anti-Patterns
-
-- Framework theater: long docs with no execution path.
-- Metrics without business interpretation.
-- AI-generated text with no proof, examples, or review.
-
-## Tools
-
-| Tool | Market | Free | Use |
+| Action | Rankings | AI visibility | Conversion and trust |
 |---|---|---|---|
-| Google Search Console | Global | Yes | search performance, coverage, indexing |
-| Bing Webmaster Tools | Global | Yes | Bing visibility and crawl diagnostics |
-| Yandex Webmaster | RU/CIS | Yes | indexation and diagnostics for Yandex |
-| Yandex Metrica | RU/CIS | Yes | behavioral analytics and goals |
-| Screaming Frog | Global | Partly | crawl audits and extraction |
-| ChatGPT / Claude / Gemini / Codex | Global | Partly | analysis, drafting, QA, prompt testing |
+| Technical SEO hygiene | High | Medium | Medium |
+| Canonical fact consistency | Medium | High | High |
+| Answer-ready page structure | Medium | High | High |
+| JSON-LD and entity clarity | High | High | Medium |
+| llms.txt / AI bot accessibility | Low | High | Low |
+| Strong offer, proof, and CTA design | Medium | Medium | High |
+| Consistent brand mentions off-site | Medium | High | Medium |
 
-## Related Sections
+## Minimal program by constraint
 
-- [05-technical-seo.md](./05-technical-seo.md)
-- [14-neural-search-ai.md](./14-neural-search-ai.md)
-- [18-analytics.md](./18-analytics.md)
-- [canonical-facts-and-entity-consistency.md](./canonical-facts-and-entity-consistency.md)
-- [entity-hierarchy-and-brand-focus.md](./entity-hierarchy-and-brand-focus.md)
+If time or resources are limited:
+
+1. Fix crawlability, rendering, speed, canonicalization, and indexability.
+2. Align homepage, about, service, FAQ, contacts, and policy pages on facts.
+3. Add answer-ready sections and structured data to money pages.
+4. Publish `llms.txt`, review robots rules for AI bots, and track AI SoV as a
+   proxy, not as ground truth.
+5. Tie every GEO/AI action to one business-facing page or one buyer journey.
+
+## Decision tree
+
+- If technical SEO is weak, fix that before scaling GEO layers.
+- If the brand is cited but misrepresented, prioritize fact consistency and
+  entity clarity.
+- If the site is readable by bots but weak for humans, improve proof, offer
+  clarity, and conversion flow.
+- If AI visibility rises without business lift, revisit audience intent and
+  page-level commercial framing.
+
+## GEO/AI execution loop
+
+1. Baseline technical SEO and business goals.
+2. Baseline AI surfaces and citation proxies.
+3. Map entity facts, offer clarity, and answer-ready gaps.
+4. Patch key pages and structured data.
+5. Monitor changes in search, AI, and business layers separately.
+6. Reclassify findings as observed fact, inferred issue, hypothesis, or
+   recommended action.
+
+## What not to promise
+
+- guaranteed AI citations
+- deterministic rankings from `llms.txt`
+- one universal GEO playbook for every niche
+- “AI optimization” without technical SEO, facts, and trust assets
+
+## Related docs
+
+- [geo-measurement-maturity.md](./geo-measurement-maturity.md)
+- [geo-business-outcomes.md](./geo-business-outcomes.md)
+- [geo-priority-maps.md](./geo-priority-maps.md)
+- [geo-ai-surfaces.md](./geo-ai-surfaces.md)
+- [answer-ready-patterns.md](./answer-ready-patterns.md)
+- [entity-seo-and-kg.md](./entity-seo-and-kg.md)
+- [geo-red-team-and-risks.md](./geo-red-team-and-risks.md)

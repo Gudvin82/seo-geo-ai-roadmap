@@ -1,0 +1,13 @@
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to complete the task",
+  "description": "Replace with a factual step-by-step process.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Step one",
+      "text": "Describe the first real step."
+    }
+  ]
+}

@@ -20,9 +20,13 @@ It is intentionally simple:
 - provider configuration
 - audit run creation
 - report and artifact browsing
+- standalone `llms.txt` validator page for GEO/AI operator use
 
 ## Local usage
 
 Open [`index.html`](./index.html) directly for a quick interface preview, or run
 the Docker setup from [`DEPLOYMENT.md`](../../DEPLOYMENT.md) to use the full
 backend + frontend stack together.
+
+For the standalone validator asset, open [`llms-validator.html`](./llms-validator.html)
+and point it to a running backend API.

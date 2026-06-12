@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>llms.txt Validator</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="main" style="max-width: 960px; margin: 0 auto; padding: 32px 20px;">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Free Tool</p>
+          <h1>llms.txt Validator</h1>
+          <p class="hero-copy">
+            Validate `llms.txt` from pasted content or a public URL. Get a simple
+            decision, warnings, and next recommendations for GEO/AI discoverability.
+          </p>
+        </div>
+      </header>
+
+      <section class="split">
+        <form id="validator-form" class="card form-card">
+          <h3>Validate</h3>
+          <label class="field">
+            <span>API base</span>
+            <input id="api-base" type="text" value="http://localhost:8000/api/v1" />
+          </label>
+          <label class="field">
+            <span>Public llms.txt URL</span>
+            <input id="url" type="url" placeholder="https://example.com/llms.txt" />
+          </label>
+          <label class="field">
+            <span>Or paste llms.txt content</span>
+            <textarea
+              id="content"
+              rows="14"
+              placeholder="# Example llms.txt&#10;- Home: https://example.com/&#10;- FAQ: https://example.com/faq&#10;- About: https://example.com/about"
+            ></textarea>
+          </label>
+          <button type="submit">Run validation</button>
+        </form>
+
+        <section class="card">
+          <h3>Result</h3>
+          <pre id="result" class="code-block">No validation run yet.</pre>
+        </section>
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById("validator-form");
+      const result = document.getElementById("result");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const apiBase = document.getElementById("api-base").value.trim().replace(/\/$/, "");
+        const url = document.getElementById("url").value.trim();
+        const content = document.getElementById("content").value;
+        result.textContent = "Running validation...";
+
+        try {
+          const response = await fetch(`${apiBase}/tools/llms-validator`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: url || null, content: content || null }),
+          });
+          const payload = await response.json();
+          if (!response.ok) {
+            throw new Error(payload.detail || "Validation failed.");
+          }
+          result.textContent = JSON.stringify(payload, null, 2);
+        } catch (error) {
+          result.textContent = JSON.stringify(
+            { is_valid: false, error: error.message },
+            null,
+            2,
+          );
+        }
+      });
+    </script>
+  </body>
+</html>

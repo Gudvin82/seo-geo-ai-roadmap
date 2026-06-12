@@ -5,16 +5,14 @@ from __future__ import annotations
 
 import argparse
 import sys
-import urllib.error
-import urllib.request
 from pathlib import Path
+from urllib.error import URLError
 
-REQUIRED_HINTS = ["/", "faq", "about"]
-
-
-def load_from_url(url: str) -> str:
-    with urllib.request.urlopen(url, timeout=15) as response:
-        return response.read().decode("utf-8", errors="replace")
+try:
+    from app.services.llms_validator import load_llms_text_from_url, validate_llms_text
+except ModuleNotFoundError:  # pragma: no cover - standalone script fallback
+    sys.path.append(str(Path(__file__).resolve().parents[1] / "app" / "backend"))
+    from app.services.llms_validator import load_llms_text_from_url, validate_llms_text
 
 
 def load_from_file(path: str) -> str:
@@ -30,29 +28,26 @@ def main() -> int:
     group.add_argument("--file", help="Local llms.txt path")
     args = parser.parse_args()
     try:
-        content = load_from_url(args.url) if args.url else load_from_file(args.file)
-    except (urllib.error.URLError, FileNotFoundError) as exc:
+        content = (
+            load_llms_text_from_url(args.url) if args.url else load_from_file(args.file)
+        )
+    except (URLError, FileNotFoundError) as exc:
         print(f"Unable to load llms.txt: {exc}", file=sys.stderr)
         return 1
-    lines = [line.strip() for line in content.splitlines() if line.strip()]
-    missing = [
-        hint
-        for hint in REQUIRED_HINTS
-        if not any(hint in line.lower() for line in lines)
-    ]
-    has_header = any(line.startswith("#") for line in lines)
-    bullet_like = [
-        line for line in lines if line.startswith(("-", "*", ">")) or " - " in line
-    ]
-    print(f"Checked {len(lines)} non-empty lines")
-    if missing or not has_header or not bullet_like:
-        print("Missing sections:")
-        for item in missing:
+    result = validate_llms_text(
+        content, checked_source=args.url or args.file or "inline"
+    )
+    print(f"Checked {result.line_count} non-empty lines")
+    for fact in result.observed_facts:
+        print(f"- {fact}")
+    if result.warnings:
+        print("Warnings:")
+        for item in result.warnings:
             print(f"- {item}")
-        if not has_header:
-            print("- top-level heading")
-        if not bullet_like:
-            print("- structured entries or bullet-like URL lines")
+        if result.recommendations:
+            print("Recommendations:")
+            for item in result.recommendations:
+                print(f"- {item}")
         print("FAIL")
         return 1
     print("PASS")
