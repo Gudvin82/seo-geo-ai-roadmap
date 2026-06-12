@@ -239,7 +239,7 @@ Demo credentials после seed:
 - Email: `demo@example.com`
 - Password: `DemoPlatform123`
 
-## Последние изменения
+## История релизов
 
 - `v2.3.0`: сохранение AI SoV в приложении, metadata-rich prompt library,
   webhook notifications, экспорт project package, матрица top-20 local LLM,
