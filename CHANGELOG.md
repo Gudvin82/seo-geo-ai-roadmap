@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.3.0 — Operational Proof, Hosted Validation, and Governance
+
+- Added a hosted/deploy-ready docs-site `llms.txt` validator page and expanded EN/RU validator docs with honest browser-fetch limitations
+- Added retry semantics for provider-backed commentary, notifications, and governed CMS writeback preparation together with visible retry metadata
+- Added scheduling descriptors, CLI schedule planning, and EN/RU docs for recurring audits and visibility checks
+- Added a first fact-drift detection API and CLI helper for cross-surface brand consistency review
+- Expanded CMS safety semantics with explicit allowed, risky, and unsupported actions plus human-approval boundary handling
+- Added security scanning workflow with `pip-audit` and `gitleaks`, plus coverage generation and artifact upload in Python CI
+- Added EN/RU docs for trust surfaces, vertical playbooks, GEO-to-CRO bridge, executive dashboards, ROI framing, and commercial boundary clarity
+- Added public evaluation assets inspired by `vibe-coding-protocols`, including evaluation and proof-review entrypoints
+- Bumped the app version and release-facing surfaces to `v3.3.0`
+
 ## v3.2.0 — GEO/AI Deep Dive
 
 - Reworked the GEO/AI methodology around three explicit outcome layers:

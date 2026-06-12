@@ -18,6 +18,8 @@
 | `gsc_data_stub.py` | Emit a Google Search Console shaped starter payload | `python scripts/gsc_data_stub.py` |
 | `yandex_data_stub.py` | Emit a Yandex shaped starter payload | `python scripts/yandex_data_stub.py` |
 | `provider_benchmark_stub.py` | Print a provider benchmark rubric scaffold | `python scripts/provider_benchmark_stub.py` |
+| `fact_drift_checker.py` | Compare brand facts across surfaces and flag drift patterns | `python scripts/fact_drift_checker.py --surface website=./website.md --surface schema=./schema.md` |
+| `scheduled_check_runner.py` | Print the execution plan for a recurring check | `python scripts/scheduled_check_runner.py --project-id 1 --check-type llms_txt --frequency weekly --schedule-mode github_actions` |
 
 ## `generate_llms_txt.py`
 

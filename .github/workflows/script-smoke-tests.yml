@@ -25,6 +25,8 @@ jobs:
           python scripts/ai-share-of-voice-tracker.py --help
           python scripts/serp-intent-cluster-helper.py --help
           python scripts/content-inventory-helper.py --help
+          python scripts/fact_drift_checker.py --help
+          python scripts/scheduled_check_runner.py --help
       - name: Dry-run script behavior
         run: |
           cat > /tmp/sample-sitemap.xml <<'EOF'
@@ -37,3 +39,5 @@ jobs:
           EOF
           python scripts/generate_llms_txt.py --sitemap-file /tmp/sample-sitemap.xml --output-file /tmp/llms.txt
           python scripts/check-llms-txt.py --file /tmp/llms.txt
+          python scripts/fact_drift_checker.py --surface website=/tmp/llms.txt --surface schema=/tmp/llms.txt
+          python scripts/scheduled_check_runner.py --project-id 1 --check-type llms --frequency weekly --schedule-mode github_actions

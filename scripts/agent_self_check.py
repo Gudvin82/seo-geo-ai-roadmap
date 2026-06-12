@@ -126,6 +126,25 @@ def main() -> int:
             "label": "Agent self-check is present",
             "passed": exists("scripts/agent_self_check.py"),
         },
+        {
+            "id": "v330_operational_docs",
+            "label": "v3.3.0 operational and evaluation docs exist",
+            "passed": all(
+                exists(path)
+                for path in [
+                    "docs/en/operational-retries.md",
+                    "docs/ru/operational-retries.md",
+                    "docs/en/scheduled-operations.md",
+                    "docs/ru/scheduled-operations.md",
+                    "docs/en/fact-drift-monitoring.md",
+                    "docs/ru/fact-drift-monitoring.md",
+                    "COMMERCIAL_ROADMAP.md",
+                    "COMMERCIAL_ROADMAP_RU.md",
+                    "EVALUATE_THIS_REPO.md",
+                    "EVALUATE_THIS_REPO_RU.md",
+                ]
+            ),
+        },
     ]
 
     passed_count = sum(1 for item in checks if item["passed"])

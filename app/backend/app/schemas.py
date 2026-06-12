@@ -354,7 +354,32 @@ class CmsConnectorRead(BaseModel):
     last_inventory: dict[str, Any]
     last_sync_status: Optional[str]
     last_sync_at: Optional[datetime]
+    allowed_actions: list[str] = Field(default_factory=list)
+    risky_actions: list[str] = Field(default_factory=list)
+    unsupported_actions: list[str] = Field(default_factory=list)
+    retry_policy: dict[str, Any] = Field(default_factory=dict)
     created_at: datetime
+
+
+class CmsWritebackAttemptRead(BaseModel):
+    connector_id: int
+    project_id: int
+    workspace_id: int
+    writeback_mode: str
+    status: Literal[
+        "blocked",
+        "queued",
+        "retrying",
+        "failed",
+        "dead",
+        "completed",
+        "awaiting_human_approval",
+    ]
+    summary: str
+    next_step: str
+    retry_policy: dict[str, Any] = Field(default_factory=dict)
+    attempts: int
+    artifact_preview: dict[str, Any] = Field(default_factory=dict)
 
 
 class PatchPackRequest(BaseModel):
@@ -446,6 +471,11 @@ class ScheduledCheckRead(BaseModel):
     is_enabled: bool
     last_run_at: Optional[datetime]
     config: dict[str, Any]
+    schedule_mode: str
+    execution_path: str
+    next_run_hint: str
+    last_status: str
+    limitations: list[str] = Field(default_factory=list)
     created_at: datetime
 
 
@@ -578,4 +608,30 @@ class NotificationEndpointRead(BaseModel):
     target_url: str
     events: list[str]
     is_enabled: bool
+    retry_policy: dict[str, Any] = Field(default_factory=dict)
     created_at: datetime
+
+
+class FactDriftSurface(BaseModel):
+    name: str
+    content: str
+
+
+class FactDriftRequest(BaseModel):
+    surfaces: list[FactDriftSurface] = Field(default_factory=list)
+
+
+class FactDriftItemRead(BaseModel):
+    drift_type: str
+    severity: str
+    observed: str
+    inferred_issue: str
+    recommended_next_step: str
+
+
+class FactDriftResponse(BaseModel):
+    status: str
+    surface_count: int
+    drift_items: list[FactDriftItemRead]
+    detected_types: list[str]
+    limitations: list[str]

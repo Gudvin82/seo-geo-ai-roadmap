@@ -18,6 +18,7 @@ nav:
   - SaaS App: saas-app.md
   - App Architecture: architecture.md
   - Deployment: deployment.md
+  - Validator: validator.md
   - API Overview: api.md
   - Operator Mode: operator-mode.md
   - Scripts: scripts.md

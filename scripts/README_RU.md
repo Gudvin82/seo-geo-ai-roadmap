@@ -18,6 +18,8 @@
 | `gsc_data_stub.py` | Выдает starter-payload в форме Google Search Console | `python scripts/gsc_data_stub.py` |
 | `yandex_data_stub.py` | Выдает starter-payload в форме Яндекс-данных | `python scripts/yandex_data_stub.py` |
 | `provider_benchmark_stub.py` | Печатает scaffold для benchmark-оценки провайдеров | `python scripts/provider_benchmark_stub.py` |
+| `fact_drift_checker.py` | Сравнивает brand facts между поверхностями и ищет drift-паттерны | `python scripts/fact_drift_checker.py --surface website=./website.md --surface schema=./schema.md` |
+| `scheduled_check_runner.py` | Печатает execution plan для регулярной проверки | `python scripts/scheduled_check_runner.py --project-id 1 --check-type llms_txt --frequency weekly --schedule-mode github_actions` |
 
 ## `generate_llms_txt.py`
 

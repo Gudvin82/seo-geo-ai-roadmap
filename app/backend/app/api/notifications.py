@@ -36,6 +36,12 @@ def list_notification_endpoints(
             target_url=row.target_url,
             events=json.loads(row.events_json or "[]"),
             is_enabled=row.is_enabled,
+            retry_policy={
+                "max_attempts": 3,
+                "initial_delay_seconds": 0.5,
+                "backoff_multiplier": 2.0,
+                "terminal_state": "dead",
+            },
             created_at=row.created_at,
         )
         for row in rows
@@ -78,5 +84,11 @@ def create_notification_endpoint(
         target_url=row.target_url,
         events=payload.events,
         is_enabled=row.is_enabled,
+        retry_policy={
+            "max_attempts": 3,
+            "initial_delay_seconds": 0.5,
+            "backoff_multiplier": 2.0,
+            "terminal_state": "dead",
+        },
         created_at=row.created_at,
     )

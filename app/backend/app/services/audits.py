@@ -33,6 +33,7 @@ from ..models import (
 from ..providers.base import ProviderError
 from ..providers.registry import build_provider
 from .logging import log_event
+from .retries import RetryPolicy, run_with_retry
 from .reporting import build_json_report, build_markdown_report, dumps_json
 from .scoring import (
     ai_citation_score,
@@ -111,15 +112,21 @@ def _provider_note(
     ) or os.getenv(env_var, "")
     started_at = perf_counter()
     try:
-        client = build_provider(
-            provider.provider_name,
-            api_key=api_key,
-            model=provider.model,
-            base_url=provider.base_url,
+        outcome = run_with_retry(
+            f"provider_{provider.provider_name}",
+            lambda: build_provider(
+                provider.provider_name,
+                api_key=api_key,
+                model=provider.model,
+                base_url=provider.base_url,
+            ).generate_text(
+                prompt, system_prompt="You are a discoverability audit assistant."
+            ),
+            RetryPolicy(max_attempts=3, initial_delay_seconds=0.5),
         )
-        response = client.generate_text(
-            prompt, system_prompt="You are a discoverability audit assistant."
-        )
+        response = outcome.result
+        if response is None:
+            raise ProviderError(outcome.error or "Provider call failed.")
         duration = perf_counter() - started_at
         PROVIDER_CALLS.labels(
             provider=provider.provider_name, status=response.status
@@ -133,12 +140,16 @@ def _provider_note(
             model=provider.model,
             status=response.status,
             latency_seconds=round(duration, 3),
+            retry_status=outcome.status,
+            attempts=len(outcome.attempts),
         )
         return response.content, {
             "status": response.status,
             "provider": response.provider,
             "model": response.model,
             "latency_seconds": round(duration, 3),
+            "retry_status": outcome.status,
+            "attempts": len(outcome.attempts),
         }
     except ProviderError as exc:
         duration = perf_counter() - started_at

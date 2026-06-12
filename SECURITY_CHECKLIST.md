@@ -57,3 +57,15 @@
 - Re-run tests after dependency upgrades.
 - Watch for framework security advisories.
 - Review provider API changes before production upgrades.
+
+## CI security checks in `v3.3.0`
+
+- `pip-audit` runs in GitHub Actions against `app/backend/requirements.txt`.
+- `gitleaks` runs in GitHub Actions to catch likely committed secrets.
+- Python CI now generates a coverage artifact so reviewers can inspect critical-path test reach.
+
+## What these checks do not guarantee
+
+- They do not replace manual review of auth, permissions, or business-logic risk.
+- They do not guarantee third-party endpoint safety.
+- They do not turn the repository into a managed security service.

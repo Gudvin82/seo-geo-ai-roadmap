@@ -6,8 +6,10 @@ import urllib.request
 
 from sqlalchemy.orm import Session
 
+from ..access import record_audit_log
 from ..metrics import NOTIFICATION_DELIVERIES
 from ..models import NotificationEndpoint
+from .retries import RetryPolicy, run_with_retry
 
 
 def _payload_for_channel(
@@ -45,18 +47,52 @@ def notify_workspace(
         payload = _payload_for_channel(
             row.channel_type, event_type, summary, metadata or {}
         )
-        request = urllib.request.Request(
-            row.target_url,
-            data=json.dumps(payload).encode("utf-8"),
-            headers={"Content-Type": "application/json"},
-            method="POST",
-        )
-        try:
+
+        def _send() -> None:
+            request = urllib.request.Request(
+                row.target_url,
+                data=json.dumps(payload).encode("utf-8"),
+                headers={"Content-Type": "application/json"},
+                method="POST",
+            )
             with urllib.request.urlopen(request, timeout=10):
-                NOTIFICATION_DELIVERIES.labels(
-                    channel=row.channel_type, status="success"
-                ).inc()
-        except (urllib.error.URLError, urllib.error.HTTPError):
+                return None
+
+        outcome = run_with_retry(
+            f"notification_{row.channel_type}",
+            _send,
+            RetryPolicy(max_attempts=3, initial_delay_seconds=0.5),
+        )
+        if outcome.status in {"completed", "completed_after_retry"}:
             NOTIFICATION_DELIVERIES.labels(
-                channel=row.channel_type, status="failure"
+                channel=row.channel_type, status="success"
             ).inc()
+            record_audit_log(
+                db,
+                "notifications.delivery_completed",
+                workspace_id=workspace_id,
+                metadata={
+                    "channel_type": row.channel_type,
+                    "label": row.label,
+                    "event_type": event_type,
+                    "attempts": len(outcome.attempts),
+                    "retry_status": outcome.status,
+                },
+            )
+        else:
+            NOTIFICATION_DELIVERIES.labels(
+                channel=row.channel_type, status="dead"
+            ).inc()
+            record_audit_log(
+                db,
+                "notifications.delivery_dead",
+                workspace_id=workspace_id,
+                metadata={
+                    "channel_type": row.channel_type,
+                    "label": row.label,
+                    "event_type": event_type,
+                    "attempts": len(outcome.attempts),
+                    "retry_status": outcome.status,
+                    "error": outcome.error,
+                },
+            )

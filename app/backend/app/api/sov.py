@@ -23,6 +23,7 @@ from ..providers.base import ProviderError
 from ..providers.registry import build_provider
 from ..schemas import SovCheckRequest, SovRunRead
 from ..services.logging import log_event
+from ..services.retries import RetryPolicy, run_with_retry
 from ..services.scoring import ai_citation_score
 
 router = APIRouter(prefix="/sov", tags=["sov"])
@@ -93,16 +94,22 @@ def _provider_based_result(
     )
     started_at = perf_counter()
     try:
-        provider = build_provider(
-            provider_config.provider_name,
-            api_key=api_key,
-            model=provider_config.model,
-            base_url=provider_config.base_url,
+        outcome = run_with_retry(
+            f"sov_provider_{provider_config.provider_name}",
+            lambda: build_provider(
+                provider_config.provider_name,
+                api_key=api_key,
+                model=provider_config.model,
+                base_url=provider_config.base_url,
+            ).generate_text(
+                prompt,
+                system_prompt="You are a strict JSON-only discoverability evaluator.",
+            ),
+            RetryPolicy(max_attempts=3, initial_delay_seconds=0.5),
         )
-        response = provider.generate_text(
-            prompt,
-            system_prompt="You are a strict JSON-only discoverability evaluator.",
-        )
+        response = outcome.result
+        if response is None:
+            raise ProviderError(outcome.error or "Provider-backed SoV failed.")
         duration = perf_counter() - started_at
         PROVIDER_CALLS.labels(
             provider=provider_config.provider_name, status=response.status
@@ -133,6 +140,8 @@ def _provider_based_result(
             latency_seconds=round(duration, 3),
             mentioned=mentioned,
             citation_count=citation_count,
+            retry_status=outcome.status,
+            attempts=len(outcome.attempts),
         )
         return {
             "query": query,
@@ -144,6 +153,8 @@ def _provider_based_result(
             "notes": notes,
             "execution_mode": "provider",
             "latency_seconds": round(duration, 3),
+            "retry_status": outcome.status,
+            "attempts": len(outcome.attempts),
         }
     except ProviderError as exc:
         duration = perf_counter() - started_at

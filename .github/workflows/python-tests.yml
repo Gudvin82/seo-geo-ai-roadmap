@@ -37,4 +37,10 @@ jobs:
       - name: Run repository and app tests
         run: |
           python -m pytest tests
-          python -m pytest app/backend/tests
+          python -m pytest --cov=app/backend/app --cov-report=term-missing --cov-report=xml:coverage.xml app/backend/tests
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-coverage
+          path: coverage.xml

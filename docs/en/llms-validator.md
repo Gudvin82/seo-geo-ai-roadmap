@@ -2,11 +2,12 @@
 
 ## What it is
 
-`v3.2.0` includes a free `llms.txt` validator that operators can use in three
+`v3.3.0` includes a free `llms.txt` validator that operators can use in four
 aligned ways:
 
 - API endpoint: `POST /api/v1/tools/llms-validator`
 - standalone page: [`app/frontend/llms-validator.html`](../../app/frontend/llms-validator.html)
+- hosted docs-site page: `docs_site/validator.md` when GitHub Pages is enabled
 - CLI script: `python scripts/check-llms-txt.py --file ./llms.txt`
 
 The goal is not to certify that a file will "win AI citations". The goal is to
@@ -44,6 +45,12 @@ is complete for every business or market.
 - file too short to be decision-useful
 
 ## How to use it
+
+### Hosted page
+
+Use the public docs-site validator when you want a linkable free tool for
+operators, clients, and reviewers. It validates pasted content in-browser and
+tries best-effort public URL fetches when cross-origin access is allowed.
 
 ### API
 
@@ -110,4 +117,5 @@ bug and normalize the rule set.
 - the validator checks structure, not business truthfulness
 - it does not fetch and compare linked pages
 - it does not prove that an LLM will browse or cite the file
+- the hosted browser page may fail on remote URLs that block cross-origin fetches
 - stricter rules may be added in later releases as the operator model matures

@@ -57,3 +57,15 @@
 - После обновлений зависимостей прогоняйте тесты.
 - Следите за security advisory у используемых framework.
 - Перед production-upgrade проверяйте изменения в provider API.
+
+## CI security checks в `v3.3.0`
+
+- `pip-audit` запускается в GitHub Actions по `app/backend/requirements.txt`.
+- `gitleaks` запускается в GitHub Actions и ищет вероятные секреты в репозитории.
+- Python CI теперь генерирует coverage artifact, чтобы reviewer мог проверить test reach по critical-path логике.
+
+## Что эти проверки не гарантируют
+
+- Они не заменяют ручной review auth, permissions и business-logic risks.
+- Они не гарантируют безопасность сторонних endpoints.
+- Они не превращают репозиторий в managed security service.

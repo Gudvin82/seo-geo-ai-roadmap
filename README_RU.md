@@ -7,6 +7,8 @@
 [![Script Smoke Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml)
 [![Python Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml)
 [![Docs Build](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml)
+[![Security Scans](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/security-scans.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/security-scans.yml)
+[![Coverage](https://img.shields.io/badge/coverage-pytest--cov%20artifact-2ea44f)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml)
 [![Docker](https://img.shields.io/badge/docker-self--hosted-2496ED?logo=docker&logoColor=white)](./docker-compose.yml)
 [![FastAPI](https://img.shields.io/badge/FastAPI-app-009688?logo=fastapi&logoColor=white)](./app/backend/app/main.py)
 ![Self-Hosted Ready](https://img.shields.io/badge/self--hosted-ready-1f6f50)
@@ -92,6 +94,19 @@ discoverability. Ее можно развернуть на своем компь
 - Deployment: [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
 - Verification: [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
 - API reference: [docs/ru/api-reference.md](./docs/ru/api-reference.md)
+- Hosted validator: [docs site validator](./docs_site/validator.md)
+- Evaluation kit: [EVALUATE_THIS_REPO_RU.md](./EVALUATE_THIS_REPO_RU.md)
+- Commercial boundary: [COMMERCIAL_ROADMAP_RU.md](./COMMERCIAL_ROADMAP_RU.md)
+
+## Что добавляет `v3.3.0`
+
+- hosted или deploy-ready поверхность для `llms.txt` validator
+- явная retry-модель и terminal failure semantics
+- рабочие scheduling modes для регулярных проверок
+- более безопасная CMS writeback boundary с review-first execution
+- security scanning и coverage generation в CI
+- docs по fact drift, trust surfaces, ROI и executive reporting
+- public evaluation и proof-review assets
 
 ## Блок для передачи AI
 
@@ -191,6 +206,14 @@ make agent-self-check
 - priority maps, AI-surface playbooks, RU LLM context и anti-hype guardrails
 - linkable operator tool: standalone `llms.txt` validator с public API
 
+`v3.3.0` добавляет operational proof слой:
+
+- hosted/deploy-ready validator page через docs site
+- retry semantics для provider calls, notifications и governed CMS preparation
+- documented recurring execution model для scheduled checks
+- fact drift detection, trust-surface mapping, executive summaries и ROI framing
+- более ясный commercial boundary и public evaluation flow
+
 В `v3.0.0` были зафиксированы два proof-first слоя:
 
 - AI Citation Score: прозрачный сигнал 0-100, показывающий, упоминается ли
@@ -252,6 +275,10 @@ snapshot-оценками для:
 
 ## Latest changes
 
+- `v3.3.0`: hosted/deploy-ready validator page, docs по retry и scheduling,
+  первая practical fact-drift implementation, более безопасная CMS writeback
+  boundary, security scans, coverage artifacts, governance docs, executive
+  reporting assets и public evaluation surfaces
 - `v3.2.0`: GEO/AI deep-dive docs, measurement maturity, priority maps,
   AI-surface playbooks, answer-ready и entity/KG layers, anti-hype docs,
   RU LLM guidance, `llms.txt` validator, AI Visibility Check example и

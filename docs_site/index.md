@@ -10,6 +10,7 @@ validation, and release discipline.
 - [Russian README](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/README_RU.md)
 - [AGENTS.md](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/AGENTS.md)
 - [WALKTHROUGH.md](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/WALKTHROUGH.md)
+- [Hosted Validator](validator.md)
 
 ## What this repository covers
 
@@ -25,3 +26,4 @@ validation, and release discipline.
 - [REAL_CASES_RU.md](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/REAL_CASES_RU.md)
 - [Canonical facts and entity consistency](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/canonical-facts-and-entity-consistency.md)
 - [Entity hierarchy and brand focus](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/entity-hierarchy-and-brand-focus.md)
+- [Public Evaluation Kit](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/PUBLIC_EVALUATION_KIT.md)

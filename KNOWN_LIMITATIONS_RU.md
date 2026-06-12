@@ -24,6 +24,9 @@
 - heuristic benchmark scoring пока starter-интерпретация, а не полноценная industry benchmark база
 - интеграции с Google Search Console и Яндексом пока bootstrap-stubs, а не полный OAuth automation
 - доставка уведомлений пока без durable retry queues и без гарантированной последовательности
+- hosted validator page надежно валидирует вставленный текст, но чтение публичного URL может падать, если цель блокирует cross-origin browser requests
+- scheduled checks уже описывают реальную execution model, но self-hosted инсталляции все равно требуют cron, GitHub Actions или другой scheduler
+- CMS writeback в `v3.3.0` deliberately safe-first: готовятся packages и approval states, а не uncontrolled live publishing
 
 ## Что в roadmap
 
@@ -34,3 +37,4 @@
 - production-grade webhook retry, scheduling и operator alerting
 - более сильные benchmark-baselines по нишам, регионам и device mix
 - более глубокий WordPress/CMS writeback с безопасными review gates
+- более точный fact-drift detection по live AI outputs и структурированным source systems
