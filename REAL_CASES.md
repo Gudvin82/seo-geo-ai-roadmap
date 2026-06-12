@@ -1,89 +1,121 @@
-# Real-World Implementations
+# Real Cases
 
-This repository is not only a theoretical framework. Its methodology maps well
-to real discoverability systems already visible in the public web.
+This file does not claim private customer telemetry. It models how the
+repository's methodology reads three public websites using public-facing
+evidence and bounded manual scoring. The numbers below are transparent snapshot
+scores, not exaggerated success claims.
 
-## SitePravo
+Scoring model used in this file:
 
-- Name: SitePravo
-- Role in the ecosystem: product-led legal and compliance audit service
-- What it demonstrates:
-  - legal-first positioning with strong trust and compliance framing
-  - clear audit-service packaging for public websites
-  - practical use of methodology, FAQ, comparison pages, and audit clusters
-- Strongest methodology blocks:
-  - trust and proof
-  - Yandex commercial factors
-  - answer-ready legal content
-  - structured service architecture
-- Main gaps / next priorities:
-  - keep core numbers synchronized across homepage, methodology, metadata, and
-    `llms.txt`
-  - tighten canonical truth-set governance
-  - keep AI-facing files aligned with public claims
-- Why this case matters for the framework:
-  - it shows how discoverability OS principles work on a YMYL-style audit
-    service where trust, factual precision, and conversion clarity matter more
-    than generic content scale
+- Technical SEO and crawl readiness: `0-20`
+- Factual consistency and truth-center discipline: `0-20`
+- Entity clarity and trust proof: `0-20`
+- AI readiness and answer extraction: `0-20`
+- Reporting and operator packaging: `0-20`
 
-## AuditGuard
+## sitepravo.ru
 
-- Name: AuditGuard
-- Role in the ecosystem: product-led technical and cybersecurity audit service
-- What it demonstrates:
-  - security-first audit positioning
-  - technical issue library and explainable evidence framing
-  - public packaging of methodology around risks, tools, and output logic
-- Strongest methodology blocks:
-  - technical SEO plus security adjacency
-  - issue-library architecture
-  - AI-readable methodology pages
-  - proof-oriented service explanation
-- Main gaps / next priorities:
-  - reduce factual drift between public copy, metadata, and AI-facing files
-  - clarify language and market scope claims
-  - keep proof and methodology counts under one canonical source of truth
-- Why this case matters for the framework:
-  - it proves the framework can stretch beyond classic SEO into technical,
-    cybersecurity, and evidence-heavy audit products without losing
-    discoverability discipline
+Public signals observed:
+
+- legal-service positioning is explicit
+- public copy claims `570+` parameters and `15` directions
+- legal documents, operator identity, and policy links are visible
+- cross-linking with sister entities is already present
+
+### Snapshot score
+
+- Technical SEO and crawl readiness: `16/20`
+- Factual consistency and truth-center discipline: `15/20`
+- Entity clarity and trust proof: `18/20`
+- AI readiness and answer extraction: `16/20`
+- Reporting and operator packaging: `17/20`
+- Total public snapshot: `82/100`
+
+### Bounded before/after model
+
+- Before first v3-style pass: `82/100`
+- After first 30-day truth-center and AI-surface sync target: `88/100`
+- Expected gain: `+6`
+
+Likely sources of gain:
+
+- reduce repeated fact surfaces into one canonical truth center
+- tighten cross-entity boundaries with `anmalishev.ru` and sibling products
+- keep numeric claims synchronized across homepage, metadata, docs, and
+  AI-facing files
+
+## auditguard.ru
+
+Public signals observed:
+
+- public-first technical audit framing is clear
+- homepage exposes `340+` parameters, `46+` tools, and `2-5` minute checks
+- service explains scope, legal basis, and public-only audit boundary
+- trust and evidence framing are strong
+
+### Snapshot score
+
+- Technical SEO and crawl readiness: `17/20`
+- Factual consistency and truth-center discipline: `14/20`
+- Entity clarity and trust proof: `16/20`
+- AI readiness and answer extraction: `15/20`
+- Reporting and operator packaging: `18/20`
+- Total public snapshot: `80/100`
+
+### Bounded before/after model
+
+- Before first v3-style pass: `80/100`
+- After first 30-day fact-sync and entity-governance target: `86/100`
+- Expected gain: `+6`
+
+Likely sources of gain:
+
+- tighter synchronization between public copy, evidence pages, and AI-facing
+  files
+- sharper separation between AuditGuard and the surrounding product ecosystem
+- stronger repeatable benchmark reporting inside the self-hosted app flow
 
 ## anmalishev.ru
 
-- Name: anmalishev.ru
-- Role in the ecosystem: expert-led consulting and product ecosystem hub
-- What it demonstrates:
-  - founder entity, services, products, and case studies in one discoverability
-    graph
-  - bilingual and AI-ready public presence
-  - discoverability support for consulting, products, and thought leadership at
-    the same time
-- Strongest methodology blocks:
-  - entity authority
-  - AI-facing files such as `robots.txt`, `llms.txt`, and `ai.txt`
-  - case-study and proof structure
-  - product plus expert cross-linking
-- Main gaps / next priorities:
-  - keep the entity hierarchy explicit so AI systems do not blur founder,
-    products, and side frameworks
-  - preserve a stable primary entity while the ecosystem grows
-  - keep multilingual claims and route logic consistent
-- Why this case matters for the framework:
-  - it shows how an expert hub can evolve into a multi-entity ecosystem without
-    becoming unreadable for users, search engines, or LLMs
+Public signals observed:
 
-## Shared Lessons Across The Cases
+- founder identity, legal details, and location are explicit
+- RU and EN service surfaces are already visible
+- the site links consulting, products, case studies, and methodology assets
+- "practical AI for business" positioning is clear and commercially grounded
 
-- factual consistency is now a first-class operational requirement
-- public proof must be synchronized across pages, metadata, schema, and
-  AI-facing files
-- entity hierarchy needs explicit design once a brand grows into products,
-  services, and sibling projects
-- bilingual discoverability works better when both languages are treated as
-  production layers, not post-launch translations
+### Snapshot score
+
+- Technical SEO and crawl readiness: `15/20`
+- Factual consistency and truth-center discipline: `14/20`
+- Entity clarity and trust proof: `17/20`
+- AI readiness and answer extraction: `17/20`
+- Reporting and operator packaging: `15/20`
+- Total public snapshot: `78/100`
+
+### Bounded before/after model
+
+- Before first v3-style pass: `78/100`
+- After first 30-day entity-hierarchy and bilingual fact-sync target: `85/100`
+- Expected gain: `+7`
+
+Likely sources of gain:
+
+- clearer separation between founder entity, offers, products, and frameworks
+- one canonical fact layer for legal, service, and product claims
+- more explicit AI-facing truth surfaces for multilingual routing
+
+## Cross-case lessons
+
+- factual consistency is its own subsystem, not a side note
+- public proof matters more when several related entities cross-link
+- bilingual discoverability performs better when EN and RU are governed as
+  production layers
+- AI visibility works best when it reinforces technical SEO instead of trying
+  to replace it
 
 See also:
 
+- [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
 - [docs/en/canonical-facts-and-entity-consistency.md](./docs/en/canonical-facts-and-entity-consistency.md)
-- [docs/en/entity-hierarchy-and-brand-focus.md](./docs/en/entity-hierarchy-and-brand-focus.md)
 - [WALKTHROUGH.md](./WALKTHROUGH.md)

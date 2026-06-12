@@ -1,53 +1,47 @@
 # Пошаговый Разбор
 
-## UI proof
+## Идеальный первый проход
 
-![App overview proof](./docs_site/assets/screenshots/app-overview-proof.svg)
-![Report flow proof](./docs_site/assets/screenshots/report-flow-proof.svg)
+Это самый короткий proof-first путь по проекту.
 
-## С чего начать
+1. Прочитайте [README_RU.md](./README_RU.md)
+2. Выполните `make turnkey-demo`
+3. Откройте `http://localhost:3000`
+4. Войдите через `demo@example.com / DemoPlatform123`
+5. Откройте обзорную панель
+6. Выберите demo workspace и project
+7. Откройте reports и artifacts
+8. Запустите свежий audit
+9. Запустите AI SoV
+10. Экспортируйте project package
 
-1. Прочитайте [README_RU.md](./README_RU.md) для positioning.
-2. Прочитайте [AGENTS.md](./AGENTS.md) для execution defaults.
-3. Откройте [docs/ru/01-audit.md](./docs/ru/01-audit.md).
-4. Выберите подходящий чеклист.
-5. Запустите supporting-скрипты.
+## Что вы должны увидеть
 
-## Как репозиторий работает на практике
+- рабочий login flow
+- один workspace и один project
+- видимую историю аудитов
+- видимый слой reports и artifacts
+- prompt library и notification endpoints
+- историю AI SoV с прозрачными заметками
 
-```mermaid
-flowchart LR
-  A["Аудит и бриф"] --> B["Docs и checklist"]
-  B --> C["Prompt и content-brief"]
-  C --> D["Скрипты и валидация"]
-  D --> E["Примеры и отчет"]
-  E --> F["Релиз и DoD"]
-```
+## После первого видимого результата
 
-## Типовой поток для живого проекта
+1. Замените demo site на реальный project
+2. Заполните свои brand facts
+3. Подключите cloud или local providers
+4. Запустите первый реальный audit
+5. Превратите findings в fix backlog
+6. Повторно прогоните после изменений и сравните дельты
 
-1. Проведите аудит через docs и checklist.
-2. Соберите карту страниц, proof-активов и entity structure.
-3. Сгенерируйте или проверьте `llms.txt`, `robots.txt` и ROI-гипотезы.
-4. Проверьте factual consistency и entity hierarchy.
-5. Публикуйте изменения и прогоняйте валидацию повторно.
+## Путь человека и путь ИИ
 
-## Работа с AI coding agents
+- Путь human operator: этот walkthrough плюс [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
+- Путь AI agent: [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md) плюс
+  [AGENTS.md](./AGENTS.md)
 
-- начинайте с [AGENTS.md](./AGENTS.md)
-- используйте примеры до того, как изобретать новую структуру
-- запускайте тесты из `tests/`
-- держите в синхроне README, docs по скриптам и examples
+## Proof assets
 
-## Локальный предпросмотр docs-site
-
-```bash
-pip install mkdocs-material
-mkdocs serve
-```
-
-Если GitHub Pages отображается неправильно:
-
-- локально прогоните `mkdocs build`
-- проверьте пути в `mkdocs.yml`
-- убедитесь, что workflow Pages отработал на `main`
+![Login and dashboard proof](./docs_site/assets/screenshots/app-login-dashboard-proof.png)
+![Provider configuration proof](./docs_site/assets/screenshots/app-provider-proof.png)
+![Audit run proof](./docs_site/assets/screenshots/app-audit-proof.png)
+![Report and artifact proof](./docs_site/assets/screenshots/app-report-proof.png)

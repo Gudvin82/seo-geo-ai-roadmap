@@ -1,34 +1,23 @@
 # Repository Roadmap
 
-## v1.0.0 Foundation release
+## v3.0.x stabilization
 
-- Establish positioning and differentiators
-- Ship bilingual docs, prompts, templates, scripts, and examples
-- Add governance and release process
-- Add GitHub workflows for markdown, links, and smoke tests
+- keep the proof-first onboarding and screenshots current
+- deepen fresh-clone verification and demo reproducibility
+- expand role isolation and multi-tenant hardening tests
+- keep AI SoV and prioritization outputs stable across EN/RU reporting
 
-## v1.1.x
+## Near-term product direction
 
-- Expand deep worked examples
-- Add more script validators and sample outputs
-- Tighten doc cross-linking and navigation
+- optional Google Search Console and Yandex data imports
+- stronger CMS connector starters for WordPress, Tilda, Bitrix, and Webflow
+- safer patch mode with read-only, draft, and human-approved publish stages
+- client delivery packs and import/export depth for agencies
 
-## v1.2.x
-
-- Add richer RU/CIS marketplace and directory patterns
-- Expand international localization and hreflang decision trees
-- Add contribution lanes for vertical-specific playbooks
-
-## v2.1.x Turnkey self-hosted hardening
-
-- strengthen auth, token lifecycle, and production-safe configuration
-- add migrations, demo seed flow, and one-command startup paths
-- improve API visibility, observability, and AI operator workflows
-- keep the repo free, transparent, open-source, and self-hosted first
-
-## Future product direction
+## Guardrails for future work
 
 - keep the methodology layer first-class
-- keep the app layer transparent and adaptable by humans and AI coding agents
-- avoid mandatory cloud lock-in
-- expand optional orchestration, reporting depth, and provider coverage
+- keep the app transparent and self-hosted first
+- do not hide scoring or overclaim AI outcomes
+- treat GEO/AI discoverability as a higher layer on top of technical SEO
+- prefer real, testable, repeatable features over broad placeholder scope

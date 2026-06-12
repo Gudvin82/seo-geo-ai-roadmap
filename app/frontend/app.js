@@ -17,6 +17,7 @@ const state = {
 
 const translations = {
   en: {
+    navOverview: "Overview",
     appTitle: "Discoverability OS App",
     appSubtitle:
       "Free and transparent self-hosted control panel for discoverability audits, multi-provider AI, and bilingual reporting.",
@@ -34,10 +35,11 @@ const translations = {
     navReports: "Reports",
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
-    releaseBadge: "v2.3.0 proof-first AI operator upgrade",
+    releaseBadge: "v3.0.0 proof-first discoverability platform",
     heroTitle:
-      "Free and transparent self-hosted platform on top of the methodology repo",
-    heroCopy: "Create workspaces, onboard projects, run discoverability checks, manage providers and roles, store evidence, and ship bilingual reports with cloud or local AI support.",
+      "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
+    heroCopy:
+      "Give the repo to a human operator or an AI coding agent, deploy it, connect providers, run audits, collect evidence, and re-run on the same sites with measurable deltas.",
     badgeRepo: "Repo methodology",
     badgeApp: "App workflow",
     badgeProviders: "OpenAI / Claude / Gemini / Perplexity / Ollama / LocalAI",
@@ -45,6 +47,39 @@ const translations = {
     metricWorkspace: "Active workspace",
     metricProject: "Active project",
     metricReports: "Latest report language",
+    metricCitation: "Latest AI citation signal",
+    overviewTitle: "Operator overview",
+    first15Title: "First result in 15 minutes",
+    first15Step1: "Sign in and create one workspace.",
+    first15Step2: "Create one project and fill brand facts.",
+    first15Step3: "Connect one provider or stay in transparent starter mode.",
+    first15Step4: "Run one audit and one AI SoV check.",
+    first15Step5: "Open reports, artifacts, and export package.",
+    day30Title: "What changes in 30 days",
+    day30Item1: "You have a repeatable audit rhythm, not one-off checklists.",
+    day30Item2: "Facts, prompts, and reports stay in one operator system.",
+    day30Item3: "You can show deltas in score, evidence, and AI visibility.",
+    day90Title: "What changes in 90 days",
+    day90Item1: "Agency, in-house, and founder workflows become reusable.",
+    day90Item2: "You have a bilingual evidence base for fixes and client delivery.",
+    day90Item3: "AI SoV, audits, and truth-center governance start compounding.",
+    fitTitle: "Who this is for / not for",
+    fitFor: "For",
+    fitFor1: "Agencies running recurring audits and client reports.",
+    fitFor2: "In-house teams that need one SEO + GEO + AI operating layer.",
+    fitFor3: "Founders and expert operators shipping their own sites.",
+    fitNotFor: "Not for",
+    fitNotFor1: "Teams expecting a black-box crawler with no review.",
+    fitNotFor2: "Users who want a mandatory hosted SaaS.",
+    fitNotFor3: "Anyone looking for GEO snake-oil without technical SEO discipline.",
+    chartAudits: "Audit history",
+    chartAuditsCopy: "Recent summary scores for the active project.",
+    chartReports: "Report history",
+    chartReportsCopy: "Recent report outputs ready for client delivery.",
+    chartProviders: "Provider reliability view",
+    chartProvidersCopy: "Enabled configs in UI, failures and latency in `/metrics`.",
+    chartSov: "AI SoV history",
+    chartSovCopy: "Latest mention rate and AI Citation Score snapshots.",
     authTitle: "Sign in / sign up",
     signOut: "Sign out",
     registerTitle: "Create account",
@@ -133,6 +168,7 @@ const translations = {
     activityLog: "Activity log",
   },
   ru: {
+    navOverview: "Обзор",
     appTitle: "Discoverability OS App",
     appSubtitle:
       "Бесплатная и прозрачная self-hosted панель для discoverability-аудитов, мультипровайдерного AI и двуязычной отчетности.",
@@ -150,10 +186,11 @@ const translations = {
     navReports: "Отчеты",
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
-    releaseBadge: "v2.3.0 proof-first AI operator upgrade",
+    releaseBadge: "v3.0.0 proof-first discoverability platform",
     heroTitle:
-      "Бесплатная и прозрачная self-hosted платформа поверх методологического репозитория",
-    heroCopy: "Создавайте воркспейсы, онбордите проекты, запускайте discoverability-проверки, управляйте providers и roles, храните evidence и выпускайте двуязычные отчеты с cloud и local AI.",
+      "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
+    heroCopy:
+      "Передайте репозиторий человеку-оператору или AI coding agent, разверните стек, подключите провайдеров, запускайте аудиты, собирайте evidence и сравнивайте повторы по тем же сайтам.",
     badgeRepo: "Методология репо",
     badgeApp: "Продуктовый workflow",
     badgeProviders: "OpenAI / Claude / Gemini / Perplexity / Ollama / LocalAI",
@@ -161,6 +198,39 @@ const translations = {
     metricWorkspace: "Активный воркспейс",
     metricProject: "Активный проект",
     metricReports: "Язык последнего отчета",
+    metricCitation: "Последний AI citation сигнал",
+    overviewTitle: "Операторский обзор",
+    first15Title: "Первый результат за 15 минут",
+    first15Step1: "Войдите и создайте один workspace.",
+    first15Step2: "Создайте один проект и заполните brand facts.",
+    first15Step3: "Подключите одного провайдера или оставьте прозрачный starter-режим.",
+    first15Step4: "Запустите один аудит и одну AI SoV-проверку.",
+    first15Step5: "Откройте reports, artifacts и export package.",
+    day30Title: "Что меняется за 30 дней",
+    day30Item1: "У вас появляется повторяемый audit-ритм вместо разовых чеклистов.",
+    day30Item2: "Факты, промпты и отчеты живут в одной операторской системе.",
+    day30Item3: "Можно показывать дельты в score, evidence и AI visibility.",
+    day90Title: "Что меняется за 90 дней",
+    day90Item1: "Agency, in-house и founder workflows становятся переиспользуемыми.",
+    day90Item2: "Появляется двуязычная evidence-база для fixes и client delivery.",
+    day90Item3: "AI SoV, аудиты и truth-center governance начинают накапливать эффект.",
+    fitTitle: "Для кого / не для кого",
+    fitFor: "Для кого",
+    fitFor1: "Агентства с регулярными аудитами и клиентской отчетностью.",
+    fitFor2: "In-house команды, которым нужен единый SEO + GEO + AI слой.",
+    fitFor3: "Фаундеры и экспертные операторы, ведущие свои сайты.",
+    fitNotFor: "Не для кого",
+    fitNotFor1: "Команды, которым нужен black-box crawler без ревью.",
+    fitNotFor2: "Пользователи, которым нужен только обязательный hosted SaaS.",
+    fitNotFor3: "Те, кто ищет GEO snake-oil без технической SEO-дисциплины.",
+    chartAudits: "История аудитов",
+    chartAuditsCopy: "Последние summary scores по активному проекту.",
+    chartReports: "История отчетов",
+    chartReportsCopy: "Последние report outputs, готовые к клиентской выдаче.",
+    chartProviders: "Обзор надежности провайдеров",
+    chartProvidersCopy: "В UI видны конфиги, а реальные failures и latency идут в `/metrics`.",
+    chartSov: "История AI SoV",
+    chartSovCopy: "Последние срезы mention rate и AI Citation Score.",
     authTitle: "Вход / регистрация",
     signOut: "Выйти",
     registerTitle: "Создать аккаунт",
@@ -279,6 +349,8 @@ function setStatus() {
   $("#project-status").textContent = state.selectedProjectId || "n/a";
   const lastReport = state.reports[0];
   $("#report-language-status").textContent = lastReport ? lastReport.language : "n/a";
+  const lastSov = state.sovRuns[0];
+  $("#citation-status").textContent = lastSov ? sovLabel(lastSov) : "n/a";
 }
 
 function switchPane(paneId) {
@@ -302,6 +374,34 @@ function splitCsv(value) {
     .split(",")
     .map((item) => item.trim())
     .filter(Boolean);
+}
+
+function clampPercent(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) {
+    return 0;
+  }
+  if (number <= 1) {
+    return Math.max(0, Math.min(100, Math.round(number * 100)));
+  }
+  return Math.max(0, Math.min(100, Math.round(number)));
+}
+
+function parseCitationScore(row) {
+  const summary = row?.mention_summary || "";
+  const match = summary.match(/AI Citation Score:\s*(\d+)/i);
+  return match ? Number(match[1]) : null;
+}
+
+function sovLabel(row) {
+  const citation = parseCitationScore(row);
+  if (citation !== null) {
+    return `${citation}/100`;
+  }
+  if (row?.share_estimate !== null && row?.share_estimate !== undefined) {
+    return `${clampPercent(row.share_estimate)}%`;
+  }
+  return "tracked";
 }
 
 async function apiRequest(path, options = {}) {
@@ -348,6 +448,64 @@ function renderCards(target, rows, mapper) {
     return;
   }
   rows.forEach((row) => node.append(mapper(row)));
+}
+
+function renderMiniChart(target, items) {
+  const node = $(target);
+  node.innerHTML = "";
+  if (!items.length) {
+    node.innerHTML = `<div class="chart-empty">No project data yet.</div>`;
+    return;
+  }
+  items.forEach((item) => {
+    const bar = document.createElement("div");
+    bar.className = "chart-bar";
+    bar.innerHTML = `
+      <div class="chart-bar-value">${item.valueLabel}</div>
+      <div class="chart-bar-fill" style="height: ${Math.max(22, item.value)}%"></div>
+      <div class="chart-bar-label">${item.label}</div>
+    `;
+    node.append(bar);
+  });
+}
+
+function renderOverview() {
+  renderMiniChart(
+    "#audit-history-chart",
+    state.auditRuns.slice(0, 6).map((row, index) => ({
+      label: `#${row.id || index + 1}`,
+      value: clampPercent(row.summary_score ?? 0),
+      valueLabel: row.summary_score !== null && row.summary_score !== undefined ? `${Math.round(row.summary_score)}` : "pending",
+    })),
+  );
+  renderMiniChart(
+    "#report-history-chart",
+    state.reports.slice(0, 6).map((row, index) => ({
+      label: row.language || `r${index + 1}`,
+      value: Math.max(30, 100 - index * 12),
+      valueLabel: row.format || "report",
+    })),
+  );
+  renderMiniChart(
+    "#provider-failure-chart",
+    state.providerConfigs.slice(0, 6).map((row) => ({
+      label: row.provider_name,
+      value: row.is_enabled ? 92 : 35,
+      valueLabel: row.is_enabled ? "enabled" : "disabled",
+    })),
+  );
+  renderMiniChart(
+    "#sov-history-chart",
+    state.sovRuns.slice(0, 6).map((row, index) => {
+      const citation = parseCitationScore(row);
+      const mentionRate = clampPercent(row.share_estimate ?? 0);
+      return {
+        label: `#${row.id || index + 1}`,
+        value: citation !== null ? citation : mentionRate,
+        valueLabel: citation !== null ? `${citation}` : `${mentionRate}%`,
+      };
+    }),
+  );
 }
 
 function workspaceCard(workspace) {
@@ -410,6 +568,7 @@ async function refreshWorkspaces() {
   }
   state.workspaces = await apiRequest("/workspaces");
   renderCards("#workspace-list", state.workspaces, workspaceCard);
+  renderOverview();
 }
 
 async function refreshProjects() {
@@ -418,6 +577,7 @@ async function refreshProjects() {
   }
   state.projects = await apiRequest(`/projects?workspace_id=${state.selectedWorkspaceId}`);
   renderCards("#project-list", state.projects, projectCard);
+  renderOverview();
 }
 
 async function refreshFacts() {
@@ -442,6 +602,7 @@ async function refreshProviders() {
   renderCards("#provider-list", state.providerConfigs, (row) =>
     simpleCard(row.label, [`#${row.id}`, `${row.provider_name} · ${row.model}`, row.api_key_env_var || "default env routing"]),
   );
+  renderOverview();
 }
 
 async function refreshPromptSets() {
@@ -477,6 +638,7 @@ async function refreshAudits() {
       `Language: ${row.report_language}`,
     ]),
   );
+  renderOverview();
 }
 
 async function refreshReportsAndArtifacts() {
@@ -500,6 +662,7 @@ async function refreshReportsAndArtifacts() {
   $("#repo-assets").textContent = JSON.stringify(repoAssets, null, 2);
   $("#integration-starters").textContent = JSON.stringify(integrationStarters, null, 2);
   setStatus();
+  renderOverview();
 }
 
 async function refreshSovRuns() {
@@ -511,9 +674,11 @@ async function refreshSovRuns() {
     simpleCard(`SoV #${row.id}`, [
       `${row.brand} · ${row.status}`,
       `Share estimate: ${row.share_estimate ?? "n/a"}`,
+      `AI Citation Score: ${parseCitationScore(row) ?? "n/a"}`,
       `Queries: ${(row.queries || []).join(", ")}`,
     ]),
   );
+  renderOverview();
 }
 
 async function refreshNotifications() {
@@ -530,6 +695,7 @@ async function refreshNotifications() {
       `Events: ${(row.events || []).join(", ") || "all"}`,
     ]),
   );
+  renderOverview();
 }
 
 function formPayload(form) {
@@ -738,6 +904,7 @@ async function init() {
   try {
     await refreshPresets();
     await bootstrapAuthedState();
+    renderOverview();
   } catch (error) {
     log(`Startup warning: ${error.message}`, "warning");
   }

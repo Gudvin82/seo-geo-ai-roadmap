@@ -66,11 +66,24 @@ def test_workspace_project_and_audit_flow(
         headers=auth_headers,
     )
     assert audit_status.status_code == 200
+    findings = audit_status.json()["finding_groups"]
+    assert findings
+    assert "priority_score" in findings[0]
+    assert "benchmark_status" in findings[0]
+
+    retried = client.post(
+        f"/api/v1/audit-runs/{audit.json()['audit_job_id']}/retry",
+        headers=auth_headers,
+    )
+    assert retried.status_code == 200
 
     reports = client.get(
         f"/api/v1/reports?project_id={project_id}", headers=auth_headers
     )
     assert reports.status_code == 200
+    if reports.json():
+        report_json = reports.json()[0]["summary_json"]
+        assert "benchmark_summary" in report_json
 
     artifacts = client.get(
         f"/api/v1/artifacts?project_id={project_id}", headers=auth_headers

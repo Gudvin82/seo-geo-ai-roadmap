@@ -50,3 +50,64 @@ def test_workspace_invite_and_role_access(client: TestClient) -> None:
         headers=viewer_headers,
     )
     assert forbidden_update.status_code == 403
+
+
+def test_invite_resend_revoke_update_and_role_change(client: TestClient) -> None:
+    owner_headers = _headers_for(client, "owner3@example.com")
+    editor_headers = _headers_for(client, "editor@example.com")
+
+    workspace = client.post(
+        "/api/v1/workspaces",
+        json={"name": "Ops Workspace", "slug": "ops-workspace"},
+        headers=owner_headers,
+    )
+    workspace_id = workspace.json()["id"]
+
+    invite = client.post(
+        f"/api/v1/workspaces/{workspace_id}/invites",
+        json={"email": "editor@example.com", "role": "viewer"},
+        headers=owner_headers,
+    ).json()
+
+    updated = client.put(
+        f"/api/v1/workspaces/{workspace_id}/invites/{invite['id']}",
+        json={"email": "editor@example.com", "role": "editor"},
+        headers=owner_headers,
+    )
+    assert updated.status_code == 200
+    assert updated.json()["role"] == "editor"
+
+    resent = client.post(
+        f"/api/v1/workspaces/{workspace_id}/invites/{invite['id']}/resend",
+        headers=owner_headers,
+    )
+    assert resent.status_code == 200
+    assert resent.json()["sent_count"] >= 2
+
+    accepted = client.post(
+        "/api/v1/workspaces/invites/accept",
+        json={"invite_token": invite["invite_token"]},
+        headers=editor_headers,
+    )
+    assert accepted.status_code == 200
+    member_id = accepted.json()["id"]
+
+    role_changed = client.put(
+        f"/api/v1/workspaces/{workspace_id}/members/{member_id}",
+        json={"role": "admin"},
+        headers=owner_headers,
+    )
+    assert role_changed.status_code == 200
+    assert role_changed.json()["role"] == "admin"
+
+    second_invite = client.post(
+        f"/api/v1/workspaces/{workspace_id}/invites",
+        json={"email": "temp@example.com", "role": "viewer"},
+        headers=owner_headers,
+    ).json()
+    revoked = client.post(
+        f"/api/v1/workspaces/{workspace_id}/invites/{second_invite['id']}/revoke",
+        headers=owner_headers,
+    )
+    assert revoked.status_code == 200
+    assert revoked.json()["status"] == "revoked"

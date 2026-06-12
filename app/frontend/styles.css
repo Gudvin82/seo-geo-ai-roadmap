@@ -170,7 +170,10 @@ button:hover {
 }
 
 .hero-badges,
-.dashboard-grid {
+.dashboard-grid,
+.overview-grid,
+.chart-grid,
+.fit-grid {
   display: grid;
   gap: 12px;
 }
@@ -192,6 +195,19 @@ button:hover {
 .dashboard-grid {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   margin-bottom: 24px;
+}
+
+.overview-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-bottom: 18px;
+}
+
+.chart-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.fit-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .metric-card {
@@ -279,6 +295,44 @@ button:hover {
   overflow: auto;
 }
 
+.chart-copy {
+  margin: 8px 0 14px;
+  color: var(--muted);
+}
+
+.mini-chart {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+  align-items: end;
+  gap: 10px;
+  min-height: 160px;
+}
+
+.chart-bar {
+  display: grid;
+  align-content: end;
+  gap: 8px;
+}
+
+.chart-bar-fill {
+  min-height: 22px;
+  border-radius: 14px 14px 8px 8px;
+  background: linear-gradient(180deg, rgba(15, 118, 110, 0.82), rgba(17, 94, 89, 1));
+}
+
+.chart-bar-label,
+.chart-bar-value {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.chart-empty {
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+  padding: 16px;
+}
+
 .log-entry {
   padding: 12px 14px;
   border-radius: 14px;
@@ -308,6 +362,10 @@ button:hover {
 @media (max-width: 1040px) {
   .page-shell,
   .split {
+    grid-template-columns: 1fr;
+  }
+
+  .fit-grid {
     grid-template-columns: 1fr;
   }
 

@@ -1,53 +1,47 @@
 # Walkthrough
 
-## UI proof
+## The ideal first run
 
-![App overview proof](./docs_site/assets/screenshots/app-overview-proof.svg)
-![Report flow proof](./docs_site/assets/screenshots/report-flow-proof.svg)
+This is the shortest proof-first path through the project.
 
-## Where to start
+1. Read [README.md](./README.md)
+2. Run `make turnkey-demo`
+3. Open `http://localhost:3000`
+4. Sign in with `demo@example.com / DemoPlatform123`
+5. Open the overview pane
+6. Select the demo workspace and project
+7. Open reports and artifacts
+8. Run a fresh audit
+9. Run AI SoV
+10. Export the project package
 
-1. Read [README.md](./README.md) for positioning.
-2. Read [AGENTS.md](./AGENTS.md) for execution defaults.
-3. Open [docs/en/01-audit.md](./docs/en/01-audit.md).
-4. Choose the matching checklist.
-5. Run the supporting scripts.
+## What you should see
 
-## How the repository works in practice
+- a working login flow
+- one workspace and one project
+- a visible audit history
+- a visible report and artifact layer
+- prompt library and notification endpoints
+- AI SoV history with transparent notes
 
-```mermaid
-flowchart LR
-  A["Audit brief"] --> B["Docs and checklist"]
-  B --> C["Prompt and brief"]
-  C --> D["Scripts and validation"]
-  D --> E["Examples and report"]
-  E --> F["Release and DoD"]
-```
+## After the first visible result
 
-## Typical live-project flow
+1. Replace the demo site with a real project
+2. Fill your own brand facts
+3. Connect cloud or local providers
+4. Run the first real audit
+5. Turn the findings into a fix backlog
+6. Re-run after changes and compare deltas
 
-1. Run an audit with docs plus checklist.
-2. Map pages, proof assets, and entity structure.
-3. Generate or validate `llms.txt`, `robots.txt`, and ROI assumptions.
-4. Review factual consistency and entity hierarchy.
-5. Publish and re-check with the validation scripts.
+## Human path and AI path
 
-## Working with AI coding agents
+- Human operator path: use this walkthrough plus [DEPLOYMENT.md](./DEPLOYMENT.md)
+- AI agent path: use [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md) plus
+  [AGENTS.md](./AGENTS.md)
 
-- start with [AGENTS.md](./AGENTS.md)
-- use examples before inventing new structures
-- run tests in `tests/`
-- keep README, scripts docs, and examples aligned
+## Proof assets
 
-## Local docs-site preview
-
-```bash
-pip install mkdocs-material
-mkdocs serve
-```
-
-If GitHub Pages does not render as expected:
-
-- run `mkdocs build` locally
-- check `mkdocs.yml` navigation paths
-- confirm the Pages workflow ran on `main`
+![Login and dashboard proof](./docs_site/assets/screenshots/app-login-dashboard-proof.png)
+![Provider configuration proof](./docs_site/assets/screenshots/app-provider-proof.png)
+![Audit run proof](./docs_site/assets/screenshots/app-audit-proof.png)
+![Report and artifact proof](./docs_site/assets/screenshots/app-report-proof.png)

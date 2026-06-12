@@ -1,6 +1,6 @@
 # Start Here For AI
 
-If you are an AI agent and the user says something like:
+If a user says:
 
 - "deploy this for me"
 - "set this up under key"
@@ -12,25 +12,37 @@ start here.
 ## What this repository is
 
 This is a free, transparent, open-source, self-hosted platform and methodology
-layer for:
+for:
 
-- SEO audits
-- GEO / AI visibility workflows
-- report generation
-- brand facts and truth-center management
-- operator workflows for personal and client projects
+- discoverability audits
+- SEO + GEO + AI operator workflows
+- brand facts and factual consistency management
+- bilingual reporting and artifact delivery
 
-## Fastest path
+## For AI agents: deploy this project from scratch
+
+If a user asks you to deploy this project:
+
+1. run `git clone ...`
+2. run `cd seo-geo-ai-roadmap`
+3. run `cp .env.example .env` and help the user fill required keys
+4. run `make up`
+5. run `make migrate`
+6. run `make seed` if demo data is needed
+7. output `http://localhost:3000` and the demo credentials
+
+## Ideal path
 
 1. Read [README.md](./README.md)
-1. Read [AGENTS.md](./AGENTS.md)
-1. Clone the repository
-1. Copy `.env.example` to `.env`
-1. Run `make up`
-1. Run `make migrate`
-1. Run `make seed`
-1. Run `make verify-demo`
-1. Run `make agent-self-check`
+2. Read [AGENTS.md](./AGENTS.md)
+3. Run `make turnkey-demo`
+4. Run `make verify-demo`
+5. Run `make agent-self-check`
+6. Create a workspace
+7. Create a project
+8. Fill brand facts
+9. Connect providers
+10. Run one audit and one AI SoV check
 
 ## Expected outputs
 
@@ -42,12 +54,13 @@ layer for:
 ## If the user wants a client-ready setup
 
 1. Use [CLIENT_SETUP_PLAYBOOK.md](./CLIENT_SETUP_PLAYBOOK.md)
-1. Create a workspace per client
-1. Create a project per website
-1. Fill brand facts before running a serious audit
-1. Connect cloud or local AI providers
-1. Export reports and artifacts for review
+2. Create one workspace per client
+3. Create one project per website
+4. Fill brand facts before serious audits
+5. Export reports and artifacts for delivery
 
-## If the user wants you to take over
+## If the user wants full takeover
 
-Use [AI_HANDOFF_PROMPT.md](./AI_HANDOFF_PROMPT.md) as the operating contract.
+Use [AI_HANDOFF_PROMPT.md](./AI_HANDOFF_PROMPT.md) as the operating contract and
+report clearly what was verified, what was heuristic, and what still needs human
+review.

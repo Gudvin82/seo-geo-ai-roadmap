@@ -34,7 +34,8 @@
         </div>
 
         <nav class="nav">
-          <button class="nav-link is-active" data-pane-target="auth-pane" data-i18n="navAuth">Auth</button>
+          <button class="nav-link is-active" data-pane-target="overview-pane" data-i18n="navOverview">Overview</button>
+          <button class="nav-link" data-pane-target="auth-pane" data-i18n="navAuth">Auth</button>
           <button class="nav-link" data-pane-target="workspaces-pane" data-i18n="navWorkspaces">Workspaces</button>
           <button class="nav-link" data-pane-target="projects-pane" data-i18n="navProjects">Projects</button>
           <button class="nav-link" data-pane-target="facts-pane" data-i18n="navFacts">Brand facts</button>
@@ -64,11 +65,12 @@
       <main class="main">
         <header class="hero">
           <div>
-            <p class="eyebrow" data-i18n="releaseBadge">v2.3.0 proof-first AI operator upgrade</p>
-            <h2 data-i18n="heroTitle">Free and transparent self-hosted platform on top of the methodology repo</h2>
+            <p class="eyebrow" data-i18n="releaseBadge">v3.0.0 proof-first discoverability platform</p>
+            <h2 data-i18n="heroTitle">Self-hosted daily operating system for SEO, GEO, and AI discoverability</h2>
             <p class="hero-copy" data-i18n="heroCopy">
-              Create workspaces, onboard projects, run discoverability checks,
-              store evidence, and ship bilingual reports with multi-provider AI support.
+              Give the repo to a human operator or an AI coding agent, deploy it,
+              connect providers, run audits, collect evidence, and re-run on the
+              same sites with measurable deltas.
             </p>
           </div>
           <div class="hero-badges">
@@ -95,9 +97,95 @@
             <span class="metric-label" data-i18n="metricReports">Latest report language</span>
             <strong id="report-language-status">n/a</strong>
           </article>
+          <article class="metric-card">
+            <span class="metric-label" data-i18n="metricCitation">Latest AI citation signal</span>
+            <strong id="citation-status">n/a</strong>
+          </article>
         </section>
 
-        <section class="pane is-active" id="auth-pane">
+        <section class="pane is-active" id="overview-pane">
+          <div class="pane-header">
+            <h3 data-i18n="overviewTitle">Operator overview</h3>
+          </div>
+
+          <div class="overview-grid">
+            <article class="card">
+              <h4 data-i18n="first15Title">First result in 15 minutes</h4>
+              <ol class="compact-list">
+                <li data-i18n="first15Step1">Sign in and create one workspace.</li>
+                <li data-i18n="first15Step2">Create one project and fill brand facts.</li>
+                <li data-i18n="first15Step3">Connect one provider or stay in transparent starter mode.</li>
+                <li data-i18n="first15Step4">Run one audit and one AI SoV check.</li>
+                <li data-i18n="first15Step5">Open reports, artifacts, and export package.</li>
+              </ol>
+            </article>
+
+            <article class="card">
+              <h4 data-i18n="day30Title">What changes in 30 days</h4>
+              <ul class="compact-list">
+                <li data-i18n="day30Item1">You have a repeatable audit rhythm, not one-off checklists.</li>
+                <li data-i18n="day30Item2">Facts, prompts, and reports stay in one operator system.</li>
+                <li data-i18n="day30Item3">You can show deltas in score, evidence, and AI visibility.</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <h4 data-i18n="day90Title">What changes in 90 days</h4>
+              <ul class="compact-list">
+                <li data-i18n="day90Item1">Agency, in-house, and founder workflows become reusable.</li>
+                <li data-i18n="day90Item2">You have a bilingual evidence base for fixes and client delivery.</li>
+                <li data-i18n="day90Item3">AI SoV, audits, and truth-center governance start compounding.</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <h4 data-i18n="fitTitle">Who this is for / not for</h4>
+              <div class="fit-grid">
+                <div>
+                  <strong data-i18n="fitFor">For</strong>
+                  <ul class="compact-list">
+                    <li data-i18n="fitFor1">Agencies running recurring audits and client reports.</li>
+                    <li data-i18n="fitFor2">In-house teams that need one SEO + GEO + AI operating layer.</li>
+                    <li data-i18n="fitFor3">Founders and expert operators shipping their own sites.</li>
+                  </ul>
+                </div>
+                <div>
+                  <strong data-i18n="fitNotFor">Not for</strong>
+                  <ul class="compact-list">
+                    <li data-i18n="fitNotFor1">Teams expecting a black-box crawler with no review.</li>
+                    <li data-i18n="fitNotFor2">Users who want a mandatory hosted SaaS.</li>
+                    <li data-i18n="fitNotFor3">Anyone looking for GEO snake-oil without technical SEO discipline.</li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="chart-grid">
+            <article class="card">
+              <h4 data-i18n="chartAudits">Audit history</h4>
+              <p class="chart-copy" data-i18n="chartAuditsCopy">Recent summary scores for the active project.</p>
+              <div id="audit-history-chart" class="mini-chart"></div>
+            </article>
+            <article class="card">
+              <h4 data-i18n="chartReports">Report history</h4>
+              <p class="chart-copy" data-i18n="chartReportsCopy">Recent report outputs ready for client delivery.</p>
+              <div id="report-history-chart" class="mini-chart"></div>
+            </article>
+            <article class="card">
+              <h4 data-i18n="chartProviders">Provider reliability view</h4>
+              <p class="chart-copy" data-i18n="chartProvidersCopy">Enabled configs in UI, failures and latency in `/metrics`.</p>
+              <div id="provider-failure-chart" class="mini-chart"></div>
+            </article>
+            <article class="card">
+              <h4 data-i18n="chartSov">AI SoV history</h4>
+              <p class="chart-copy" data-i18n="chartSovCopy">Latest mention rate and AI Citation Score snapshots.</p>
+              <div id="sov-history-chart" class="mini-chart"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="pane" id="auth-pane">
           <div class="pane-header">
             <h3 data-i18n="authTitle">Sign in / sign up</h3>
             <button id="sign-out" class="ghost-button" data-i18n="signOut">Sign out</button>

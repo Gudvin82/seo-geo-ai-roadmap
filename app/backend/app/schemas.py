@@ -93,6 +93,21 @@ class WorkspaceMembershipRead(BaseModel):
     created_at: datetime
 
 
+class WorkspaceMembershipUpdate(BaseModel):
+    role: str
+
+    @field_validator("role")
+    @classmethod
+    def validate_role(cls, value: str) -> str:
+        allowed = {"owner", "admin", "editor", "viewer"}
+        role = value.strip().lower()
+        if role not in allowed:
+            raise ValueError(
+                f"Unsupported role '{value}'. Allowed: {', '.join(sorted(allowed))}."
+            )
+        return role
+
+
 class WorkspaceInviteCreate(BaseModel):
     email: str
     role: str = "viewer"
@@ -135,7 +150,13 @@ class WorkspaceInviteRead(BaseModel):
 
 
 class WorkspaceInviteUpdate(BaseModel):
+    email: Optional[str] = None
     role: Optional[str] = None
+
+    @field_validator("email")
+    @classmethod
+    def normalize_email(cls, value: Optional[str]) -> Optional[str]:
+        return value.strip().lower() if value is not None else value
 
     @field_validator("role")
     @classmethod
@@ -252,6 +273,14 @@ class ProviderConfigRead(BaseModel):
     base_url: Optional[str]
     is_enabled: bool
     created_at: datetime
+
+
+class ProviderConfigUpdate(BaseModel):
+    label: Optional[str] = None
+    model: Optional[str] = None
+    api_key_env_var: Optional[str] = None
+    base_url: Optional[str] = None
+    is_enabled: Optional[bool] = None
 
 
 class PromptSetCreate(BaseModel):

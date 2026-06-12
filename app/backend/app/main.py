@@ -5,6 +5,7 @@ from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
+from starlette.requests import Request
 
 from .api import (
     artifacts,
@@ -25,7 +26,8 @@ from .api import (
 )
 from .config import Settings, load_settings
 from .database import Base, init_database
-from .metrics import metrics_payload
+from .metrics import APP_ERRORS, REQUEST_LATENCY_SECONDS, metrics_payload
+from .services.logging import log_event
 
 
 def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
@@ -35,7 +37,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
 
     if settings_obj.auto_create_schema:
         Base.metadata.create_all(bind=initialized_engine)
-    app = FastAPI(title=settings_obj.app_name, version="2.3.0")
+    app = FastAPI(title=settings_obj.app_name, version="3.0.0")
     app.state.settings = settings_obj
     app.add_middleware(
         CORSMiddleware,
@@ -45,9 +47,44 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
         allow_headers=["*"],
     )
 
+    @app.middleware("http")
+    async def metrics_and_logging_middleware(request: Request, call_next):
+        import time
+
+        started_at = time.perf_counter()
+        path = request.url.path
+        try:
+            response = await call_next(request)
+        except Exception as exc:
+            duration = time.perf_counter() - started_at
+            APP_ERRORS.labels(kind=exc.__class__.__name__, path=path).inc()
+            REQUEST_LATENCY_SECONDS.labels(
+                method=request.method, path=path, status="500"
+            ).observe(duration)
+            log_event(
+                "request.error",
+                method=request.method,
+                path=path,
+                duration_seconds=round(duration, 3),
+                error=exc.__class__.__name__,
+            )
+            raise
+        duration = time.perf_counter() - started_at
+        REQUEST_LATENCY_SECONDS.labels(
+            method=request.method, path=path, status=str(response.status_code)
+        ).observe(duration)
+        log_event(
+            "request.completed",
+            method=request.method,
+            path=path,
+            status=response.status_code,
+            duration_seconds=round(duration, 3),
+        )
+        return response
+
     @app.get("/healthz")
     def healthz() -> dict:
-        return {"status": "ok", "version": "2.3.0"}
+        return {"status": "ok", "version": "3.0.0"}
 
     @app.get("/readyz")
     def readyz() -> dict:

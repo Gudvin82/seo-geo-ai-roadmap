@@ -24,6 +24,7 @@ from ..schemas import (
     WorkspaceInviteRead,
     WorkspaceInviteUpdate,
     WorkspaceMembershipRead,
+    WorkspaceMembershipUpdate,
     WorkspaceRead,
     WorkspaceUpdate,
 )
@@ -117,6 +118,40 @@ def list_memberships(
         .order_by(WorkspaceMembership.id.asc())
         .all()
     )
+
+
+@router.put(
+    "/{workspace_id}/members/{member_id}", response_model=WorkspaceMembershipRead
+)
+def update_membership_role(
+    workspace_id: int,
+    member_id: int,
+    payload: WorkspaceMembershipUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> WorkspaceMembership:
+    _, actor_membership = require_workspace_access(
+        db, workspace_id, current_user, minimum_role="admin"
+    )
+    membership = db.get(WorkspaceMembership, member_id)
+    if not membership or membership.workspace_id != workspace_id:
+        raise HTTPException(status_code=404, detail="Membership not found.")
+    if membership.role == "owner" and actor_membership.role != "owner":
+        raise HTTPException(
+            status_code=403, detail="Only owners can change owner membership."
+        )
+    membership.role = normalize_role(payload.role)
+    ROLE_CHANGES.labels(role=membership.role).inc()
+    record_audit_log(
+        db,
+        "workspace.role_changed",
+        user_id=current_user.id,
+        workspace_id=workspace_id,
+        metadata={"member_id": membership.id, "role": membership.role},
+    )
+    db.commit()
+    db.refresh(membership)
+    return membership
 
 
 @router.post("/{workspace_id}/invites", response_model=WorkspaceInviteRead)
@@ -266,6 +301,8 @@ def update_workspace_invite(
     invite = db.get(WorkspaceInvite, invite_id)
     if not invite or invite.workspace_id != workspace_id:
         raise HTTPException(status_code=404, detail="Invite not found.")
+    if payload.email:
+        invite.email = payload.email
     if payload.role:
         invite.role = normalize_role(payload.role)
     record_audit_log(
@@ -273,7 +310,7 @@ def update_workspace_invite(
         "workspace.invite_updated",
         user_id=current_user.id,
         workspace_id=workspace_id,
-        metadata={"invite_id": invite.id, "role": invite.role},
+        metadata={"invite_id": invite.id, "role": invite.role, "email": invite.email},
     )
     db.commit()
     db.refresh(invite)

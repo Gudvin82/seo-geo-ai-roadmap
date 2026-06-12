@@ -11,95 +11,141 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-app-009688?logo=fastapi&logoColor=white)](./app/backend/app/main.py)
 ![Self-Hosted Ready](https://img.shields.io/badge/self--hosted-ready-1f6f50)
 
-Бесплатная, прозрачная и self-hosted платформа, которую можно развернуть для
-себя или клиентов и использовать для аудита, улучшения, мониторинга и
-управления SEO, GEO и AI-visible слоем сайта.
-
-## Блок для передачи AI
-
-Дайте этот репозиторий своему AI coding agent и скажите:
-
-1. прочитай [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
-2. следуй [AGENTS.md](./AGENTS.md)
-3. выполни `make turnkey-demo`
-4. выполни `make agent-self-check`
-5. отчитайся, что реально проверено и что еще требует human review
-
-Репозиторий специально собран так, чтобы AI мог развернуть его с нуля,
-подключить ваши провайдеры и сохранить синхронность EN/RU-слоя.
+Бесплатная, прозрачная, self-hosted платформа для SEO, GEO и AI
+discoverability. Ее можно развернуть на своем компьютере или сервере,
+подключить свои AI providers, запускать аудиты, отслеживать AI Share of Voice,
+вести brand facts и выдавать двуязычные отчеты без обязательного paid cloud.
 
 [English version](./README.md)
 
-## Позиционирование v2.3.0
+## Что это такое
 
-Бесплатная и прозрачная self-hosted платформа для SEO, GEO и AI-видимости:
-разворачиваете у себя, подключаете свои AI providers и используете для аудита,
-улучшения, мониторинга и ведения своих или клиентских сайтов.
+У репозитория три связанных слоя:
 
-Это не просто документы. Здесь уже есть Docker-развертывание, app-layer,
-скрипты, примеры и AI-first инструкции, которые можно отдать AI coding agent,
-чтобы он поднял систему под ключ.
+- Framework: методология, промпты, шаблоны, чеклисты и скрипты
+- Platform: self-hosted приложение для операторов, команд и клиентской выдачи
+- Service system: повторяемый способ аудита, приоритизации, исправлений и
+  повторных прогонов
 
-Базовые принципы:
+Наша главная разница не в том, что здесь "много документации". Разница в том,
+что это одна практическая система, которую человек или AI coding agent может
+использовать под ключ:
 
-- без обязательного paid cloud
-- без обязательной подписки
-- без vendor lock-in
-- self-hosted first
-- прозрачные проверки и outputs
-- можно подключать свои AI providers и local LLM runtimes
-- exportable reports, artifacts и data
-
-## Зачем нужен этот репозиторий
-
-Этот репозиторий собран как execution-first framework для команд, которым нужна единая практическая система на стыке классического SEO, GEO, AI discoverability, Яндекса, контент-операций, governance, отчетности и релизной дисциплины.
-
-## Что нас отличает
-
-- Двуязычность по умолчанию: EN и RU развиваются как полноценные слои, а не как перевод после факта.
-- Google + Yandex + LLM в одном framework: глобальный поиск, русскоязычные рынки и AI-поверхности собраны в одну систему.
-- Execution-first структура: документация, чеклисты, промпты, шаблоны, скрипты и примеры усиливают друг друга.
-- AI-native слой: `llms.txt`, AI-боты, answer-ready контент, anti-hallucination и AI Share of Voice встроены в основу.
-- Governance-ready подход: есть RACI, Definition of Done, roadmap внедрения, релизный процесс и шаблоны отчетности.
-- Шире, чем SEO: мы описываем всю систему discoverability, а не только ранжирование страниц.
+1. развернуть
+2. подключить provider(s)
+3. запустить реальный аудит
+4. получить reports и artifacts
+5. расставить приоритеты
+6. повторно прогнать и показать дельты
 
 ## Для кого
 
-- In-house SEO, growth и content-команды
-- Агентства, работающие и с RU/CIS, и с global markets
-- Фаундеры и операционные команды, развивающие мультиязычные сайты
-- Команды, которым нужны не теоретические списки, а практические SOP
+- Агентства с регулярными аудитами и клиентской отчетностью
+- In-house SEO, growth, content и AI operations команды
+- Фаундеры и экспертные операторы, ведущие свои мультиязычные сайты
+- Команды, работающие одновременно с английскими и русскоязычными рынками
+
+## Для кого это не подходит
+
+- Командам, которым нужен black-box crawler без human review
+- Пользователям, которым нужен только hosted SaaS без self-hosted сценария
+- Тем, кто ищет GEO-хайп вместо технической SEO-дисциплины
+- Тем, кто хочет обещаний без доказательств, evidence и governance
+
+## Что происходит за 15 минут, 30 дней и 90 дней
+
+### За 15 минут
+
+- клонируете репозиторий
+- поднимаете стек
+- входите в систему
+- создаете один workspace и один project
+- подключаете одного провайдера или остаетесь в прозрачном starter-режиме
+- запускаете один audit и одну AI SoV-проверку
+- открываете report и export package
+
+### За 30 дней
+
+- вы уходите от разовых аудитов к повторяемому операционному циклу
+- факты, промпты и доказательства живут в одной системе
+- можно показывать дельты по score и visibility себе или клиентам
+
+### За 90 дней
+
+- у вас появляется переиспользуемая операторская система вместо ad hoc SEO
+- AI SoV, factual consistency и отчетность становятся регулярной практикой
+- agency, in-house и founder режимы могут жить в одном контуре
+
+## Сценарии по результату
+
+- Agency mode: отдельный workspace на клиента, отдельный project на сайт,
+  двуязычная отчетность, AI-assisted приоритизация, экспортируемые artifacts
+- In-house mode: единый truth center, регулярные аудиты, provider-backed AI
+  SoV и evidence-driven backlog для продукта, контента и разработки
+- Founder mode: один self-hosted стек для аудитов сайта, AI visibility checks,
+  fact governance и повторных прогонов без vendor lock-in
+
+## С чего начать
+
+- Быстрый вход для человека: [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
+- Быстрый вход для ИИ: [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
+- Deployment: [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
+- Verification: [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
+- API reference: [docs/ru/api-reference.md](./docs/ru/api-reference.md)
+
+## Блок для передачи AI
+
+Передайте этот репозиторий своему AI coding agent и скажите ему:
+
+1. прочитать [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
+2. следовать [AGENTS.md](./AGENTS.md)
+3. выполнить `make turnkey-demo`
+4. выполнить `make agent-self-check`
+5. отдельно отчитаться, что реально проверено, что смоделировано и где нужен
+   human review
+
+Репозиторий специально собран так, чтобы AI-агент мог развернуть его с нуля и
+сохранить синхронность EN/RU-операционного слоя.
+
+## Product proof
+
+Ниже скриншоты из реального локального app-flow, а не placeholder-схемы. Если
+вам нужен live demo, используйте локальный demo-flow ниже. Постоянный публичный
+SaaS demo в этом репозитории не обещается.
+
+![Login and dashboard proof](./docs_site/assets/screenshots/app-login-dashboard-proof.png)
+![Provider configuration proof](./docs_site/assets/screenshots/app-provider-proof.png)
+![Audit run proof](./docs_site/assets/screenshots/app-audit-proof.png)
+![Report and artifact proof](./docs_site/assets/screenshots/app-report-proof.png)
+
+## Зачем нужен этот репозиторий
+
+Большинство SEO-репозиториев заканчиваются на советах. Большинство GEO-дискуссий
+заканчиваются на теории. Большинство AI-инструментов скрывают scoring,
+привязывают к облаку или игнорируют русскоязычные рынки. Этот проект строится в
+обратную сторону:
+
+- self-hosted first
+- прозрачные метрики
+- двуязычность с первого дня
+- human-usable и AI-agent-usable
+- proof before claims
+- technical SEO плюс GEO/AI, а не GEO вместо SEO
 
 ## Что внутри
 
-- Глубокие двуязычные документы в [`docs/en`](./docs/en) и [`docs/ru`](./docs/ru)
-- Исполнительские чеклисты в [`checklists`](./checklists)
-- Prompt library в [`prompts`](./prompts)
-- Переиспользуемые шаблоны в [`templates`](./templates)
-- Скрипты проверки и helper-утилиты в [`scripts`](./scripts)
-- Полная документация по CLI-скриптам в
-  [`scripts/README_RU.md`](./scripts/README_RU.md)
-- Pytest-покрытие ключевых helper-скриптов в [`tests`](./tests)
-- SaaS-ready app layer в [`app`](./app)
-- Self-hosted deployment foundation в [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
-- Проверка deployment в [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
-- Ограничения в [KNOWN_LIMITATIONS_RU.md](./KNOWN_LIMITATIONS_RU.md)
-- Runbook в [OPERATIONS_RUNBOOK_RU.md](./OPERATIONS_RUNBOOK_RU.md)
-- Product architecture docs в [ARCHITECTURE_RU.md](./ARCHITECTURE_RU.md)
-- Заполненные примеры в [`examples`](./examples)
-- Глоссарий в [GLOSSARY.md](./GLOSSARY.md) и
-  [GLOSSARY_RU.md](./GLOSSARY_RU.md)
-- Отдельные файлы с positioning, governance, ecosystem и release logic в корне репозитория
-- Опциональный env-контракт в [`.env.example`](./.env.example)
-- Реальные implementation notes в [REAL_CASES_RU.md](./REAL_CASES_RU.md)
-
-## Быстрый старт
-
-1. Прочитайте [POSITIONING.md](./POSITIONING.md) и [DIFFERENTIATORS.md](./DIFFERENTIATORS.md).
-2. Начните с [docs/ru/01-audit.md](./docs/ru/01-audit.md).
-3. Соберите матрицу страниц через [docs/ru/04-page-matrix.md](./docs/ru/04-page-matrix.md).
-4. Настройте AI-видимость через [docs/ru/08-geo-ai-search.md](./docs/ru/08-geo-ai-search.md).
-5. Зафиксируйте отчетность через [docs/ru/18-analytics.md](./docs/ru/18-analytics.md) и [ROADMAP.md](./ROADMAP.md).
+- App layer: [`app`](./app)
+- Документация: [`docs/en`](./docs/en) и [`docs/ru`](./docs/ru)
+- Чеклисты: [`checklists`](./checklists)
+- Prompt library: [`prompts`](./prompts)
+- Шаблоны: [`templates`](./templates)
+- Примеры: [`examples`](./examples)
+- Скрипты: [`scripts`](./scripts)
+- Архитектура: [ARCHITECTURE_RU.md](./ARCHITECTURE_RU.md)
+- Positioning: [POSITIONING.md](./POSITIONING.md)
+- Реальные кейсы: [REAL_CASES_RU.md](./REAL_CASES_RU.md)
+- Operations runbook: [OPERATIONS_RUNBOOK_RU.md](./OPERATIONS_RUNBOOK_RU.md)
+- Ограничения: [KNOWN_LIMITATIONS_RU.md](./KNOWN_LIMITATIONS_RU.md)
 
 ## App quickstart
 
@@ -110,285 +156,91 @@
 - Readiness: `http://localhost:8000/readyz`
 - Metrics: `http://localhost:8000/metrics`
 
-Ключевые entrypoints:
-
-- [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
-- [SECURITY_CHECKLIST_RU.md](./SECURITY_CHECKLIST_RU.md)
-- [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
-- [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
-- [CLIENT_SETUP_PLAYBOOK_RU.md](./CLIENT_SETUP_PLAYBOOK_RU.md)
-- [AI_HANDOFF_PROMPT_RU.md](./AI_HANDOFF_PROMPT_RU.md)
-- [docs/ru/api-reference.md](./docs/ru/api-reference.md)
-- [docs/ru/ai-operator-mode.md](./docs/ru/ai-operator-mode.md)
-- [docs/ru/roles-and-invites.md](./docs/ru/roles-and-invites.md)
-- [docs/ru/patch-mode.md](./docs/ru/patch-mode.md)
-- [docs/ru/cms-connectors.md](./docs/ru/cms-connectors.md)
-- [docs/ru/local-llm-matrix.md](./docs/ru/local-llm-matrix.md)
-- [docs/ru/provider-benchmarks.md](./docs/ru/provider-benchmarks.md)
-- [docs/ru/search-data-connectors.md](./docs/ru/search-data-connectors.md)
-- [docs/ru/notifications-and-webhooks.md](./docs/ru/notifications-and-webhooks.md)
-- [docs/ru/white-label-mode.md](./docs/ru/white-label-mode.md)
-- [SELF_HOSTED_USE_CASES_RU.md](./SELF_HOSTED_USE_CASES_RU.md)
-
-Команда проверки:
-
-- `make verify-demo`
-- `make agent-self-check`
-- `make turnkey-demo`
-
-## Для AI-агентов и IDE
-
-Если вы используете Codex, Claude Code, Cursor и другие ИИ-агенты, начните с
-[AGENTS.md](./AGENTS.md) — это отдельный вход для агентов, где описано, что и
-как делать под ключ внутри репозитория.
-
-AGENTS.md дает агенту:
-
-- маршрутизацию типовых turnkey-задач
-- карту репозитория и точные entrypoint-файлы
-- список ключевых скриптов, с которых надо начинать
-- краткий DoD для проверки готовности
-- правила, когда надо запрашивать уточнение у пользователя
-
-## Proof и примеры
-
-- Паттерны реальных внедрений: [REAL_CASES_RU.md](./REAL_CASES_RU.md)
-- Пошаговый walkthrough: [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
-- Guidance по canonical facts:
-  [docs/ru/canonical-facts-and-entity-consistency.md](./docs/ru/canonical-facts-and-entity-consistency.md)
-- Guidance по entity hierarchy:
-  [docs/ru/entity-hierarchy-and-brand-focus.md](./docs/ru/entity-hierarchy-and-brand-focus.md)
-- Starter по brand facts:
-  [templates/brand-facts-template-ru.md](./templates/brand-facts-template-ru.md)
-- Starter по мониторингу галлюцинаций:
-  [examples/hallucination-report-example.md](./examples/hallucination-report-example.md)
-
-### Product proof
-
-![App overview proof](./docs_site/assets/screenshots/app-overview-proof.svg)
-![Report flow proof](./docs_site/assets/screenshots/report-flow-proof.svg)
-![Login dashboard proof](./docs_site/assets/screenshots/login-dashboard-proof.svg)
-![Provider access proof](./docs_site/assets/screenshots/provider-access-proof.svg)
-
-## Что уже поддерживает этот репозиторий
-
-- архитектуру product-led audit-сервисов
-- экспертные AI discoverability hubs
-- двуязычные SEO + GEO + AI execution workflows
-- factual consistency и entity-governance практики
-
-## Реальные внедрения
-
-См. [REAL_CASES_RU.md](./REAL_CASES_RU.md) для high-level паттернов по
-`sitepravo.ru`, `auditguard.ru` и `anmalishev.ru`.
-
-## Пример скрипта
-
-В репозитории есть не только документы, но и рабочие helper-скрипты. Один из
-самых полезных —
-[`scripts/generate_llms_txt.py`](./scripts/generate_llms_txt.py), который
-собирает `llms.txt` из sitemap.
-
-### Generate llms.txt from sitemap
+### Turnkey local demo
 
 ```bash
-python scripts/generate_llms_txt.py \
-  --sitemap-url https://example.com/sitemap.xml \
-  --output-file ./llms.txt
+make turnkey-demo
+make verify-demo
+make agent-self-check
 ```
 
-Пример вывода:
-
-```text
-Processed URLs: 42
-Output file: llms.txt
-Warnings:
-- Review description for https://example.com/solutions/ai-ops
-```
-
-Смотрите [scripts/README_RU.md](./scripts/README_RU.md) для полного описания
-CLI-скриптов.
-
-## ROI-видимость
-
-- ROI-калькулятор: [`scripts/roi_calculator.py`](./scripts/roi_calculator.py)
-- Шаблон ROI-модели:
-  [templates/roi-model-template-ru.md](./templates/roi-model-template-ru.md)
-- Пример расчета: [examples/roi-calculation-example.md](./examples/roi-calculation-example.md)
-
-## Docs-site
-
-- Поставка docs-site настроена через GitHub Pages в
-  [`.github/workflows/docs-site.yml`](./.github/workflows/docs-site.yml)
-- Build запускается на каждом push, а deploy включается после настройки Pages и
-  установки переменной репозитория `ENABLE_GITHUB_PAGES=true`
-- Локальный preview: `pip install mkdocs-material && mkdocs serve`
-- В docs-site теперь добавлены app layer, deployment, architecture и API
-  overview
-
-## Demo и self-hosted запуск
-
-- `make up` поднимает Docker stack
-- `make demo` поднимает Docker stack и загружает demo data
-- `make migrate` запускает Alembic migrations
-- `make seed` загружает локальный demo seed
-- `./run-local.sh` печатает минимальный локальный startup flow для backend и frontend
-
-Demo credentials после seed:
+Ожидаемые demo credentials:
 
 - Email: `demo@example.com`
 - Password: `DemoPlatform123`
 
-## История релизов
+## Канонический operator flow
 
+1. Создать workspace
+2. Создать project
+3. Заполнить brand facts
+4. Настроить providers
+5. Запустить audit
+6. Открыть report и artifacts
+7. Запустить AI SoV
+8. Расставить приоритеты fixes
+9. Повторно прогнать после изменений
+10. Экспортировать client или internal delivery pack
+
+## Прозрачный scoring
+
+В `v3.0.0` зафиксированы два proof-first слоя:
+
+- AI Citation Score: прозрачный сигнал 0-100, показывающий, упоминается ли
+  бренд, цитируется ли он и насколько качественно описан в структурированных AI
+  SoV-проверках
+- Prioritization engine: impact, effort, confidence и benchmark status для
+  findings по LCP, CLS, INP, schema coverage, factual consistency и AI
+  readiness
+
+Подробнее:
+
+- [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
+- [docs/ru/api-reference.md](./docs/ru/api-reference.md)
+
+## Реальные кейсы
+
+`v3.0.0` расширяет слой real cases честными и ограниченными public-site
+snapshot-оценками для:
+
+- `sitepravo.ru`
+- `auditguard.ru`
+- `anmalishev.ru`
+
+См. [REAL_CASES_RU.md](./REAL_CASES_RU.md).
+
+## Дисциплина верификации
+
+Перед тем как считать релиз завершенным, используйте:
+
+- `make verify-demo`
+- `make agent-self-check`
+- `PYTHONPATH=app/backend ./.venv/bin/python -m pytest app/backend/tests`
+- `./.venv/bin/python -m mkdocs build`
+
+## Честные границы
+
+Проект не заявляет:
+
+- полностью автономное исправление без human review
+- гарантированные AI citations на волатильных AI surfaces
+- enterprise SLA, SSO или billing в текущем релизе
+- замену technical SEO одним только GEO
+
+См. [KNOWN_LIMITATIONS_RU.md](./KNOWN_LIMITATIONS_RU.md).
+
+## Latest changes
+
+- `v3.0.0`: proof-first positioning rewrite, stronger onboarding, реальные
+  app-скриншоты, документация по AI Citation Score, prioritization engine,
+  provider-backed AI SoV, structured observability, role/invite hardening и
+  более сильный EN/RU operator layer
 - `v2.3.0`: сохранение AI SoV в приложении, metadata-rich prompt library,
-  webhook notifications, экспорт project package, матрица top-20 local LLM,
-  benchmark/search-data starter docs и усиленный EN/RU AI handoff.
-- `v2.2.0`: operator-ready self-hosted слой, AI handoff path, self-check flow,
-  roles and invites и проверка deployment.
+  webhook notifications, project export package, top-20 local LLM matrix и
+  benchmark/search-data documentation
+- `v2.2.0`: operator-ready platform upgrade с permissions, invites и
+  verify-demo discipline
 
-## SaaS app layer
+## Лицензия
 
-`v2.0.0` добавляет первый продуктовый слой, не заменяя методологический
-репозиторий.
-
-Что входит:
-
-- FastAPI backend для auth, workspaces, projects, audits, reports, providers,
-  artifacts и brand facts
-- статическая frontend-панель для ключевых продуктовых workflows
-- multi-provider AI abstraction для OpenAI, Anthropic/Claude, Gemini и
-  Perplexity
-- генерация EN/RU отчетов
-- Docker Compose deployment для self-hosted сценария
-- expiring auth tokens, Argon2id password hashing и basic brute-force protection
-- Alembic migrations и demo seed data
-- Prometheus-style endpoint `/metrics`
-
-Ключевые документы:
-
-- [ARCHITECTURE_RU.md](./ARCHITECTURE_RU.md)
-- [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
-- [OPEN_SOURCE_AND_SAAS_BOUNDARY_RU.md](./OPEN_SOURCE_AND_SAAS_BOUNDARY_RU.md)
-- [SECURITY_CHECKLIST_RU.md](./SECURITY_CHECKLIST_RU.md)
-- [docs/ru/provider-matrix.md](./docs/ru/provider-matrix.md)
-- [docs/ru/cloud-deployments.md](./docs/ru/cloud-deployments.md)
-
-## Пример промпта
-
-Этот prompt помогает быстро получить черновик `llms.txt`, который затем
-проверяется вручную.
-
-Purpose: превратить sitemap и ключевые страницы в краткий черновик `llms.txt`.
-
-Input: главная, страницы услуг, FAQ, about page и sitemap.
-
-```text
-Роль: technical discoverability specialist
-Входы: https://example.com, главная, страницы услуг, FAQ, about page
-Задача: подготовь production-ready draft llms.txt с короткими описаниями
-Формат ответа: одна строка на URL с кратким описанием
-Критерии оценки: краткость, покрытие, дисциплина canonical
-```
-
-## Как использовать этот framework на живом проекте
-
-1. Запустите стартовый аудит через
-   [docs/ru/01-audit.md](./docs/ru/01-audit.md),
-   [checklists/ru/technical-seo-checklist.md](./checklists/ru/technical-seo-checklist.md)
-   и [`scripts/sitemap-checker.py`](./scripts/sitemap-checker.py).
-2. Исправьте технические блокеры через
-   [docs/ru/05-technical-seo.md](./docs/ru/05-technical-seo.md) и
-   [`scripts/check-robots-ai-bots.py`](./scripts/check-robots-ai-bots.py).
-3. Настройте GEO / AI visibility через
-   [docs/ru/08-geo-ai-search.md](./docs/ru/08-geo-ai-search.md),
-   [`scripts/generate_llms_txt.py`](./scripts/generate_llms_txt.py) и
-   [`prompts/ru/llms-txt-generator-prompt.md`](./prompts/ru/llms-txt-generator-prompt.md).
-4. Адаптируйте стратегию под Яндекс/RU или international сценарий через
-   [docs/ru/13-russia-yandex.md](./docs/ru/13-russia-yandex.md) и
-   [docs/ru/12-international-seo.md](./docs/ru/12-international-seo.md).
-5. Усильте content + answer extraction через
-   [docs/ru/07-content-eeat.md](./docs/ru/07-content-eeat.md) и
-   [prompts/ru/answer-ready-page-prompt.md](./prompts/ru/answer-ready-page-prompt.md).
-6. Отслеживайте аналитику и AI Share of Voice через
-   [docs/ru/18-analytics.md](./docs/ru/18-analytics.md),
-   [`scripts/ai-share-of-voice-tracker.py`](./scripts/ai-share-of-voice-tracker.py)
-   , [examples/ai-share-of-voice-weekly-report.md](./examples/ai-share-of-voice-weekly-report.md)
-   и sample-данные в
-   [examples/ai-sov-report-sample.json](./examples/ai-sov-report-sample.json).
-7. Управляйте релизами через [docs/ru/20-raci.md](./docs/ru/20-raci.md),
-   [docs/ru/21-definition-of-done.md](./docs/ru/21-definition-of-done.md) и
-   [RELEASE_PROCESS.md](./RELEASE_PROCESS.md).
-
-## Архитектура
-
-```text
-repo/
-├── README.md / README_RU.md
-├── POSITIONING.md / DIFFERENTIATORS.md / ECOSYSTEM_MAP.md
-├── ROADMAP.md / RELEASE_PROCESS.md / CHANGELOG.md
-├── ARCHITECTURE*.md / DEPLOYMENT*.md / OPEN_SOURCE_AND_SAAS_BOUNDARY*.md
-├── app/backend / app/frontend / app/shared
-├── docker-compose.yml / docker/ / infra/
-├── docs/en и docs/ru
-├── checklists/en и checklists/ru
-├── prompts/en и prompts/ru
-├── templates/ и templates/schema
-├── scripts/
-├── examples/
-└── .github/
-```
-
-## Экосистема
-
-Репозиторий не заменяет соседние продукты, а помогает понять, как использовать их внутри discoverability stack. Подробности в [ECOSYSTEM_MAP.md](./ECOSYSTEM_MAP.md).
-
-## Vibe Coding Protocols
-
-Дополнительно к этому framework есть отдельный репозиторий —
-[Vibe Coding Protocols](https://github.com/Gudvin82/vibe-coding-protocols).
-
-Он про:
-
-- протоколы vibecoding, когда система собирается прямо в процессе работы с ИИ и IDE
-- легкие итеративные сценарии для AI-assisted разработки
-- связку структурированных SOP из этого репозитория с живой экспериментальной работой
-
-Если вам ближе подход “собираем систему по ходу дела, кодим и думаем
-одновременно”, Vibe Coding Protocols — естественное дополнение к этому
-Discoverability OS.
-
-## Превью roadmap
-
-- Foundation: аудит, архитектура, матрица страниц, техническое SEO, GEO/AI-слой
-- Execution: качество контента, Яндекс/RU-специфика, аналитика, governance, DoD
-- Expansion: AI brand monitoring, international rollout, релизная дисциплина
-
-## Последние изменения
-
-- `v1.2.0`: добавлены `AGENTS.md`, agent-first onboarding и связка с
-  `vibe-coding-protocols`.
-- `v1.3.0`: добавлены docs по скриптам, глоссарий, sample AI SoV datasets,
-  более строгая валидация `llms.txt` и ROI tooling.
-- `v1.4.0`: добавлены тесты, docs-site, real cases, guidance по factual
-  consistency и entity hierarchy, freshness checker и starter для мониторинга
-  AI-галлюцинаций.
-- `v2.0.0`: добавлены SaaS app layer, multi-provider AI foundation,
-  структурированные audit workflows, Docker deployment и EN/RU docs по
-  архитектуре и развёртыванию.
-- `v2.1.0`: добавлены более сильная auth security, Alembic migrations,
-  demo seed flow, `/metrics`, API reference docs, operator-mode docs и
-  явное free transparent self-hosted positioning.
-
-## Что стало заметнее
-
-- См. [GLOSSARY_RU.md](./GLOSSARY_RU.md) для основных терминов.
-- См. [examples/ai-sov-report-sample.json](./examples/ai-sov-report-sample.json)
-  и [examples/ai-sov-report-sample.csv](./examples/ai-sov-report-sample.csv)
-  для sample-данных по AI Share of Voice.
-- Сохраняем явную ссылку на companion repo:
-  [https://github.com/Gudvin82/vibe-coding-protocols](https://github.com/Gudvin82/vibe-coding-protocols)
-
-## Участие
-
-См. [CONTRIBUTING.md](./CONTRIBUTING.md), [CONTRIBUTORS.md](./CONTRIBUTORS.md), [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) и шаблон PR в [`.github/PULL_REQUEST_TEMPLATE.md`](./.github/PULL_REQUEST_TEMPLATE.md).
+Репозиторий распространяется по лицензии из [LICENSE](./LICENSE).

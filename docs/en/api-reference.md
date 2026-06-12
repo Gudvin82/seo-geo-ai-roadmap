@@ -4,7 +4,7 @@ OpenAPI is available at `/docs` and ReDoc at `/redoc`.
 
 ## Auth
 
-Auth uses `Authorization: Bearer <token>`.
+Use `Authorization: Bearer <token>`.
 
 ### Register
 
@@ -30,6 +30,7 @@ Returns `access_token`, `expires_at`, and `expires_in_seconds`.
 - `GET /api/v1/workspaces/{workspace_id}`
 - `PUT /api/v1/workspaces/{workspace_id}`
 - `GET /api/v1/workspaces/{workspace_id}/members`
+- `PUT /api/v1/workspaces/{workspace_id}/members/{member_id}`
 - `GET /api/v1/workspaces/{workspace_id}/invites`
 - `POST /api/v1/workspaces/{workspace_id}/invites`
 - `PUT /api/v1/workspaces/{workspace_id}/invites/{invite_id}`
@@ -37,12 +38,12 @@ Returns `access_token`, `expires_at`, and `expires_in_seconds`.
 - `POST /api/v1/workspaces/{workspace_id}/invites/{invite_id}/revoke`
 - `POST /api/v1/workspaces/invites/accept`
 
-Workspace isolation rules:
+Isolation rules:
 
-- viewers can read
-- editors can create project and audit content
-- admins can manage provider configs and invites
-- owners keep full governance
+- `viewer`: read projects, reports, and artifacts
+- `editor`: create projects, facts, audits, and SoV checks
+- `admin`: manage invites, providers, and broader workspace operations
+- `owner`: full governance, role changes, and ownership-sensitive actions
 
 ## Projects and sites
 
@@ -98,11 +99,21 @@ Supported states:
 Current implementation actively uses `queued`, `running`, `completed`, and
 `failed`.
 
-### Audit status
+### Audit status and retry
 
 - `GET /api/v1/audit-runs/{audit_run_id}`
 - `GET /api/v1/audit-runs?project_id={project_id}`
 - `GET /api/v1/audit-runs/presets`
+- `POST /api/v1/audit-runs/{audit_run_id}/retry`
+
+`v3.0.0` reports now surface benchmark-aware findings with:
+
+- `impact`
+- `effort`
+- `confidence`
+- `priority_score`
+- `priority_label`
+- `benchmark_status`
 
 ## Reports and artifacts
 
@@ -110,28 +121,30 @@ Current implementation actively uses `queued`, `running`, `completed`, and
 - `GET /api/v1/artifacts?project_id={project_id}`
 - `GET /api/v1/artifacts/{artifact_id}/download`
 
-Artifact downloads require workspace access and return the stored file directly.
+Artifacts and reports may include:
+
+- benchmark summary
+- AI Citation Score
+- bilingual markdown report output
+- JSON payload for downstream automation
 
 ## Providers
 
 - `GET /api/v1/providers?workspace_id={workspace_id}`
 - `POST /api/v1/providers`
+- `PUT /api/v1/providers/{provider_id}`
 
-## Prompt library
-
-- `GET /api/v1/prompt-sets?workspace_id={workspace_id}`
-- `POST /api/v1/prompt-sets`
-- `GET /api/v1/settings/prompt-library`
-
-Example local provider config:
+Example provider config:
 
 ```json
 {
   "workspace_id": 1,
-  "provider_name": "ollama",
-  "label": "Local Ollama",
-  "model": "llama3.1",
-  "base_url": "http://ollama:11434/v1/chat/completions"
+  "provider_name": "openai",
+  "label": "Primary OpenAI",
+  "model": "gpt-4.1-mini",
+  "api_key_env_var": "OPENAI_API_KEY",
+  "base_url": null,
+  "is_enabled": true
 }
 ```
 
@@ -140,11 +153,23 @@ Example local provider config:
 - `GET /api/v1/brand-facts/{project_id}`
 - `POST /api/v1/brand-facts`
 
+This is the factual consistency subsystem entrypoint for canonical brand,
+numeric, market, and language claims.
+
 ## AI Share of Voice
 
 - `POST /api/v1/sov/check`
 - `GET /api/v1/sov/history?project_id={project_id}`
 - `GET /api/v1/sov/{sov_run_id}`
+
+AI SoV notes:
+
+- provider-backed execution is used when a matching enabled provider config
+  exists
+- heuristic fallback is used otherwise
+- AI Citation Score is derived from structured results and stored in summary
+  text and audit logs
+- AI answer surfaces remain volatile and require human review
 
 ## Notifications
 
@@ -159,10 +184,19 @@ Example local provider config:
 
 - `GET /api/v1/audit-logs?workspace_id={workspace_id}`
 
+Audit logs now include entries for:
+
+- login and auth activity
+- provider changes
+- audit requests and retries
+- SoV completion
+- invite acceptance
+- role changes
+
 ## Error model
 
 - `401`: missing or expired token
-- `403`: role is insufficient
-- `404`: resource not found within the current workspace boundary
+- `403`: insufficient role for the resource or action
+- `404`: resource not found inside the current workspace boundary
 - `422`: payload validation failed
-- `429`: login rate limit triggered
+- `429`: rate limit triggered on sensitive flows such as login

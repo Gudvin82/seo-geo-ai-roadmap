@@ -11,9 +11,85 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-app-009688?logo=fastapi&logoColor=white)](./app/backend/app/main.py)
 ![Self-Hosted Ready](https://img.shields.io/badge/self--hosted-ready-1f6f50)
 
-Free, transparent, self-hosted, and ready for your own AI providers. Deploy it
-for yourself or your clients to audit, improve, monitor, and manage SEO, GEO,
-and AI discoverability.
+Free, transparent, self-hosted platform for SEO, GEO, and AI discoverability.
+Deploy it on your own machine or server, connect your own AI providers, run
+audits, track AI share of voice, manage brand facts, and deliver bilingual
+reports without mandatory paid cloud.
+
+[Русская версия](./README_RU.md)
+
+## What this is
+
+This repository has three connected layers:
+
+- Framework: the methodology, prompts, templates, checklists, and scripts
+- Platform: the self-hosted app for operators, teams, and client delivery
+- Service system: the repeatable way to audit, prioritize, fix, and re-run
+
+The differentiator is not "more docs". It is one practical system that a human
+operator or an AI coding agent can use end to end:
+
+1. deploy
+2. connect provider(s)
+3. run a real audit
+4. generate reports and artifacts
+5. prioritize fixes
+6. re-run and compare deltas over time
+
+## Who it is for
+
+- Agencies running recurring audits and client-ready reporting
+- In-house SEO, growth, content, and AI operations teams
+- Founders and expert operators managing their own multilingual sites
+- Teams working across English and Russian-speaking markets
+
+## Who it is not for
+
+- Teams expecting a black-box crawler with no human review
+- Users who only want a hosted SaaS with no self-hosted option
+- People looking for GEO hype as a replacement for technical SEO
+- Buyers who want rankings promised without proof, evidence, or governance
+
+## What happens in 15 minutes, 30 days, and 90 days
+
+### In 15 minutes
+
+- clone the repo
+- run the stack
+- sign in
+- create one workspace and one project
+- connect one provider or stay in transparent starter mode
+- run one audit and one AI SoV check
+- open a report and export package
+
+### In 30 days
+
+- you move from one-off audits to a repeatable operating rhythm
+- brand facts, prompts, and evidence stay in one place
+- you can show score and visibility deltas to yourself or clients
+
+### In 90 days
+
+- you build a reusable operator system instead of ad hoc SEO work
+- AI SoV, factual consistency, and reporting become measurable routines
+- agency, in-house, and founder modes can share the same platform
+
+## Outcome-based scenarios
+
+- Agency mode: one workspace per client, one project per site, repeatable
+  bilingual reporting, AI-assisted prioritization, exportable artifacts
+- In-house mode: one truth center, recurring audits, provider-backed AI SoV,
+  evidence-driven backlog for product, content, and engineering
+- Founder mode: one self-hosted stack for site audits, AI visibility checks,
+  fact governance, and periodic re-runs without vendor lock-in
+
+## Start here
+
+- Human quickstart: [WALKTHROUGH.md](./WALKTHROUGH.md)
+- AI quickstart: [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
+- Deployment: [DEPLOYMENT.md](./DEPLOYMENT.md)
+- Verification: [VERIFY_DEPLOYMENT.md](./VERIFY_DEPLOYMENT.md)
+- API reference: [docs/en/api-reference.md](./docs/en/api-reference.md)
 
 ## AI handoff block
 
@@ -23,82 +99,50 @@ Give this repository to your AI coding agent and tell it:
 2. follow [AGENTS.md](./AGENTS.md)
 3. run `make turnkey-demo`
 4. run `make agent-self-check`
-5. report what was verified and what still needs human review
+5. report what was verified, what was simulated, and what still needs human
+   review
 
-This repo is intentionally built so an AI can deploy it from scratch, connect
-your own providers, and keep the EN/RU operator layer aligned.
+The repository is intentionally structured so an AI agent can deploy it from
+scratch and keep the EN/RU operator layer aligned.
 
-[Русская версия](./README_RU.md)
+## Product proof
 
-## v2.3.0 positioning
+These screenshots are from the actual local app flow, not placeholder diagrams.
+If you need a live demo, use the local demo flow below. No always-on public SaaS
+demo is promised in this repository.
 
-A free and transparent self-hosted platform for SEO, GEO, and AI visibility:
-deploy it on your own server, connect your own AI providers, and use it to
-audit, improve, monitor, and operate your own sites or client websites.
-
-This repository includes documentation, Docker deployment, working app
-endpoints, examples, scripts, and AI-first instructions that you can hand to an
-AI coding agent to get the stack deployed end to end.
-
-Core principles:
-
-- no mandatory paid cloud
-- no mandatory subscription
-- no vendor lock-in
-- self-hosted first
-- transparent checks and outputs
-- own AI providers or local LLM runtimes
-- exportable reports, artifacts, and data
+![Login and dashboard proof](./docs_site/assets/screenshots/app-login-dashboard-proof.png)
+![Provider configuration proof](./docs_site/assets/screenshots/app-provider-proof.png)
+![Audit run proof](./docs_site/assets/screenshots/app-audit-proof.png)
+![Report and artifact proof](./docs_site/assets/screenshots/app-report-proof.png)
 
 ## Why this repository exists
 
-This project is built as an execution-first framework for teams that need one practical system across classic SEO, GEO, AI discoverability, Yandex, content operations, governance, reporting, and release discipline.
+Most SEO repositories stop at advice. Most GEO discussions stop at theory. Most
+AI tooling hides the scoring, forces a cloud dependency, or ignores Russian
+markets. This project is built for the opposite direction:
 
-## Differentiators
-
-- Bilingual by design: English and Russian are both first-class layers, not a translated afterthought.
-- Google + Yandex + LLM in one framework: global search, Russian-speaking markets, and AI surfaces are handled together.
-- Execution-first structure: docs, checklists, prompts, templates, scripts, and examples reinforce each other.
-- AI-native layer: `llms.txt`, AI bots, answer-ready content, hallucination fixes, and AI share-of-voice monitoring are built in.
-- Governance-ready: RACI, Definition of Done, implementation roadmap, release process, and reporting templates are included.
-- Discoverability framing: the repository treats visibility as a system wider than SEO alone.
-
-## Who it is for
-
-- In-house SEO, growth, and content teams
-- Agencies serving both RU/CIS and global markets
-- Founders and operators building multilingual lead generation websites
-- Teams that need practical SOPs instead of theoretical SEO checklists
+- self-hosted first
+- transparent metrics
+- bilingual from day one
+- human-usable and AI-agent-usable
+- proof before claims
+- technical SEO plus GEO/AI, not GEO instead of SEO
 
 ## What is inside
 
-- Deep bilingual docs in [`docs/en`](./docs/en) and [`docs/ru`](./docs/ru)
-- Operational checklists in [`checklists`](./checklists)
-- Prompt library in [`prompts`](./prompts)
-- Reusable templates in [`templates`](./templates)
-- Validation and helper scripts in [`scripts`](./scripts)
-- Full script usage docs in [`scripts/README.md`](./scripts/README.md)
-- Pytest coverage for key helpers in [`tests`](./tests)
-- SaaS-ready app layer in [`app`](./app)
-- Self-hosted deployment foundation in [DEPLOYMENT.md](./DEPLOYMENT.md)
-- Deployment verification in [VERIFY_DEPLOYMENT.md](./VERIFY_DEPLOYMENT.md)
-- Known limitations in [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md)
-- Operations runbook in [OPERATIONS_RUNBOOK.md](./OPERATIONS_RUNBOOK.md)
-- Product architecture docs in [ARCHITECTURE.md](./ARCHITECTURE.md)
-- Filled samples in [`examples`](./examples)
-- Glossaries in [GLOSSARY.md](./GLOSSARY.md) and
-  [GLOSSARY_RU.md](./GLOSSARY_RU.md)
-- Positioning, governance, ecosystem, and release documentation in the repository root
-- Optional environment contract in [`.env.example`](./.env.example)
-- Real implementation notes in [REAL_CASES.md](./REAL_CASES.md)
-
-## Quick start
-
-1. Read [POSITIONING.md](./POSITIONING.md) and [DIFFERENTIATORS.md](./DIFFERENTIATORS.md).
-2. Start from [docs/en/01-audit.md](./docs/en/01-audit.md).
-3. Build the page plan with [docs/en/04-page-matrix.md](./docs/en/04-page-matrix.md).
-4. Implement AI visibility with [docs/en/08-geo-ai-search.md](./docs/en/08-geo-ai-search.md).
-5. Set reporting discipline with [docs/en/18-analytics.md](./docs/en/18-analytics.md) and [ROADMAP.md](./ROADMAP.md).
+- App layer: [`app`](./app)
+- Docs: [`docs/en`](./docs/en) and [`docs/ru`](./docs/ru)
+- Checklists: [`checklists`](./checklists)
+- Prompt library: [`prompts`](./prompts)
+- Templates: [`templates`](./templates)
+- Examples: [`examples`](./examples)
+- Scripts: [`scripts`](./scripts)
+- Architecture: [ARCHITECTURE.md](./ARCHITECTURE.md)
+- Positioning: [POSITIONING.md](./POSITIONING.md)
+- Real cases: [REAL_CASES.md](./REAL_CASES.md)
+- Operations runbook: [OPERATIONS_RUNBOOK.md](./OPERATIONS_RUNBOOK.md)
+- Known limitations: [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md)
 
 ## App quickstart
 
@@ -109,280 +153,90 @@ This project is built as an execution-first framework for teams that need one pr
 - Readiness: `http://localhost:8000/readyz`
 - Metrics: `http://localhost:8000/metrics`
 
-Useful entrypoints:
-
-- [DEPLOYMENT.md](./DEPLOYMENT.md)
-- [SECURITY_CHECKLIST.md](./SECURITY_CHECKLIST.md)
-- [VERIFY_DEPLOYMENT.md](./VERIFY_DEPLOYMENT.md)
-- [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
-- [CLIENT_SETUP_PLAYBOOK.md](./CLIENT_SETUP_PLAYBOOK.md)
-- [AI_HANDOFF_PROMPT.md](./AI_HANDOFF_PROMPT.md)
-- [docs/en/api-reference.md](./docs/en/api-reference.md)
-- [docs/en/ai-operator-mode.md](./docs/en/ai-operator-mode.md)
-- [docs/en/roles-and-invites.md](./docs/en/roles-and-invites.md)
-- [docs/en/patch-mode.md](./docs/en/patch-mode.md)
-- [docs/en/cms-connectors.md](./docs/en/cms-connectors.md)
-- [docs/en/local-llm-matrix.md](./docs/en/local-llm-matrix.md)
-- [docs/en/provider-benchmarks.md](./docs/en/provider-benchmarks.md)
-- [docs/en/search-data-connectors.md](./docs/en/search-data-connectors.md)
-- [docs/en/notifications-and-webhooks.md](./docs/en/notifications-and-webhooks.md)
-- [docs/en/white-label-mode.md](./docs/en/white-label-mode.md)
-- [SELF_HOSTED_USE_CASES.md](./SELF_HOSTED_USE_CASES.md)
-
-Verification command:
-
-- `make verify-demo`
-- `make agent-self-check`
-- `make turnkey-demo`
-
-## For AI coding agents
-
-If you are using Codex, Claude Code, Cursor, or other AI coding agents, start
-from [AGENTS.md](./AGENTS.md). It is the dedicated entrypoint for agents and
-explains how to work end to end inside this repository.
-
-AGENTS.md gives agents:
-
-- task routing for common turnkey requests
-- a repo map and the exact entrypoints to read first
-- the key scripts to use before inventing new flows
-- a short Definition of Done summary
-- clarification rules for vague user instructions
-
-## Proof and examples
-
-- Real-world implementation patterns: [REAL_CASES.md](./REAL_CASES.md)
-- Repo walkthrough: [WALKTHROUGH.md](./WALKTHROUGH.md)
-- Canonical facts guidance:
-  [docs/en/canonical-facts-and-entity-consistency.md](./docs/en/canonical-facts-and-entity-consistency.md)
-- Entity hierarchy guidance:
-  [docs/en/entity-hierarchy-and-brand-focus.md](./docs/en/entity-hierarchy-and-brand-focus.md)
-- Brand facts starter: [templates/brand-facts-template.md](./templates/brand-facts-template.md)
-- Hallucination monitoring starter:
-  [examples/hallucination-report-example.md](./examples/hallucination-report-example.md)
-
-### Product proof
-
-![App overview proof](./docs_site/assets/screenshots/app-overview-proof.svg)
-![Report flow proof](./docs_site/assets/screenshots/report-flow-proof.svg)
-![Login dashboard proof](./docs_site/assets/screenshots/login-dashboard-proof.svg)
-![Provider access proof](./docs_site/assets/screenshots/provider-access-proof.svg)
-
-## What this repo already powers
-
-- product-led audit service architecture
-- expert-led AI discoverability hubs
-- bilingual SEO + GEO + AI execution workflows
-- factual consistency and entity-governance operating patterns
-
-## Real-world implementations
-
-See [REAL_CASES.md](./REAL_CASES.md) for high-level patterns based on
-`sitepravo.ru`, `auditguard.ru`, and `anmalishev.ru`.
-
-## Example script
-
-The repository includes real helper scripts, not just documentation. One useful
-entry point is [`scripts/generate_llms_txt.py`](./scripts/generate_llms_txt.py),
-which builds `llms.txt` from a sitemap.
-
-### Generate llms.txt from sitemap
+### Turnkey local demo
 
 ```bash
-python scripts/generate_llms_txt.py \
-  --sitemap-url https://example.com/sitemap.xml \
-  --output-file ./llms.txt
+make turnkey-demo
+make verify-demo
+make agent-self-check
 ```
 
-Sample output:
-
-```text
-Processed URLs: 42
-Output file: llms.txt
-Warnings:
-- Review description for https://example.com/solutions/ai-ops
-```
-
-See [scripts/README.md](./scripts/README.md) for full CLI usage examples.
-
-## ROI visibility
-
-- ROI calculator: [`scripts/roi_calculator.py`](./scripts/roi_calculator.py)
-- ROI model template: [templates/roi-model-template.md](./templates/roi-model-template.md)
-- ROI example: [examples/roi-calculation-example.md](./examples/roi-calculation-example.md)
-
-## Docs site
-
-- Docs site delivery is configured through GitHub Pages in
-  [`.github/workflows/docs-site.yml`](./.github/workflows/docs-site.yml)
-- Build runs on every push; deployment is opt-in after Pages is enabled and the
-  repository variable `ENABLE_GITHUB_PAGES=true` is set
-- Local preview: `pip install mkdocs-material && mkdocs serve`
-- The docs-site now includes the app layer, deployment, architecture, and API
-  overview
-
-## Demo and self-hosted startup
-
-- `make up` runs the Docker stack
-- `make demo` starts the Docker stack and seeds demo data
-- `make migrate` runs Alembic migrations
-- `make seed` loads demo seed data locally
-- `./run-local.sh` prints the minimal local backend + frontend startup flow
-
-Demo credentials after seeding:
+Expected demo credentials:
 
 - Email: `demo@example.com`
 - Password: `DemoPlatform123`
 
-## Release history
+## Canonical operator flow
 
-- `v2.3.0`: AI SoV persistence, prompt library metadata, webhook notifications,
-  project export package, top-20 local LLM matrix, benchmark and search-data
-  starter docs, and stronger EN/RU AI handoff guidance.
-- `v2.2.0`: operator-ready self-hosted layer, AI handoff path, self-check flow,
-  roles and invites, and deployment verification.
+1. Create workspace
+2. Create project
+3. Fill brand facts
+4. Configure providers
+5. Run audit
+6. Open report and artifacts
+7. Run AI SoV
+8. Prioritize fixes
+9. Re-run after changes
+10. Export client or internal delivery pack
 
-## SaaS app layer
+## Transparent scoring
 
-`v2.0.0` introduces the first product layer without replacing the methodology
-repository.
+`v3.0.0` formalizes two proof-first layers:
 
-What it includes:
+- AI Citation Score: a transparent 0-100 signal based on whether a brand is
+  mentioned, cited, and described well in structured AI SoV checks
+- Prioritization engine: impact, effort, confidence, and benchmark status for
+  findings such as LCP, CLS, INP, schema coverage, factual consistency, and AI
+  readiness
 
-- FastAPI backend for auth, workspaces, projects, audits, reports, providers,
-  artifacts, and brand facts
-- static frontend control panel for core product workflows
-- multi-provider AI abstraction for OpenAI, Anthropic/Claude, Gemini, and
-  Perplexity
-- EN/RU report generation
-- Docker Compose deployment for self-hosted usage
-- expiring auth tokens, Argon2id password hashing, and basic brute-force protection
-- Alembic migrations and demo seed data
-- Prometheus-style `/metrics` endpoint
+Read more:
 
-Key docs:
+- [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
+- [docs/en/api-reference.md](./docs/en/api-reference.md)
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md)
-- [DEPLOYMENT.md](./DEPLOYMENT.md)
-- [OPEN_SOURCE_AND_SAAS_BOUNDARY.md](./OPEN_SOURCE_AND_SAAS_BOUNDARY.md)
-- [SECURITY_CHECKLIST.md](./SECURITY_CHECKLIST.md)
-- [docs/en/provider-matrix.md](./docs/en/provider-matrix.md)
-- [docs/en/cloud-deployments.md](./docs/en/cloud-deployments.md)
+## Real cases
 
-## Example prompt
+`v3.0.0` expands the real-case layer with bounded, honest public-site snapshots
+for:
 
-Use the `llms.txt` generator prompt when you want an AI assistant to draft a
-human-readable `llms.txt` structure before review.
+- `sitepravo.ru`
+- `auditguard.ru`
+- `anmalishev.ru`
 
-Purpose: turn a sitemap and key pages into a concise `llms.txt` draft.
+See [REAL_CASES.md](./REAL_CASES.md).
 
-Input: homepage, service pages, FAQ, about page, and a sitemap.
+## Verification discipline
 
-```text
-Role: technical discoverability specialist
-Inputs: https://example.com, homepage, service pages, FAQ, about page
-Task: produce a production-ready llms.txt draft with concise descriptions
-Output format: one line per URL with a short description
-Evaluation criteria: conciseness, coverage, canonical discipline
-```
+Use these commands before treating a release as complete:
 
-## How to use this framework on a real project
+- `make verify-demo`
+- `make agent-self-check`
+- `PYTHONPATH=app/backend ./.venv/bin/python -m pytest app/backend/tests`
+- `./.venv/bin/python -m mkdocs build`
 
-1. Run the initial audit with [docs/en/01-audit.md](./docs/en/01-audit.md),
-   [checklists/en/technical-seo-checklist.md](./checklists/en/technical-seo-checklist.md),
-   and [`scripts/sitemap-checker.py`](./scripts/sitemap-checker.py).
-2. Fix technical SEO using
-   [docs/en/05-technical-seo.md](./docs/en/05-technical-seo.md) and
-   [`scripts/check-robots-ai-bots.py`](./scripts/check-robots-ai-bots.py).
-3. Implement GEO / AI visibility with
-   [docs/en/08-geo-ai-search.md](./docs/en/08-geo-ai-search.md),
-   [`scripts/generate_llms_txt.py`](./scripts/generate_llms_txt.py), and
-   [`prompts/en/llms-txt-generator-prompt.md`](./prompts/en/llms-txt-generator-prompt.md).
-4. Adapt the system for local or international markets through
-   [docs/en/13-russia-yandex.md](./docs/en/13-russia-yandex.md) or
-   [docs/en/12-international-seo.md](./docs/en/12-international-seo.md).
-5. Improve content and answer extraction with
-   [docs/en/07-content-eeat.md](./docs/en/07-content-eeat.md) and
-   [prompts/en/answer-ready-page-prompt.md](./prompts/en/answer-ready-page-prompt.md).
-6. Track analytics and AI visibility with
-   [docs/en/18-analytics.md](./docs/en/18-analytics.md),
-   [`scripts/ai-share-of-voice-tracker.py`](./scripts/ai-share-of-voice-tracker.py),
-   [examples/ai-share-of-voice-weekly-report.md](./examples/ai-share-of-voice-weekly-report.md),
-   and sample data in
-   [examples/ai-sov-report-sample.json](./examples/ai-sov-report-sample.json).
-7. Govern releases with [docs/en/20-raci.md](./docs/en/20-raci.md),
-   [docs/en/21-definition-of-done.md](./docs/en/21-definition-of-done.md), and
-   [RELEASE_PROCESS.md](./RELEASE_PROCESS.md).
+## Honest boundaries
 
-## Architecture
+This project is not claiming:
 
-```text
-repo/
-├── README.md / README_RU.md
-├── POSITIONING.md / DIFFERENTIATORS.md / ECOSYSTEM_MAP.md
-├── ROADMAP.md / RELEASE_PROCESS.md / CHANGELOG.md
-├── ARCHITECTURE*.md / DEPLOYMENT*.md / OPEN_SOURCE_AND_SAAS_BOUNDARY*.md
-├── app/backend / app/frontend / app/shared
-├── docker-compose.yml / docker/ / infra/
-├── docs/en and docs/ru
-├── checklists/en and checklists/ru
-├── prompts/en and prompts/ru
-├── templates/ and templates/schema
-├── scripts/
-├── examples/
-└── .github/
-```
+- full autonomous remediation with no human review
+- guaranteed AI citations across volatile AI answer surfaces
+- enterprise SLA, SSO, or billing in the current release
+- replacement of technical SEO with GEO alone
 
-## Ecosystem references
-
-This repository complements, not replaces, adjacent products and platforms. See [ECOSYSTEM_MAP.md](./ECOSYSTEM_MAP.md) for OpenSEO, Perplexica, Open WebUI, Trieve, Onyx, and Flowise.
-
-## Vibe Coding Protocols
-
-For teams and developers who want to combine this discoverability OS with a
-more experimental, vibe-first way of building, there is a companion repository:
-[Vibe Coding Protocols](https://github.com/Gudvin82/vibe-coding-protocols).
-
-It focuses on:
-
-- lightweight iterative workflows for AI-assisted coding and experimentation
-- protocols for live vibecoding sessions in IDEs and terminals
-- patterns for combining structured SOPs from this repo with creative exploration
-
-If you prefer to design your SEO + GEO + AI systems while you code and explore
-live, Vibe Coding Protocols is a natural add-on.
-
-## Roadmap preview
-
-- Foundation: audit, architecture, page matrix, technical SEO, GEO/AI layer
-- Execution: content quality, Yandex/RU specifics, analytics, governance, DoD
-- Expansion: AI brand monitoring, international rollout, ongoing release discipline
+See [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md).
 
 ## Latest changes
 
-- `v1.2.0`: added `AGENTS.md` and agent-first onboarding plus the
-  `vibe-coding-protocols` companion link.
-- `v1.3.0`: added scripts documentation, glossary, AI SoV sample datasets,
-  stronger `llms.txt` validation, and ROI tooling.
-- `v1.4.0`: added tests, docs-site delivery, real cases, factual consistency
-  guidance, entity hierarchy docs, freshness checking, and hallucination
-  monitoring starters.
-- `v2.0.0`: added the SaaS app layer, multi-provider AI foundation, structured
-  audit workflows, Docker deployment, and EN/RU architecture and deployment
-  docs.
-- `v2.1.0`: hardens the self-hosted platform with stronger auth security,
-  Alembic migrations, demo seed flow, `/metrics`, API reference docs,
-  operator-mode docs, and explicit free transparent deployment framing.
+- `v3.0.0`: proof-first positioning rewrite, stronger onboarding, real app
+  screenshots, AI Citation Score documentation, prioritization engine,
+  provider-backed AI SoV, structured observability, role/invite hardening, and
+  richer EN/RU operator docs
+- `v2.3.0`: AI SoV persistence, prompt library metadata, webhook notifications,
+  project export package, top-20 local LLM matrix, benchmark and search-data
+  documentation
+- `v2.2.0`: operator-ready platform upgrade with permissions, invites, and
+  verify-demo discipline
 
-## Visibility additions
+## License
 
-- See [GLOSSARY.md](./GLOSSARY.md) for core terms used by humans and LLMs.
-- See [examples/ai-sov-report-sample.json](./examples/ai-sov-report-sample.json)
-  and [examples/ai-sov-report-sample.csv](./examples/ai-sov-report-sample.csv)
-  for sample AI Share of Voice data.
-- Keep using the companion repo:
-  [https://github.com/Gudvin82/vibe-coding-protocols](https://github.com/Gudvin82/vibe-coding-protocols)
-
-## Contributing
-
-Read [CONTRIBUTING.md](./CONTRIBUTING.md), [CONTRIBUTORS.md](./CONTRIBUTORS.md), [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md), and the pull request template in [`.github/PULL_REQUEST_TEMPLATE.md`](./.github/PULL_REQUEST_TEMPLATE.md).
+This repository is distributed under the license defined in [LICENSE](./LICENSE).

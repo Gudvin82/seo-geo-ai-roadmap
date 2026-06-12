@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from prometheus_client import CONTENT_TYPE_LATEST, Counter, generate_latest
+from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, generate_latest
 
 AUTH_REQUESTS = Counter(
     "discoverability_auth_requests_total",
@@ -20,6 +20,11 @@ PROVIDER_CALLS = Counter(
 PROVIDER_FAILURES = Counter(
     "discoverability_provider_failures_total",
     "Provider failures",
+    ["provider"],
+)
+PROVIDER_LATENCY_SECONDS = Histogram(
+    "discoverability_provider_latency_seconds",
+    "Provider latency in seconds",
     ["provider"],
 )
 REPORT_GENERATIONS = Counter(
@@ -46,6 +51,26 @@ NOTIFICATION_DELIVERIES = Counter(
     "discoverability_notification_deliveries_total",
     "Notification delivery attempts",
     ["channel", "status"],
+)
+REQUEST_LATENCY_SECONDS = Histogram(
+    "discoverability_request_latency_seconds",
+    "Request latency in seconds",
+    ["method", "path", "status"],
+)
+APP_ERRORS = Counter(
+    "discoverability_app_errors_total",
+    "Application errors",
+    ["kind", "path"],
+)
+AUDIT_DURATION_SECONDS = Histogram(
+    "discoverability_audit_duration_seconds",
+    "Audit execution duration in seconds",
+    ["mode", "status"],
+)
+BACKGROUND_JOB_RETRIES = Counter(
+    "discoverability_background_job_retries_total",
+    "Background job retry attempts",
+    ["job_type", "status"],
 )
 
 

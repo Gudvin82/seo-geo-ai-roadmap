@@ -4,7 +4,7 @@ OpenAPI доступен по `/docs`, ReDoc по `/redoc`.
 
 ## Auth
 
-Авторизация работает через `Authorization: Bearer <token>`.
+Используйте `Authorization: Bearer <token>`.
 
 ### Register
 
@@ -30,6 +30,7 @@ OpenAPI доступен по `/docs`, ReDoc по `/redoc`.
 - `GET /api/v1/workspaces/{workspace_id}`
 - `PUT /api/v1/workspaces/{workspace_id}`
 - `GET /api/v1/workspaces/{workspace_id}/members`
+- `PUT /api/v1/workspaces/{workspace_id}/members/{member_id}`
 - `GET /api/v1/workspaces/{workspace_id}/invites`
 - `POST /api/v1/workspaces/{workspace_id}/invites`
 - `PUT /api/v1/workspaces/{workspace_id}/invites/{invite_id}`
@@ -37,12 +38,12 @@ OpenAPI доступен по `/docs`, ReDoc по `/redoc`.
 - `POST /api/v1/workspaces/{workspace_id}/invites/{invite_id}/revoke`
 - `POST /api/v1/workspaces/invites/accept`
 
-Правила workspace isolation:
+Правила isolation:
 
-- viewers могут читать
-- editors могут создавать project и audit content
-- admins могут управлять provider configs и invites
-- owners сохраняют полный governance-контроль
+- `viewer`: читает projects, reports и artifacts
+- `editor`: создает projects, facts, audits и SoV-проверки
+- `admin`: управляет invites, providers и более широкими workspace-операциями
+- `owner`: полный governance, role changes и ownership-sensitive actions
 
 ## Projects и sites
 
@@ -84,9 +85,9 @@ OpenAPI доступен по `/docs`, ReDoc по `/redoc`.
 }
 ```
 
-### Жизненный цикл audit job
+### Жизненный цикл аудита
 
-Поддерживаемые состояния:
+Поддерживаемые статусы:
 
 - `queued`
 - `running`
@@ -95,14 +96,24 @@ OpenAPI доступен по `/docs`, ReDoc по `/redoc`.
 - `failed`
 - `canceled`
 
-В текущей реализации активно используются `queued`, `running`, `completed` и
+Текущая реализация активно использует `queued`, `running`, `completed` и
 `failed`.
 
-### Audit status
+### Audit status и retry
 
 - `GET /api/v1/audit-runs/{audit_run_id}`
 - `GET /api/v1/audit-runs?project_id={project_id}`
 - `GET /api/v1/audit-runs/presets`
+- `POST /api/v1/audit-runs/{audit_run_id}/retry`
+
+В `v3.0.0` findings в отчетах теперь содержат:
+
+- `impact`
+- `effort`
+- `confidence`
+- `priority_score`
+- `priority_label`
+- `benchmark_status`
 
 ## Reports и artifacts
 
@@ -110,29 +121,30 @@ OpenAPI доступен по `/docs`, ReDoc по `/redoc`.
 - `GET /api/v1/artifacts?project_id={project_id}`
 - `GET /api/v1/artifacts/{artifact_id}/download`
 
-Artifact download требует workspace access и возвращает сохраненный файл
-напрямую.
+Артефакты и отчеты могут содержать:
+
+- benchmark summary
+- AI Citation Score
+- двуязычный markdown report
+- JSON payload для дальнейшей автоматизации
 
 ## Providers
 
 - `GET /api/v1/providers?workspace_id={workspace_id}`
 - `POST /api/v1/providers`
+- `PUT /api/v1/providers/{provider_id}`
 
-## Prompt library
-
-- `GET /api/v1/prompt-sets?workspace_id={workspace_id}`
-- `POST /api/v1/prompt-sets`
-- `GET /api/v1/settings/prompt-library`
-
-Пример local provider config:
+Пример provider config:
 
 ```json
 {
   "workspace_id": 1,
-  "provider_name": "ollama",
-  "label": "Local Ollama",
-  "model": "llama3.1",
-  "base_url": "http://ollama:11434/v1/chat/completions"
+  "provider_name": "openai",
+  "label": "Primary OpenAI",
+  "model": "gpt-4.1-mini",
+  "api_key_env_var": "OPENAI_API_KEY",
+  "base_url": null,
+  "is_enabled": true
 }
 ```
 
@@ -141,11 +153,23 @@ Artifact download требует workspace access и возвращает сох
 - `GET /api/v1/brand-facts/{project_id}`
 - `POST /api/v1/brand-facts`
 
+Это главный вход в подсистему factual consistency для canonical brand, numeric,
+market и language claims.
+
 ## AI Share of Voice
 
 - `POST /api/v1/sov/check`
 - `GET /api/v1/sov/history?project_id={project_id}`
 - `GET /api/v1/sov/{sov_run_id}`
+
+Заметки по AI SoV:
+
+- provider-backed execution используется, когда есть совпадающий enabled
+  provider config
+- иначе используется heuristic fallback
+- AI Citation Score считается из структурированных результатов и пишется в
+  summary и audit logs
+- AI answer surfaces остаются волатильными и требуют human review
 
 ## Notifications
 
@@ -160,10 +184,19 @@ Artifact download требует workspace access и возвращает сох
 
 - `GET /api/v1/audit-logs?workspace_id={workspace_id}`
 
+Audit logs теперь включают:
+
+- login и auth activity
+- provider changes
+- audit requests и retries
+- SoV completion
+- invite acceptance
+- role changes
+
 ## Error model
 
 - `401`: отсутствует токен или истек срок жизни
-- `403`: роли недостаточно
-- `404`: ресурс не найден в рамках текущего workspace boundary
+- `403`: роли недостаточно для ресурса или действия
+- `404`: ресурс не найден в пределах текущей workspace boundary
 - `422`: payload validation failed
-- `429`: сработал login rate limit
+- `429`: сработал rate limit на чувствительном сценарии, например login

@@ -202,3 +202,56 @@ def get_audit_run(
         raise HTTPException(status_code=404, detail="Audit run not found.")
     require_project_access(db, row.project_id, current_user, minimum_role="viewer")
     return _serialize_audit_run(row)
+
+
+@router.post("/{audit_run_id}/retry", response_model=AuditRunAccepted)
+def retry_audit_run(
+    audit_run_id: int,
+    background_tasks: BackgroundTasks,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> AuditRunAccepted:
+    source = db.get(AuditRun, audit_run_id)
+    if not source:
+        raise HTTPException(status_code=404, detail="Audit run not found.")
+    project, _ = require_project_access(
+        db, source.project_id, current_user, minimum_role="editor"
+    )
+    accepted_parameters = json.loads(source.accepted_parameters_json or "{}")
+    row = AuditRun(
+        workspace_id=source.workspace_id,
+        project_id=source.project_id,
+        user_id=current_user.id,
+        status="queued",
+        report_language=source.report_language,
+        mode=source.mode,
+        market=source.market or project.market,
+        target_url=source.target_url or project.website_url,
+        selected_checks_json=source.selected_checks_json,
+        provider_names_json=source.provider_names_json,
+        accepted_parameters_json=source.accepted_parameters_json,
+        finding_groups_json="[]",
+    )
+    db.add(row)
+    db.flush()
+    settings = getattr(request.app.state, "settings", load_settings())
+    background_tasks.add_task(execute_audit_run_by_id, settings, row.id, None)
+    AUDIT_RUNS.labels(status=row.status).inc()
+    record_audit_log(
+        db,
+        "audit.retry_requested",
+        user_id=current_user.id,
+        workspace_id=row.workspace_id,
+        project_id=row.project_id,
+        metadata={"source_audit_run_id": source.id, **accepted_parameters},
+    )
+    db.commit()
+    return AuditRunAccepted(
+        audit_job_id=row.id,
+        initial_status=row.status,
+        accepted_parameters=accepted_parameters,
+        status_endpoint=f"/api/v1/audit-runs/{row.id}",
+        report_endpoint=f"/api/v1/reports?project_id={row.project_id}",
+        artifacts_endpoint=f"/api/v1/artifacts?project_id={row.project_id}",
+    )

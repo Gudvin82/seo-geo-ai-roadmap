@@ -1,151 +1,65 @@
 # Архитектура
 
-## Модель слоев v2.1.0
+## Модель слоев в v3.0.0
 
-Теперь `seo-geo-ai-roadmap` состоит из четырех понятных слоев:
+У `seo-geo-ai-roadmap` теперь четыре практических слоя:
 
 1. Методологический слой
    - `docs/`, `checklists/`, `prompts/`, `templates/`, `examples/`
-   - человекочитаемая логика выполнения
 2. Скриптовый слой
    - `scripts/`
-   - переиспользуемые CLI-утилиты и валидаторы
 3. Приложенческий слой
    - `app/backend/`, `app/frontend/`, `app/shared/`
-   - SaaS-ready foundation продукта
 4. Дистрибуционный слой
    - `docs_site/`, `mkdocs.yml`, `.github/workflows/`
-   - публичная документация и CI/CD
 
-Приложение не заменяет методологию репозитория, а оркестрирует и переиспользует ее.
+Приложение не заменяет методологию. Оно делает ее операционной.
 
 ## Архитектура backend
 
-Стек:
+Базовый стек:
 
 - Python
 - FastAPI
-- pydantic
 - SQLAlchemy
-- SQLite как fallback для локальной разработки
-- готовность к PostgreSQL через Docker
-- Alembic migrations для production-style управления схемой
+- SQLite как local fallback
+- PostgreSQL-ready путь через Docker
 
-Структура:
+Ключевые задачи backend:
 
-- `app/backend/app/api/` для REST-endpoints
-- `app/backend/app/services/` для запуска аудитов и отчетности
-- `app/backend/app/providers/` для мультипровайдерной AI-абстракции
-- `app/backend/app/models.py` для доменной модели
-- `app/backend/tests/` для backend и API-валидации
-- `app/backend/app/seed.py` для demo seed data
+- auth и workspace isolation
+- настройка providers
+- запуск аудитов
+- reports и artifacts
+- сохранение AI SoV
+- observability и structured logs
 
 ## Архитектура frontend
 
-Первый frontend сделан намеренно простым:
+Frontend остается намеренно легким:
 
 - статический HTML, CSS и JavaScript
-- без обязательного build-step
-- двуязычные EN/RU labels
-- прямое подключение к FastAPI backend
-- явный self-hosted MVP workflow вместо cloud-only дашборда
+- без обязательного build pipeline
+- EN/RU operator labels
+- прямое API integration
 
-Это делает продуктовый слой разворачиваемым без лишнего frontend-спrawl.
+Так платформа остается deployable в self-hosted средах без тяжелого frontend
+dependency tree.
+
+## Что добавлено в v3.0.0
+
+- operator overview pane
+- первый onboarding прямо внутри app
+- компактные history charts
+- более явная видимость provider, audit, report и SoV flow
 
 ## Стратегия shared logic
 
-В репозитории уже есть рабочие скрипты в `scripts/`.
+Репозиторий по-прежнему ценит CLI-режим. Платформа должна дополнять scripts, а
+не прятать их.
 
-Для `v2.0.0` стратегия такая:
+## Честные границы
 
-- сохранить существующий CLI
-- там, где это практично, вызывать те же скрипты из backend services
-- оставить `app/shared/` как место для дальнейшего выноса общей логики и схем
-
-Так одна кодовая база поддерживает:
-
-- ручной CLI-режим
-- repo-driven usage
-- app/API usage
-
-## Доменная модель
-
-В foundation SaaS-слоя входят:
-
-- User
-- Workspace
-- Project
-- Site
-- Audit Run
-- Report
-- Provider Configuration
-- Brand Facts Profile
-- Prompt Set
-- Artifact
-- Scheduled Check
-
-Ключевые связи:
-
-- один user -> много workspaces
-- один workspace -> много projects
-- один project -> много audit runs
-- один project -> много artifacts и reports
-- один project -> один или несколько truth-center / brand-facts profiles
-
-## Provider abstraction
-
-Первый слой провайдеров поддерживает:
-
-- OpenAI
-- Anthropic / Claude
-- Gemini
-- Perplexity
-
-Цели:
-
-- единый интерфейс для prompt execution
-- настройка модели на уровне провайдера
-- маршрутизация ключей через env или config
-- нормализованная обработка ошибок
-- документация capability matrix как часть прозрачности
-
-## Reporting и evidence flow
-
-Каждый audit run создает:
-
-- статус
-- список выбранных проверок
-- findings
-- score
-- artifacts
-- структурированные отчеты в Markdown и JSON
-
-Артефакты сохраняются в backend artifact root и отдаются через API.
-
-## Модель деплоя
-
-Поддерживаемый foundation для `v2.0.0`:
-
-- контейнер frontend
-- контейнер backend
-- контейнер PostgreSQL
-- опциональный worker
-- опциональный one-command startup через `make up` и `make demo`
-
-См.:
-
-- [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
-- [OPEN_SOURCE_AND_SAAS_BOUNDARY_RU.md](./OPEN_SOURCE_AND_SAAS_BOUNDARY_RU.md)
-
-## Что будет дальше
-
-Намеренно не входит в `v2.0.0`:
-
-- billing и payments
-- enterprise SSO
-- сложная tenancy / permissions matrix
-- usage metering
-- warehouse-grade analytics
-- production SLA
-
-Текущий релиз — это сильный foundation продукта, а не раздутый enterprise-комбайн.
+Текущая архитектура рассчитана на прагматичную self-hosted работу. Это еще не
+полноценная enterprise control plane с billing, SSO и warehouse-grade
+analytics.

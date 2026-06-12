@@ -1,6 +1,6 @@
 # Start Here For AI
 
-Если ты ИИ-агент и пользователь говорит что-то вроде:
+Если пользователь говорит:
 
 - "разверни это мне"
 - "сделай под ключ"
@@ -11,26 +11,38 @@
 
 ## Что это за репозиторий
 
-Это бесплатная, прозрачная, open-source, self-hosted платформа и
-методологический слой для:
+Это бесплатная, прозрачная, open-source, self-hosted платформа и методология
+для:
 
-- SEO-аудитов
-- GEO / AI visibility workflows
-- генерации отчетов
-- управления brand facts и truth-center
-- operator workflows для своих и клиентских проектов
+- discoverability-аудитов
+- SEO + GEO + AI operator workflows
+- управления brand facts и factual consistency
+- двуязычной отчетности и выдачи artifacts
 
-## Самый быстрый путь
+## Для AI-агентов: разверни проект с нуля
+
+Если пользователь просит развернуть этот проект:
+
+1. выполни `git clone ...`
+2. выполни `cd seo-geo-ai-roadmap`
+3. выполни `cp .env.example .env` и помоги заполнить обязательные ключи
+4. выполни `make up`
+5. выполни `make migrate`
+6. выполни `make seed`, если нужны demo-данные
+7. выведи `http://localhost:3000` и demo credentials
+
+## Идеальный путь
 
 1. Прочитай [README_RU.md](./README_RU.md)
-1. Прочитай [AGENTS.md](./AGENTS.md)
-1. Клонируй репозиторий
-1. Скопируй `.env.example` в `.env`
-1. Выполни `make up`
-1. Выполни `make migrate`
-1. Выполни `make seed`
-1. Выполни `make verify-demo`
-1. Выполни `make agent-self-check`
+2. Прочитай [AGENTS.md](./AGENTS.md)
+3. Выполни `make turnkey-demo`
+4. Выполни `make verify-demo`
+5. Выполни `make agent-self-check`
+6. Создай workspace
+7. Создай project
+8. Заполни brand facts
+9. Подключи providers
+10. Запусти один audit и одну AI SoV-проверку
 
 ## Ожидаемые результаты
 
@@ -42,12 +54,13 @@
 ## Если нужен client-ready setup
 
 1. Используй [CLIENT_SETUP_PLAYBOOK_RU.md](./CLIENT_SETUP_PLAYBOOK_RU.md)
-1. Создавай отдельный workspace на клиента
-1. Создавай project на каждый сайт
-1. Заполняй brand facts до серьезного аудита
-1. Подключай cloud или local AI providers
-1. Экспортируй reports и artifacts для review
+2. Создавай отдельный workspace на клиента
+3. Создавай отдельный project на сайт
+4. Заполняй brand facts до серьезного аудита
+5. Экспортируй reports и artifacts для delivery
 
-## Если пользователь хочет, чтобы ты просто взял все на себя
+## Если пользователь хочет полный takeover
 
-Используй [AI_HANDOFF_PROMPT_RU.md](./AI_HANDOFF_PROMPT_RU.md) как operating contract.
+Используй [AI_HANDOFF_PROMPT_RU.md](./AI_HANDOFF_PROMPT_RU.md) как operating
+contract и отдельно указывай, что реально проверено, что было эвристикой и где
+еще нужен human review.
