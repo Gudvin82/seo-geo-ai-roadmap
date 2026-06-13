@@ -121,8 +121,6 @@ The main risks are operational, not conceptual:
 - a deployment can appear healthy while a deeper audit flow is still miswired
 - a scanner surface can create legal or trust issues if it scans third-party
   domains without explicit user intent or verification
-- public intake requires abuse controls, queue protection, and clearer
-  ownership boundaries than the current core product
 
 Guardrails already present in the repository:
 

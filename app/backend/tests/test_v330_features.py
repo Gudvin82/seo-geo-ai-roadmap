@@ -132,3 +132,31 @@ def test_cms_writeback_attempt_respects_safe_mode(client, auth_headers) -> None:
     attempt_payload = attempt.json()
     assert attempt_payload["status"] == "awaiting_human_approval"
     assert attempt_payload["attempts"] >= 1
+
+
+def test_cms_change_request_can_roll_back(client, auth_headers) -> None:
+    workspace_id, project_id = _create_workspace_and_project(client, auth_headers)
+    connector = client.post(
+        "/api/v1/cms",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "cms_type": "wordpress",
+            "label": "Rollback WP",
+            "base_url": "https://example.com",
+            "writeback_mode": "draft",
+        },
+        headers=auth_headers,
+    )
+    request = client.post(
+        "/api/v1/cms/change-requests",
+        json={"connector_id": connector.json()["id"]},
+        headers=auth_headers,
+    )
+    assert request.status_code == 200
+    rolled_back = client.post(
+        f"/api/v1/cms/change-requests/{request.json()['id']}/rollback",
+        headers=auth_headers,
+    )
+    assert rolled_back.status_code == 200
+    assert rolled_back.json()["status"] == "rolled_back"

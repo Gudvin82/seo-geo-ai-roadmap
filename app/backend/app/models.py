@@ -320,6 +320,32 @@ class CmsConnector(Base):
     project: Mapped[Project] = relationship(back_populates="cms_connectors")
 
 
+class CmsChangeRequest(Base):
+    __tablename__ = "cms_change_requests"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"))
+    project_id: Mapped[int] = mapped_column(ForeignKey("projects.id"))
+    connector_id: Mapped[int] = mapped_column(ForeignKey("cms_connectors.id"))
+    requested_by_user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    source_audit_run_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("audit_runs.id"), nullable=True
+    )
+    status: Mapped[str] = mapped_column(String(64), default="preview_ready")
+    preview_payload_json: Mapped[str] = mapped_column(Text, default="{}")
+    approval_notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    applied_payload_json: Mapped[str] = mapped_column(Text, default="{}")
+    verification_payload_json: Mapped[str] = mapped_column(Text, default="{}")
+    rollback_payload_json: Mapped[str] = mapped_column(Text, default="{}")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+    approved_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    applied_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    verified_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    rolled_back_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime, nullable=True
+    )
+
+
 class NotificationEndpoint(Base):
     __tablename__ = "notification_endpoints"
 

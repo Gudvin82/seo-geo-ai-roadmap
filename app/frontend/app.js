@@ -17,6 +17,7 @@ const state = {
   executiveDashboard: null,
   integrationContracts: [],
   cmsContracts: [],
+  reportAssistant: null,
   presets: {},
   selectedWorkspaceId: "",
   selectedProjectId: "",
@@ -47,7 +48,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v4.0.0 ai agent mode product surfaces and one-click delivery",
+      "v4.1.0 secure scanner runtime and governed delivery flows",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -237,7 +238,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v4.0.0 ai agent mode product surfaces and one-click delivery",
+      "v4.1.0 secure scanner runtime and governed delivery flows",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -849,8 +850,35 @@ async function refreshReportsAndArtifacts() {
   );
   $("#repo-assets").textContent = JSON.stringify(repoAssets, null, 2);
   $("#integration-starters").textContent = JSON.stringify(integrationStarters, null, 2);
+  $("#cms-lifecycle-summary").textContent = JSON.stringify(
+    {
+      flow: ["preview_ready", "approved", "applied", "verified", "rolled_back"],
+      purpose:
+        "Govern CMS changes with explicit checkpoints instead of silent live writeback.",
+    },
+    null,
+    2,
+  );
   setStatus();
   renderOverview();
+}
+
+async function askReportAssistant() {
+  if (!state.token || !state.reports.length) {
+    log("No report is available for the assistant yet.", "warning");
+    return;
+  }
+  const question = $("#report-assistant-question").value.trim();
+  if (!question) {
+    log("Enter a report question first.", "warning");
+    return;
+  }
+  const payload = await apiRequest(`/reports/${state.reports[0].id}/assistant`, {
+    method: "POST",
+    body: JSON.stringify({ question, language: state.language }),
+  });
+  state.reportAssistant = payload;
+  $("#report-assistant-output").textContent = JSON.stringify(payload, null, 2);
 }
 
 async function refreshSovRuns() {
@@ -1171,6 +1199,7 @@ function installEventListeners() {
   $("#refresh-sov").addEventListener("click", () => refreshSovRuns().catch((error) => log(error.message, "warning")));
   $("#refresh-notifications").addEventListener("click", () => refreshNotifications().catch((error) => log(error.message, "warning")));
   $("#refresh-reports").addEventListener("click", () => refreshReportsAndArtifacts().catch((error) => log(error.message, "warning")));
+  $("#ask-report-assistant").addEventListener("click", () => askReportAssistant().catch((error) => log(error.message, "warning")));
   $("#refresh-executive").addEventListener("click", () => refreshExecutiveDashboard().catch((error) => log(error.message, "warning")));
   $("#export-project").addEventListener("click", () => handleProjectExport().catch((error) => log(error.message, "warning")));
   $("#sign-out").addEventListener("click", () => {

@@ -84,6 +84,13 @@ def test_workspace_project_and_audit_flow(
     if reports.json():
         report_json = reports.json()[0]["summary_json"]
         assert "benchmark_summary" in report_json
+        assistant = client.post(
+            f"/api/v1/reports/{reports.json()[0]['id']}/assistant",
+            json={"question": "What should we do next?", "language": "en"},
+            headers=auth_headers,
+        )
+        assert assistant.status_code == 200
+        assert assistant.json()["follow_up_actions"]
 
     artifacts = client.get(
         f"/api/v1/artifacts?project_id={project_id}", headers=auth_headers
@@ -136,12 +143,20 @@ def test_workspace_project_and_audit_flow(
     assert integration_sync.status_code == 200
     assert integration_sync.json()["last_sync_status"] == "completed"
     assert integration_sync.json()["readiness_tier"] == "production_guided"
+    assert integration_sync.json()["ci_gates"]
+    assert integration_sync.json()["production_flow"]
 
     integration_contracts = client.get(
         "/api/v1/integrations/contracts", headers=auth_headers
     )
     assert integration_contracts.status_code == 200
     assert integration_contracts.json()["contracts"]
+    integration_plan = client.get(
+        f"/api/v1/integrations/{integration_id}/readiness-plan",
+        headers=auth_headers,
+    )
+    assert integration_plan.status_code == 200
+    assert integration_plan.json()["ci_first_class"] is True
 
     cms = client.post(
         "/api/v1/cms",
@@ -169,6 +184,31 @@ def test_workspace_project_and_audit_flow(
     cms_contracts = client.get("/api/v1/cms/contracts", headers=auth_headers)
     assert cms_contracts.status_code == 200
     assert cms_contracts.json()["contracts"]
+    change_request = client.post(
+        "/api/v1/cms/change-requests",
+        json={"connector_id": cms_id, "audit_run_id": audit.json()["audit_job_id"]},
+        headers=auth_headers,
+    )
+    assert change_request.status_code == 200
+    change_request_id = change_request.json()["id"]
+    assert change_request.json()["status"] == "preview_ready"
+
+    approved = client.post(
+        f"/api/v1/cms/change-requests/{change_request_id}/approve",
+        headers=auth_headers,
+    )
+    assert approved.status_code == 200
+    applied = client.post(
+        f"/api/v1/cms/change-requests/{change_request_id}/apply",
+        headers=auth_headers,
+    )
+    assert applied.status_code == 200
+    verified = client.post(
+        f"/api/v1/cms/change-requests/{change_request_id}/verify",
+        headers=auth_headers,
+    )
+    assert verified.status_code == 200
+    assert verified.json()["status"] == "verified"
 
     patch_pack = client.post(
         "/api/v1/deliverables/patch-pack",

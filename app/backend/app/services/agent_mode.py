@@ -9,7 +9,7 @@ from .task_center import (
     build_task_bundle_from_scan_job,
 )
 
-AGENT_MODE_CONTRACT_VERSION = "v4.0.0"
+AGENT_MODE_CONTRACT_VERSION = "v4.1.0"
 SUPPORTED_AGENT_MODES = [
     "manual",
     "scheduled",
@@ -63,8 +63,8 @@ def agent_mode_overview(
         "scheduler_status": {
             "scheduled_checks": len(scheduled_checks),
             "active_checks": sum(1 for item in scheduled_checks if item.is_enabled),
-            "durable_queue_status": "stubbed-durable-abstraction",
-            "retry_policy": "scheduler + scan job event history + notification retries",
+            "durable_queue_status": "db-backed-recoverable-scan-worker",
+            "retry_policy": "scheduler + recoverable scan queue + notification retries",
         },
         "alert_policy": [
             "Trigger alerts on failed scans, degraded executive score, or missing sync freshness.",

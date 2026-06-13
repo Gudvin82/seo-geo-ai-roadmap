@@ -28,6 +28,9 @@ router = APIRouter(prefix="/integrations", tags=["integrations"])
 
 def _serialize(row: IntegrationConnection) -> IntegrationConnectionRead:
     contract = integration_contract(row.source_type)
+    freshness = "never_synced"
+    if row.last_sync_at:
+        freshness = "fresh" if row.last_sync_status == "completed" else "stale"
     return IntegrationConnectionRead(
         id=row.id,
         workspace_id=row.workspace_id,
@@ -45,8 +48,11 @@ def _serialize(row: IntegrationConnection) -> IntegrationConnectionRead:
         required_env_vars=contract["required_env_vars"],
         credential_status="configured" if row.credentials_env_var else "missing",
         recommended_ci_workflow=contract["recommended_ci_workflow"],
+        ci_gates=contract["ci_gates"],
         contract_version=contract["contract_version"],
         sync_capabilities=contract["capabilities"],
+        production_flow=contract.get("production_flow", []),
+        sync_freshness=freshness,
         next_step=contract["next_step"],
         created_at=row.created_at,
     )
@@ -144,3 +150,28 @@ def sync_integration(
     db.commit()
     db.refresh(row)
     return _serialize(row)
+
+
+@router.get("/{integration_id}/readiness-plan")
+def integration_readiness_plan(
+    integration_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    row = db.get(IntegrationConnection, integration_id)
+    if not row:
+        raise HTTPException(status_code=404, detail="Integration not found.")
+    require_project_access(db, row.project_id, current_user, minimum_role="viewer")
+    contract = integration_contract(row.source_type)
+    return {
+        "integration_id": row.id,
+        "source_type": row.source_type,
+        "contract_version": contract["contract_version"],
+        "ci_first_class": True,
+        "workflow": contract["recommended_ci_workflow"],
+        "ci_gates": contract["ci_gates"],
+        "production_flow": contract.get("production_flow", []),
+        "current_status": row.last_sync_status or "created",
+        "credential_status": "configured" if row.credentials_env_var else "missing",
+        "next_step": contract["next_step"],
+    }

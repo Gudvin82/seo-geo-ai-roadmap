@@ -118,6 +118,18 @@ operator or an AI coding agent can use end to end:
 
 ## What `v4.0.0` adds
 
+## What `v4.1.0` adds
+
+- hardened scan-job access control for tasks and graph runtime so scanner sessions stay private by default
+- redirect-aware scanner fetch and webhook protection with public-port and response-size limits
+- recoverable DB-backed scan worker semantics instead of thread-only fire-and-forget execution
+- governed CMS change requests with preview → approve → apply → verify → rollback lifecycle
+- report assistant follow-up endpoint and app surface for operator Q&A on stored reports
+- stronger production-flow and CI-readiness planning for GSC, GA4, Yandex, and CMS integrations
+- sharper scanner / product-app / repo-operator separation plus expanded machine-readable contracts
+
+## What `v4.0.0` adds
+
 - real AI Agent Mode contract, overview, and run surfaces with safe action boundaries
 - one-click URL audit result flow with direct links into task generation and graph runtime
 - normalized task bundles plus export adapters, including a real GitHub Issues path

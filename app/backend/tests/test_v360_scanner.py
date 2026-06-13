@@ -7,6 +7,10 @@ def _scanner_headers() -> dict[str, str]:
     return {"X-Scanner-Session": "scanner-test-session"}
 
 
+def _other_scanner_headers() -> dict[str, str]:
+    return {"X-Scanner-Session": "scanner-other-session"}
+
+
 def test_scanner_blocks_localhost_targets(client, settings) -> None:
     settings.allow_public_intake = True
     settings.allow_anonymous_submission = True
@@ -131,7 +135,7 @@ def test_scan_job_lifecycle_and_artifacts(client, settings, monkeypatch) -> None
         "csv",
         "html",
     }
-    assert all(item["schema_version"] == "v4.0.0" for item in artifact_payload)
+    assert all(item["schema_version"] == "v4.1.0" for item in artifact_payload)
 
     result = client.get(
         f"/api/v1/scan-jobs/{payload['scan_job_id']}/result",
@@ -155,6 +159,18 @@ def test_scan_job_lifecycle_and_artifacts(client, settings, monkeypatch) -> None
     )
     assert graph.status_code == 200
     assert graph.json()["nodes"]
+
+    forbidden_tasks = client.get(
+        f"/api/v1/tasks/scan-job/{payload['scan_job_id']}",
+        headers=_other_scanner_headers(),
+    )
+    assert forbidden_tasks.status_code == 403
+
+    forbidden_graph = client.get(
+        f"/api/v1/graph-runtime/scan-job/{payload['scan_job_id']}",
+        headers=_other_scanner_headers(),
+    )
+    assert forbidden_graph.status_code == 403
 
 
 def test_webhook_delivery_mock(client, settings, monkeypatch) -> None:
@@ -198,6 +214,35 @@ def test_webhook_delivery_mock(client, settings, monkeypatch) -> None:
     assert sent
     assert sent[0]["url"] == "https://hooks.example.test/scanner"
     assert sent[0]["payload"]["status"] == "completed"
+
+
+def test_scanner_blocks_non_standard_webhook_port(client, settings) -> None:
+    settings.allow_public_intake = True
+    settings.allow_anonymous_submission = True
+    consent = client.post(
+        "/api/v1/scanner/consent-records",
+        json={
+            "url": "https://example.com",
+            "scan_mode": "passive",
+            "consent_scope": "passive_ack",
+            "ownership_confirmed": False,
+            "load_warning_accepted": False,
+            "limitations_accepted": True,
+        },
+        headers=_scanner_headers(),
+    )
+    response = client.post(
+        "/api/v1/scan-jobs",
+        json={
+            "url": "https://example.com",
+            "scan_mode": "passive",
+            "consent_record_id": consent.json()["id"],
+            "callback_webhook_url": "https://hooks.example.test:8443/scanner",
+        },
+        headers=_scanner_headers(),
+    )
+    assert response.status_code == 400
+    assert "ports 80 and 443" in response.json()["detail"]
 
 
 def test_passive_url_audit_shortcut(client, settings, monkeypatch) -> None:

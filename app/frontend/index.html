@@ -71,7 +71,7 @@
       <main class="main">
         <header class="hero">
           <div>
-            <p class="eyebrow" data-i18n="releaseBadge">v4.0.0 ai agent mode product surfaces and one-click delivery</p>
+            <p class="eyebrow" data-i18n="releaseBadge">v4.1.0 secure scanner runtime and governed delivery flows</p>
             <h2 data-i18n="heroTitle">Self-hosted daily operating system for SEO, GEO, and AI discoverability</h2>
             <p class="hero-copy" data-i18n="heroCopy">
               Give the repo to a human operator or an AI coding agent, deploy it,
@@ -874,6 +874,28 @@
             <div class="card">
               <h4 data-i18n="activityLog">Activity log</h4>
               <div id="activity-log" class="activity-log"></div>
+            </div>
+          </div>
+
+          <div class="split lower-grid">
+            <div class="card">
+              <h4>Report Assistant</h4>
+              <p class="project-meta">
+                Ask a focused operator question about the latest stored report for the active project.
+              </p>
+              <label class="field">
+                <span>Question</span>
+                <input id="report-assistant-question" type="text" placeholder="What should we fix first?" />
+              </label>
+              <button id="ask-report-assistant" type="button">Ask report assistant</button>
+              <pre id="report-assistant-output" class="code-block"></pre>
+            </div>
+            <div class="card">
+              <h4>CMS Apply Lifecycle</h4>
+              <p class="project-meta">
+                `v4.1.0` adds preview → approve → apply → verify → rollback as a first-class governed flow.
+              </p>
+              <pre id="cms-lifecycle-summary" class="code-block"></pre>
             </div>
           </div>
         </section>

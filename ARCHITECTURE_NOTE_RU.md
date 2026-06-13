@@ -123,8 +123,6 @@ isolation, queue tenancy и полноценно оформленным legal co
   провален до конца
 - scanner-surface может создавать legal и trust problems, если сканирует
   сторонние домены без явного user intent или verification
-- public intake требует abuse controls, queue protection и более явных
-  ownership boundaries, чем текущий core product
 
 Guardrails, которые уже есть в репозитории:
 

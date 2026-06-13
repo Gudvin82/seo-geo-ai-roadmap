@@ -9,8 +9,10 @@ from sqlalchemy.orm import Session
 from ..access import record_audit_log, require_project_access
 from ..database import get_db
 from ..deps import get_current_user
-from ..models import AuditRun, CmsConnector, User
+from ..models import AuditRun, CmsChangeRequest, CmsConnector, User, now_utc
 from ..schemas import (
+    CmsChangeRequestCreate,
+    CmsChangeRequestRead,
     CmsConnectorCreate,
     CmsConnectorRead,
     CmsWritebackAttemptRead,
@@ -85,6 +87,27 @@ def _serialize(row: CmsConnector) -> CmsConnectorRead:
         production_path=contract["production_path"],
         next_step=contract["next_step"],
         created_at=row.created_at,
+    )
+
+
+def _serialize_change_request(row: CmsChangeRequest) -> CmsChangeRequestRead:
+    return CmsChangeRequestRead(
+        id=row.id,
+        connector_id=row.connector_id,
+        project_id=row.project_id,
+        workspace_id=row.workspace_id,
+        source_audit_run_id=row.source_audit_run_id,
+        status=row.status,
+        preview_payload=json.loads(row.preview_payload_json or "{}"),
+        approval_notes=row.approval_notes,
+        applied_payload=json.loads(row.applied_payload_json or "{}"),
+        verification_payload=json.loads(row.verification_payload_json or "{}"),
+        rollback_payload=json.loads(row.rollback_payload_json or "{}"),
+        created_at=row.created_at,
+        approved_at=row.approved_at,
+        applied_at=row.applied_at,
+        verified_at=row.verified_at,
+        rolled_back_at=row.rolled_back_at,
     )
 
 
@@ -224,6 +247,170 @@ def generate_cms_patch_package(
         review_mode=row.writeback_mode,
         outputs=payload,
     )
+
+
+@router.post("/change-requests", response_model=CmsChangeRequestRead)
+def create_cms_change_request(
+    payload: CmsChangeRequestCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> CmsChangeRequestRead:
+    connector = db.get(CmsConnector, payload.connector_id)
+    if not connector:
+        raise HTTPException(status_code=404, detail="CMS connector not found.")
+    project, _ = require_project_access(
+        db, connector.project_id, current_user, minimum_role="editor"
+    )
+    latest_audit = (
+        db.get(AuditRun, payload.audit_run_id)
+        if payload.audit_run_id
+        else db.query(AuditRun)
+        .filter(AuditRun.project_id == project.id)
+        .order_by(AuditRun.id.desc())
+        .first()
+    )
+    findings = (
+        json.loads(latest_audit.finding_groups_json or "[]") if latest_audit else []
+    )
+    preview = cms_patch_package(
+        connector.cms_type,
+        connector.writeback_mode,
+        project.name,
+        project.website_url,
+        findings,
+    )
+    row = CmsChangeRequest(
+        workspace_id=connector.workspace_id,
+        project_id=connector.project_id,
+        connector_id=connector.id,
+        requested_by_user_id=current_user.id,
+        source_audit_run_id=latest_audit.id if latest_audit else None,
+        status="preview_ready",
+        preview_payload_json=json.dumps(preview, ensure_ascii=False),
+        approval_notes=payload.approval_notes,
+        rollback_payload_json=json.dumps(
+            {
+                "plan": [
+                    "restore previous CMS draft or version snapshot",
+                    "re-run audit to verify rollback outcome",
+                    "log rollback evidence in the project record",
+                ]
+            },
+            ensure_ascii=False,
+        ),
+    )
+    db.add(row)
+    record_audit_log(
+        db,
+        "cms.change_request_created",
+        user_id=current_user.id,
+        workspace_id=connector.workspace_id,
+        project_id=connector.project_id,
+        metadata={"connector_id": connector.id},
+    )
+    db.commit()
+    db.refresh(row)
+    return _serialize_change_request(row)
+
+
+@router.post("/change-requests/{change_request_id}/approve", response_model=CmsChangeRequestRead)
+def approve_cms_change_request(
+    change_request_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> CmsChangeRequestRead:
+    row = db.get(CmsChangeRequest, change_request_id)
+    if not row:
+        raise HTTPException(status_code=404, detail="CMS change request not found.")
+    require_project_access(db, row.project_id, current_user, minimum_role="editor")
+    row.status = "approved"
+    row.approved_at = now_utc()
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    return _serialize_change_request(row)
+
+
+@router.post("/change-requests/{change_request_id}/apply", response_model=CmsChangeRequestRead)
+def apply_cms_change_request(
+    change_request_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> CmsChangeRequestRead:
+    row = db.get(CmsChangeRequest, change_request_id)
+    if not row:
+        raise HTTPException(status_code=404, detail="CMS change request not found.")
+    require_project_access(db, row.project_id, current_user, minimum_role="editor")
+    if row.status not in {"approved", "preview_ready"}:
+        raise HTTPException(status_code=400, detail="Change request cannot be applied from the current state.")
+    preview = json.loads(row.preview_payload_json or "{}")
+    row.status = "applied"
+    row.applied_at = now_utc()
+    row.applied_payload_json = json.dumps(
+        {
+            "mode": "governed_apply",
+            "applied_steps": [
+                "human-reviewed package accepted",
+                "draft or governed publish flow initiated",
+                "verification queued",
+            ],
+            "preview_summary": preview.get("summary", ""),
+        },
+        ensure_ascii=False,
+    )
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    return _serialize_change_request(row)
+
+
+@router.post("/change-requests/{change_request_id}/verify", response_model=CmsChangeRequestRead)
+def verify_cms_change_request(
+    change_request_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> CmsChangeRequestRead:
+    row = db.get(CmsChangeRequest, change_request_id)
+    if not row:
+        raise HTTPException(status_code=404, detail="CMS change request not found.")
+    require_project_access(db, row.project_id, current_user, minimum_role="viewer")
+    if row.status not in {"applied", "approved"}:
+        raise HTTPException(status_code=400, detail="Change request must be applied before verification.")
+    row.status = "verified"
+    row.verified_at = now_utc()
+    row.verification_payload_json = json.dumps(
+        {
+            "verification_steps": [
+                "open affected pages",
+                "confirm visible copy and metadata changed as intended",
+                "run audit compare to measure the delta",
+            ],
+            "result": "verification_ready",
+        },
+        ensure_ascii=False,
+    )
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    return _serialize_change_request(row)
+
+
+@router.post("/change-requests/{change_request_id}/rollback", response_model=CmsChangeRequestRead)
+def rollback_cms_change_request(
+    change_request_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> CmsChangeRequestRead:
+    row = db.get(CmsChangeRequest, change_request_id)
+    if not row:
+        raise HTTPException(status_code=404, detail="CMS change request not found.")
+    require_project_access(db, row.project_id, current_user, minimum_role="editor")
+    row.status = "rolled_back"
+    row.rolled_back_at = now_utc()
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    return _serialize_change_request(row)
 
 
 @router.post(

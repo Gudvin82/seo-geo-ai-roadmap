@@ -6,7 +6,7 @@ from typing import Any
 
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v3.8.0"
+CONTRACT_VERSION = "v4.1.0"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {
@@ -21,6 +21,13 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
             "artifact export",
             "drift comparison",
             "report regeneration",
+        ],
+        "production_flow": [
+            "connect service account secret",
+            "run first manual sync",
+            "review imported snapshot",
+            "promote to scheduled GitHub Action or scheduled check",
+            "use executive dashboard and compare flows for regression gating",
         ],
         "capabilities": [
             "top queries import",
@@ -42,6 +49,12 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
             "engagement trend export",
             "delivery pack regeneration",
         ],
+        "production_flow": [
+            "connect GA4 credential secret",
+            "validate baseline metrics import",
+            "bind to project executive dashboard",
+            "re-run after major content or release changes",
+        ],
         "capabilities": [
             "sessions import",
             "engagement import",
@@ -62,6 +75,12 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
             "regional diagnostics refresh",
             "artifact export",
         ],
+        "production_flow": [
+            "connect Yandex Webmaster token",
+            "validate RU property mapping",
+            "schedule recurring sync for regional visibility checks",
+            "attach RU findings to deliverables and dashboard",
+        ],
         "capabilities": [
             "top queries import",
             "top pages import",
@@ -81,6 +100,12 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
             "traffic sanity checks",
             "goal trend export",
             "executive dashboard refresh",
+        ],
+        "production_flow": [
+            "connect Yandex Metrica token",
+            "verify visits and goals import",
+            "pair analytics with Yandex Webmaster diagnostics",
+            "track post-fix performance deltas in executive mode",
         ],
         "capabilities": [
             "visit import",

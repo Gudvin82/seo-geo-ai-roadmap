@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from html.parser import HTMLParser
 from typing import Optional
 
+from .scan_security import safe_fetch_url_bytes, safe_fetch_url_text
+
 CHECKER_USER_AGENT = "Discoverability-Checks/3.7.0"
 DEFAULT_TIMEOUT_SECONDS = 15
 
@@ -123,31 +125,47 @@ def resolve_public_file_url(url: str, filename: str) -> str:
 
 
 def fetch_url_text(url: str, timeout: int = DEFAULT_TIMEOUT_SECONDS) -> str:
-    request = urllib.request.Request(url, headers={"User-Agent": CHECKER_USER_AGENT})
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        return response.read().decode("utf-8", errors="replace")
+    settings = _runtime_settings()
+    content, _final_url, _redirect_chain = safe_fetch_url_text(
+        url,
+        settings,
+        timeout=timeout,
+        headers={"User-Agent": CHECKER_USER_AGENT},
+    )
+    return content
 
 
 def fetch_url_bytes(
     url: str, timeout: int = DEFAULT_TIMEOUT_SECONDS
 ) -> tuple[bytes, str]:
-    request = urllib.request.Request(url, headers={"User-Agent": CHECKER_USER_AGENT})
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        content_type = response.headers.get("Content-Type", "")
-        return response.read(), content_type
+    settings = _runtime_settings()
+    body, content_type, _final_url, _redirect_chain = safe_fetch_url_bytes(
+        url,
+        settings,
+        timeout=timeout,
+        headers={"User-Agent": CHECKER_USER_AGENT},
+    )
+    return body, content_type
 
 
 def try_fetch_url_text(url: str) -> tuple[Optional[str], Optional[str]]:
     try:
         return fetch_url_text(url), None
-    except (urllib.error.URLError, ValueError) as exc:
+    except (urllib.error.URLError, ValueError, RuntimeError) as exc:
         return None, str(exc)
+
+
+def _runtime_settings():
+    from ..config import load_settings
+
+    return load_settings()
 
 
 @dataclass
 class HtmlAnalysis:
     title: str
     meta_tags: dict[str, str]
+    link_tags: list[dict[str, str]]
     headings: list[str]
     text_blocks: list[str]
     section_markers: list[str]
@@ -160,6 +178,7 @@ class _HTMLSignalParser(HTMLParser):
         super().__init__()
         self.title = ""
         self.meta_tags: dict[str, str] = {}
+        self.link_tags: list[dict[str, str]] = []
         self.headings: list[str] = []
         self.text_blocks: list[str] = []
         self.section_markers: list[str] = []
@@ -193,6 +212,12 @@ class _HTMLSignalParser(HTMLParser):
             value = attrs_map.get("content", "").strip()
             if key and value:
                 self.meta_tags[key.lower()] = value
+        if tag == "link":
+            rel = attrs_map.get("rel", "").strip().lower()
+            href = attrs_map.get("href", "").strip()
+            hreflang = attrs_map.get("hreflang", "").strip().lower()
+            if rel and href:
+                self.link_tags.append({"rel": rel, "href": href, "hreflang": hreflang})
         marker = " ".join(
             part
             for part in [attrs_map.get("id", ""), attrs_map.get("class", "")]
@@ -257,6 +282,7 @@ def analyze_html(html: str) -> HtmlAnalysis:
     return HtmlAnalysis(
         title=parser.title,
         meta_tags=parser.meta_tags,
+        link_tags=parser.link_tags,
         headings=parser.headings,
         text_blocks=parser.text_blocks,
         section_markers=parser.section_markers,
@@ -432,6 +458,77 @@ def open_graph_report(html: str) -> dict:
         "missing_fields": missing,
         "warnings": warnings,
         "recommendation": "Complete missing Open Graph and Twitter Card fields and review generic previews.",
+    }
+
+
+def technical_seo_report(html: str, page_url: str) -> dict:
+    analysis = analyze_html(html)
+    meta = analysis.meta_tags
+    parsed = urllib.parse.urlparse(page_url)
+    base_host = parsed.hostname or ""
+
+    canonical_url = next(
+        (item["href"] for item in analysis.link_tags if item.get("rel") == "canonical"),
+        "",
+    ) or meta.get("canonical") or meta.get("og:url") or ""
+    hreflang_refs = [
+        {"lang": item["hreflang"], "href": item["href"]}
+        for item in analysis.link_tags
+        if item.get("hreflang")
+    ] + [
+        {
+            "lang": key.split(":", 1)[1],
+            "href": value,
+        }
+        for key, value in meta.items()
+        if key.startswith("hreflang:")
+    ]
+
+    internal_links = [
+        block for block in analysis.text_blocks if base_host and base_host in block
+    ]
+    heading_count = len(analysis.headings)
+    h1_count = len(
+        [heading for heading in analysis.headings if heading == analysis.headings[0]]
+    ) if analysis.headings else 0
+    title = analysis.title.strip()
+    description = meta.get("description", "").strip()
+    warnings: list[str] = []
+
+    if not canonical_url:
+        warnings.append("Canonical URL is missing from public metadata.")
+    elif base_host and base_host not in canonical_url:
+        warnings.append("Canonical URL points to a different host.")
+    if not hreflang_refs:
+        warnings.append("No hreflang references were detected.")
+    if not title:
+        warnings.append("Page title is missing.")
+    if not description:
+        warnings.append("Meta description is missing.")
+    if heading_count == 0:
+        warnings.append("No visible heading structure was detected.")
+    if len(internal_links) == 0:
+        warnings.append("Internal linking evidence is weak in the extracted HTML text.")
+    if "noindex" in meta.get("robots", "").lower():
+        warnings.append("Robots meta includes noindex.")
+
+    return {
+        "status": "pass" if not warnings else "warn",
+        "canonical_url": canonical_url,
+        "hreflang_refs": hreflang_refs,
+        "robots_meta": meta.get("robots", ""),
+        "title": title,
+        "meta_description": description,
+        "heading_count": heading_count,
+        "h1_count": h1_count,
+        "internal_link_count": len(internal_links),
+        "warnings": warnings,
+        "recommendation": (
+            "Tighten canonical, hreflang, metadata, and internal linking signals before treating the page as AI-ready."
+        ),
+        "limitation": (
+            "This lightweight technical SEO pass is heuristic and does not replace a full crawler-based site audit."
+        ),
     }
 
 

@@ -321,8 +321,11 @@ class IntegrationConnectionRead(BaseModel):
     required_env_vars: list[str] = Field(default_factory=list)
     credential_status: str
     recommended_ci_workflow: str
+    ci_gates: list[str] = Field(default_factory=list)
     contract_version: str
     sync_capabilities: list[str] = Field(default_factory=list)
+    production_flow: list[str] = Field(default_factory=list)
+    sync_freshness: str
     next_step: str
     created_at: datetime
 
@@ -395,6 +398,31 @@ class CmsWritebackAttemptRead(BaseModel):
     retry_policy: dict[str, Any] = Field(default_factory=dict)
     attempts: int
     artifact_preview: dict[str, Any] = Field(default_factory=dict)
+
+
+class CmsChangeRequestCreate(BaseModel):
+    connector_id: int
+    audit_run_id: Optional[int] = None
+    approval_notes: Optional[str] = None
+
+
+class CmsChangeRequestRead(BaseModel):
+    id: int
+    connector_id: int
+    project_id: int
+    workspace_id: int
+    source_audit_run_id: Optional[int]
+    status: str
+    preview_payload: dict[str, Any] = Field(default_factory=dict)
+    approval_notes: Optional[str] = None
+    applied_payload: dict[str, Any] = Field(default_factory=dict)
+    verification_payload: dict[str, Any] = Field(default_factory=dict)
+    rollback_payload: dict[str, Any] = Field(default_factory=dict)
+    created_at: datetime
+    approved_at: Optional[datetime]
+    applied_at: Optional[datetime]
+    verified_at: Optional[datetime]
+    rolled_back_at: Optional[datetime]
 
 
 class PatchPackRequest(BaseModel):
@@ -472,6 +500,7 @@ class IntegrationSourceContractRead(BaseModel):
     recommended_ci_workflow: str
     ci_gates: list[str] = Field(default_factory=list)
     capabilities: list[str] = Field(default_factory=list)
+    production_flow: list[str] = Field(default_factory=list)
     contract_version: str
     next_step: str
 
@@ -769,6 +798,20 @@ class ReportRead(BaseModel):
     summary_markdown: str
     summary_json: dict[str, Any]
     created_at: datetime
+
+
+class ReportAssistantRequest(BaseModel):
+    question: str
+    language: Literal["en", "ru"] = "en"
+
+
+class ReportAssistantRead(BaseModel):
+    report_id: int
+    contract_version: str
+    answer: str
+    key_points: list[str] = Field(default_factory=list)
+    follow_up_actions: list[str] = Field(default_factory=list)
+    limitations: list[str] = Field(default_factory=list)
 
 
 class ArtifactRead(BaseModel):

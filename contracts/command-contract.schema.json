@@ -8,6 +8,8 @@
     "contract_version": { "type": "string" },
     "canonical_prefix": { "type": "string" },
     "canonical_sequence": { "type": "array", "items": { "type": "string" } },
+    "product_modes": { "type": "array", "items": { "type": "string" } },
+    "ci_first_class": { "type": "boolean" },
     "routes": { "type": "array", "items": { "type": "object" } },
     "integration_touchpoints": { "type": "array", "items": { "type": "string" } }
   }

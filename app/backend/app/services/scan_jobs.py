@@ -5,7 +5,6 @@ import hashlib
 import json
 import smtplib
 import threading
-import urllib.request
 from datetime import timedelta
 from email.message import EmailMessage
 from pathlib import Path
@@ -36,11 +35,15 @@ from .discoverability_checks import (
     resolve_public_file_url,
     robots_sitemap_report,
     schema_coverage_report,
-    try_fetch_url_text,
+    technical_seo_report,
 )
-from .scan_security import normalize_target_url
+from .scan_security import (
+    normalize_public_url,
+    normalize_target_url,
+    safe_fetch_url_text,
+)
 
-SCANNER_SCHEMA_VERSION = "v4.0.0"
+SCANNER_SCHEMA_VERSION = "v4.1.0"
 SCAN_JOB_TERMINAL_STATES = {
     "partial_success",
     "completed",
@@ -50,6 +53,8 @@ SCAN_JOB_TERMINAL_STATES = {
 }
 SCAN_JOB_ACTIVE_STATES = {"queued", "verifying", "running"}
 _THREADS: dict[int, threading.Thread] = {}
+_WORKER_LOCK = threading.Lock()
+_WORKER_THREAD: threading.Thread | None = None
 
 
 def scanner_config_payload(settings: Settings) -> dict:
@@ -242,6 +247,9 @@ def create_scan_job(
         raise HTTPException(status_code=403, detail="Full scan is disabled.")
 
     normalized_url, host = normalize_target_url(url, settings)
+    normalized_webhook = None
+    if callback_webhook_url:
+        normalized_webhook = normalize_public_url(callback_webhook_url, settings)
     consent = db.get(ConsentRecord, consent_record_id)
     if not consent or consent.target_url != normalized_url:
         raise HTTPException(
@@ -301,7 +309,7 @@ def create_scan_job(
         requester_session_id=session_id,
         requester_ip=source_ip,
         requester_email=notification_email,
-        webhook_url=callback_webhook_url,
+        webhook_url=normalized_webhook,
         notification_email=notification_email,
         telegram_chat_id=telegram_chat_id,
         verification_request_id=verification.id if verification else None,
@@ -322,6 +330,20 @@ def create_scan_job(
     db.refresh(row)
     _launch_scan_job(settings, row.id)
     return row
+
+
+def authorize_scan_job_access(
+    row: ScanJob,
+    current_user: Optional[User],
+    session_id: Optional[str],
+) -> None:
+    if current_user and row.requester_user_id == current_user.id:
+        return
+    if session_id and row.requester_session_id == session_id:
+        return
+    raise HTTPException(
+        status_code=403, detail="Scan job is not available for this session."
+    )
 
 
 def cancel_scan_job(db: Session, scan_job_id: int) -> ScanJob:
@@ -410,25 +432,112 @@ def serialize_verification_request(
 
 
 def _launch_scan_job(settings: Settings, scan_job_id: int) -> None:
-    thread = threading.Thread(
-        target=_run_scan_job,
-        args=(settings, scan_job_id),
-        daemon=True,
-        name=f"scan-job-{scan_job_id}",
-    )
-    _THREADS[scan_job_id] = thread
-    thread.start()
+    del scan_job_id
+    with _WORKER_LOCK:
+        global _WORKER_THREAD
+        if _WORKER_THREAD is not None and _WORKER_THREAD.is_alive():
+            return
+        thread = threading.Thread(
+            target=_scan_worker_loop,
+            args=(settings,),
+            daemon=True,
+            name="scan-job-worker",
+        )
+        _WORKER_THREAD = thread
+        thread.start()
 
 
-def _run_scan_job(settings: Settings, scan_job_id: int) -> None:
+def recover_incomplete_scan_jobs() -> int:
+    db = create_session()
+    try:
+        rows = (
+            db.query(ScanJob)
+            .filter(ScanJob.status.in_(("verifying", "running")))
+            .order_by(ScanJob.id.asc())
+            .all()
+        )
+        recovered = 0
+        for row in rows:
+            row.status = "queued"
+            row.current_stage = "recovered_after_restart"
+            row.progress_percent = min(row.progress_percent or 0, 5)
+            _append_event(
+                db,
+                row.id,
+                "queued",
+                "recovered_after_restart",
+                "Recovered queued scan job after worker restart.",
+                {},
+            )
+            recovered += 1
+        if recovered:
+            db.commit()
+        return recovered
+    finally:
+        db.close()
+
+
+def _scan_worker_loop(settings: Settings) -> None:
+    recover_incomplete_scan_jobs()
+    try:
+        while True:
+            claimed_job_id = _claim_next_scan_job()
+            if claimed_job_id is None:
+                return
+            _run_scan_job(settings, claimed_job_id, already_claimed=True)
+    finally:
+        with _WORKER_LOCK:
+            global _WORKER_THREAD
+            _WORKER_THREAD = None
+
+
+def _claim_next_scan_job() -> int | None:
+    db = create_session()
+    try:
+        row = (
+            db.query(ScanJob)
+            .filter(ScanJob.status == "queued")
+            .order_by(ScanJob.id.asc())
+            .first()
+        )
+        if row is None:
+            return None
+        row.status = "verifying"
+        row.current_stage = "worker_claimed"
+        row.progress_percent = max(row.progress_percent or 0, 5)
+        if row.started_at is None:
+            row.started_at = now_utc()
+        _append_event(
+            db,
+            row.id,
+            "verifying",
+            "worker_claimed",
+            "Scan job claimed by the persistent worker.",
+            {},
+        )
+        db.commit()
+        return row.id
+    finally:
+        db.close()
+
+
+def _run_scan_job(
+    settings: Settings, scan_job_id: int, *, already_claimed: bool = False
+) -> None:
     db = create_session()
     try:
         row = db.get(ScanJob, scan_job_id)
         if not row:
             return
-        _transition_job(
-            db, row, "verifying", 10, "verification", "Preparing scan context."
-        )
+        _THREADS[scan_job_id] = threading.current_thread()
+        if not already_claimed:
+            _transition_job(
+                db, row, "verifying", 10, "verification", "Preparing scan context."
+            )
+        else:
+            _transition_job(
+                db, row, "verifying", 10, "verification", "Preparing scan context."
+            )
         if row.scan_mode in {"active", "full"} and row.verification_request_id:
             verification = db.get(VerificationRequest, row.verification_request_id)
             if not verification or verification.status != "verified":
@@ -492,6 +601,7 @@ def _run_scan_job(settings: Settings, scan_job_id: int) -> None:
         if row:
             _fail_job(db, row, f"{exc.__class__.__name__}: {exc}")
     finally:
+        _THREADS.pop(scan_job_id, None)
         db.close()
 
 
@@ -636,15 +746,16 @@ def _build_issue_rows(module_results: list[dict]) -> list[dict]:
 
 
 def _run_discoverability_modules(row: ScanJob) -> list[dict]:
-    html, html_error = try_fetch_url_text(row.normalized_url)
-    llms_content, _ = try_fetch_url_text(
-        resolve_public_file_url(row.normalized_url, "llms.txt")
+    settings = _scanner_runtime_settings()
+    html, html_error = _try_fetch_scanner_text(row.normalized_url, settings)
+    llms_content, _ = _try_fetch_scanner_text(
+        resolve_public_file_url(row.normalized_url, "llms.txt"), settings
     )
-    ai_content, ai_error = try_fetch_url_text(
-        resolve_public_file_url(row.normalized_url, "ai.txt")
+    ai_content, ai_error = _try_fetch_scanner_text(
+        resolve_public_file_url(row.normalized_url, "ai.txt"), settings
     )
-    robots_content, robots_error = try_fetch_url_text(
-        resolve_public_file_url(row.normalized_url, "robots.txt")
+    robots_content, robots_error = _try_fetch_scanner_text(
+        resolve_public_file_url(row.normalized_url, "robots.txt"), settings
     )
 
     modules: list[dict] = []
@@ -698,6 +809,18 @@ def _run_discoverability_modules(row: ScanJob) -> list[dict]:
                 html_error,
                 open_graph_report,
                 "Unable to fetch page HTML for social metadata checks.",
+            ),
+        )
+    )
+    modules.append(
+        _safe_module(
+            "technical_seo_basics",
+            "Technical SEO baseline",
+            lambda: _html_required_module(
+                html,
+                html_error,
+                lambda body: technical_seo_report(body, row.normalized_url),
+                "Unable to fetch page HTML for technical SEO checks.",
             ),
         )
     )
@@ -845,6 +968,12 @@ def _module_observed_fact(report: dict) -> str:
             if not missing
             else "Missing social metadata fields: " + ", ".join(missing)
         )
+    if "canonical_url" in report:
+        return (
+            f"Canonical: {report.get('canonical_url') or 'missing'}; "
+            f"hreflang entries: {len(report.get('hreflang_refs', []))}; "
+            f"internal links: {report.get('internal_link_count', 0)}."
+        )
     return ""
 
 
@@ -951,14 +1080,21 @@ def _deliver_notifications(
 
 
 def _send_webhook(url: str, payload: dict, timeout: int) -> None:
-    request = urllib.request.Request(
+    _send_webhook_with_settings(_scanner_runtime_settings(), url, payload, timeout)
+
+
+def _send_webhook_with_settings(
+    settings: Settings, url: str, payload: dict, timeout: int
+) -> None:
+    safe_fetch_url_text(
         url,
-        data=json.dumps(payload).encode("utf-8"),
+        settings,
+        timeout=timeout,
+        max_bytes=512_000,
         headers={"Content-Type": "application/json"},
+        data=json.dumps(payload).encode("utf-8"),
         method="POST",
     )
-    with urllib.request.urlopen(request, timeout=timeout):
-        return None
 
 
 def _send_email(settings: Settings, recipient: str, payload: dict) -> None:
@@ -988,7 +1124,9 @@ def _send_telegram(settings: Settings, chat_id: str, payload: dict) -> None:
         "chat_id": chat_id,
         "text": f"Scan job {payload['scan_job_id']} completed for {payload['target_url']}",
     }
-    _send_webhook(url, body, settings.scanner_webhook_timeout_seconds)
+    _send_webhook_with_settings(
+        settings, url, body, settings.scanner_webhook_timeout_seconds
+    )
 
 
 def _verify_html_file(target_url: str, challenge_value: str) -> bool:
@@ -1024,8 +1162,30 @@ def _verify_dns_txt(target_domain: str, challenge_value: str) -> bool:
 
 
 def _fetch_text(url: str) -> str:
-    request = urllib.request.Request(
-        url, headers={"User-Agent": "Discoverability-Scanner/3.7.0"}
+    content, _final_url, _redirect_chain = safe_fetch_url_text(
+        url,
+        _scanner_runtime_settings(),
+        timeout=10,
+        headers={"User-Agent": "Discoverability-Scanner/4.1.0"},
     )
-    with urllib.request.urlopen(request, timeout=10) as response:
-        return response.read().decode("utf-8", errors="replace")
+    return content
+
+
+def _scanner_runtime_settings() -> Settings:
+    from ..config import load_settings
+
+    return load_settings()
+
+
+def _try_fetch_scanner_text(
+    url: str, settings: Settings
+) -> tuple[Optional[str], Optional[str]]:
+    try:
+        content, _final_url, _redirect_chain = safe_fetch_url_text(
+            url,
+            settings,
+            headers={"User-Agent": "Discoverability-Scanner/4.1.0"},
+        )
+        return content, None
+    except Exception as exc:
+        return None, str(exc)

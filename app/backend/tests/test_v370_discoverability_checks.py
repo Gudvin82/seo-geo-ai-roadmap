@@ -87,6 +87,21 @@ def test_open_graph_report_flags_missing_and_generic_fields() -> None:
     assert report["warnings"]
 
 
+def test_technical_seo_report_detects_missing_signals() -> None:
+    html = """
+    <html><head>
+    <title>Example</title>
+    <meta name="description" content="Short example description" />
+    <meta name="robots" content="index,follow" />
+    </head><body><p>Example body copy only.</p></body></html>
+    """
+    report = discoverability_checks.technical_seo_report(
+        html, "https://example.com/page"
+    )
+    assert report["status"] == "warn"
+    assert any("Canonical URL is missing" in item for item in report["warnings"])
+
+
 def test_robots_sitemap_report_warns_when_sitemap_exists_but_not_declared(
     monkeypatch,
 ) -> None:
@@ -121,8 +136,8 @@ def test_scanner_summary_includes_v370_module_results(monkeypatch) -> None:
 
     monkeypatch.setattr(
         scan_jobs,
-        "try_fetch_url_text",
-        lambda url: (
+        "_try_fetch_scanner_text",
+        lambda url, settings: (
             "<html><head><title>Example</title>"
             '<meta property="og:title" content="Example" />'
             '<meta property="og:description" content="Example description" />'
@@ -133,6 +148,8 @@ def test_scanner_summary_includes_v370_module_results(monkeypatch) -> None:
             '<meta name="twitter:title" content="Example" />'
             '<meta name="twitter:description" content="Example description" />'
             '<meta name="twitter:image" content="https://example.com/image.png" />'
+            '<link rel="canonical" href="https://example.com/" />'
+            '<link rel="alternate" hreflang="en" href="https://example.com/" />'
             '<script type="application/ld+json">{"@context":"https://schema.org","@type":["Organization","WebSite","BreadcrumbList"]}</script>'
             "</head><body><section id='faq'><h2>FAQ</h2><h3>What is this?</h3></section></body></html>",
             None,
@@ -191,7 +208,12 @@ def test_scanner_summary_includes_v370_module_results(monkeypatch) -> None:
         },
     )()
     summary = scan_jobs._build_summary(Row(), settings)
-    assert summary["schema_version"] == "v4.0.0"
+    monkeypatch.setattr(
+        scan_jobs,
+        "_scanner_runtime_settings",
+        lambda: settings,
+    )
+    assert summary["schema_version"] == "v4.1.0"
     module_ids = {item["id"] for item in summary["module_results"]}
     assert {
         "ru_ai_bots",
@@ -200,4 +222,5 @@ def test_scanner_summary_includes_v370_module_results(monkeypatch) -> None:
         "schema_coverage",
         "faq_answer_ready",
         "social_meta",
+        "technical_seo_basics",
     } <= module_ids

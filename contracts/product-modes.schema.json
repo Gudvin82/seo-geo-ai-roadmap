@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gudvin82.github.io/seo-geo-ai-roadmap/contracts/product-modes.schema.json",
+  "title": "Product Modes Contract",
+  "type": "object",
+  "required": ["modes"],
+  "properties": {
+    "modes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "primary_user", "purpose"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "primary_user": { "type": "string" },
+          "purpose": { "type": "string" },
+          "best_for": { "type": "array", "items": { "type": "string" } },
+          "first_class_paths": { "type": "array", "items": { "type": "string" } },
+          "not_the_goal": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

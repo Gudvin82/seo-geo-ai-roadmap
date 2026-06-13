@@ -118,6 +118,16 @@ discoverability. Ее можно развернуть на своем компь
 - Evaluate first prompt: [EVALUATE_THIS_REPO_FIRST_RU.md](./EVALUATE_THIS_REPO_FIRST_RU.md)
 - Commercial boundary: [COMMERCIAL_ROADMAP_RU.md](./COMMERCIAL_ROADMAP_RU.md)
 
+## Что добавляет `v4.1.0`
+
+- более жесткий scan-job access control для tasks и graph runtime, чтобы scanner sessions оставались приватными по умолчанию
+- redirect-aware защита scanner fetch и webhook с ограничением public ports и response size
+- recoverable DB-backed scan worker semantics вместо thread-only fire-and-forget выполнения
+- governed CMS change requests с lifecycle preview → approve → apply → verify → rollback
+- report assistant endpoint и app-surface для operator Q&A по сохраненным отчетам
+- более сильные production-flow и CI-readiness paths для GSC, GA4, Yandex и CMS integrations
+- еще более четкое разделение scanner / product-app / repo-operator surfaces плюс расширенные machine-readable contracts
+
 ## Что добавляет `v4.0.0`
 
 - реальный AI Agent Mode contract, overview и run surfaces с безопасной action boundary

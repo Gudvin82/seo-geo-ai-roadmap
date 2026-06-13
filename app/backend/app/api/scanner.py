@@ -76,13 +76,7 @@ def _authorize_scan_job(
     current_user: Optional[User],
     session_id: str,
 ) -> None:
-    if current_user and row.requester_user_id == current_user.id:
-        return
-    if row.requester_session_id == session_id:
-        return
-    raise HTTPException(
-        status_code=403, detail="Scan job is not available for this session."
-    )
+    scan_jobs.authorize_scan_job_access(row, current_user, session_id)
 
 
 def _machine_report(row: ScanJob) -> dict:
@@ -364,7 +358,7 @@ def get_scan_job_result(
     ]
     return ScanJobResultRead(
         scan_job_id=row.id,
-        schema_version=summary.get("schema_version", "v4.0.0"),
+        schema_version=summary.get("schema_version", "v4.1.0"),
         target_url=summary.get("target_url", row.normalized_url),
         target_domain=summary.get("target_domain", row.target_domain),
         site_type=summary.get("site_type"),

@@ -1,5 +1,16 @@
 # Changelog
 
+## v4.1.0 — Security Hardening, Governed CMS Apply Flow, and Operator Follow-Up
+
+- Closed scan-job access gaps so task bundles and graph runtime now require the same session or user boundary as the scanner result surface
+- Hardened scanner fetch and webhook behavior with public-port enforcement, redirect-aware validation, and response-size limits
+- Replaced thread-only scan execution with a recoverable DB-backed worker loop that can re-queue interrupted jobs after restart
+- Added a lightweight technical SEO baseline module to scanner reporting alongside existing AI, schema, FAQ, and social checks
+- Added governed CMS change requests with preview, approve, apply, verify, and rollback lifecycle states
+- Added report assistant follow-up endpoint plus frontend operator surface for asking focused questions about stored reports
+- Expanded integration contracts with clearer production flows, CI-first readiness planning, and stronger machine-readable contract coverage
+- Updated EN/RU architecture notes, app version markers, frontend surfaces, contract catalog, and tests for the new v4.1.0 runtime
+
 ## v4.0.0 — AI Agent Mode, Product Surfaces, and One-Click Delivery
 
 - Added real AI Agent Mode contracts, overview, and execution surfaces for `manual`, `scheduled`, `watch`, `agent-review`, `agent-plan`, and `agent-fix-proposal`

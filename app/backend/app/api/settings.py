@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from ..access import require_project_access
 from ..database import get_db
 from ..deps import get_current_user
-from ..models import AuditRun, CmsConnector, IntegrationConnection, User
+from ..models import AuditRun, CmsConnector, IntegrationConnection, ScanJob, User
 from ..schemas import (
     CIGatingRead,
     ExecutiveDashboardRead,
@@ -339,6 +339,12 @@ def executive_dashboard(
         .order_by(CmsConnector.id.desc())
         .all()
     )
+    latest_scan = (
+        db.query(ScanJob)
+        .filter(ScanJob.normalized_url == project.website_url)
+        .order_by(ScanJob.id.desc())
+        .first()
+    )
     if not latest_audit:
         raise HTTPException(
             status_code=404, detail="No audit run found for executive dashboard."
@@ -367,16 +373,20 @@ def executive_dashboard(
         health_band=health_band,
         narrative=(
             f"{project.name} is in {health_band} condition. "
-            "Use integrations, CMS review gates, and CI-backed re-measurement as one operating loop."
+            "Use scanner intake, structured audits, integrations, CMS review gates, and CI-backed re-measurement as one operating loop."
         ),
         metrics={
             "latest_audit_status": latest_audit.status,
             "latest_audit_mode": latest_audit.mode,
+            "latest_scan_status": latest_scan.status if latest_scan else "not-run",
+            "latest_scan_mode": latest_scan.scan_mode if latest_scan else "not-run",
             "selected_checks_count": len(
                 json.loads(latest_audit.selected_checks_json or "[]")
             ),
             "integrations_connected": len(integrations),
             "cms_connectors_connected": len(cms_connectors),
+            "product_modes": ["repo_methodology", "app_control_panel", "scanner_intake"],
+            "ci_first_class": True,
         },
         priorities=priorities,
         integrations=[

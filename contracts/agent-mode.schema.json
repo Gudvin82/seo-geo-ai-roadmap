@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gudvin82.github.io/seo-geo-ai-roadmap/contracts/agent-mode.schema.json",
+  "title": "Agent Mode Contract",
+  "type": "object",
+  "required": ["contract_version", "supported_modes", "safe_boundaries"],
+  "properties": {
+    "contract_version": { "type": "string" },
+    "supported_modes": { "type": "array", "items": { "type": "string" } },
+    "safe_boundaries": { "type": "array", "items": { "type": "string" } },
+    "deliverables": { "type": "array", "items": { "type": "string" } },
+    "notification_channels": { "type": "array", "items": { "type": "string" } }
+  }
+}

@@ -35,4 +35,14 @@ def contracts_catalog() -> list[dict[str, Any]]:
             "path": "contracts/integration-contract.schema.json",
             "purpose": "Integration and CMS contract surface for app and CI flows.",
         },
+        {
+            "id": "product_modes",
+            "path": "contracts/product-modes.schema.json",
+            "purpose": "Machine-readable separation between repo, app, and scanner surfaces.",
+        },
+        {
+            "id": "agent_mode",
+            "path": "contracts/agent-mode.schema.json",
+            "purpose": "Approval-bound agent orchestration contract.",
+        },
     ]

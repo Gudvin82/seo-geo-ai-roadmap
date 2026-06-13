@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy.orm import Session
 
 from ..access import record_audit_log, require_project_access
@@ -11,6 +11,7 @@ from ..database import get_db
 from ..deps import get_current_user, get_optional_current_user
 from ..models import AuditRun, Project, ScanJob, User
 from ..schemas import TaskBundleRead, TaskExportRead, TaskExportRequest, TaskItemRead
+from ..services import scan_jobs
 from ..services.task_center import (
     build_task_bundle_from_audit_run,
     build_task_bundle_from_scan_job,
@@ -21,11 +22,15 @@ router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 
 def _scan_job_for_access(
-    db: Session, scan_job_id: int, current_user: Optional[User]
+    db: Session,
+    scan_job_id: int,
+    current_user: Optional[User],
+    session_id: Optional[str],
 ) -> ScanJob:
     row = db.get(ScanJob, scan_job_id)
     if not row:
         raise HTTPException(status_code=404, detail="Scan job not found.")
+    scan_jobs.authorize_scan_job_access(row, current_user, session_id)
     if current_user is None:
         return row
     project = (
@@ -55,10 +60,11 @@ def _load_scan_summary(scan_job: ScanJob) -> dict:
 @router.get("/scan-job/{scan_job_id}", response_model=TaskBundleRead)
 def tasks_for_scan_job(
     scan_job_id: int,
+    x_scanner_session: Optional[str] = Header(default=None, alias="X-Scanner-Session"),
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_optional_current_user),
 ) -> TaskBundleRead:
-    scan_job = _scan_job_for_access(db, scan_job_id, current_user)
+    scan_job = _scan_job_for_access(db, scan_job_id, current_user, x_scanner_session)
     summary = _load_scan_summary(scan_job)
     bundle = build_task_bundle_from_scan_job(scan_job, summary)
     return TaskBundleRead(
@@ -102,11 +108,14 @@ def tasks_for_audit_run(
 @router.post("/export", response_model=TaskExportRead)
 def export_tasks(
     payload: TaskExportRequest,
+    x_scanner_session: Optional[str] = Header(default=None, alias="X-Scanner-Session"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> TaskExportRead:
     if payload.source_type == "scan_job":
-        scan_job = _scan_job_for_access(db, payload.source_id, current_user)
+        scan_job = _scan_job_for_access(
+            db, payload.source_id, current_user, x_scanner_session
+        )
         bundle = build_task_bundle_from_scan_job(scan_job, _load_scan_summary(scan_job))
         project_id = None
     else:

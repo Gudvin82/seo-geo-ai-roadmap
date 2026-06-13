@@ -45,7 +45,7 @@ def get_command_catalog() -> CommandCatalogResponse:
 @router.get("/command-contract")
 def command_contract() -> dict:
     return {
-        "contract_version": "v4.0.0",
+        "contract_version": "v4.1.0",
         "canonical_prefix": "/geo",
         "canonical_sequence": [
             "/geo quick",
@@ -55,6 +55,12 @@ def command_contract() -> dict:
             "/geo compare",
             "/geo agent",
         ],
+        "product_modes": [
+            "repo_methodology",
+            "app_control_panel",
+            "scanner_intake",
+        ],
+        "ci_first_class": True,
         "routes": [
             {
                 "command": item.command,
