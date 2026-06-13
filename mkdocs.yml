@@ -20,6 +20,7 @@ nav:
   - Architecture Note: architecture-note.md
   - Deployment: deployment.md
   - Commands: commands.md
+  - Scanner Intake: scanner.md
   - Validator: validator.md
   - API Overview: api.md
   - Operator Mode: operator-mode.md

@@ -261,6 +261,22 @@ Or:
 }
 ```
 
+## Public scanner foundation
+
+- `GET /api/v1/scanner/config`
+- `POST /api/v1/scanner/verification-requests`
+- `POST /api/v1/scanner/verification-requests/{id}/verify`
+- `POST /api/v1/scanner/consent-records`
+- `POST /api/v1/scan-jobs`
+- `GET /api/v1/scan-jobs/{id}`
+- `POST /api/v1/scan-jobs/{id}/cancel`
+- `GET /api/v1/scan-jobs/{id}/events`
+- `GET /api/v1/scan-jobs/{id}/artifacts`
+- `GET /api/v1/scan-jobs/{id}/artifacts/{filename}`
+
+Scanner requests are session-bound through the `X-Scanner-Session` header.
+Active and full scans require ownership verification plus consent.
+
 ## Audit logs
 
 - `GET /api/v1/audit-logs?workspace_id={workspace_id}`

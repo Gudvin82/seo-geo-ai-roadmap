@@ -33,6 +33,19 @@ def get_current_user(
     return user
 
 
+def get_optional_current_user(
+    authorization: Optional[str] = Header(default=None),
+    db: Session = Depends(get_db),
+) -> Optional[User]:
+    if not authorization or not authorization.lower().startswith("bearer "):
+        return None
+    token = authorization.split(" ", 1)[1].strip()
+    token_session = TOKENS.get(token)
+    if not token_session or token_session.expires_at <= datetime.utcnow():
+        return None
+    return db.get(User, token_session.user_id)
+
+
 def create_user_token(user: User, settings: Settings) -> tuple[TokenSession, str]:
     token = issue_token()
     token_session = TokenSession(

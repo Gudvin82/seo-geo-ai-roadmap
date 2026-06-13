@@ -76,3 +76,13 @@ review.
 If the user wants to turn the repo into a reusable scanner, read
 [ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md) before proposing a public intake
 surface.
+
+For the implemented scanner foundation, use:
+
+1. [docs/en/public-scanner-v360.md](./docs/en/public-scanner-v360.md)
+2. `app/frontend/scanner.html`
+3. `GET /api/v1/scanner/config`
+4. `POST /api/v1/scanner/verification-requests`
+5. `POST /api/v1/scanner/consent-records`
+6. `POST /api/v1/scan-jobs`
+7. `GET /api/v1/scan-jobs/{id}`

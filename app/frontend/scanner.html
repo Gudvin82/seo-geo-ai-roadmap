@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Discoverability Scanner Intake</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="scanner-shell">
+      <section class="scanner-hero">
+        <p class="eyebrow">v3.6.0 scanner foundation</p>
+        <h1>Public / Self-Hosted Scanner Intake</h1>
+        <p class="hero-copy">
+          Submit a passive audit, ownership-gated active scan, or full scan if the
+          deployment enables it. This flow is designed for self-hosted public
+          intake, not for pentesting or unrestricted third-party probing.
+        </p>
+      </section>
+
+      <section class="scanner-grid">
+        <article class="card scanner-card">
+          <h2>Scan Intake</h2>
+          <form id="scanner-intake-form" class="stack">
+            <label class="field">
+              <span>API base</span>
+              <input id="scanner-api-base" type="text" value="http://localhost:8000/api/v1" />
+            </label>
+            <label class="field">
+              <span>Target URL</span>
+              <input id="scanner-url" type="url" placeholder="https://example.com" required />
+            </label>
+            <label class="field">
+              <span>Scan mode</span>
+              <select id="scanner-mode">
+                <option value="passive">Passive audit</option>
+                <option value="active">Active scan</option>
+                <option value="full">Full scan</option>
+              </select>
+            </label>
+            <label class="field scanner-hidden" id="verification-method-field">
+              <span>Ownership verification method</span>
+              <select id="scanner-verification-method">
+                <option value="html_file">HTML file challenge</option>
+                <option value="meta_tag">Meta tag challenge</option>
+                <option value="dns_txt">DNS TXT challenge</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Completion webhook (optional)</span>
+              <input id="scanner-webhook-url" type="url" placeholder="https://hooks.example.com/scans" />
+            </label>
+            <label class="field">
+              <span>Notification email (optional)</span>
+              <input id="scanner-notification-email" type="email" placeholder="ops@example.com" />
+            </label>
+            <label class="field">
+              <span>Telegram chat ID (optional)</span>
+              <input id="scanner-telegram-chat-id" type="text" placeholder="123456789" />
+            </label>
+            <label class="check">
+              <input id="scanner-limitations-accepted" type="checkbox" />
+              <span>I understand the scanner limitations and that this service does not replace a pentest.</span>
+            </label>
+            <label class="check scanner-hidden" id="scanner-ownership-wrap">
+              <input id="scanner-ownership-confirmed" type="checkbox" />
+              <span>I own this site or I am explicitly authorized to run an active scan.</span>
+            </label>
+            <label class="check scanner-hidden" id="scanner-load-wrap">
+              <input id="scanner-load-accepted" type="checkbox" />
+              <span>I accept that active scanning may create measurable load and visibility noise.</span>
+            </label>
+
+            <div class="scanner-actions">
+              <button type="button" id="scanner-create-verification" class="ghost-button scanner-hidden">
+                Create verification challenge
+              </button>
+              <button type="button" id="scanner-check-verification" class="ghost-button scanner-hidden">
+                Verify ownership now
+              </button>
+              <button type="submit">Start scan</button>
+            </div>
+          </form>
+          <div id="scanner-form-message" class="status-box"></div>
+        </article>
+
+        <article class="card scanner-card">
+          <h2>Mode Summary</h2>
+          <p id="scanner-mode-summary" class="hero-copy"></p>
+          <div class="scanner-columns">
+            <div>
+              <h3>What will be checked</h3>
+              <ul id="scanner-checked-list" class="compact-list"></ul>
+            </div>
+            <div>
+              <h3>What will not be checked</h3>
+              <ul id="scanner-not-checked-list" class="compact-list"></ul>
+            </div>
+          </div>
+          <div id="scanner-verification-box" class="status-box scanner-hidden"></div>
+          <div id="scanner-limitations-box" class="status-box warning-box"></div>
+        </article>
+      </section>
+
+      <section class="scanner-grid">
+        <article class="card scanner-card">
+          <h2>Job Status</h2>
+          <div id="scanner-job-status" class="status-box">
+            Start a scan to see queued, running, completed, failed, or cancelled states here.
+          </div>
+          <div class="scanner-actions">
+            <button type="button" id="scanner-cancel-job" class="ghost-button scanner-hidden">Cancel current job</button>
+          </div>
+          <div id="scanner-job-progress" class="progress-shell scanner-hidden">
+            <div id="scanner-job-progress-bar" class="progress-bar"></div>
+          </div>
+          <div class="scanner-columns">
+            <div>
+              <h3>Events</h3>
+              <ul id="scanner-job-events" class="compact-list"></ul>
+            </div>
+            <div>
+              <h3>Artifacts</h3>
+              <ul id="scanner-job-artifacts" class="compact-list"></ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="card scanner-card">
+          <h2>Public-Service Limitations</h2>
+          <ul class="compact-list">
+            <li>The scanner does not replace a pentest or exploit-oriented assessment.</li>
+            <li>Active scan only runs after ownership verification or explicit authorization proof.</li>
+            <li>Some checks remain heuristic and still benefit from operator review.</li>
+            <li>External targets may rate-limit, block, or partially hide public surfaces.</li>
+            <li>Available scan modes depend on deployment feature flags and safe defaults.</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+
+    <script src="./scanner.js"></script>
+  </body>
+</html>

@@ -373,3 +373,111 @@ class AuditLog(Base):
     user: Mapped[Optional[User]] = relationship(back_populates="audit_logs")
     workspace: Mapped[Optional[Workspace]] = relationship(back_populates="audit_logs")
     project: Mapped[Optional[Project]] = relationship(back_populates="audit_logs")
+
+
+class VerificationRequest(Base):
+    __tablename__ = "verification_requests"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    target_url: Mapped[str] = mapped_column(String(500))
+    target_domain: Mapped[str] = mapped_column(String(255), index=True)
+    scan_mode: Mapped[str] = mapped_column(String(32), default="active")
+    method: Mapped[str] = mapped_column(String(32))
+    status: Mapped[str] = mapped_column(String(32), default="pending")
+    actor_user_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("users.id"), nullable=True
+    )
+    actor_session_id: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    source_ip: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    user_agent: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+    verified_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    expires_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+
+class VerificationToken(Base):
+    __tablename__ = "verification_tokens"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    verification_request_id: Mapped[int] = mapped_column(
+        ForeignKey("verification_requests.id")
+    )
+    token_hash: Mapped[str] = mapped_column(String(255))
+    challenge_value: Mapped[str] = mapped_column(String(500))
+    method: Mapped[str] = mapped_column(String(32))
+    status: Mapped[str] = mapped_column(String(32), default="pending")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+    expires_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+
+class ConsentRecord(Base):
+    __tablename__ = "consent_records"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    target_url: Mapped[str] = mapped_column(String(500))
+    target_domain: Mapped[str] = mapped_column(String(255), index=True)
+    scan_mode: Mapped[str] = mapped_column(String(32))
+    consent_scope: Mapped[str] = mapped_column(String(64))
+    ownership_confirmed: Mapped[bool] = mapped_column(Boolean, default=False)
+    load_warning_accepted: Mapped[bool] = mapped_column(Boolean, default=False)
+    limitations_accepted: Mapped[bool] = mapped_column(Boolean, default=False)
+    actor_user_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("users.id"), nullable=True
+    )
+    actor_session_id: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    source_ip: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    user_agent: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    verification_request_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("verification_requests.id"), nullable=True
+    )
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+
+class ScanJob(Base):
+    __tablename__ = "scan_jobs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    submitted_url: Mapped[str] = mapped_column(String(500))
+    normalized_url: Mapped[str] = mapped_column(String(500))
+    target_domain: Mapped[str] = mapped_column(String(255), index=True)
+    scan_mode: Mapped[str] = mapped_column(String(32), default="passive")
+    status: Mapped[str] = mapped_column(String(32), default="queued")
+    progress_percent: Mapped[int] = mapped_column(Integer, default=0)
+    current_stage: Mapped[str] = mapped_column(String(64), default="queued")
+    error_summary: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    report_artifacts_json: Mapped[str] = mapped_column(Text, default="[]")
+    requester_user_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("users.id"), nullable=True
+    )
+    requester_session_id: Mapped[Optional[str]] = mapped_column(
+        String(255), nullable=True
+    )
+    requester_ip: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    requester_email: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    webhook_url: Mapped[Optional[str]] = mapped_column(String(1000), nullable=True)
+    notification_email: Mapped[Optional[str]] = mapped_column(
+        String(255), nullable=True
+    )
+    telegram_chat_id: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    verification_request_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("verification_requests.id"), nullable=True
+    )
+    consent_record_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("consent_records.id"), nullable=True
+    )
+    cancellation_requested: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+    started_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    finished_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+
+class ScanJobEvent(Base):
+    __tablename__ = "scan_job_events"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    scan_job_id: Mapped[int] = mapped_column(ForeignKey("scan_jobs.id"), index=True)
+    status: Mapped[str] = mapped_column(String(32))
+    stage: Mapped[str] = mapped_column(String(64))
+    message: Mapped[str] = mapped_column(Text)
+    metadata_json: Mapped[str] = mapped_column(Text, default="{}")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)

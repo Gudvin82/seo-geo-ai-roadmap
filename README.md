@@ -93,6 +93,7 @@ operator or an AI coding agent can use end to end:
 - Verification: [VERIFY_DEPLOYMENT.md](./VERIFY_DEPLOYMENT.md)
 - API reference: [docs/en/api-reference.md](./docs/en/api-reference.md)
 - Hosted validator: [docs site validator](./docs_site/validator.md)
+- Scanner foundation: [docs/en/public-scanner-v360.md](./docs/en/public-scanner-v360.md)
 - Command surface: [docs/en/command-catalog-v340.md](./docs/en/command-catalog-v340.md)
 - Bootstrap guide: [docs/en/bootstrap-guide-v340.md](./docs/en/bootstrap-guide-v340.md)
 - Architecture note: [ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md)
@@ -124,6 +125,14 @@ operator or an AI coding agent can use end to end:
 - public architecture note in EN and RU describing deployment, audit flow, and scanner evolution
 - command-catalog expansion for `deploy` and `scanner` use cases
 
+## What `v3.6.0` adds
+
+- dedicated scanner intake page for passive, active, and feature-flagged full scans
+- ownership verification plus consent flow for active scanning
+- async scan jobs with status, events, cancellation, and artifact visibility
+- versioned JSON, markdown, CSV, and HTML export artifacts plus completion hooks
+- public-service limitations surfaced in UI and docs before scan launch
+
 ## AI handoff block
 
 Give this repository to your AI coding agent and tell it:
@@ -135,7 +144,8 @@ Give this repository to your AI coding agent and tell it:
 5. run `python scripts/bootstrap_self_hosted.py --mode demo --format markdown`
 6. run `make turnkey-demo`
 7. run `make agent-self-check`
-8. report what was verified, what was simulated, and what still needs human
+8. if scanner intake is needed, open `app/frontend/scanner.html` and follow the built-in verification and status flow
+9. report what was verified, what was simulated, and what still needs human
    review
 
 The repository is intentionally structured so an AI agent can deploy it from
@@ -293,6 +303,9 @@ See [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md).
 
 ## Latest changes
 
+- `v3.6.0`: dedicated scanner intake page, ownership verification and consent flow,
+  async scan jobs, versioned export artifacts, notification hooks, and public
+  limitations in UI and docs
 - `v3.5.0`: built-in AI handoff task packs, scanner-oriented bootstrap mode,
   public EN/RU architecture notes, and command-surface expansion for deploy
   and scanner scenarios

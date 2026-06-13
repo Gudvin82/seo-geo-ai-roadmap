@@ -22,11 +22,33 @@ class Settings:
     login_attempt_window_seconds: int = 900
     login_attempt_limit: int = 5
     auto_create_schema: bool = True
+    allow_active_scan: bool = False
+    allow_public_intake: bool = False
+    allow_anonymous_submission: bool = False
+    allow_full_scan: bool = False
+    scanner_allowed_schemes: str = "https,http"
+    scanner_max_url_length: int = 2048
+    scanner_max_concurrent_submissions_per_ip: int = 3
+    scanner_verification_ttl_minutes: int = 30
+    scanner_webhook_timeout_seconds: int = 10
+    scanner_smtp_host: str = ""
+    scanner_smtp_port: int = 587
+    scanner_smtp_username: str = ""
+    scanner_smtp_password: str = ""
+    scanner_smtp_from_email: str = ""
+    scanner_telegram_bot_token: str = ""
 
     def cors_origin_list(self) -> list[str]:
         if self.cors_origins.strip() == "*":
             return ["*"]
         return [item.strip() for item in self.cors_origins.split(",") if item.strip()]
+
+    def scanner_allowed_scheme_list(self) -> list[str]:
+        return [
+            item.strip().lower()
+            for item in self.scanner_allowed_schemes.split(",")
+            if item.strip()
+        ]
 
 
 def get_repo_root() -> Path:
@@ -58,4 +80,28 @@ def load_settings() -> Settings:
         login_attempt_limit=int(os.getenv("APP_LOGIN_ATTEMPT_LIMIT", "5")),
         auto_create_schema=os.getenv("APP_AUTO_CREATE_SCHEMA", "true").lower()
         == "true",
+        allow_active_scan=os.getenv("ALLOW_ACTIVE_SCAN", "false").lower() == "true",
+        allow_public_intake=os.getenv("ALLOW_PUBLIC_INTAKE", "false").lower() == "true",
+        allow_anonymous_submission=os.getenv(
+            "ALLOW_ANONYMOUS_SUBMISSION", "false"
+        ).lower()
+        == "true",
+        allow_full_scan=os.getenv("ALLOW_FULL_SCAN", "false").lower() == "true",
+        scanner_allowed_schemes=os.getenv("SCANNER_ALLOWED_SCHEMES", "https,http"),
+        scanner_max_url_length=int(os.getenv("SCANNER_MAX_URL_LENGTH", "2048")),
+        scanner_max_concurrent_submissions_per_ip=int(
+            os.getenv("SCANNER_MAX_CONCURRENT_SUBMISSIONS_PER_IP", "3")
+        ),
+        scanner_verification_ttl_minutes=int(
+            os.getenv("SCANNER_VERIFICATION_TTL_MINUTES", "30")
+        ),
+        scanner_webhook_timeout_seconds=int(
+            os.getenv("SCANNER_WEBHOOK_TIMEOUT_SECONDS", "10")
+        ),
+        scanner_smtp_host=os.getenv("SCANNER_SMTP_HOST", ""),
+        scanner_smtp_port=int(os.getenv("SCANNER_SMTP_PORT", "587")),
+        scanner_smtp_username=os.getenv("SCANNER_SMTP_USERNAME", ""),
+        scanner_smtp_password=os.getenv("SCANNER_SMTP_PASSWORD", ""),
+        scanner_smtp_from_email=os.getenv("SCANNER_SMTP_FROM_EMAIL", ""),
+        scanner_telegram_bot_token=os.getenv("SCANNER_TELEGRAM_BOT_TOKEN", ""),
     )

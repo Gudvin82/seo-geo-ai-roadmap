@@ -95,6 +95,7 @@ discoverability. Ее можно развернуть на своем компь
 - Verification: [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
 - API reference: [docs/ru/api-reference.md](./docs/ru/api-reference.md)
 - Hosted validator: [docs site validator](./docs_site/validator.md)
+- Scanner foundation: [docs/ru/public-scanner-v360.md](./docs/ru/public-scanner-v360.md)
 - Command surface: [docs/ru/command-catalog-v340.md](./docs/ru/command-catalog-v340.md)
 - Bootstrap guide: [docs/ru/bootstrap-guide-v340.md](./docs/ru/bootstrap-guide-v340.md)
 - Architecture note: [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
@@ -126,6 +127,14 @@ discoverability. Ее можно развернуть на своем компь
 - публичная архитектурная справка на EN и RU с описанием deployment, audit flow и развития scanner-контура
 - расширение command-catalog под `deploy` и `scanner` сценарии
 
+## Что добавляет `v3.6.0`
+
+- dedicated scanner intake page для passive, active и feature-flagged full scan modes
+- ownership verification и consent flow для active scanning
+- async scan jobs со статусом, событиями, cancellation и artifact visibility
+- versioned JSON, markdown, CSV и HTML exports плюс completion hooks
+- public-service limitations прямо в UI и docs до запуска скана
+
 ## Блок для передачи AI
 
 Передайте этот репозиторий своему AI coding agent и скажите ему:
@@ -137,7 +146,8 @@ discoverability. Ее можно развернуть на своем компь
 5. выполнить `python scripts/bootstrap_self_hosted.py --mode demo --format markdown`
 6. выполнить `make turnkey-demo`
 7. выполнить `make agent-self-check`
-8. отдельно отчитаться, что реально проверено, что смоделировано и где нужен
+8. если нужен scanner intake, открыть `app/frontend/scanner.html` и пройти встроенный verification/status flow
+9. отдельно отчитаться, что реально проверено, что смоделировано и где нужен
    human review
 
 Репозиторий специально собран так, чтобы AI-агент мог развернуть его с нуля и
@@ -297,6 +307,9 @@ snapshot-оценками для:
 
 ## Latest changes
 
+- `v3.6.0`: dedicated scanner intake page, ownership verification и consent flow,
+  async scan jobs, versioned export artifacts, notification hooks и public
+  limitations в UI и docs
 - `v3.5.0`: встроенные AI handoff task packs, scanner-oriented bootstrap mode,
   публичные EN/RU архитектурные справки и расширение command surface для
   deploy/scanner сценариев

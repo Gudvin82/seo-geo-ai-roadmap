@@ -261,6 +261,22 @@ Command router payload:
 }
 ```
 
+## Public scanner foundation
+
+- `GET /api/v1/scanner/config`
+- `POST /api/v1/scanner/verification-requests`
+- `POST /api/v1/scanner/verification-requests/{id}/verify`
+- `POST /api/v1/scanner/consent-records`
+- `POST /api/v1/scan-jobs`
+- `GET /api/v1/scan-jobs/{id}`
+- `POST /api/v1/scan-jobs/{id}/cancel`
+- `GET /api/v1/scan-jobs/{id}/events`
+- `GET /api/v1/scan-jobs/{id}/artifacts`
+- `GET /api/v1/scan-jobs/{id}/artifacts/{filename}`
+
+Scanner requests привязаны к `X-Scanner-Session` header.
+Active и full scan modes требуют ownership verification и consent.
+
 ## Audit logs
 
 - `GET /api/v1/audit-logs?workspace_id={workspace_id}`

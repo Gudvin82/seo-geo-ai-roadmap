@@ -348,6 +348,93 @@ button:hover {
   color: var(--warning);
 }
 
+.scanner-shell {
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+}
+
+.scanner-hero {
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.scanner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.scanner-card h2,
+.scanner-card h3 {
+  margin-top: 0;
+}
+
+.scanner-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.scanner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--muted);
+}
+
+.check input {
+  margin-top: 3px;
+}
+
+.status-box {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: rgba(15, 118, 110, 0.08);
+  border: 1px solid rgba(15, 118, 110, 0.2);
+}
+
+.warning-box {
+  background: rgba(180, 83, 9, 0.1);
+  border-color: rgba(180, 83, 9, 0.24);
+}
+
+.error-box {
+  background: rgba(185, 28, 28, 0.08);
+  border-color: rgba(185, 28, 28, 0.22);
+}
+
+.scanner-hidden {
+  display: none;
+}
+
+.progress-shell {
+  margin: 16px 0;
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(23, 34, 37, 0.08);
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+  transition: width 180ms ease;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;

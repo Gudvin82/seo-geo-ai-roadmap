@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.6.0 — Public Scanner Foundation, Ownership Verification, and Async Job UX
+
+- Added a dedicated scanner intake page with passive, active, and feature-flagged full scan modes
+- Added ownership verification requests, verification tokens, and consent records for public/self-hosted scanner flows
+- Added async scan jobs with queued, verifying, running, partial-success, completed, failed, cancelled, and expired lifecycle states
+- Added scan job events, artifacts, cancellation support, per-IP and per-domain throttling, and SSRF-oriented target blocking
+- Added versioned JSON, markdown, CSV, and HTML export artifacts plus webhook, SMTP/email, and Telegram completion hooks
+- Added EN/RU scanner foundation docs, docs-site scanner page, and public limitations visibility in UI and release-facing docs
+- Updated public architecture notes to describe the implemented scanner foundation and removed the old next-step backlog section
+
 ## v3.5.0 — AI Handoff Packs, Scanner Bootstrap, and Public Architecture Note
 
 - Added `scripts/agent_handoff_pack.py` so users can generate ready-to-paste AI task prompts for audit, demo deployment, scanner deployment, and client setup flows

@@ -175,6 +175,21 @@ def main() -> int:
                 ]
             ),
         },
+        {
+            "id": "v360_public_scanner_foundation",
+            "label": "v3.6.0 public scanner foundation assets exist",
+            "passed": all(
+                exists(path)
+                for path in [
+                    "app/frontend/scanner.html",
+                    "app/frontend/scanner.js",
+                    "app/backend/app/api/scanner.py",
+                    "app/backend/app/services/scan_jobs.py",
+                    "docs/en/public-scanner-v360.md",
+                    "docs/ru/public-scanner-v360.md",
+                ]
+            ),
+        },
     ]
 
     passed_count = sum(1 for item in checks if item["passed"])

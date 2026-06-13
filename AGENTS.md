@@ -41,6 +41,14 @@ If the user wants a ready task prompt instead of inventing one:
 - run `python scripts/agent_handoff_pack.py --task audit-site --language ru --target-url https://example.com`
 - run `python scripts/agent_handoff_pack.py --task deploy-scanner --language en`
 
+If the user wants a public or semi-public scanner intake flow:
+
+- open `app/frontend/scanner.html`
+- read `docs/en/public-scanner-v360.md` or `docs/ru/public-scanner-v360.md`
+- use `GET /api/v1/scanner/config` before exposing scan modes in UI
+- require ownership verification before `active` or `full` scans
+- use `POST /api/v1/scan-jobs` and poll `GET /api/v1/scan-jobs/{id}`
+
 ## For AI Agents: Mandatory self-check before claiming "done"
 
 Before saying the project is ready, deployed, or turnkey, run:
@@ -236,6 +244,10 @@ task type.
 - `SECURITY_CHECKLIST.md`
 - `docs/en/api-reference.md`
 - `docs/en/ai-operator-mode.md`
+- `docs/en/public-scanner-v360.md`
+- `docs/ru/public-scanner-v360.md`
+- `app/frontend/scanner.html`
+- `app/frontend/scanner.js`
 
 If the user asks for a turnkey product foundation or self-hosted SaaS setup,
 agents should preserve the methodology layer and extend the app layer instead of

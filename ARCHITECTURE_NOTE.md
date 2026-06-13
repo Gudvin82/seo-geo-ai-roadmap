@@ -1,7 +1,7 @@
 # Architecture Note
 
 Public architecture note for `seo-geo-ai-roadmap`, aligned with the product
-state after `v3.5.0`.
+state after `v3.6.0`.
 
 ## 1. Product shape
 
@@ -78,19 +78,21 @@ and point the agent to a built-in task pack such as:
 
 ## 5. Scanner architecture direction
 
-The repository already contains the audit core, reporting path, and deployment
-surface required for a scanner-style product.
+The repository now contains a public/self-hosted scanner foundation on top of
+the existing audit core, reporting path, and deployment surface.
 
-The recommended scanner shape is:
+The implemented scanner shape is:
 
 - intake layer:
-  authenticated operator form or consent-aware public form
+  dedicated intake page with safe mode selection and pre-submit limitations
 - orchestration layer:
-  create workspace and project, then trigger the audit path
+  verification, consent recording, async scan job creation, and job state
+  transitions
 - evidence layer:
-  brand facts, reports, artifacts, SoV snapshots, validator outputs
+  verification requests, consent records, scan job events, and versioned export
+  artifacts
 - delivery layer:
-  operator dashboard, exported report, or customer-facing summary page
+  status page, downloadable artifacts, and optional webhook or email delivery
 
 This is enough to build:
 
@@ -128,16 +130,3 @@ Guardrails already present in the repository:
 - `make agent-self-check`
 - CI for markdown, scripts, Python, docs, and security reporting
 - EN/RU user-facing synchronization discipline
-
-## 8. Recommended next step
-
-If the goal is "anyone can deploy their own scanner", the next engineering step
-is not a rewrite. The right step is to add:
-
-- a dedicated intake page
-- consent or ownership verification for active scanning
-- async queue and job status visibility
-- stronger export and notification delivery
-- explicit public-service limitations in the UI and docs
-
-That extends the existing architecture instead of replacing it.
