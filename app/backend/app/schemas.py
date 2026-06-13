@@ -316,6 +316,14 @@ class IntegrationConnectionRead(BaseModel):
     latest_snapshot: dict[str, Any]
     last_sync_status: Optional[str]
     last_sync_at: Optional[datetime]
+    readiness_tier: str
+    sync_mode: str
+    required_env_vars: list[str] = Field(default_factory=list)
+    credential_status: str
+    recommended_ci_workflow: str
+    contract_version: str
+    sync_capabilities: list[str] = Field(default_factory=list)
+    next_step: str
     created_at: datetime
 
 
@@ -358,6 +366,13 @@ class CmsConnectorRead(BaseModel):
     risky_actions: list[str] = Field(default_factory=list)
     unsupported_actions: list[str] = Field(default_factory=list)
     retry_policy: dict[str, Any] = Field(default_factory=dict)
+    readiness_tier: str
+    execution_mode: str
+    contract_version: str
+    required_env_vars: list[str] = Field(default_factory=list)
+    credential_status: str
+    production_path: list[str] = Field(default_factory=list)
+    next_step: str
     created_at: datetime
 
 
@@ -446,6 +461,57 @@ class CommandRouterRequest(BaseModel):
 
 class CommandCatalogResponse(BaseModel):
     routes: list[CommandRouteRead]
+
+
+class IntegrationSourceContractRead(BaseModel):
+    source_type: str
+    label: str
+    readiness_tier: str
+    sync_mode: str
+    required_env_vars: list[str] = Field(default_factory=list)
+    recommended_ci_workflow: str
+    ci_gates: list[str] = Field(default_factory=list)
+    capabilities: list[str] = Field(default_factory=list)
+    contract_version: str
+    next_step: str
+
+
+class IntegrationContractsResponse(BaseModel):
+    contracts: list[IntegrationSourceContractRead]
+
+
+class ProductModeRead(BaseModel):
+    id: str
+    title: str
+    primary_user: str
+    purpose: str
+    best_for: list[str] = Field(default_factory=list)
+    first_class_paths: list[str] = Field(default_factory=list)
+    not_the_goal: list[str] = Field(default_factory=list)
+
+
+class ProductModesResponse(BaseModel):
+    modes: list[ProductModeRead]
+
+
+class CIGatingRead(BaseModel):
+    first_class_path: str
+    workflows: list[str] = Field(default_factory=list)
+    required_signals: list[str] = Field(default_factory=list)
+    recommended_sequence: list[str] = Field(default_factory=list)
+
+
+class ExecutiveDashboardRead(BaseModel):
+    project_id: int
+    workspace_id: int
+    executive_score: float
+    health_band: str
+    narrative: str
+    metrics: dict[str, Any]
+    priorities: list[dict[str, Any]] = Field(default_factory=list)
+    integrations: list[dict[str, Any]] = Field(default_factory=list)
+    cms: list[dict[str, Any]] = Field(default_factory=list)
+    ci_gating: dict[str, Any] = Field(default_factory=dict)
 
 
 class PromptSetCreate(BaseModel):

@@ -14,15 +14,23 @@ from ..schemas import (
     CmsConnectorCreate,
     CmsConnectorRead,
     CmsWritebackAttemptRead,
+    IntegrationContractsResponse,
+    IntegrationSourceContractRead,
     PatchPackRead,
 )
-from ..services.cms import cms_patch_package, inventory_cms
+from ..services.cms import (
+    all_cms_contracts,
+    cms_contract,
+    cms_patch_package,
+    inventory_cms,
+)
 from ..services.retries import RetryPolicy, run_with_retry
 
 router = APIRouter(prefix="/cms", tags=["cms"])
 
 
 def _serialize(row: CmsConnector) -> CmsConnectorRead:
+    contract = cms_contract(row.cms_type)
     allowed_actions = [
         "inventory sync",
         "metadata patch planning",
@@ -69,7 +77,40 @@ def _serialize(row: CmsConnector) -> CmsConnectorRead:
             "terminal_state": "dead",
             "scope": "inventory sync and governed writeback preparation",
         },
+        readiness_tier=contract["readiness_tier"],
+        execution_mode=contract["execution_mode"],
+        contract_version=contract["contract_version"],
+        required_env_vars=contract["required_env_vars"],
+        credential_status="configured" if row.auth_env_var else "missing",
+        production_path=contract["production_path"],
+        next_step=contract["next_step"],
         created_at=row.created_at,
+    )
+
+
+@router.get("/contracts", response_model=IntegrationContractsResponse)
+def list_cms_contracts() -> IntegrationContractsResponse:
+    return IntegrationContractsResponse(
+        contracts=[
+            IntegrationSourceContractRead(
+                source_type=contract["cms_type"],
+                label=contract["cms_type"].replace("_", " ").title(),
+                readiness_tier=contract["readiness_tier"],
+                sync_mode=contract["execution_mode"],
+                required_env_vars=contract["required_env_vars"],
+                recommended_ci_workflow=".github/workflows/ai-visibility-check.yml",
+                ci_gates=[
+                    "inventory sync",
+                    "patch export",
+                    "human review gate",
+                    "re-audit after apply",
+                ],
+                capabilities=contract["production_path"],
+                contract_version=contract["contract_version"],
+                next_step=contract["next_step"],
+            )
+            for contract in all_cms_contracts()
+        ]
     )
 
 

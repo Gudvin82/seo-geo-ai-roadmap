@@ -35,6 +35,7 @@
 
         <nav class="nav">
           <button class="nav-link is-active" data-pane-target="overview-pane" data-i18n="navOverview">Overview</button>
+          <button class="nav-link" data-pane-target="executive-pane" data-i18n="navExecutive">Executive</button>
           <a class="nav-link" href="./scanner.html">Scanner Intake</a>
           <a class="nav-link" href="./graph.html">Graph Intelligence</a>
           <button class="nav-link" data-pane-target="auth-pane" data-i18n="navAuth">Auth</button>
@@ -166,6 +167,17 @@
             </article>
           </div>
 
+          <div class="split lower-grid">
+            <div class="card">
+              <h4 data-i18n="modeSurfaceTitle">Product modes</h4>
+              <div id="product-modes" class="stack"></div>
+            </div>
+            <div class="card">
+              <h4 data-i18n="ciGatingTitle">CI gating path</h4>
+              <pre id="ci-gating" class="code-block"></pre>
+            </div>
+          </div>
+
           <div class="chart-grid">
             <article class="card">
               <h4 data-i18n="chartAudits">Audit history</h4>
@@ -187,6 +199,45 @@
               <p class="chart-copy" data-i18n="chartSovCopy">Latest mention rate and AI Citation Score snapshots.</p>
               <div id="sov-history-chart" class="mini-chart"></div>
             </article>
+          </div>
+        </section>
+
+        <section class="pane" id="executive-pane">
+          <div class="pane-header">
+            <h3 data-i18n="executiveTitle">Executive dashboard</h3>
+            <button id="refresh-executive" class="ghost-button" data-i18n="refresh">Refresh</button>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="metric-card">
+              <span class="metric-label" data-i18n="executiveScoreLabel">Executive score</span>
+              <strong id="executive-score">n/a</strong>
+            </article>
+            <article class="metric-card">
+              <span class="metric-label" data-i18n="executiveHealthLabel">Health band</span>
+              <strong id="executive-health">n/a</strong>
+            </article>
+            <article class="metric-card">
+              <span class="metric-label" data-i18n="integrationCountLabel">Connected integrations</span>
+              <strong id="executive-integrations-count">0</strong>
+            </article>
+            <article class="metric-card">
+              <span class="metric-label" data-i18n="cmsCountLabel">Connected CMS</span>
+              <strong id="executive-cms-count">0</strong>
+            </article>
+          </div>
+
+          <div class="split">
+            <div class="card">
+              <h4 data-i18n="executiveNarrativeTitle">Narrative</h4>
+              <div id="executive-narrative" class="project-meta"></div>
+              <h4 data-i18n="executivePrioritiesTitle">Top priorities</h4>
+              <div id="executive-priorities" class="stack"></div>
+            </div>
+            <div class="card">
+              <h4 data-i18n="executiveMetricsTitle">Machine-readable dashboard</h4>
+              <pre id="executive-dashboard-json" class="code-block"></pre>
+            </div>
           </div>
         </section>
 
@@ -455,6 +506,8 @@
             <div class="card">
               <h4 data-i18n="integrationList">Integration list</h4>
               <div id="integration-list" class="stack"></div>
+              <h4 data-i18n="integrationContractsTitle">Integration contracts</h4>
+              <pre id="integration-contracts" class="code-block"></pre>
             </div>
           </div>
         </section>
@@ -506,6 +559,8 @@
             <div class="card">
               <h4 data-i18n="cmsList">CMS connector list</h4>
               <div id="cms-list" class="stack"></div>
+              <h4 data-i18n="cmsContractsTitle">CMS contracts</h4>
+              <pre id="cms-contracts" class="code-block"></pre>
             </div>
           </div>
         </section>

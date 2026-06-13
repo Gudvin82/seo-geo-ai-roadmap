@@ -12,6 +12,11 @@ const state = {
   artifacts: [],
   sovRuns: [],
   notificationEndpoints: [],
+  productModes: [],
+  ciGating: {},
+  executiveDashboard: null,
+  integrationContracts: [],
+  cmsContracts: [],
   presets: {},
   selectedWorkspaceId: "",
   selectedProjectId: "",
@@ -20,6 +25,7 @@ const state = {
 const translations = {
   en: {
     navOverview: "Overview",
+    navExecutive: "Executive",
     appTitle: "Discoverability OS App",
     appSubtitle:
       "Free and transparent self-hosted control panel for discoverability audits, multi-provider AI, and bilingual reporting.",
@@ -194,9 +200,22 @@ const translations = {
     integrationStarters: "Integration starters",
     repoAssets: "Repo assets reused by the app",
     activityLog: "Activity log",
+    modeSurfaceTitle: "Product modes",
+    ciGatingTitle: "CI gating path",
+    executiveTitle: "Executive dashboard",
+    executiveScoreLabel: "Executive score",
+    executiveHealthLabel: "Health band",
+    integrationCountLabel: "Connected integrations",
+    cmsCountLabel: "Connected CMS",
+    executiveNarrativeTitle: "Narrative",
+    executivePrioritiesTitle: "Top priorities",
+    executiveMetricsTitle: "Machine-readable dashboard",
+    integrationContractsTitle: "Integration contracts",
+    cmsContractsTitle: "CMS contracts",
   },
   ru: {
     navOverview: "Обзор",
+    navExecutive: "Executive",
     appTitle: "Discoverability OS App",
     appSubtitle:
       "Бесплатная и прозрачная self-hosted панель для discoverability-аудитов, мультипровайдерного AI и двуязычной отчетности.",
@@ -371,6 +390,18 @@ const translations = {
     integrationStarters: "Стартовые интеграции",
     repoAssets: "Репозиторные assets, которые переиспользует приложение",
     activityLog: "Журнал активности",
+    modeSurfaceTitle: "Режимы продукта",
+    ciGatingTitle: "Путь CI gating",
+    executiveTitle: "Executive dashboard",
+    executiveScoreLabel: "Executive score",
+    executiveHealthLabel: "Health band",
+    integrationCountLabel: "Подключенные интеграции",
+    cmsCountLabel: "Подключенные CMS",
+    executiveNarrativeTitle: "Narrative",
+    executivePrioritiesTitle: "Главные приоритеты",
+    executiveMetricsTitle: "Machine-readable dashboard",
+    integrationContractsTitle: "Контракты интеграций",
+    cmsContractsTitle: "Контракты CMS",
   },
 };
 
@@ -562,6 +593,52 @@ function renderOverview() {
   );
 }
 
+function renderProductModes() {
+  renderCards("#product-modes", state.productModes, (row) =>
+    simpleCard(row.title, [
+      row.primary_user,
+      row.purpose,
+      `Best for: ${(row.best_for || []).join(", ")}`,
+    ]),
+  );
+  $("#ci-gating").textContent = state.ciGating.first_class_path
+    ? JSON.stringify(state.ciGating, null, 2)
+    : "";
+}
+
+function renderExecutiveDashboard() {
+  const dashboard = state.executiveDashboard;
+  if (!dashboard) {
+    $("#executive-score").textContent = "n/a";
+    $("#executive-health").textContent = "n/a";
+    $("#executive-integrations-count").textContent = "0";
+    $("#executive-cms-count").textContent = "0";
+    $("#executive-narrative").textContent =
+      "Select a project and run an audit first.";
+    $("#executive-priorities").innerHTML = "";
+    $("#executive-dashboard-json").textContent = "";
+    return;
+  }
+  $("#executive-score").textContent = String(dashboard.executive_score);
+  $("#executive-health").textContent = dashboard.health_band;
+  $("#executive-integrations-count").textContent = String(
+    (dashboard.integrations || []).length,
+  );
+  $("#executive-cms-count").textContent = String((dashboard.cms || []).length);
+  $("#executive-narrative").textContent = dashboard.narrative;
+  renderCards("#executive-priorities", dashboard.priorities || [], (row) =>
+    simpleCard(row.title || "Priority", [
+      `Priority score: ${row.priority_score ?? "n/a"}`,
+      row.recommendation || "No recommendation yet.",
+    ]),
+  );
+  $("#executive-dashboard-json").textContent = JSON.stringify(
+    dashboard,
+    null,
+    2,
+  );
+}
+
 function workspaceCard(workspace) {
   const card = document.createElement("article");
   card.className = "entity-card";
@@ -608,6 +685,7 @@ function projectCard(project) {
       refreshReportsAndArtifacts(),
       refreshIntegrations(),
       refreshCmsConnectors(),
+      refreshExecutiveDashboard(),
     ]);
   });
   return card;
@@ -673,15 +751,24 @@ async function refreshIntegrations() {
   if (!state.token || !state.selectedProjectId) {
     return;
   }
-  state.integrationConnections = await apiRequest(
-    `/integrations?project_id=${state.selectedProjectId}`,
-  );
+  const [rows, contracts] = await Promise.all([
+    apiRequest(`/integrations?project_id=${state.selectedProjectId}`),
+    apiRequest("/integrations/contracts"),
+  ]);
+  state.integrationConnections = rows;
+  state.integrationContracts = contracts.contracts || [];
   renderCards("#integration-list", state.integrationConnections, (row) =>
     simpleCard(row.label, [
       `${row.source_type} · #${row.id}`,
       row.property_identifier || "starter property",
       row.last_sync_status || "not synced yet",
+      `${row.readiness_tier} · ${row.credential_status}`,
     ]),
+  );
+  $("#integration-contracts").textContent = JSON.stringify(
+    state.integrationContracts,
+    null,
+    2,
   );
 }
 
@@ -689,14 +776,21 @@ async function refreshCmsConnectors() {
   if (!state.token || !state.selectedProjectId) {
     return;
   }
-  state.cmsConnectors = await apiRequest(`/cms?project_id=${state.selectedProjectId}`);
+  const [rows, contracts] = await Promise.all([
+    apiRequest(`/cms?project_id=${state.selectedProjectId}`),
+    apiRequest("/cms/contracts"),
+  ]);
+  state.cmsConnectors = rows;
+  state.cmsContracts = contracts.contracts || [];
   renderCards("#cms-list", state.cmsConnectors, (row) =>
     simpleCard(row.label, [
       `${row.cms_type} · #${row.id}`,
       row.writeback_mode,
       row.last_sync_status || "not synced yet",
+      `${row.readiness_tier} · ${row.credential_status}`,
     ]),
   );
+  $("#cms-contracts").textContent = JSON.stringify(state.cmsContracts, null, 2);
 }
 
 async function refreshPromptSets() {
@@ -790,6 +884,33 @@ async function refreshNotifications() {
     ]),
   );
   renderOverview();
+}
+
+async function refreshModeAndCiSettings() {
+  const [productModes, ciGating] = await Promise.all([
+    apiRequest("/settings/product-modes", { headers: {} }),
+    apiRequest("/settings/ci-gating", { headers: {} }),
+  ]);
+  state.productModes = productModes.modes || [];
+  state.ciGating = ciGating;
+  renderProductModes();
+}
+
+async function refreshExecutiveDashboard() {
+  if (!state.token || !state.selectedProjectId) {
+    state.executiveDashboard = null;
+    renderExecutiveDashboard();
+    return;
+  }
+  try {
+    state.executiveDashboard = await apiRequest(
+      `/settings/executive-dashboard?project_id=${state.selectedProjectId}`,
+    );
+  } catch (error) {
+    state.executiveDashboard = null;
+    log(`Executive dashboard not ready yet: ${error.message}`, "warning");
+  }
+  renderExecutiveDashboard();
 }
 
 function formPayload(form) {
@@ -1009,6 +1130,7 @@ async function bootstrapAuthedState() {
       refreshAudits(),
       refreshSovRuns(),
       refreshReportsAndArtifacts(),
+      refreshExecutiveDashboard(),
     ]);
   }
   setStatus();
@@ -1049,6 +1171,7 @@ function installEventListeners() {
   $("#refresh-sov").addEventListener("click", () => refreshSovRuns().catch((error) => log(error.message, "warning")));
   $("#refresh-notifications").addEventListener("click", () => refreshNotifications().catch((error) => log(error.message, "warning")));
   $("#refresh-reports").addEventListener("click", () => refreshReportsAndArtifacts().catch((error) => log(error.message, "warning")));
+  $("#refresh-executive").addEventListener("click", () => refreshExecutiveDashboard().catch((error) => log(error.message, "warning")));
   $("#export-project").addEventListener("click", () => handleProjectExport().catch((error) => log(error.message, "warning")));
   $("#sign-out").addEventListener("click", () => {
     state.token = "";
@@ -1064,8 +1187,10 @@ async function init() {
   setStatus();
   try {
     await refreshPresets();
+    await refreshModeAndCiSettings();
     await bootstrapAuthedState();
     renderOverview();
+    renderExecutiveDashboard();
   } catch (error) {
     log(`Startup warning: ${error.message}`, "warning");
   }

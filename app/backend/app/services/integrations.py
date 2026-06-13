@@ -6,6 +6,106 @@ from typing import Any
 
 from .script_runner import run_script
 
+CONTRACT_VERSION = "v3.8.0"
+
+INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
+    "gsc": {
+        "source_type": "gsc",
+        "label": "Google Search Console",
+        "readiness_tier": "production_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["GSC_SERVICE_ACCOUNT_JSON"],
+        "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
+        "ci_gates": [
+            "scheduled sync",
+            "artifact export",
+            "drift comparison",
+            "report regeneration",
+        ],
+        "capabilities": [
+            "top queries import",
+            "top pages import",
+            "search visibility baseline",
+            "report attachment",
+        ],
+        "next_step": "Connect a service account secret, sync manually once, then move it into GitHub Actions or scheduled checks.",
+    },
+    "ga4": {
+        "source_type": "ga4",
+        "label": "Google Analytics 4",
+        "readiness_tier": "production_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["GA4_SERVICE_ACCOUNT_JSON"],
+        "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
+        "ci_gates": [
+            "landing-page validation",
+            "engagement trend export",
+            "delivery pack regeneration",
+        ],
+        "capabilities": [
+            "sessions import",
+            "engagement import",
+            "top-page metrics",
+            "executive dashboard rollup",
+        ],
+        "next_step": "Use GA4 as the executive outcome layer after core crawlability and discoverability signals are stable.",
+    },
+    "yandex_webmaster": {
+        "source_type": "yandex_webmaster",
+        "label": "Yandex Webmaster",
+        "readiness_tier": "production_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["YANDEX_WEBMASTER_TOKEN"],
+        "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
+        "ci_gates": [
+            "RU indexation baseline",
+            "regional diagnostics refresh",
+            "artifact export",
+        ],
+        "capabilities": [
+            "top queries import",
+            "top pages import",
+            "regional discoverability baseline",
+            "RU deliverable support",
+        ],
+        "next_step": "Treat Yandex Webmaster as a first-class RU market source and keep it in the same recurring comparison loop as GSC.",
+    },
+    "yandex_metrica": {
+        "source_type": "yandex_metrica",
+        "label": "Yandex Metrica",
+        "readiness_tier": "production_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["YANDEX_METRICA_TOKEN"],
+        "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
+        "ci_gates": [
+            "traffic sanity checks",
+            "goal trend export",
+            "executive dashboard refresh",
+        ],
+        "capabilities": [
+            "visit import",
+            "goal conversion import",
+            "top-page metrics",
+            "RU executive dashboard support",
+        ],
+        "next_step": "Use Metrica as the RU engagement and conversion layer paired with Yandex Webmaster for indexation and diagnostics.",
+    },
+}
+
+
+def integration_contract(source_type: str) -> dict[str, Any]:
+    source = source_type.strip().lower()
+    if source not in INTEGRATION_CONTRACTS:
+        raise ValueError(f"Unsupported integration source '{source_type}'.")
+    return {
+        **INTEGRATION_CONTRACTS[source],
+        "contract_version": CONTRACT_VERSION,
+    }
+
+
+def all_integration_contracts() -> list[dict[str, Any]]:
+    return [integration_contract(key) for key in sorted(INTEGRATION_CONTRACTS)]
+
 
 def _ga4_stub() -> dict[str, Any]:
     return {
@@ -43,21 +143,28 @@ def _yandex_metrica_stub() -> dict[str, Any]:
 
 def sync_integration_source(source_type: str) -> dict[str, Any]:
     source = source_type.strip().lower()
+    contract = integration_contract(source)
     if source == "gsc":
         code, stdout, stderr = run_script("gsc_data_stub.py", [])
         if code != 0:
             raise RuntimeError(stderr or "GSC starter import failed.")
-        return json.loads(stdout)
-    if source == "ga4":
-        return _ga4_stub()
-    if source == "yandex_webmaster":
+        payload = json.loads(stdout)
+    elif source == "ga4":
+        payload = _ga4_stub()
+    elif source == "yandex_webmaster":
         code, stdout, stderr = run_script("yandex_data_stub.py", [])
         if code != 0:
             raise RuntimeError(stderr or "Yandex Webmaster starter import failed.")
-        return json.loads(stdout)
-    if source == "yandex_metrica":
-        return _yandex_metrica_stub()
-    raise ValueError(f"Unsupported integration source '{source_type}'.")
+        payload = json.loads(stdout)
+    elif source == "yandex_metrica":
+        payload = _yandex_metrica_stub()
+    else:
+        raise ValueError(f"Unsupported integration source '{source_type}'.")
+
+    payload["contract"] = contract
+    payload["sync_mode"] = contract["sync_mode"]
+    payload["imported_at"] = datetime.utcnow().isoformat() + "Z"
+    return payload
 
 
 def compact_integration_summary(snapshot: dict[str, Any]) -> dict[str, Any]:

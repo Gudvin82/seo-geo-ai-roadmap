@@ -24,6 +24,7 @@ def test_frontend_mentions_required_workflows() -> None:
         "Projects and sites",
         "Brand truth center",
         "Provider settings",
+        "Executive dashboard",
         "Structured audit runs",
         "Reports and artifacts",
         "Graph Intelligence",

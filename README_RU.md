@@ -104,6 +104,10 @@ discoverability. Ее можно развернуть на своем компь
 - GTM and distribution: [docs/ru/distribution-and-gtm-v380.md](./docs/ru/distribution-and-gtm-v380.md)
 - Research loop: [docs/ru/research-build-improve-repeat-v380.md](./docs/ru/research-build-improve-repeat-v380.md)
 - Framework integrations: [docs/ru/framework-integrations-v380.md](./docs/ru/framework-integrations-v380.md)
+- Integration production flows: [docs/ru/integration-production-flows-v380.md](./docs/ru/integration-production-flows-v380.md)
+- Product modes: [docs/ru/product-modes-v380.md](./docs/ru/product-modes-v380.md)
+- CI gating: [docs/ru/ci-gating-v380.md](./docs/ru/ci-gating-v380.md)
+- Executive dashboard: [docs/ru/executive-dashboard-v380.md](./docs/ru/executive-dashboard-v380.md)
 - Bootstrap guide: [docs/ru/bootstrap-guide-v340.md](./docs/ru/bootstrap-guide-v340.md)
 - Architecture note: [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
 - Evaluation kit: [EVALUATE_THIS_REPO_RU.md](./EVALUATE_THIS_REPO_RU.md)
@@ -117,6 +121,8 @@ discoverability. Ее можно развернуть на своем компь
 - более ясный operating loop research → build → improve → re-measure
 - reporting packs для executive summaries, fix packs и graph snapshots
 - более понятные framework integration guidance для self-hosted scanner и delivery flows
+- production-guided GSC, Yandex и CMS contracts с CI-aware next steps
+- более полноценный executive dashboard и более четкое разделение repo, app и scanner modes
 
 ## Что добавляет `v3.3.0`
 

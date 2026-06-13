@@ -42,6 +42,42 @@ def get_command_catalog() -> CommandCatalogResponse:
     )
 
 
+@router.get("/command-contract")
+def command_contract() -> dict:
+    return {
+        "contract_version": "v3.8.0",
+        "canonical_prefix": "/geo",
+        "canonical_sequence": [
+            "/geo quick",
+            "/geo audit",
+            "/geo graph",
+            "/geo report",
+            "/geo compare",
+        ],
+        "routes": [
+            {
+                "command": item.command,
+                "aliases": item.aliases,
+                "intent": item.intent,
+                "example_invocations": item.example_invocations,
+                "output_artifacts": item.output_artifacts,
+                "use_cases": item.use_cases,
+                "recommended_scripts": item.recommended_scripts,
+                "recommended_docs": item.recommended_docs,
+                "api_routes": item.api_routes,
+                "next_step": item.next_step,
+            }
+            for item in command_catalog()
+        ],
+        "integration_touchpoints": [
+            "GET /api/v1/integrations/contracts",
+            "GET /api/v1/cms/contracts",
+            "GET /api/v1/settings/ci-gating",
+            "GET /api/v1/settings/product-modes",
+        ],
+    }
+
+
 @router.post("/command-router", response_model=CommandRouteRead)
 def command_router(payload: CommandRouterRequest) -> CommandRouteRead:
     try:

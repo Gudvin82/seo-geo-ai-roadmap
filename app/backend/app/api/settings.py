@@ -1,6 +1,22 @@
 from __future__ import annotations
 
-from fastapi import APIRouter
+import json
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from ..access import require_project_access
+from ..database import get_db
+from ..deps import get_current_user
+from ..models import AuditRun, CmsConnector, IntegrationConnection, User
+from ..schemas import (
+    CIGatingRead,
+    ExecutiveDashboardRead,
+    ProductModeRead,
+    ProductModesResponse,
+)
+from ..services.cms import cms_contract
+from ..services.integrations import integration_contract
 
 router = APIRouter(prefix="/settings", tags=["settings"])
 
@@ -25,6 +41,8 @@ def repo_assets() -> dict:
             "templates/brand-facts-template-ru.md",
             "templates/roi-model-template.md",
             "templates/roi-model-template-ru.md",
+            "templates/reporting/executive-summary-v380.md",
+            "templates/reporting/fix-pack-v380.md",
         ],
         "glossary": ["GLOSSARY.md", "GLOSSARY_RU.md"],
         "agents": ["AGENTS.md"],
@@ -171,3 +189,179 @@ def review_mode() -> dict:
             "legal or medical claims without approval",
         ],
     }
+
+
+@router.get("/product-modes", response_model=ProductModesResponse)
+def product_modes() -> ProductModesResponse:
+    return ProductModesResponse(
+        modes=[
+            ProductModeRead(
+                id="repo_methodology",
+                title="Repo methodology mode",
+                primary_user="operator or AI agent learning the system",
+                purpose="Docs, prompts, templates, command surface, and release discipline.",
+                best_for=[
+                    "audits",
+                    "handoff",
+                    "training operators",
+                    "CI-gated delivery",
+                ],
+                first_class_paths=["README.md", "AGENTS.md", "/geo ...", "docs_site"],
+                not_the_goal=["public scanner SaaS", "hidden black-box automation"],
+            ),
+            ProductModeRead(
+                id="app_control_panel",
+                title="App control panel mode",
+                primary_user="team, agency, founder, or in-house operator",
+                purpose="Workspace, project, provider, integration, CMS, reporting, and dashboard operations.",
+                best_for=[
+                    "self-hosted app usage",
+                    "executive reporting",
+                    "recurring audits",
+                ],
+                first_class_paths=[
+                    "app/frontend/index.html",
+                    "/api/v1/settings/executive-dashboard",
+                ],
+                not_the_goal=[
+                    "anonymous public intake",
+                    "ungoverned destructive writeback",
+                ],
+            ),
+            ProductModeRead(
+                id="scanner_intake",
+                title="Scanner intake mode",
+                primary_user="lead-gen or gated self-serve intake user",
+                purpose="Passive or verified scanning with clear boundaries and export artifacts.",
+                best_for=[
+                    "client intake",
+                    "lead qualification",
+                    "external scan submission",
+                ],
+                first_class_paths=["app/frontend/scanner.html", "/api/v1/scan-jobs"],
+                not_the_goal=[
+                    "open crawler abuse",
+                    "unsafe active scanning by default",
+                ],
+            ),
+        ]
+    )
+
+
+@router.get("/ci-gating", response_model=CIGatingRead)
+def ci_gating() -> CIGatingRead:
+    return CIGatingRead(
+        first_class_path="GitHub Actions is a first-class path for recurring audits, validation, and release gating.",
+        workflows=[
+            ".github/workflows/python-tests.yml",
+            ".github/workflows/markdown-lint.yml",
+            ".github/workflows/link-check.yml",
+            ".github/workflows/script-smoke-tests.yml",
+            ".github/workflows/docs-site.yml",
+            ".github/workflows/security-scans.yml",
+            ".github/workflows/ai-visibility-check.yml",
+        ],
+        required_signals=[
+            "command surface remains machine-readable",
+            "integration sync contracts stay honest",
+            "docs and app surfaces stay aligned",
+            "scanner and app modes remain clearly separated",
+        ],
+        recommended_sequence=[
+            "run lightweight validation on push",
+            "run audit or visibility workflows on schedule",
+            "attach artifacts to reports and executive dashboards",
+            "re-measure via compare and drift workflows",
+        ],
+    )
+
+
+@router.get("/executive-dashboard", response_model=ExecutiveDashboardRead)
+def executive_dashboard(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> ExecutiveDashboardRead:
+    project, _ = require_project_access(
+        db, project_id, current_user, minimum_role="viewer"
+    )
+    latest_audit = (
+        db.query(AuditRun)
+        .filter(AuditRun.project_id == project.id)
+        .order_by(AuditRun.id.desc())
+        .first()
+    )
+    integrations = (
+        db.query(IntegrationConnection)
+        .filter(IntegrationConnection.project_id == project.id)
+        .order_by(IntegrationConnection.id.desc())
+        .all()
+    )
+    cms_connectors = (
+        db.query(CmsConnector)
+        .filter(CmsConnector.project_id == project.id)
+        .order_by(CmsConnector.id.desc())
+        .all()
+    )
+    if not latest_audit:
+        raise HTTPException(
+            status_code=404, detail="No audit run found for executive dashboard."
+        )
+
+    findings = json.loads(latest_audit.finding_groups_json or "[]")
+    priorities = [
+        {
+            "title": item.get("title", "Priority"),
+            "priority_score": item.get("priority_score", 0),
+            "recommendation": item.get("recommendation", ""),
+        }
+        for item in findings[:5]
+    ]
+    executive_score = round(float(latest_audit.summary_score or 0), 1)
+    if executive_score >= 80:
+        health_band = "strong"
+    elif executive_score >= 60:
+        health_band = "watch"
+    else:
+        health_band = "critical"
+    return ExecutiveDashboardRead(
+        project_id=project.id,
+        workspace_id=project.workspace_id,
+        executive_score=executive_score,
+        health_band=health_band,
+        narrative=(
+            f"{project.name} is in {health_band} condition. "
+            "Use integrations, CMS review gates, and CI-backed re-measurement as one operating loop."
+        ),
+        metrics={
+            "latest_audit_status": latest_audit.status,
+            "latest_audit_mode": latest_audit.mode,
+            "selected_checks_count": len(
+                json.loads(latest_audit.selected_checks_json or "[]")
+            ),
+            "integrations_connected": len(integrations),
+            "cms_connectors_connected": len(cms_connectors),
+        },
+        priorities=priorities,
+        integrations=[
+            {
+                "label": row.label,
+                "source_type": row.source_type,
+                "status": row.last_sync_status or "created",
+                "readiness_tier": integration_contract(row.source_type)[
+                    "readiness_tier"
+                ],
+            }
+            for row in integrations
+        ],
+        cms=[
+            {
+                "label": row.label,
+                "cms_type": row.cms_type,
+                "writeback_mode": row.writeback_mode,
+                "readiness_tier": cms_contract(row.cms_type)["readiness_tier"],
+            }
+            for row in cms_connectors
+        ],
+        ci_gating=ci_gating().model_dump(),
+    )

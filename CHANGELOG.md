@@ -7,6 +7,8 @@
 - Added EN/RU docs for graph intelligence, distribution and GTM packaging, research-to-re-measure workflow, and framework integrations
 - Added reporting packs for executive summary, fix pack, and graph snapshot delivery
 - Updated README, README_RU, AGENTS, AI handoff prompts, START_HERE docs, docs-site pages, and tests to reflect the new v3.8.0 operator surface
+- Added production-guided machine-readable contracts for GSC, GA4, Yandex, and CMS connector flows
+- Added CI gating and product mode machine-readable endpoints plus a fuller executive dashboard surface in the app
 
 ## v3.7.0 — RU AI Hardening, ai.txt, and Discoverability Coverage
 

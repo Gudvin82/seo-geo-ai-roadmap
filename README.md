@@ -102,6 +102,10 @@ operator or an AI coding agent can use end to end:
 - GTM and distribution: [docs/en/distribution-and-gtm-v380.md](./docs/en/distribution-and-gtm-v380.md)
 - Research loop: [docs/en/research-build-improve-repeat-v380.md](./docs/en/research-build-improve-repeat-v380.md)
 - Framework integrations: [docs/en/framework-integrations-v380.md](./docs/en/framework-integrations-v380.md)
+- Integration production flows: [docs/en/integration-production-flows-v380.md](./docs/en/integration-production-flows-v380.md)
+- Product modes: [docs/en/product-modes-v380.md](./docs/en/product-modes-v380.md)
+- CI gating: [docs/en/ci-gating-v380.md](./docs/en/ci-gating-v380.md)
+- Executive dashboard: [docs/en/executive-dashboard-v380.md](./docs/en/executive-dashboard-v380.md)
 - Bootstrap guide: [docs/en/bootstrap-guide-v340.md](./docs/en/bootstrap-guide-v340.md)
 - Architecture note: [ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md)
 - Evaluation kit: [EVALUATE_THIS_REPO.md](./EVALUATE_THIS_REPO.md)
@@ -115,6 +119,8 @@ operator or an AI coding agent can use end to end:
 - clearer research → build → improve → re-measure operating loop
 - reporting packs for executive summaries, fix packs, and graph snapshots
 - clearer framework integration guidance for self-hosted scanner and delivery flows
+- production-guided GSC, Yandex, and CMS contracts with CI-aware next steps
+- fuller executive dashboard and sharper separation between repo, app, and scanner modes
 
 ## What `v3.3.0` adds
 

@@ -94,6 +94,10 @@ def test_workspace_project_and_audit_flow(
     assert metrics.status_code == 200
     assert "discoverability_report_generations_total" in metrics.text
 
+    command_contract = client.get("/api/v1/tools/command-contract")
+    assert command_contract.status_code == 200
+    assert command_contract.json()["canonical_prefix"] == "/geo"
+
     logs = client.get(
         f"/api/v1/audit-logs?workspace_id={workspace_id}",
         headers=auth_headers,
@@ -122,6 +126,13 @@ def test_workspace_project_and_audit_flow(
     )
     assert integration_sync.status_code == 200
     assert integration_sync.json()["last_sync_status"] == "completed"
+    assert integration_sync.json()["readiness_tier"] == "production_guided"
+
+    integration_contracts = client.get(
+        "/api/v1/integrations/contracts", headers=auth_headers
+    )
+    assert integration_contracts.status_code == 200
+    assert integration_contracts.json()["contracts"]
 
     cms = client.post(
         "/api/v1/cms",
@@ -144,6 +155,11 @@ def test_workspace_project_and_audit_flow(
     )
     assert cms_inventory.status_code == 200
     assert cms_inventory.json()["last_sync_status"] == "completed"
+    assert cms_inventory.json()["execution_mode"]
+
+    cms_contracts = client.get("/api/v1/cms/contracts", headers=auth_headers)
+    assert cms_contracts.status_code == 200
+    assert cms_contracts.json()["contracts"]
 
     patch_pack = client.post(
         "/api/v1/deliverables/patch-pack",
@@ -178,6 +194,17 @@ def test_workspace_project_and_audit_flow(
         headers=auth_headers,
     )
     assert project_package.status_code == 200
+
+    executive_dashboard = client.get(
+        f"/api/v1/settings/executive-dashboard?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert executive_dashboard.status_code == 200
+    assert executive_dashboard.json()["executive_score"] >= 0
+
+    product_modes = client.get("/api/v1/settings/product-modes", headers=auth_headers)
+    assert product_modes.status_code == 200
+    assert len(product_modes.json()["modes"]) >= 3
 
     imported = client.post(
         "/api/v1/exports/project-package/import",

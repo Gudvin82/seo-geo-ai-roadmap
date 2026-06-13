@@ -22,6 +22,7 @@ validation, and release discipline.
 - factual consistency and entity governance
 - prompts, templates, scripts, examples, and tests
 - graph explainability, reporting packs, and GTM packaging
+- integration contracts, executive dashboard, and clearer product modes
 
 ## Proof and implementation
 

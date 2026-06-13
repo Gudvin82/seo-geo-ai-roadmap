@@ -35,3 +35,9 @@ python scripts/agent_handoff_pack.py --task audit-site --language en --target-ur
 python scripts/bootstrap_self_hosted.py --mode demo --format markdown
 python scripts/bootstrap_self_hosted.py --mode scanner --format markdown
 ```
+
+Machine-readable contracts:
+
+- `GET /api/v1/tools/command-contract`
+- `GET /api/v1/integrations/contracts`
+- `GET /api/v1/cms/contracts`

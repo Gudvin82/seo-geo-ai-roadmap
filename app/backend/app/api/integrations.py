@@ -10,13 +10,24 @@ from ..access import record_audit_log, require_project_access
 from ..database import get_db
 from ..deps import get_current_user
 from ..models import IntegrationConnection, User
-from ..schemas import IntegrationConnectionCreate, IntegrationConnectionRead
-from ..services.integrations import compact_integration_summary, sync_integration_source
+from ..schemas import (
+    IntegrationConnectionCreate,
+    IntegrationConnectionRead,
+    IntegrationContractsResponse,
+    IntegrationSourceContractRead,
+)
+from ..services.integrations import (
+    all_integration_contracts,
+    compact_integration_summary,
+    integration_contract,
+    sync_integration_source,
+)
 
 router = APIRouter(prefix="/integrations", tags=["integrations"])
 
 
 def _serialize(row: IntegrationConnection) -> IntegrationConnectionRead:
+    contract = integration_contract(row.source_type)
     return IntegrationConnectionRead(
         id=row.id,
         workspace_id=row.workspace_id,
@@ -29,7 +40,25 @@ def _serialize(row: IntegrationConnection) -> IntegrationConnectionRead:
         latest_snapshot=json.loads(row.latest_snapshot_json or "{}"),
         last_sync_status=row.last_sync_status,
         last_sync_at=row.last_sync_at,
+        readiness_tier=contract["readiness_tier"],
+        sync_mode=contract["sync_mode"],
+        required_env_vars=contract["required_env_vars"],
+        credential_status="configured" if row.credentials_env_var else "missing",
+        recommended_ci_workflow=contract["recommended_ci_workflow"],
+        contract_version=contract["contract_version"],
+        sync_capabilities=contract["capabilities"],
+        next_step=contract["next_step"],
         created_at=row.created_at,
+    )
+
+
+@router.get("/contracts", response_model=IntegrationContractsResponse)
+def list_integration_contracts() -> IntegrationContractsResponse:
+    return IntegrationContractsResponse(
+        contracts=[
+            IntegrationSourceContractRead(**contract)
+            for contract in all_integration_contracts()
+        ]
     )
 
 
