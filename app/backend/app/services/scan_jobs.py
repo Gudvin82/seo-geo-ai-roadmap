@@ -40,7 +40,7 @@ from .discoverability_checks import (
 )
 from .scan_security import normalize_target_url
 
-SCANNER_SCHEMA_VERSION = "v3.7.0"
+SCANNER_SCHEMA_VERSION = "v4.0.0"
 SCAN_JOB_TERMINAL_STATES = {
     "partial_success",
     "completed",
@@ -566,6 +566,11 @@ def _build_summary(row: ScanJob, settings: Settings) -> dict:
         ],
     }
     issue_rows = _build_issue_rows(module_results)
+    recommendations = [
+        item["recommended_action"]
+        for item in issue_rows
+        if item.get("recommended_action")
+    ][:6]
     return {
         "schema_version": SCANNER_SCHEMA_VERSION,
         "job_id": row.id,
@@ -583,9 +588,17 @@ def _build_summary(row: ScanJob, settings: Settings) -> dict:
             "Exploit-oriented or pentest behavior",
             "Definitive legal advice or guaranteed compliance conclusions",
         ],
+        "recommendations": recommendations,
         "issues": issue_rows,
         "module_results": module_results,
         "limitations": scanner_config_payload(settings)["limitations"],
+        "task_export_targets": [
+            "github_issues",
+            "gitlab",
+            "notion",
+            "trello",
+            "linear",
+        ],
     }
 
 

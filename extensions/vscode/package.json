@@ -1,0 +1,32 @@
+{
+  "name": "seo-geo-ai-roadmap",
+  "displayName": "SEO GEO AI Roadmap",
+  "description": "Run /geo command flows and review discoverability outputs from VS Code.",
+  "version": "4.0.0",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onCommand:seoGeoAi.audit",
+    "onCommand:seoGeoAi.summary",
+    "onCommand:seoGeoAi.agentMode"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "seoGeoAi.audit",
+        "title": "SEO GEO AI: Run Audit"
+      },
+      {
+        "command": "seoGeoAi.summary",
+        "title": "SEO GEO AI: Open Summary"
+      },
+      {
+        "command": "seoGeoAi.agentMode",
+        "title": "SEO GEO AI: Start Agent Mode"
+      }
+    ]
+  },
+  "main": "./src/extension.js"
+}

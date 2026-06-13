@@ -97,6 +97,15 @@ def test_workspace_project_and_audit_flow(
     command_contract = client.get("/api/v1/tools/command-contract")
     assert command_contract.status_code == 200
     assert command_contract.json()["canonical_prefix"] == "/geo"
+    assert "/geo agent" in command_contract.json()["canonical_sequence"]
+
+    contracts_catalog = client.get("/api/v1/contracts/catalog")
+    assert contracts_catalog.status_code == 200
+    assert len(contracts_catalog.json()["contracts"]) >= 6
+
+    audit_contract = client.get("/api/v1/contracts/audit_run")
+    assert audit_contract.status_code == 200
+    assert audit_contract.json()["title"] == "Audit Run Contract"
 
     logs = client.get(
         f"/api/v1/audit-logs?workspace_id={workspace_id}",
@@ -175,6 +184,45 @@ def test_workspace_project_and_audit_flow(
     assert patch_pack.status_code == 200
     assert "issue_backlog" in patch_pack.json()["outputs"]
 
+    audit_tasks = client.get(
+        f"/api/v1/tasks/audit-run/{audit.json()['audit_job_id']}",
+        headers=auth_headers,
+    )
+    assert audit_tasks.status_code == 200
+    assert audit_tasks.json()["tasks"]
+
+    graph_snapshot = client.get(
+        f"/api/v1/graph-runtime/audit-run/{audit.json()['audit_job_id']}",
+        headers=auth_headers,
+    )
+    assert graph_snapshot.status_code == 200
+    assert graph_snapshot.json()["nodes"]
+
+    agent_contract = client.get("/api/v1/agent-mode/contract", headers=auth_headers)
+    assert agent_contract.status_code == 200
+    assert "agent-plan" in agent_contract.json()["supported_modes"]
+
+    agent_overview = client.get(
+        f"/api/v1/agent-mode/overview?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert agent_overview.status_code == 200
+    assert "safe_action_boundary" in agent_overview.json()
+
+    agent_run = client.post(
+        "/api/v1/agent-mode/runs",
+        json={
+            "project_id": project_id,
+            "mode": "agent-plan",
+            "source_type": "audit_run",
+            "source_id": audit.json()["audit_job_id"],
+            "benchmark": "b2b_saas",
+        },
+        headers=auth_headers,
+    )
+    assert agent_run.status_code == 200
+    assert agent_run.json()["follow_up_tasks"]
+
     client_pack = client.post(
         "/api/v1/deliverables/client-pack",
         json={
@@ -201,6 +249,13 @@ def test_workspace_project_and_audit_flow(
     )
     assert executive_dashboard.status_code == 200
     assert executive_dashboard.json()["executive_score"] >= 0
+
+    managed_boundary = client.get(
+        "/api/v1/settings/managed-api-boundary",
+        headers=auth_headers,
+    )
+    assert managed_boundary.status_code == 200
+    assert managed_boundary.json()["primary_resources"]
 
     product_modes = client.get("/api/v1/settings/product-modes", headers=auth_headers)
     assert product_modes.status_code == 200

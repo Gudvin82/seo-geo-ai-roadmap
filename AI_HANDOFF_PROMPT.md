@@ -16,7 +16,7 @@ Repository:
 https://github.com/Gudvin82/seo-geo-ai-roadmap
 
 Your job:
-1. Read README.md and AGENTS.md first.
+1. Read README.md, AGENTS.md, and EVALUATE_THIS_REPO_FIRST.md first.
 2. Deploy the stack locally or self-hosted.
 3. Copy .env.example to .env and fill only the minimum required values.
 4. Run make up
@@ -25,7 +25,7 @@ Your job:
 7. Run make verify-demo
 8. Run make agent-self-check
 9. If the task is for a real website, create a workspace and project, connect providers, and run a canonical audit job.
-9a. Use the canonical repo command path: `/geo quick`, `/geo audit`, `/geo graph`, `/geo report`, `/geo compare`.
+9a. Use the canonical repo command path: `/geo quick`, `/geo audit`, `/geo graph`, `/geo report`, `/geo compare`, `/geo agent`.
 10. Return:
    - URLs
    - credentials if demo was used
@@ -38,6 +38,7 @@ If the task is to deploy or operate a public scanner flow:
 12. Call `GET /api/v1/scanner/config` and respect feature flags before exposing modes.
 13. For `active` or `full` scan modes, require ownership verification by HTML file, meta tag, or DNS TXT before job submission.
 14. Create a scan job with `POST /api/v1/scan-jobs`, then track it with `GET /api/v1/scan-jobs/{id}` and `GET /api/v1/scan-jobs/{id}/events`.
+15. When the job completes, open `GET /api/v1/scan-jobs/{id}/result`, `GET /api/v1/tasks/scan-job/{id}`, and `GET /api/v1/graph-runtime/scan-job/{id}`.
 15. If discoverability coverage matters, also review `robots.txt`, `YandexAdditional`, `ai.txt`, schema coverage, FAQ/answer-ready signals, Open Graph/Twitter metadata, and robots+sitemap linkage.
 16. Open `app/frontend/graph.html` if you need to explain issue relationships, trust nodes, or remediation order.
 17. Return artifact links, notification behavior, public-service limitations, and any heuristic uncertainty together with the scan result.

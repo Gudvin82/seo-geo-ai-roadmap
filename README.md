@@ -106,10 +106,25 @@ operator or an AI coding agent can use end to end:
 - Product modes: [docs/en/product-modes-v380.md](./docs/en/product-modes-v380.md)
 - CI gating: [docs/en/ci-gating-v380.md](./docs/en/ci-gating-v380.md)
 - Executive dashboard: [docs/en/executive-dashboard-v380.md](./docs/en/executive-dashboard-v380.md)
+- AI Agent Mode: [docs/en/ai-agent-mode-v400.md](./docs/en/ai-agent-mode-v400.md)
+- Product surfaces: [docs/en/product-surfaces-v400.md](./docs/en/product-surfaces-v400.md)
+- Managed API boundary: [docs/en/managed-api-v400.md](./docs/en/managed-api-v400.md)
+- Extensions and automation: [docs/en/extensions-and-automation-v400.md](./docs/en/extensions-and-automation-v400.md)
 - Bootstrap guide: [docs/en/bootstrap-guide-v340.md](./docs/en/bootstrap-guide-v340.md)
 - Architecture note: [ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md)
 - Evaluation kit: [EVALUATE_THIS_REPO.md](./EVALUATE_THIS_REPO.md)
+- Evaluate first prompt: [EVALUATE_THIS_REPO_FIRST.md](./EVALUATE_THIS_REPO_FIRST.md)
 - Commercial boundary: [COMMERCIAL_ROADMAP.md](./COMMERCIAL_ROADMAP.md)
+
+## What `v4.0.0` adds
+
+- real AI Agent Mode contract, overview, and run surfaces with safe action boundaries
+- one-click URL audit result flow with direct links into task generation and graph runtime
+- normalized task bundles plus export adapters, including a real GitHub Issues path
+- dynamic graph intelligence generated from live scan or audit data instead of static-only demos
+- explicit managed/public API boundary and stronger machine-readable contracts in `contracts/*.schema.json`
+- first-class GitHub Action path plus honest VS Code, Chrome, and Telegram scaffolds
+- sharper scanner / product-app / repo-operator surface separation across docs, app, and API
 
 ## What `v3.8.0` adds
 
@@ -336,6 +351,9 @@ See [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md).
 
 ## Latest changes
 
+- `v4.0.0`: AI Agent Mode, one-click URL audit result flow, task generation and export,
+  dynamic graph runtime, managed API boundary, contracts catalog, GitHub Action path,
+  and VS Code / Chrome / Telegram scaffolds
 - `v3.6.0`: dedicated scanner intake page, ownership verification and consent flow,
   async scan jobs, versioned export artifacts, notification hooks, and public
   limitations in UI and docs

@@ -20,8 +20,11 @@ nav:
   - Architecture Note: architecture-note.md
   - Deployment: deployment.md
   - Commands: commands.md
+  - Agent Mode: agent-mode.md
+  - Product Surfaces: product-surfaces.md
   - Graph Intelligence: graph.md
   - Scanner Intake: scanner.md
+  - Automation and Extensions: automation.md
   - Discoverability Coverage: coverage.md
   - Validator: validator.md
   - API Overview: api.md

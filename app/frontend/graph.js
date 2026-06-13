@@ -290,6 +290,7 @@ const questionButtons = document.querySelectorAll(".graph-question");
 
 let currentMode = "site";
 let activeNode = null;
+const query = new URLSearchParams(window.location.search);
 
 function toneClass(tone) {
   if (tone === "warning") return "graph-node warning";
@@ -388,4 +389,56 @@ questionButtons.forEach((button) => {
 
 exportButton.addEventListener("click", exportCurrentGraph);
 
-renderGraph(currentMode);
+async function bootstrapGraph() {
+  const source = query.get("source");
+  const id = query.get("id");
+  const api = query.get("api");
+  if (source && id && api) {
+    try {
+      const endpoint =
+        source === "scan_job"
+          ? `${api}/graph-runtime/scan-job/${id}`
+          : `${api}/graph-runtime/audit-run/${id}`;
+      const response = await fetch(endpoint);
+      if (!response.ok) {
+        throw new Error(`Unable to load dynamic graph: ${response.status}`);
+      }
+      const payload = await response.json();
+      graphModes.dynamic = {
+        title: `Dynamic graph · ${payload.source_type} ${payload.source_id}`,
+        subtitle: (payload.change_summary || []).join(" ") || "Dynamic graph loaded from machine-readable runtime data.",
+        nodes: (payload.nodes || []).map((node, index) => ({
+          id: node.id,
+          label: node.label,
+          tone:
+            node.severity === "high"
+              ? "warning"
+              : node.node_type === "target" || node.node_type === "audit_run"
+                ? "accent"
+                : "neutral",
+          x: 12 + ((index % 3) * 28),
+          y: 12 + (Math.floor(index / 3) * 22),
+          what: node.metadata?.recommended_action || node.node_type,
+          why: `This ${node.node_type} is part of the live discoverability graph.`,
+          impact: node.severity ? `Severity: ${node.severity}` : "Context node",
+          next:
+            node.metadata?.recommended_action ||
+            "Open the task bundle and fix pack to continue.",
+        })),
+        edges: (payload.edges || []).map((edge) => [edge.source, edge.target]),
+      };
+      const option = document.createElement("option");
+      option.value = "dynamic";
+      option.textContent = "Dynamic runtime graph";
+      modeSelect.prepend(option);
+      modeSelect.value = "dynamic";
+      renderGraph("dynamic");
+      return;
+    } catch (_error) {
+      // Fall back to the static teaching modes.
+    }
+  }
+  renderGraph(currentMode);
+}
+
+bootstrapGraph();

@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "SEO GEO AI Page Audit",
+  "version": "4.0.0",
+  "description": "Send the current tab into the discoverability scanner or app flow.",
+  "permissions": ["activeTab", "tabs", "storage"],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

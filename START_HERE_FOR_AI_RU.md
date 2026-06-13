@@ -39,7 +39,7 @@
 - `python scripts/agent_handoff_pack.py --task audit-site --language ru --target-url https://example.com`
 - `python scripts/agent_handoff_pack.py --task deploy-scanner --language ru`
 
-## Канонический command path в v3.8.0
+## Канонический command path в v4.0.0
 
 Используй репозиторий как `/geo ...` command system:
 
@@ -48,6 +48,12 @@
 - `/geo graph` для объяснения и dependency mapping
 - `/geo report` для executive и client output
 - `/geo compare` для повторного измерения
+- `/geo agent` для автономного review, planning и safe fix proposals
+
+## Сначала оцени репозиторий правильно
+
+Если вы собираетесь объяснять, что делает этот репозиторий, сначала прочитайте
+[EVALUATE_THIS_REPO_FIRST_RU.md](./EVALUATE_THIS_REPO_FIRST_RU.md).
 
 ## Идеальный путь
 

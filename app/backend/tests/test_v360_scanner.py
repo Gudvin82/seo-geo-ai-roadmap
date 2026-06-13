@@ -131,7 +131,30 @@ def test_scan_job_lifecycle_and_artifacts(client, settings, monkeypatch) -> None
         "csv",
         "html",
     }
-    assert all(item["schema_version"] == "v3.7.0" for item in artifact_payload)
+    assert all(item["schema_version"] == "v4.0.0" for item in artifact_payload)
+
+    result = client.get(
+        f"/api/v1/scan-jobs/{payload['scan_job_id']}/result",
+        headers=_scanner_headers(),
+    )
+    assert result.status_code == 200
+    assert result.json()["tasks_endpoint"].endswith(
+        f"/api/v1/tasks/scan-job/{payload['scan_job_id']}"
+    )
+
+    tasks = client.get(
+        f"/api/v1/tasks/scan-job/{payload['scan_job_id']}",
+        headers=_scanner_headers(),
+    )
+    assert tasks.status_code == 200
+    assert tasks.json()["tasks"]
+
+    graph = client.get(
+        f"/api/v1/graph-runtime/scan-job/{payload['scan_job_id']}",
+        headers=_scanner_headers(),
+    )
+    assert graph.status_code == 200
+    assert graph.json()["nodes"]
 
 
 def test_webhook_delivery_mock(client, settings, monkeypatch) -> None:
@@ -175,3 +198,27 @@ def test_webhook_delivery_mock(client, settings, monkeypatch) -> None:
     assert sent
     assert sent[0]["url"] == "https://hooks.example.test/scanner"
     assert sent[0]["payload"]["status"] == "completed"
+
+
+def test_passive_url_audit_shortcut(client, settings, monkeypatch) -> None:
+    settings.allow_public_intake = True
+    settings.allow_anonymous_submission = True
+    monkeypatch.setattr(
+        scan_jobs,
+        "_launch_scan_job",
+        lambda local_settings, job_id: scan_jobs._run_scan_job(local_settings, job_id),
+    )
+    accepted = client.post(
+        "/api/v1/scanner/url-audit",
+        json={
+            "url": "https://example.com",
+            "mode": "passive",
+            "site_type": "b2b_saas",
+            "limitations_accepted": True,
+        },
+        headers=_scanner_headers(),
+    )
+    assert accepted.status_code == 200
+    assert accepted.json()["status_endpoint"].endswith(
+        f"/api/v1/scan-jobs/{accepted.json()['scan_job_id']}"
+    )

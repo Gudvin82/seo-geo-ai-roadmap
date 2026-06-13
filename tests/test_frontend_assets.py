@@ -17,6 +17,24 @@ def test_frontend_shell_exists() -> None:
         )
 
 
+def test_extension_and_contract_assets_exist() -> None:
+    required_paths = [
+        Path(".github/actions/ai-visibility-check/action.yml"),
+        Path("examples/github-actions/ai-visibility-check.yml"),
+        Path("extensions/vscode/package.json"),
+        Path("extensions/vscode/src/extension.js"),
+        Path("extensions/chrome/manifest.json"),
+        Path("extensions/chrome/popup.html"),
+        Path("extensions/chrome/popup.js"),
+        Path("integrations/telegram/bot_stub.py"),
+        Path("contracts/audit-run.schema.json"),
+        Path("contracts/task-bundle.schema.json"),
+        Path("contracts/graph-snapshot.schema.json"),
+    ]
+    for path in required_paths:
+        assert path.exists(), f"Missing v4.0.0 asset: {path}"
+
+
 def test_frontend_mentions_required_workflows() -> None:
     html = Path("app/frontend/index.html").read_text(encoding="utf-8")
     required_sections = [
@@ -31,3 +49,9 @@ def test_frontend_mentions_required_workflows() -> None:
     ]
     for section in required_sections:
         assert section in html
+
+
+def test_scanner_result_surface_exists() -> None:
+    html = Path("app/frontend/scanner.html").read_text(encoding="utf-8")
+    assert "One-Click Audit Result" in html
+    assert "scanner-result-summary" in html

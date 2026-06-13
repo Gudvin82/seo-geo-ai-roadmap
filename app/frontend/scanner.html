@@ -9,7 +9,7 @@
   <body>
     <main class="scanner-shell">
       <section class="scanner-hero">
-        <p class="eyebrow">v3.6.0 scanner foundation</p>
+        <p class="eyebrow">v4.0.0 one-click audit and scanner delivery</p>
         <h1>Public / Self-Hosted Scanner Intake</h1>
         <p class="hero-copy">
           Submit a passive audit, ownership-gated active scan, or full scan if the
@@ -29,6 +29,10 @@
             <label class="field">
               <span>Target URL</span>
               <input id="scanner-url" type="url" placeholder="https://example.com" required />
+            </label>
+            <label class="field">
+              <span>Site type (optional)</span>
+              <input id="scanner-site-type" type="text" placeholder="B2B SaaS / local business / agency site" />
             </label>
             <label class="field">
               <span>Scan mode</span>
@@ -123,6 +127,27 @@
               <h3>Artifacts</h3>
               <ul id="scanner-job-artifacts" class="compact-list"></ul>
             </div>
+          </div>
+        </article>
+
+        <article class="card scanner-card">
+          <h2>One-Click Audit Result</h2>
+          <div id="scanner-result-summary" class="status-box">
+            When the scan completes, this panel will show the executive summary, recommendations, and direct links into tasks and graph intelligence.
+          </div>
+          <div class="scanner-columns">
+            <div>
+              <h3>Recommendations</h3>
+              <ul id="scanner-result-recommendations" class="compact-list"></ul>
+            </div>
+            <div>
+              <h3>Findings</h3>
+              <ul id="scanner-result-issues" class="compact-list"></ul>
+            </div>
+          </div>
+          <div class="scanner-actions">
+            <a id="scanner-result-tasks" class="ghost-button scanner-hidden" href="#" target="_blank" rel="noreferrer">Open task bundle</a>
+            <a id="scanner-result-graph" class="ghost-button scanner-hidden" href="#" target="_blank" rel="noreferrer">Open graph JSON</a>
           </div>
         </article>
 

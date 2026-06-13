@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gudvin82.github.io/seo-geo-ai-roadmap/contracts/audit-run.schema.json",
+  "title": "Audit Run Contract",
+  "type": "object",
+  "required": ["id", "project_id", "workspace_id", "status", "finding_groups"],
+  "properties": {
+    "id": { "type": "integer" },
+    "project_id": { "type": "integer" },
+    "workspace_id": { "type": "integer" },
+    "status": { "type": "string" },
+    "mode": { "type": "string" },
+    "target_url": { "type": ["string", "null"] },
+    "finding_groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "summary": { "type": "string" },
+          "recommendation": { "type": "string" },
+          "priority_score": { "type": "number" }
+        }
+      }
+    },
+    "summary_score": { "type": ["number", "null"] }
+  }
+}

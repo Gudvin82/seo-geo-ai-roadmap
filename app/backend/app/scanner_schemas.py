@@ -83,6 +83,29 @@ class ScanJobCreate(BaseModel):
         return email
 
 
+class PublicUrlAuditCreate(BaseModel):
+    url: str
+    site_type: Optional[str] = None
+    mode: Literal["passive", "active", "full"] = "passive"
+    limitations_accepted: bool = True
+    ownership_confirmed: bool = False
+    load_warning_accepted: bool = False
+    verification_request_id: Optional[int] = None
+    callback_webhook_url: Optional[str] = None
+    notification_email: Optional[str] = None
+    telegram_chat_id: Optional[str] = None
+
+    @field_validator("notification_email")
+    @classmethod
+    def validate_optional_email(cls, value: Optional[str]) -> Optional[str]:
+        if value is None or value == "":
+            return None
+        email = value.strip().lower()
+        if "@" not in email or email.startswith("@") or email.endswith("@"):
+            raise ValueError("A valid notification email is required.")
+        return email
+
+
 class ScanJobRead(BaseModel):
     id: int
     submitted_url: str
@@ -115,6 +138,23 @@ class ScanArtifactRead(BaseModel):
     path: str
     schema_version: str
     download_endpoint: str
+
+
+class ScanJobResultRead(BaseModel):
+    scan_job_id: int
+    schema_version: str
+    target_url: str
+    target_domain: str
+    site_type: Optional[str] = None
+    scan_mode: str
+    executive_summary: str
+    checked_items: list[str] = Field(default_factory=list)
+    not_checked: list[str] = Field(default_factory=list)
+    recommendations: list[str] = Field(default_factory=list)
+    issues: list[dict[str, Any]] = Field(default_factory=list)
+    tasks_endpoint: str
+    graph_endpoint: str
+    artifacts: list[dict[str, Any]] = Field(default_factory=list)
 
 
 class ScanJobAccepted(BaseModel):

@@ -42,6 +42,15 @@ Canonical operator path in `v3.8.0`:
 - `/geo graph`
 - `/geo report`
 - `/geo compare`
+- `/geo agent`
+
+Universal repo-evaluation path in `v4.0.0`:
+
+- read [EVALUATE_THIS_REPO_FIRST.md](./EVALUATE_THIS_REPO_FIRST.md)
+- read [docs/en/product-surfaces-v400.md](./docs/en/product-surfaces-v400.md)
+- read [docs/en/ai-agent-mode-v400.md](./docs/en/ai-agent-mode-v400.md)
+- read [docs/en/managed-api-v400.md](./docs/en/managed-api-v400.md)
+- inspect `contracts/*.schema.json` before making product-scope claims
 
 If the user wants a ready task prompt instead of inventing one:
 

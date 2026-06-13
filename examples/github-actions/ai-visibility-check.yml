@@ -1,31 +1,25 @@
-name: AI Visibility Check
+name: ai-visibility-check
 
 on:
-  workflow_dispatch:
   pull_request:
-
-env:
-  SITE_URL: https://example.com
-  LLMS_FILE: ./llms.txt
-  SCHEMA_FILE: /tmp/seo-geo-ai-roadmap/templates/schema/organization-schema.json
+  schedule:
+    - cron: "17 6 * * 1"
 
 jobs:
-  ai-visibility-check:
+  discoverability:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout target repository
-        uses: actions/checkout@v5
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-
-      - name: Clone validator toolkit
-        run: git clone https://github.com/Gudvin82/seo-geo-ai-roadmap.git /tmp/seo-geo-ai-roadmap
-
-      - name: Run AI visibility checks
-        run: |
-          python /tmp/seo-geo-ai-roadmap/scripts/check-llms-txt.py --file "$LLMS_FILE"
-          python /tmp/seo-geo-ai-roadmap/scripts/check-robots-ai-bots.py --url "$SITE_URL"
-          python /tmp/seo-geo-ai-roadmap/scripts/schema-validator.py --file "$SCHEMA_FILE"
+      - name: Run AI visibility check
+        uses: Gudvin82/seo-geo-ai-roadmap/.github/actions/ai-visibility-check@v4.0.0
+        with:
+          target-url: https://example.com
+          mode: quick
+      - name: Upload CI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-visibility-check
+          path: ci-artifacts/ai-visibility-check.json

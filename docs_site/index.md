@@ -23,6 +23,7 @@ validation, and release discipline.
 - prompts, templates, scripts, examples, and tests
 - graph explainability, reporting packs, and GTM packaging
 - integration contracts, executive dashboard, and clearer product modes
+- AI Agent Mode, one-click URL audit results, task bundles, dynamic graph runtime, and extension scaffolds
 
 ## Proof and implementation
 

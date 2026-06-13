@@ -8,14 +8,17 @@ from fastapi.responses import Response
 from starlette.requests import Request
 
 from .api import (
+    agent_mode,
     artifacts,
     audit_logs,
     audit_runs,
     auth,
     brand_facts,
     cms,
+    contracts,
     deliverables,
     exports,
+    graph_runtime,
     integrations,
     notifications,
     projects,
@@ -26,6 +29,7 @@ from .api import (
     scheduled_checks,
     settings,
     sov,
+    task_center,
     tools,
     workspaces,
 )
@@ -42,7 +46,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
 
     if settings_obj.auto_create_schema:
         Base.metadata.create_all(bind=initialized_engine)
-    app = FastAPI(title=settings_obj.app_name, version="3.8.0")
+    app = FastAPI(title=settings_obj.app_name, version="4.0.0")
     app.state.settings = settings_obj
     app.add_middleware(
         CORSMiddleware,
@@ -89,7 +93,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
 
     @app.get("/healthz")
     def healthz() -> dict:
-        return {"status": "ok", "version": "3.8.0"}
+        return {"status": "ok", "version": "4.0.0"}
 
     @app.get("/readyz")
     def readyz() -> dict:
@@ -120,6 +124,10 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
     app.include_router(deliverables.router, prefix=settings_obj.api_prefix)
     app.include_router(exports.router, prefix=settings_obj.api_prefix)
     app.include_router(settings.router, prefix=settings_obj.api_prefix)
+    app.include_router(agent_mode.router, prefix=settings_obj.api_prefix)
+    app.include_router(task_center.router, prefix=settings_obj.api_prefix)
+    app.include_router(graph_runtime.router, prefix=settings_obj.api_prefix)
+    app.include_router(contracts.router, prefix=settings_obj.api_prefix)
     app.include_router(tools.router, prefix=settings_obj.api_prefix)
     return app
 

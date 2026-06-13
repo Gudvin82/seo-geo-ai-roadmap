@@ -514,6 +514,140 @@ class ExecutiveDashboardRead(BaseModel):
     ci_gating: dict[str, Any] = Field(default_factory=dict)
 
 
+class ManagedApiBoundaryRead(BaseModel):
+    positioning: str
+    auth_boundary: list[str] = Field(default_factory=list)
+    rate_limit_boundary: list[str] = Field(default_factory=list)
+    primary_resources: list[str] = Field(default_factory=list)
+    self_hosted_vs_managed: dict[str, list[str]] = Field(default_factory=dict)
+
+
+class TaskItemRead(BaseModel):
+    id: str
+    issue_type: str
+    severity: str
+    affected_surface: str
+    affected_pages: list[str] = Field(default_factory=list)
+    recommended_fix: str
+    workflow: str
+    suggested_owner: str
+    evidence: list[str] = Field(default_factory=list)
+    estimated_impact: str
+    status: str
+    source_ref: str
+
+
+class TaskBundleRead(BaseModel):
+    contract_version: str
+    source_type: str
+    source_id: str
+    generated_at: datetime
+    summary: str
+    tasks: list[TaskItemRead] = Field(default_factory=list)
+    markdown_ready: str
+    client_ready_summary: str
+
+
+class TaskExportRequest(BaseModel):
+    target: Literal["github_issues", "gitlab", "notion", "trello", "linear"]
+    source_type: Literal["scan_job", "audit_run"]
+    source_id: int
+    repository: Optional[str] = None
+    project_key: Optional[str] = None
+    token_env_var: Optional[str] = None
+    dry_run: bool = True
+
+
+class TaskExportRead(BaseModel):
+    target: str
+    mode: str
+    exported_count: int
+    created_items: list[dict[str, Any]] = Field(default_factory=list)
+    payload_preview: dict[str, Any] = Field(default_factory=dict)
+    next_step: str
+
+
+class GraphNodeRead(BaseModel):
+    id: str
+    label: str
+    node_type: str
+    severity: Optional[str] = None
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+
+class GraphEdgeRead(BaseModel):
+    source: str
+    target: str
+    relationship: str
+
+
+class GraphSnapshotRead(BaseModel):
+    contract_version: str
+    snapshot_id: str
+    source_type: str
+    source_id: str
+    generated_at: datetime
+    nodes: list[GraphNodeRead] = Field(default_factory=list)
+    edges: list[GraphEdgeRead] = Field(default_factory=list)
+    filters: list[str] = Field(default_factory=list)
+    change_summary: list[str] = Field(default_factory=list)
+
+
+class AgentModeContractRead(BaseModel):
+    contract_version: str
+    supported_modes: list[str] = Field(default_factory=list)
+    safe_boundaries: list[str] = Field(default_factory=list)
+    deliverables: list[str] = Field(default_factory=list)
+    notification_channels: list[str] = Field(default_factory=list)
+
+
+class AgentModeRunRequest(BaseModel):
+    project_id: int
+    mode: Literal[
+        "manual",
+        "scheduled",
+        "watch",
+        "agent-review",
+        "agent-plan",
+        "agent-fix-proposal",
+    ]
+    source_type: Literal["scan_job", "audit_run"] = "audit_run"
+    source_id: Optional[int] = None
+    benchmark: Optional[str] = None
+    requested_by: Optional[str] = None
+
+
+class AgentModeRunRead(BaseModel):
+    contract_version: str
+    mode: str
+    project_id: int
+    source_type: str
+    source_id: str
+    benchmark: Optional[str] = None
+    summary: str
+    recommendations: list[str] = Field(default_factory=list)
+    alerts: list[str] = Field(default_factory=list)
+    follow_up_tasks: list[TaskItemRead] = Field(default_factory=list)
+    safe_actions: list[str] = Field(default_factory=list)
+    approval_required_for: list[str] = Field(default_factory=list)
+
+
+class AgentModeOverviewRead(BaseModel):
+    contract_version: str
+    project_id: int
+    latest_sources: dict[str, Any] = Field(default_factory=dict)
+    supported_modes: list[str] = Field(default_factory=list)
+    scheduler_status: dict[str, Any] = Field(default_factory=dict)
+    alert_policy: list[str] = Field(default_factory=list)
+    notification_channels: list[str] = Field(default_factory=list)
+    safe_action_boundary: list[str] = Field(default_factory=list)
+    next_recommended_actions: list[str] = Field(default_factory=list)
+
+
+class ContractCatalogRead(BaseModel):
+    contracts: list[dict[str, Any]] = Field(default_factory=list)
+
+
 class PromptSetCreate(BaseModel):
     workspace_id: int
     name: str

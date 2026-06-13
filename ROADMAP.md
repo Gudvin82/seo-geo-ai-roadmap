@@ -1,5 +1,12 @@
 # Repository Roadmap
 
+## v4.0.x stabilization
+
+- keep AI Agent Mode honest, useful, and approval-bound instead of pretending to be silent production autopilot
+- deepen one-click audit, task export, dynamic graph, and executive delivery paths without losing self-hosted clarity
+- mature GitHub Action, extension, and Telegram entrypoints from scaffold to reliable operator tooling
+- keep scanner, product/app, and repo/operator surfaces clearly separated in docs, UI, and contracts
+
 ## v3.8.x stabilization
 
 - keep the new `/geo` command layer synchronized across API, CLI, docs, and AI handoff files

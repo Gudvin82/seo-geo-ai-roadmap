@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gudvin82.github.io/seo-geo-ai-roadmap/contracts/graph-snapshot.schema.json",
+  "title": "Graph Snapshot Contract",
+  "type": "object",
+  "required": ["contract_version", "snapshot_id", "nodes", "edges"],
+  "properties": {
+    "contract_version": { "type": "string" },
+    "snapshot_id": { "type": "string" },
+    "source_type": { "type": "string" },
+    "source_id": { "type": "string" },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "node_type"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "node_type": { "type": "string" },
+          "severity": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "target", "relationship"],
+        "properties": {
+          "source": { "type": "string" },
+          "target": { "type": "string" },
+          "relationship": { "type": "string" }
+        }
+      }
+    }
+  }
+}

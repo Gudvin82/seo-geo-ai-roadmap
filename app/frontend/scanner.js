@@ -56,6 +56,7 @@
 
   const apiBaseInput = document.getElementById("scanner-api-base");
   const urlInput = document.getElementById("scanner-url");
+  const siteTypeInput = document.getElementById("scanner-site-type");
   const modeSelect = document.getElementById("scanner-mode");
   const verificationMethodField = document.getElementById("verification-method-field");
   const verificationMethodSelect = document.getElementById("scanner-verification-method");
@@ -78,6 +79,11 @@
   const jobStatusBox = document.getElementById("scanner-job-status");
   const jobEvents = document.getElementById("scanner-job-events");
   const jobArtifacts = document.getElementById("scanner-job-artifacts");
+  const resultSummary = document.getElementById("scanner-result-summary");
+  const resultRecommendations = document.getElementById("scanner-result-recommendations");
+  const resultIssues = document.getElementById("scanner-result-issues");
+  const resultTasksLink = document.getElementById("scanner-result-tasks");
+  const resultGraphLink = document.getElementById("scanner-result-graph");
   const progressShell = document.getElementById("scanner-job-progress");
   const progressBar = document.getElementById("scanner-job-progress-bar");
   const cancelButton = document.getElementById("scanner-cancel-job");
@@ -336,10 +342,41 @@
       });
       if (["completed", "partial_success", "failed", "cancelled", "expired"].includes(job.status)) {
         clearInterval(state.pollTimer);
+        if (["completed", "partial_success"].includes(job.status)) {
+          await loadJobResult(jobId);
+        }
       }
     } catch (error) {
       setFormMessage(`Status polling failed: ${error.message}`, true);
       clearInterval(state.pollTimer);
+    }
+  }
+
+  async function loadJobResult(jobId) {
+    try {
+      const payload = await fetchJson(`/scan-jobs/${jobId}/result`, {
+        headers: apiHeaders(),
+      });
+      resultSummary.innerHTML = [
+        `<strong>${payload.target_domain}</strong>`,
+        `<div>${payload.executive_summary}</div>`,
+        siteTypeInput.value.trim()
+          ? `<div>Site type hint: ${siteTypeInput.value.trim()}</div>`
+          : "",
+        `<div>Mode: ${payload.scan_mode}</div>`,
+      ].join("");
+      resultRecommendations.innerHTML = (payload.recommendations || [])
+        .map((item) => `<li>${item}</li>`)
+        .join("");
+      resultIssues.innerHTML = (payload.issues || [])
+        .map((item) => `<li><strong>${item.severity}</strong> · ${item.title}</li>`)
+        .join("");
+      resultTasksLink.href = `${apiBaseInput.value}${payload.tasks_endpoint}`;
+      resultGraphLink.href = `./graph.html?api=${encodeURIComponent(apiBaseInput.value)}&source=scan_job&id=${jobId}`;
+      resultTasksLink.classList.remove("scanner-hidden");
+      resultGraphLink.classList.remove("scanner-hidden");
+    } catch (error) {
+      setFormMessage(`Result loading failed: ${error.message}`, true);
     }
   }
 

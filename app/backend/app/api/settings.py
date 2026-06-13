@@ -12,6 +12,7 @@ from ..models import AuditRun, CmsConnector, IntegrationConnection, User
 from ..schemas import (
     CIGatingRead,
     ExecutiveDashboardRead,
+    ManagedApiBoundaryRead,
     ProductModeRead,
     ProductModesResponse,
 )
@@ -41,8 +42,8 @@ def repo_assets() -> dict:
             "templates/brand-facts-template-ru.md",
             "templates/roi-model-template.md",
             "templates/roi-model-template-ru.md",
-            "templates/reporting/executive-summary-v380.md",
-            "templates/reporting/fix-pack-v380.md",
+            "templates/reporting/executive-summary-v400.md",
+            "templates/reporting/fix-pack-v400.md",
         ],
         "glossary": ["GLOSSARY.md", "GLOSSARY_RU.md"],
         "agents": ["AGENTS.md"],
@@ -259,7 +260,7 @@ def ci_gating() -> CIGatingRead:
             ".github/workflows/script-smoke-tests.yml",
             ".github/workflows/docs-site.yml",
             ".github/workflows/security-scans.yml",
-            ".github/workflows/ai-visibility-check.yml",
+            "examples/github-actions/ai-visibility-check.yml",
         ],
         required_signals=[
             "command surface remains machine-readable",
@@ -273,6 +274,41 @@ def ci_gating() -> CIGatingRead:
             "attach artifacts to reports and executive dashboards",
             "re-measure via compare and drift workflows",
         ],
+    )
+
+
+@router.get("/managed-api-boundary", response_model=ManagedApiBoundaryRead)
+def managed_api_boundary() -> ManagedApiBoundaryRead:
+    return ManagedApiBoundaryRead(
+        positioning=(
+            "Managed/public API is a product boundary for teams that want the methodology and app surface without owning the full self-hosted runtime."
+        ),
+        auth_boundary=[
+            "Self-hosted: workspace JWT auth plus your own infra rules.",
+            "Managed: API keys or service accounts with tenant-level scoping.",
+            "Public scanner paths must remain rate-limited and intentionally narrower than operator auth.",
+        ],
+        rate_limit_boundary=[
+            "Public URL-audit intake requires conservative per-IP and per-domain throttling.",
+            "Managed audit, task export, and graph endpoints should be tiered by plan and queue priority.",
+        ],
+        primary_resources=[
+            "scanner url-audit",
+            "scan job result",
+            "task bundle",
+            "graph snapshot",
+            "executive dashboard",
+        ],
+        self_hosted_vs_managed={
+            "self_hosted": [
+                "full control over infra, models, secrets, and UI surfaces",
+                "best fit for agencies, consultants, in-house teams, and custom scanner deployments",
+            ],
+            "managed": [
+                "lighter onboarding and API consumption path",
+                "narrower public contract, stronger usage controls, and clearer commercial packaging",
+            ],
+        },
     )
 
 

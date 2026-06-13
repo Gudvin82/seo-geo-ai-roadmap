@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gudvin82.github.io/seo-geo-ai-roadmap/contracts/integration-contract.schema.json",
+  "title": "Integration Contract",
+  "type": "object",
+  "required": ["source_type", "label", "readiness_tier", "sync_mode"],
+  "properties": {
+    "source_type": { "type": "string" },
+    "label": { "type": "string" },
+    "readiness_tier": { "type": "string" },
+    "sync_mode": { "type": "string" },
+    "required_env_vars": { "type": "array", "items": { "type": "string" } },
+    "recommended_ci_workflow": { "type": "string" },
+    "ci_gates": { "type": "array", "items": { "type": "string" } },
+    "capabilities": { "type": "array", "items": { "type": "string" } }
+  }
+}

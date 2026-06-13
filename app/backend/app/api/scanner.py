@@ -20,11 +20,13 @@ from ..scanner_schemas import (
     ConsentRecordCreate,
     ConsentRecordRead,
     PublicScannerConfigRead,
+    PublicUrlAuditCreate,
     ScanArtifactRead,
     ScanJobAccepted,
     ScanJobCreate,
     ScanJobEventRead,
     ScanJobRead,
+    ScanJobResultRead,
     VerificationRequestCreate,
     VerificationRequestRead,
 )
@@ -81,6 +83,14 @@ def _authorize_scan_job(
     raise HTTPException(
         status_code=403, detail="Scan job is not available for this session."
     )
+
+
+def _machine_report(row: ScanJob) -> dict:
+    for artifact in json.loads(row.report_artifacts_json or "[]"):
+        path = Path(artifact["path"])
+        if artifact.get("kind") == "machine_report" and path.exists():
+            return json.loads(path.read_text(encoding="utf-8"))
+    raise HTTPException(status_code=404, detail="Machine report artifact not found.")
 
 
 @router.get("/config", response_model=PublicScannerConfigRead)
@@ -168,6 +178,55 @@ def create_consent_record(
         limitations_accepted=row.limitations_accepted,
         verification_request_id=row.verification_request_id,
         created_at=row.created_at,
+    )
+
+
+@router.post("/url-audit", response_model=ScanJobAccepted)
+def create_url_audit(
+    payload: PublicUrlAuditCreate,
+    request: Request,
+    x_scanner_session: Optional[str] = Header(default=None, alias="X-Scanner-Session"),
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_current_user),
+) -> ScanJobAccepted:
+    consent = scan_jobs.create_consent_record(
+        db,
+        _settings(request),
+        url=payload.url,
+        scan_mode=payload.mode,
+        consent_scope="passive_ack"
+        if payload.mode == "passive"
+        else "active_authorized",
+        ownership_confirmed=payload.ownership_confirmed,
+        load_warning_accepted=payload.load_warning_accepted,
+        limitations_accepted=payload.limitations_accepted,
+        verification_request_id=payload.verification_request_id,
+        current_user=current_user,
+        session_id=_session_id(x_scanner_session),
+        source_ip=_requester_ip(request),
+        user_agent=request.headers.get("user-agent", ""),
+    )
+    row = scan_jobs.create_scan_job(
+        db,
+        _settings(request),
+        url=payload.url,
+        scan_mode=payload.mode,
+        consent_record_id=consent.id,
+        verification_request_id=payload.verification_request_id,
+        callback_webhook_url=payload.callback_webhook_url,
+        notification_email=payload.notification_email,
+        telegram_chat_id=payload.telegram_chat_id,
+        current_user=current_user,
+        session_id=_session_id(x_scanner_session),
+        source_ip=_requester_ip(request),
+        user_agent=request.headers.get("user-agent", ""),
+    )
+    return ScanJobAccepted(
+        scan_job_id=row.id,
+        initial_status=row.status,
+        status_endpoint=f"/api/v1/scan-jobs/{row.id}",
+        events_endpoint=f"/api/v1/scan-jobs/{row.id}/events",
+        artifacts_endpoint=f"/api/v1/scan-jobs/{row.id}/artifacts",
     )
 
 
@@ -284,3 +343,38 @@ def download_scan_job_artifact(
         if path.name == filename and path.exists():
             return FileResponse(path)
     raise HTTPException(status_code=404, detail="Artifact not found.")
+
+
+@jobs_router.get("/{scan_job_id}/result", response_model=ScanJobResultRead)
+def get_scan_job_result(
+    scan_job_id: int,
+    x_scanner_session: Optional[str] = Header(default=None, alias="X-Scanner-Session"),
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_current_user),
+) -> ScanJobResultRead:
+    row = db.get(ScanJob, scan_job_id)
+    if not row:
+        raise HTTPException(status_code=404, detail="Scan job not found.")
+    _authorize_scan_job(row, current_user, _session_id(x_scanner_session))
+    summary = _machine_report(row)
+    recommendations = [
+        item.get("recommended_action", "")
+        for item in summary.get("issues", [])
+        if item.get("recommended_action")
+    ]
+    return ScanJobResultRead(
+        scan_job_id=row.id,
+        schema_version=summary.get("schema_version", "v4.0.0"),
+        target_url=summary.get("target_url", row.normalized_url),
+        target_domain=summary.get("target_domain", row.target_domain),
+        site_type=summary.get("site_type"),
+        scan_mode=summary.get("scan_mode", row.scan_mode),
+        executive_summary=summary.get("executive_summary", ""),
+        checked_items=summary.get("checked_items", []),
+        not_checked=summary.get("not_checked", []),
+        recommendations=recommendations,
+        issues=summary.get("issues", []),
+        tasks_endpoint=f"/api/v1/tasks/scan-job/{row.id}",
+        graph_endpoint=f"/api/v1/graph-runtime/scan-job/{row.id}",
+        artifacts=json.loads(row.report_artifacts_json or "[]"),
+    )

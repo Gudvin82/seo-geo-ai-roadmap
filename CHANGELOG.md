@@ -1,5 +1,15 @@
 # Changelog
 
+## v4.0.0 — AI Agent Mode, Product Surfaces, and One-Click Delivery
+
+- Added real AI Agent Mode contracts, overview, and execution surfaces for `manual`, `scheduled`, `watch`, `agent-review`, `agent-plan`, and `agent-fix-proposal`
+- Added one-click URL audit result flow with direct machine-readable links into task bundles and dynamic graph runtime
+- Added normalized task bundle generation for scan jobs and audit runs plus export adapters with a real GitHub Issues path and honest templates for GitLab, Notion, Trello, and Linear
+- Added dynamic graph runtime APIs that build nodes and edges from live scan JSON and audit findings instead of relying on static graph demos alone
+- Added a contracts catalog plus JSON schemas for audits, task bundles, graph snapshots, report exports, command routing, and integration contracts
+- Added a managed/public API boundary endpoint, first-class CI action packaging, and scaffolds for VS Code, Chrome, and Telegram operational surfaces
+- Updated README, README_RU, ROADMAP, AGENTS, START_HERE docs, docs-site navigation, reporting templates, and frontend scanner/graph surfaces for the new product split
+
 ## v3.8.0 — Graph Intelligence, Command UX, Reporting, and GTM Distribution
 
 - Added a richer canonical `/geo ...` command layer with aliases, examples, expected outputs, and use-case packaging for agents and operators

@@ -1,6 +1,6 @@
 # Commands
 
-`v3.8.0` turns the command surface into a canonical `/geo ...` operating layer.
+`v4.0.0` turns the command surface into a canonical `/geo ...` operating layer.
 
 Core path:
 
@@ -9,6 +9,7 @@ Core path:
 - `/geo graph`
 - `/geo report`
 - `/geo compare`
+- `/geo agent`
 
 Supporting routes:
 
@@ -41,3 +42,7 @@ Machine-readable contracts:
 - `GET /api/v1/tools/command-contract`
 - `GET /api/v1/integrations/contracts`
 - `GET /api/v1/cms/contracts`
+- `GET /api/v1/contracts/catalog`
+- `GET /api/v1/agent-mode/contract`
+- `GET /api/v1/tasks/audit-run/{audit_run_id}`
+- `GET /api/v1/graph-runtime/audit-run/{audit_run_id}`

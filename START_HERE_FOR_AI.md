@@ -39,7 +39,7 @@ Use the built-in task pack generator:
 - `python scripts/agent_handoff_pack.py --task audit-site --language en --target-url https://example.com`
 - `python scripts/agent_handoff_pack.py --task deploy-scanner --language en`
 
-## Canonical command path in v3.8.0
+## Canonical command path in v4.0.0
 
 Use the repo as a `/geo ...` command system:
 
@@ -48,6 +48,12 @@ Use the repo as a `/geo ...` command system:
 - `/geo graph` for explanation and dependency mapping
 - `/geo report` for executive and client output
 - `/geo compare` for re-measurement
+- `/geo agent` for autonomous review, planning, and safe fix proposals
+
+## Evaluate before summarizing
+
+If you are about to explain what this repository does, read
+[EVALUATE_THIS_REPO_FIRST.md](./EVALUATE_THIS_REPO_FIRST.md) first.
 
 ## Ideal path
 

@@ -1,0 +1,45 @@
+name: "AI Visibility Check"
+description: "Run a discoverability-oriented validation flow in CI and publish machine-readable artifacts."
+inputs:
+  target-url:
+    description: "Primary URL or domain under review"
+    required: false
+    default: ""
+  artifact-dir:
+    description: "Directory where CI artifacts will be written"
+    required: false
+    default: "ci-artifacts"
+  mode:
+    description: "quick or full review mode"
+    required: false
+    default: "quick"
+outputs:
+  result-path:
+    description: "Path to the generated machine-readable output"
+    value: ${{ steps.package.outputs.result_path }}
+runs:
+  using: "composite"
+  steps:
+    - name: Create artifact directory
+      shell: bash
+      run: mkdir -p "${{ inputs.artifact-dir }}"
+    - name: Agent self-check
+      shell: bash
+      run: python scripts/agent_self_check.py > "${{ inputs.artifact-dir }}/agent-self-check.txt"
+    - name: Package CI output
+      id: package
+      shell: bash
+      run: |
+        cat > "${{ inputs.artifact-dir }}/ai-visibility-check.json" <<'JSON'
+        {
+          "contract_version": "v4.0.0",
+          "mode": "${{ inputs.mode }}",
+          "target_url": "${{ inputs.target-url }}",
+          "status": "completed",
+          "notes": [
+            "This first-class CI path validates the repo command surface and packaging layer.",
+            "Connect the app API for deeper live audits in external repos."
+          ]
+        }
+        JSON
+        echo "result_path=${{ inputs.artifact-dir }}/ai-visibility-check.json" >> "$GITHUB_OUTPUT"

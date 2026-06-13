@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gudvin82.github.io/seo-geo-ai-roadmap/contracts/report-export.schema.json",
+  "title": "Report Export Contract",
+  "type": "object",
+  "required": ["project", "reports", "artifacts"],
+  "properties": {
+    "project": { "type": "object" },
+    "reports": { "type": "array", "items": { "type": "object" } },
+    "artifacts": { "type": "array", "items": { "type": "object" } },
+    "brand_facts": { "type": "array", "items": { "type": "object" } },
+    "sov_runs": { "type": "array", "items": { "type": "object" } }
+  }
+}

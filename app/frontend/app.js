@@ -47,7 +47,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v3.8.0 graph intelligence command ux reporting and gtm distribution",
+      "v4.0.0 ai agent mode product surfaces and one-click delivery",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -237,7 +237,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v3.8.0 graph intelligence command ux reporting and gtm distribution",
+      "v4.0.0 ai agent mode product surfaces and one-click delivery",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
