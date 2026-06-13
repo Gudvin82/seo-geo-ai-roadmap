@@ -145,6 +145,23 @@ def main() -> int:
                 ]
             ),
         },
+        {
+            "id": "v340_command_surface",
+            "label": "v3.4.0 command surface and bootstrap assets exist",
+            "passed": all(
+                exists(path)
+                for path in [
+                    "scripts/geo_command_surface.py",
+                    "scripts/bootstrap_self_hosted.py",
+                    "docs/en/command-catalog-v340.md",
+                    "docs/ru/command-catalog-v340.md",
+                    "docs/en/bootstrap-guide-v340.md",
+                    "docs/ru/bootstrap-guide-v340.md",
+                    "docs/en/how-it-works-v340.md",
+                    "docs/ru/how-it-works-v340.md",
+                ]
+            ),
+        },
     ]
 
     passed_count = sum(1 for item in checks if item["passed"])

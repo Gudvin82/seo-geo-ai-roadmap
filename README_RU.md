@@ -95,6 +95,8 @@ discoverability. Ее можно развернуть на своем компь
 - Verification: [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
 - API reference: [docs/ru/api-reference.md](./docs/ru/api-reference.md)
 - Hosted validator: [docs site validator](./docs_site/validator.md)
+- Command surface: [docs/ru/command-catalog-v340.md](./docs/ru/command-catalog-v340.md)
+- Bootstrap guide: [docs/ru/bootstrap-guide-v340.md](./docs/ru/bootstrap-guide-v340.md)
 - Evaluation kit: [EVALUATE_THIS_REPO_RU.md](./EVALUATE_THIS_REPO_RU.md)
 - Commercial boundary: [COMMERCIAL_ROADMAP_RU.md](./COMMERCIAL_ROADMAP_RU.md)
 
@@ -108,15 +110,25 @@ discoverability. Ее можно развернуть на своем компь
 - docs по fact drift, trust surfaces, ROI и executive reporting
 - public evaluation и proof-review assets
 
+## Что добавляет `v3.4.0`
+
+- GEO command surface для AI agents и операторов
+- command-router API и CLI routing script
+- self-hosted bootstrap planner для demo и production-like setup
+- более ясные modular docs "how it works" и scoring model
+- более сильная adoption-поверхность без отказа от self-hosted-first honesty
+
 ## Блок для передачи AI
 
 Передайте этот репозиторий своему AI coding agent и скажите ему:
 
 1. прочитать [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
 2. следовать [AGENTS.md](./AGENTS.md)
-3. выполнить `make turnkey-demo`
-4. выполнить `make agent-self-check`
-5. отдельно отчитаться, что реально проверено, что смоделировано и где нужен
+3. выполнить `python scripts/geo_command_surface.py catalog`
+4. выполнить `python scripts/bootstrap_self_hosted.py --mode demo --format markdown`
+5. выполнить `make turnkey-demo`
+6. выполнить `make agent-self-check`
+7. отдельно отчитаться, что реально проверено, что смоделировано и где нужен
    human review
 
 Репозиторий специально собран так, чтобы AI-агент мог развернуть его с нуля и
@@ -275,6 +287,9 @@ snapshot-оценками для:
 
 ## Latest changes
 
+- `v3.4.0`: GEO command surface, command-router API, bootstrap planner,
+  modular how-it-works docs, scoring-model clarification и более сильный
+  AI/operator onboarding
 - `v3.3.0`: hosted/deploy-ready validator page, docs по retry и scheduling,
   первая practical fact-drift implementation, более безопасная CMS writeback
   boundary, security scans, coverage artifacts, governance docs, executive

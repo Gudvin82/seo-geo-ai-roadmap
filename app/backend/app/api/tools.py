@@ -3,16 +3,55 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException
 
 from ..schemas import (
+    CommandCatalogResponse,
+    CommandRouteRead,
+    CommandRouterRequest,
     FactDriftItemRead,
     FactDriftRequest,
     FactDriftResponse,
     LlmsValidatorRequest,
     LlmsValidatorResponse,
 )
+from ..services.command_router import command_catalog, resolve_command_route
 from ..services.fact_drift import FactSurface, detect_fact_drift
 from ..services.llms_validator import validate_llms_text, validate_llms_url
 
 router = APIRouter(prefix="/tools", tags=["tools"])
+
+
+@router.get("/command-catalog", response_model=CommandCatalogResponse)
+def get_command_catalog() -> CommandCatalogResponse:
+    return CommandCatalogResponse(
+        routes=[
+            CommandRouteRead(
+                command=item.command,
+                title=item.title,
+                summary=item.summary,
+                recommended_scripts=item.recommended_scripts,
+                recommended_docs=item.recommended_docs,
+                api_routes=item.api_routes,
+                next_step=item.next_step,
+            )
+            for item in command_catalog()
+        ]
+    )
+
+
+@router.post("/command-router", response_model=CommandRouteRead)
+def command_router(payload: CommandRouterRequest) -> CommandRouteRead:
+    try:
+        item = resolve_command_route(payload.command)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return CommandRouteRead(
+        command=item.command,
+        title=item.title,
+        summary=item.summary,
+        recommended_scripts=item.recommended_scripts,
+        recommended_docs=item.recommended_docs,
+        api_routes=item.api_routes,
+        next_step=item.next_step,
+    )
 
 
 @router.post("/llms-validator", response_model=LlmsValidatorResponse)

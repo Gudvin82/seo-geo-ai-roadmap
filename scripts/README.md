@@ -19,7 +19,9 @@
 | `yandex_data_stub.py` | Emit a Yandex shaped starter payload | `python scripts/yandex_data_stub.py` |
 | `provider_benchmark_stub.py` | Print a provider benchmark rubric scaffold | `python scripts/provider_benchmark_stub.py` |
 | `fact_drift_checker.py` | Compare brand facts across surfaces and flag drift patterns | `python scripts/fact_drift_checker.py --surface website=./website.md --surface schema=./schema.md` |
-| `scheduled_check_runner.py` | Print the execution plan for a recurring check | `python scripts/scheduled_check_runner.py --project-id 1 --check-type llms_txt --frequency weekly --schedule-mode github_actions` |
+| `scheduled_check_runner.py` | Print the execution plan for a recurring check | `python scripts/scheduled_check_runner.py --project-id 1 --check-type llms --frequency weekly --schedule-mode github_actions` |
+| `geo_command_surface.py` | Route GEO/SEO/AI tasks to the right scripts, docs, and API routes | `python scripts/geo_command_surface.py audit --format json` |
+| `bootstrap_self_hosted.py` | Print the bootstrap plan for demo or production-like self-hosted setup | `python scripts/bootstrap_self_hosted.py --mode demo --format markdown` |
 
 ## `generate_llms_txt.py`
 

@@ -27,6 +27,8 @@ jobs:
           python scripts/content-inventory-helper.py --help
           python scripts/fact_drift_checker.py --help
           python scripts/scheduled_check_runner.py --help
+          python scripts/geo_command_surface.py --help
+          python scripts/bootstrap_self_hosted.py --help
       - name: Dry-run script behavior
         run: |
           cat > /tmp/sample-sitemap.xml <<'EOF'
@@ -41,3 +43,5 @@ jobs:
           python scripts/check-llms-txt.py --file /tmp/llms.txt
           python scripts/fact_drift_checker.py --surface website=/tmp/llms.txt --surface schema=/tmp/llms.txt
           python scripts/scheduled_check_runner.py --project-id 1 --check-type llms --frequency weekly --schedule-mode github_actions
+          python scripts/geo_command_surface.py llmstxt --format json
+          python scripts/bootstrap_self_hosted.py --mode demo --format json

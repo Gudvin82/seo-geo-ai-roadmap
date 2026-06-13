@@ -40,7 +40,7 @@ const translations = {
     navReports: "Reports",
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
-    releaseBadge: "v3.3.0 operational proof hosted validation and governance",
+    releaseBadge: "v3.4.0 command surface bootstrap and adoption ux",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -216,7 +216,7 @@ const translations = {
     navReports: "Отчеты",
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
-    releaseBadge: "v3.3.0 operational proof hosted validation and governance",
+    releaseBadge: "v3.4.0 command surface bootstrap and adoption ux",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:

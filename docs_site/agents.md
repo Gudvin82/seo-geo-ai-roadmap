@@ -9,6 +9,14 @@ AI coding agents should start from:
 Recommended task flow:
 
 1. Read the repository framing.
-2. Load the glossary and relevant docs.
-3. Run the relevant checklist and scripts.
-4. Validate with tests and release discipline.
+2. Start from the command surface.
+3. Load the glossary and relevant docs.
+4. Run the relevant checklist and scripts.
+5. Validate with tests and release discipline.
+
+Quick commands:
+
+```bash
+python scripts/geo_command_surface.py catalog
+python scripts/bootstrap_self_hosted.py --mode demo --format markdown
+```

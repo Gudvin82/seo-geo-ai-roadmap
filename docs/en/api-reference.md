@@ -232,13 +232,24 @@ summaries.
 
 ## Tools
 
+- `GET /api/v1/tools/command-catalog`
+- `POST /api/v1/tools/command-router`
 - `POST /api/v1/tools/llms-validator`
+- `POST /api/v1/tools/fact-drift`
 
 Example payload:
 
 ```json
 {
   "url": "https://example.com/llms.txt"
+}
+```
+
+Command router payload:
+
+```json
+{
+  "command": "audit"
 }
 ```
 

@@ -425,6 +425,24 @@ class LlmsValidatorResponse(BaseModel):
     observed_facts: list[str]
 
 
+class CommandRouteRead(BaseModel):
+    command: str
+    title: str
+    summary: str
+    recommended_scripts: list[str]
+    recommended_docs: list[str]
+    api_routes: list[str]
+    next_step: str
+
+
+class CommandRouterRequest(BaseModel):
+    command: str
+
+
+class CommandCatalogResponse(BaseModel):
+    routes: list[CommandRouteRead]
+
+
 class PromptSetCreate(BaseModel):
     workspace_id: int
     name: str

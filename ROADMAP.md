@@ -1,11 +1,12 @@
 # Repository Roadmap
 
-## v3.3.x stabilization
+## v3.4.x stabilization
 
 - keep the validator, retry, and scheduling surfaces honest and reviewable
 - mature governance, fact drift, and trust-surface layers without overclaiming
 - keep CI green across tests, docs, links, security scans, and smoke checks
 - deepen RU/EN parity across new operational and executive assets
+- keep the command surface and bootstrap guidance aligned with real self-hosted behavior
 
 ## Near-term product direction
 
@@ -15,6 +16,7 @@
 - more scenario packs by niche, site type, and market
 - more durable scheduling and queue semantics where they improve real operations
 - safer CMS writeback execution beyond package preparation
+- stronger AI-agent onboarding and task-routing without turning the project into a black-box wrapper
 
 ## Guardrails for future work
 

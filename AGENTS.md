@@ -171,6 +171,8 @@ Use this order by default:
 ### Core scripts
 
 ```bash
+python scripts/geo_command_surface.py catalog --format markdown
+python scripts/bootstrap_self_hosted.py --mode demo --format markdown
 python scripts/check-robots-ai-bots.py --url https://example.com
 python scripts/generate_llms_txt.py --sitemap-url https://example.com/sitemap.xml
 python scripts/ai-share-of-voice-tracker.py "Example AI Agency" --queries "best GEO agency,ai visibility audit"
@@ -181,6 +183,34 @@ python scripts/check_hallucinations.py --brand-facts-file examples/brand-facts-e
 python -m pytest
 python -m pytest app/backend/tests
 ```
+
+### GEO command surface
+
+If the user request sounds like one of these commands, route through the matching
+surface first:
+
+- `audit`
+- `quick`
+- `citability`
+- `crawlers`
+- `llmstxt`
+- `brands`
+- `platforms`
+- `schema`
+- `technical`
+- `content`
+- `report`
+- `compare`
+
+Use:
+
+```bash
+python scripts/geo_command_surface.py catalog
+python scripts/geo_command_surface.py audit --format json
+```
+
+This gives the recommended docs, scripts, API routes, and next step for each
+task type.
 
 ### App-layer entrypoints
 

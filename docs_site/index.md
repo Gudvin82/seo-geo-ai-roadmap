@@ -11,6 +11,7 @@ validation, and release discipline.
 - [AGENTS.md](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/AGENTS.md)
 - [WALKTHROUGH.md](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/WALKTHROUGH.md)
 - [Hosted Validator](validator.md)
+- [Command Surface](commands.md)
 
 ## What this repository covers
 
@@ -27,3 +28,4 @@ validation, and release discipline.
 - [Canonical facts and entity consistency](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/canonical-facts-and-entity-consistency.md)
 - [Entity hierarchy and brand focus](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/entity-hierarchy-and-brand-focus.md)
 - [Public Evaluation Kit](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/PUBLIC_EVALUATION_KIT.md)
+- [How it works](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/how-it-works-v340.md)

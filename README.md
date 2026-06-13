@@ -93,6 +93,8 @@ operator or an AI coding agent can use end to end:
 - Verification: [VERIFY_DEPLOYMENT.md](./VERIFY_DEPLOYMENT.md)
 - API reference: [docs/en/api-reference.md](./docs/en/api-reference.md)
 - Hosted validator: [docs site validator](./docs_site/validator.md)
+- Command surface: [docs/en/command-catalog-v340.md](./docs/en/command-catalog-v340.md)
+- Bootstrap guide: [docs/en/bootstrap-guide-v340.md](./docs/en/bootstrap-guide-v340.md)
 - Evaluation kit: [EVALUATE_THIS_REPO.md](./EVALUATE_THIS_REPO.md)
 - Commercial boundary: [COMMERCIAL_ROADMAP.md](./COMMERCIAL_ROADMAP.md)
 
@@ -106,15 +108,25 @@ operator or an AI coding agent can use end to end:
 - fact drift, trust surface, ROI, and executive reporting docs
 - public evaluation and proof-review assets
 
+## What `v3.4.0` adds
+
+- GEO command surface for AI agents and operators
+- command-router API plus CLI routing script
+- self-hosted bootstrap planner for demo and production-like setup
+- clearer modular "how it works" and scoring-model docs
+- stronger adoption surface without giving up self-hosted-first honesty
+
 ## AI handoff block
 
 Give this repository to your AI coding agent and tell it:
 
 1. read [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
 2. follow [AGENTS.md](./AGENTS.md)
-3. run `make turnkey-demo`
-4. run `make agent-self-check`
-5. report what was verified, what was simulated, and what still needs human
+3. run `python scripts/geo_command_surface.py catalog`
+4. run `python scripts/bootstrap_self_hosted.py --mode demo --format markdown`
+5. run `make turnkey-demo`
+6. run `make agent-self-check`
+7. report what was verified, what was simulated, and what still needs human
    review
 
 The repository is intentionally structured so an AI agent can deploy it from
@@ -271,6 +283,9 @@ See [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md).
 
 ## Latest changes
 
+- `v3.4.0`: GEO command surface, command-router API, bootstrap planner, modular
+  how-it-works docs, scoring-model clarification, and stronger AI/operator
+  onboarding
 - `v3.3.0`: hosted/deploy-ready validator page, retry and scheduling docs,
   fact-drift starter implementation, safer CMS writeback boundary, security
   scans, coverage artifacts, governance docs, executive reporting assets, and

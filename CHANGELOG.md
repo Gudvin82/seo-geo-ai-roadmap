@@ -1,5 +1,14 @@
 # Changelog
 
+## v3.4.0 — Command Surface, Bootstrap, and Adoption UX
+
+- Added a command surface for GEO, SEO, and AI discoverability tasks through a new backend routing layer and CLI entrypoint
+- Added `GET /api/v1/tools/command-catalog` and `POST /api/v1/tools/command-router` so agents and operators can map broad tasks to scripts, docs, and API routes
+- Added `scripts/geo_command_surface.py` and `scripts/bootstrap_self_hosted.py` to improve AI handoff and self-hosted onboarding
+- Added tests for the new command surface and bootstrap planner plus smoke coverage in CI
+- Added EN/RU docs for command catalog, bootstrap guide, scoring model, and modular how-it-works framing
+- Updated AGENTS, README, README_RU, docs site navigation, and the app badge to reflect the new adoption surface
+
 ## v3.3.0 — Operational Proof, Hosted Validation, and Governance
 
 - Added a hosted/deploy-ready docs-site `llms.txt` validator page and expanded EN/RU validator docs with honest browser-fetch limitations
