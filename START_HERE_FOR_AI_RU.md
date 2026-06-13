@@ -31,6 +31,14 @@
 6. выполни `make seed`, если нужны demo-данные
 7. выведи `http://localhost:3000` и demo credentials
 
+## Если пользователю нужен готовый prompt, а не ручная формулировка
+
+Используй встроенный generator task packs:
+
+- `python scripts/agent_handoff_pack.py --task deploy-demo --language ru`
+- `python scripts/agent_handoff_pack.py --task audit-site --language ru --target-url https://example.com`
+- `python scripts/agent_handoff_pack.py --task deploy-scanner --language ru`
+
 ## Идеальный путь
 
 1. Прочитай [README_RU.md](./README_RU.md)
@@ -64,3 +72,7 @@
 Используй [AI_HANDOFF_PROMPT_RU.md](./AI_HANDOFF_PROMPT_RU.md) как operating
 contract и отдельно указывай, что реально проверено, что было эвристикой и где
 еще нужен human review.
+
+Если пользователь хочет превратить репозиторий в reusable scanner, сначала
+прочитай [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md), а потом уже
+предлагай public intake surface.

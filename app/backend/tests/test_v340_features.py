@@ -7,7 +7,7 @@ def test_command_catalog_endpoint_lists_routes(client) -> None:
     payload = response.json()
     assert payload["routes"]
     commands = {item["command"] for item in payload["routes"]}
-    assert {"audit", "llmstxt", "compare"}.issubset(commands)
+    assert {"audit", "llmstxt", "compare", "deploy", "scanner"}.issubset(commands)
 
 
 def test_command_router_returns_specific_route(client) -> None:

@@ -1,6 +1,6 @@
 # Architecture
 
-## Layer model in v3.0.0
+## Layer model in v3.5.0
 
 `seo-geo-ai-roadmap` now has four practical layers:
 
@@ -12,6 +12,9 @@
    - `app/backend/`, `app/frontend/`, `app/shared/`
 4. Distribution layer
    - `docs_site/`, `mkdocs.yml`, `.github/workflows/`
+
+For the public-facing architecture brief, see
+[ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md).
 
 The app layer does not replace the methodology. It operationalizes it.
 
@@ -46,12 +49,14 @@ The frontend stays intentionally lightweight:
 This keeps the platform deployable in self-hosted environments without a heavy
 frontend dependency tree.
 
-## v3.0.0 product additions
+## v3.5.0 additions on top of the core stack
 
 - operator overview pane
 - first-run guidance inside the app
 - compact history charts
 - clearer provider, audit, report, and SoV flow visibility
+- AI handoff task packs for common deployment and audit tasks
+- scanner-oriented bootstrap path for teams extending the audit core
 
 ## Shared logic strategy
 

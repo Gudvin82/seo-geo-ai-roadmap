@@ -31,6 +31,14 @@ If a user asks you to deploy this project:
 6. run `make seed` if demo data is needed
 7. output `http://localhost:3000` and the demo credentials
 
+## If the user wants a ready-made prompt instead of writing one
+
+Use the built-in task pack generator:
+
+- `python scripts/agent_handoff_pack.py --task deploy-demo --language en`
+- `python scripts/agent_handoff_pack.py --task audit-site --language en --target-url https://example.com`
+- `python scripts/agent_handoff_pack.py --task deploy-scanner --language en`
+
 ## Ideal path
 
 1. Read [README.md](./README.md)
@@ -64,3 +72,7 @@ If a user asks you to deploy this project:
 Use [AI_HANDOFF_PROMPT.md](./AI_HANDOFF_PROMPT.md) as the operating contract and
 report clearly what was verified, what was heuristic, and what still needs human
 review.
+
+If the user wants to turn the repo into a reusable scanner, read
+[ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md) before proposing a public intake
+surface.

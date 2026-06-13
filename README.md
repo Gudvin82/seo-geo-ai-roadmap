@@ -95,6 +95,7 @@ operator or an AI coding agent can use end to end:
 - Hosted validator: [docs site validator](./docs_site/validator.md)
 - Command surface: [docs/en/command-catalog-v340.md](./docs/en/command-catalog-v340.md)
 - Bootstrap guide: [docs/en/bootstrap-guide-v340.md](./docs/en/bootstrap-guide-v340.md)
+- Architecture note: [ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md)
 - Evaluation kit: [EVALUATE_THIS_REPO.md](./EVALUATE_THIS_REPO.md)
 - Commercial boundary: [COMMERCIAL_ROADMAP.md](./COMMERCIAL_ROADMAP.md)
 
@@ -116,6 +117,13 @@ operator or an AI coding agent can use end to end:
 - clearer modular "how it works" and scoring-model docs
 - stronger adoption surface without giving up self-hosted-first honesty
 
+## What `v3.5.0` adds
+
+- built-in AI handoff task packs so users do not need to write their own prompt
+- scanner-oriented bootstrap mode for teams building a client-facing intake surface
+- public architecture note in EN and RU describing deployment, audit flow, and scanner evolution
+- command-catalog expansion for `deploy` and `scanner` use cases
+
 ## AI handoff block
 
 Give this repository to your AI coding agent and tell it:
@@ -123,10 +131,11 @@ Give this repository to your AI coding agent and tell it:
 1. read [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
 2. follow [AGENTS.md](./AGENTS.md)
 3. run `python scripts/geo_command_surface.py catalog`
-4. run `python scripts/bootstrap_self_hosted.py --mode demo --format markdown`
-5. run `make turnkey-demo`
-6. run `make agent-self-check`
-7. report what was verified, what was simulated, and what still needs human
+4. run `python scripts/agent_handoff_pack.py --task deploy-demo --language en`
+5. run `python scripts/bootstrap_self_hosted.py --mode demo --format markdown`
+6. run `make turnkey-demo`
+7. run `make agent-self-check`
+8. report what was verified, what was simulated, and what still needs human
    review
 
 The repository is intentionally structured so an AI agent can deploy it from
@@ -166,6 +175,7 @@ markets. This project is built for the opposite direction:
 - Examples: [`examples`](./examples)
 - Scripts: [`scripts`](./scripts)
 - Architecture: [ARCHITECTURE.md](./ARCHITECTURE.md)
+- Public architecture note: [ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md)
 - Positioning: [POSITIONING.md](./POSITIONING.md)
 - Real cases: [REAL_CASES.md](./REAL_CASES.md)
 - Operations runbook: [OPERATIONS_RUNBOOK.md](./OPERATIONS_RUNBOOK.md)
@@ -283,6 +293,9 @@ See [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md).
 
 ## Latest changes
 
+- `v3.5.0`: built-in AI handoff task packs, scanner-oriented bootstrap mode,
+  public EN/RU architecture notes, and command-surface expansion for deploy
+  and scanner scenarios
 - `v3.4.0`: GEO command surface, command-router API, bootstrap planner, modular
   how-it-works docs, scoring-model clarification, and stronger AI/operator
   onboarding

@@ -35,3 +35,11 @@ def test_production_json_output() -> None:
     assert result.returncode == 0
     assert '"mode": "production"' in result.stdout
     assert "APP_SECRET_KEY" in result.stdout
+
+
+def test_scanner_markdown_output() -> None:
+    result = run_command("--mode", "scanner")
+    assert result.returncode == 0
+    assert "deploy a reusable scanner" not in result.stdout.lower()
+    assert "Delivery surface" in result.stdout
+    assert "agent_handoff_pack.py --task deploy-scanner" in result.stdout

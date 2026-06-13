@@ -1,6 +1,6 @@
 # Архитектура
 
-## Модель слоев в v3.0.0
+## Модель слоев в v3.5.0
 
 У `seo-geo-ai-roadmap` теперь четыре практических слоя:
 
@@ -12,6 +12,9 @@
    - `app/backend/`, `app/frontend/`, `app/shared/`
 4. Дистрибуционный слой
    - `docs_site/`, `mkdocs.yml`, `.github/workflows/`
+
+Для публичной архитектурной справки см.
+[ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md).
 
 Приложение не заменяет методологию. Оно делает ее операционной.
 
@@ -46,12 +49,14 @@ Frontend остается намеренно легким:
 Так платформа остается deployable в self-hosted средах без тяжелого frontend
 dependency tree.
 
-## Что добавлено в v3.0.0
+## Что добавлено к базовому стеку к v3.5.0
 
 - operator overview pane
 - первый onboarding прямо внутри app
 - компактные history charts
 - более явная видимость provider, audit, report и SoV flow
+- AI handoff task packs для типовых deployment и audit задач
+- scanner-oriented bootstrap path для команд, расширяющих audit core
 
 ## Стратегия shared logic
 

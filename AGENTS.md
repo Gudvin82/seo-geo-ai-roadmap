@@ -11,6 +11,8 @@ Start here if you are an AI coding agent working inside the repository:
 - [README_RU.md](./README_RU.md)
 - [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
 - [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
+- [ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md)
+- [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
 - [WALKTHROUGH.md](./WALKTHROUGH.md)
 - [REAL_CASES.md](./REAL_CASES.md)
 
@@ -32,6 +34,12 @@ If a user asks you to "deploy this SEO platform", follow this order:
 Fastest all-in-one option for a lazy demo deployment:
 
 - run `make turnkey-demo`
+
+If the user wants a ready task prompt instead of inventing one:
+
+- run `python scripts/agent_handoff_pack.py --task deploy-demo --language en`
+- run `python scripts/agent_handoff_pack.py --task audit-site --language ru --target-url https://example.com`
+- run `python scripts/agent_handoff_pack.py --task deploy-scanner --language en`
 
 ## For AI Agents: Mandatory self-check before claiming "done"
 
@@ -172,7 +180,9 @@ Use this order by default:
 
 ```bash
 python scripts/geo_command_surface.py catalog --format markdown
+python scripts/agent_handoff_pack.py --task audit-site --language en --target-url https://example.com
 python scripts/bootstrap_self_hosted.py --mode demo --format markdown
+python scripts/bootstrap_self_hosted.py --mode scanner --format markdown
 python scripts/check-robots-ai-bots.py --url https://example.com
 python scripts/generate_llms_txt.py --sitemap-url https://example.com/sitemap.xml
 python scripts/ai-share-of-voice-tracker.py "Example AI Agency" --queries "best GEO agency,ai visibility audit"
@@ -193,9 +203,11 @@ surface first:
 - `quick`
 - `citability`
 - `crawlers`
+- `deploy`
 - `llmstxt`
 - `brands`
 - `platforms`
+- `scanner`
 - `schema`
 - `technical`
 - `content`

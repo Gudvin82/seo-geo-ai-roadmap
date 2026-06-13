@@ -97,6 +97,7 @@ discoverability. Ее можно развернуть на своем компь
 - Hosted validator: [docs site validator](./docs_site/validator.md)
 - Command surface: [docs/ru/command-catalog-v340.md](./docs/ru/command-catalog-v340.md)
 - Bootstrap guide: [docs/ru/bootstrap-guide-v340.md](./docs/ru/bootstrap-guide-v340.md)
+- Architecture note: [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
 - Evaluation kit: [EVALUATE_THIS_REPO_RU.md](./EVALUATE_THIS_REPO_RU.md)
 - Commercial boundary: [COMMERCIAL_ROADMAP_RU.md](./COMMERCIAL_ROADMAP_RU.md)
 
@@ -118,6 +119,13 @@ discoverability. Ее можно развернуть на своем компь
 - более ясные modular docs "how it works" и scoring model
 - более сильная adoption-поверхность без отказа от self-hosted-first honesty
 
+## Что добавляет `v3.5.0`
+
+- встроенные AI handoff task packs, чтобы пользователю не приходилось писать prompt самому
+- scanner-oriented bootstrap mode для команд, которые строят client-facing intake surface
+- публичная архитектурная справка на EN и RU с описанием deployment, audit flow и развития scanner-контура
+- расширение command-catalog под `deploy` и `scanner` сценарии
+
 ## Блок для передачи AI
 
 Передайте этот репозиторий своему AI coding agent и скажите ему:
@@ -125,10 +133,11 @@ discoverability. Ее можно развернуть на своем компь
 1. прочитать [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
 2. следовать [AGENTS.md](./AGENTS.md)
 3. выполнить `python scripts/geo_command_surface.py catalog`
-4. выполнить `python scripts/bootstrap_self_hosted.py --mode demo --format markdown`
-5. выполнить `make turnkey-demo`
-6. выполнить `make agent-self-check`
-7. отдельно отчитаться, что реально проверено, что смоделировано и где нужен
+4. выполнить `python scripts/agent_handoff_pack.py --task deploy-demo --language ru`
+5. выполнить `python scripts/bootstrap_self_hosted.py --mode demo --format markdown`
+6. выполнить `make turnkey-demo`
+7. выполнить `make agent-self-check`
+8. отдельно отчитаться, что реально проверено, что смоделировано и где нужен
    human review
 
 Репозиторий специально собран так, чтобы AI-агент мог развернуть его с нуля и
@@ -169,6 +178,7 @@ SaaS demo в этом репозитории не обещается.
 - Примеры: [`examples`](./examples)
 - Скрипты: [`scripts`](./scripts)
 - Архитектура: [ARCHITECTURE_RU.md](./ARCHITECTURE_RU.md)
+- Публичная архитектурная справка: [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
 - Positioning: [POSITIONING.md](./POSITIONING.md)
 - Реальные кейсы: [REAL_CASES_RU.md](./REAL_CASES_RU.md)
 - Operations runbook: [OPERATIONS_RUNBOOK_RU.md](./OPERATIONS_RUNBOOK_RU.md)
@@ -287,6 +297,9 @@ snapshot-оценками для:
 
 ## Latest changes
 
+- `v3.5.0`: встроенные AI handoff task packs, scanner-oriented bootstrap mode,
+  публичные EN/RU архитектурные справки и расширение command surface для
+  deploy/scanner сценариев
 - `v3.4.0`: GEO command surface, command-router API, bootstrap planner,
   modular how-it-works docs, scoring-model clarification и более сильный
   AI/operator onboarding

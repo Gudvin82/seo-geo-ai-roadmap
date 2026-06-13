@@ -3,6 +3,12 @@
 Use this prompt when you want another AI to take the repository and execute the
 setup or audit flow end to end.
 
+If you want a task-specific version, generate it from the repo:
+
+- `python scripts/agent_handoff_pack.py --task audit-site --language en --target-url https://example.com`
+- `python scripts/agent_handoff_pack.py --task deploy-demo --language en`
+- `python scripts/agent_handoff_pack.py --task deploy-scanner --language en`
+
 ```text
 You are taking over a free and transparent self-hosted SEO, GEO, and AI discoverability platform.
 

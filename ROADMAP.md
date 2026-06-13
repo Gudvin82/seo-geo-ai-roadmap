@@ -1,17 +1,19 @@
 # Repository Roadmap
 
-## v3.4.x stabilization
+## v3.5.x stabilization
 
 - keep the validator, retry, and scheduling surfaces honest and reviewable
 - mature governance, fact drift, and trust-surface layers without overclaiming
 - keep CI green across tests, docs, links, security scans, and smoke checks
 - deepen RU/EN parity across new operational and executive assets
 - keep the command surface and bootstrap guidance aligned with real self-hosted behavior
+- turn the scanner-oriented bootstrap and handoff packs into a stronger intake flow without overclaiming public SaaS readiness
 
 ## Near-term product direction
 
 - richer answer-surface monitoring and evidence tagging
 - stronger reusable validators and lightweight operator tools
+- consent-aware scanner intake and ownership verification for active scanning
 - deeper business reporting templates for GEO, AI visibility, and pipeline
 - more scenario packs by niche, site type, and market
 - more durable scheduling and queue semantics where they improve real operations

@@ -3,6 +3,12 @@
 Используй этот промпт, когда хочешь передать репозиторий другому ИИ и заставить
 его выполнить setup или audit flow под ключ.
 
+Если нужен task-specific вариант, сгенерируй его прямо из репозитория:
+
+- `python scripts/agent_handoff_pack.py --task audit-site --language ru --target-url https://example.com`
+- `python scripts/agent_handoff_pack.py --task deploy-demo --language ru`
+- `python scripts/agent_handoff_pack.py --task deploy-scanner --language ru`
+
 ```text
 Ты принимаешь на себя бесплатную и прозрачную self-hosted платформу для SEO, GEO и AI discoverability.
 

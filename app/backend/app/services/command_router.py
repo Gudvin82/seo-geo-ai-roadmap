@@ -15,6 +15,22 @@ class CommandRoute:
 
 
 COMMAND_CATALOG: dict[str, CommandRoute] = {
+    "deploy": CommandRoute(
+        command="deploy",
+        title="Turnkey deployment and environment bootstrap",
+        summary="Pick the right self-hosted path for demo, production-like setup, or client delivery.",
+        recommended_scripts=[
+            "scripts/bootstrap_self_hosted.py",
+            "scripts/agent_handoff_pack.py",
+        ],
+        recommended_docs=[
+            "DEPLOYMENT.md",
+            "VERIFY_DEPLOYMENT.md",
+            "ARCHITECTURE_NOTE.md",
+        ],
+        api_routes=["GET /healthz", "GET /readyz"],
+        next_step="Choose the deployment mode first, then run the matching bootstrap and verification flow before claiming success.",
+    ),
     "audit": CommandRoute(
         command="audit",
         title="Full GEO and SEO audit",
@@ -132,6 +148,26 @@ COMMAND_CATALOG: dict[str, CommandRoute] = {
         ],
         api_routes=[],
         next_step="Validate syntax first, then strengthen the business and entity meaning carried by the schema.",
+    ),
+    "scanner": CommandRoute(
+        command="scanner",
+        title="Public or client-facing scanner deployment",
+        summary="Plan the intake flow, verification model, and delivery surface for a reusable site scanner.",
+        recommended_scripts=[
+            "scripts/bootstrap_self_hosted.py",
+            "scripts/agent_handoff_pack.py",
+        ],
+        recommended_docs=[
+            "ARCHITECTURE_NOTE.md",
+            "docs/en/bootstrap-guide-v340.md",
+            "docs/en/api-reference.md",
+        ],
+        api_routes=[
+            "POST /api/v1/tools/command-router",
+            "POST /api/v1/audit-runs/run",
+            "GET /api/v1/reports",
+        ],
+        next_step="Decide whether the scanner is internal, client-gated, or public, then add verification, queueing, and report delivery around the existing audit core.",
     ),
     "technical": CommandRoute(
         command="technical",

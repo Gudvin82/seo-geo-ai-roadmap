@@ -1,5 +1,14 @@
 # Changelog
 
+## v3.5.0 — AI Handoff Packs, Scanner Bootstrap, and Public Architecture Note
+
+- Added `scripts/agent_handoff_pack.py` so users can generate ready-to-paste AI task prompts for audit, demo deployment, scanner deployment, and client setup flows
+- Expanded the command router and command catalog to cover `deploy` and `scanner` scenarios in addition to the existing GEO and reporting surfaces
+- Added a scanner-oriented bootstrap mode to `scripts/bootstrap_self_hosted.py` with explicit delivery-surface guidance
+- Added public EN/RU architecture notes that explain the product layers, self-hosted deployment model, audit loop, AI handoff strategy, scanner evolution path, and current limits
+- Updated README, README_RU, AGENTS, START_HERE_FOR_AI, AI handoff prompts, docs-site navigation, and architecture docs to make the new zero-friction handoff path visible
+- Added tests for the new AI handoff pack generator and expanded bootstrap and command catalog coverage
+
 ## v3.4.0 — Command Surface, Bootstrap, and Adoption UX
 
 - Added a command surface for GEO, SEO, and AI discoverability tasks through a new backend routing layer and CLI entrypoint

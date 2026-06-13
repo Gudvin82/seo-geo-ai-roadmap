@@ -162,6 +162,19 @@ def main() -> int:
                 ]
             ),
         },
+        {
+            "id": "v350_handoff_and_scanner",
+            "label": "v3.5.0 handoff packs, scanner bootstrap, and architecture notes exist",
+            "passed": all(
+                exists(path)
+                for path in [
+                    "scripts/agent_handoff_pack.py",
+                    "ARCHITECTURE_NOTE.md",
+                    "ARCHITECTURE_NOTE_RU.md",
+                    "docs_site/architecture-note.md",
+                ]
+            ),
+        },
     ]
 
     passed_count = sum(1 for item in checks if item["passed"])

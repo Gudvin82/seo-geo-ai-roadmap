@@ -17,6 +17,7 @@ nav:
   - Russian: russian.md
   - SaaS App: saas-app.md
   - App Architecture: architecture.md
+  - Architecture Note: architecture-note.md
   - Deployment: deployment.md
   - Commands: commands.md
   - Validator: validator.md
