@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import json
 
-
 REPO_URL = "https://github.com/Gudvin82/seo-geo-ai-roadmap"
 
 
