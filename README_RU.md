@@ -105,6 +105,7 @@ discoverability. Ее можно развернуть на своем компь
 - Research loop: [docs/ru/research-build-improve-repeat-v380.md](./docs/ru/research-build-improve-repeat-v380.md)
 - Framework integrations: [docs/ru/framework-integrations-v380.md](./docs/ru/framework-integrations-v380.md)
 - Integration production flows: [docs/ru/integration-production-flows-v380.md](./docs/ru/integration-production-flows-v380.md)
+- v4.2 production proof: [docs/ru/v420-production-proof.md](./docs/ru/v420-production-proof.md)
 - Product modes: [docs/ru/product-modes-v380.md](./docs/ru/product-modes-v380.md)
 - CI gating: [docs/ru/ci-gating-v380.md](./docs/ru/ci-gating-v380.md)
 - Executive dashboard: [docs/ru/executive-dashboard-v380.md](./docs/ru/executive-dashboard-v380.md)
@@ -129,6 +130,17 @@ discoverability. Ее можно развернуть на своем компь
 - еще более четкое разделение scanner / product-app / repo-operator surfaces плюс расширенные machine-readable contracts
 - trusted delivery targets и генерация PR proposal с auto-merge eligibility flags для trusted repositories
 - реальный Telegram webhook runtime, более зрелые Chrome и VS Code operator packages и managed-cloud Kubernetes pack
+
+## Что добавляет `v4.2.0`
+
+- аудит AI readability для видимой структуры, machine-readable guidance layers и answer-ready блоков
+- heuristic citability scoring с machine-readable breakdown и quick wins
+- проверка CDN или edge-блокировок для GPTBot, ClaudeBot и PerplexityBot
+- проверка RAG chunk readiness для длинных секций, heading depth и definition-style контента
+- путь для CrUX field data и новый integration verification matrix endpoint
+- расширенное покрытие провайдеров: OpenAI, Anthropic, Gemini, Perplexity, Mistral, Cohere, DeepSeek, xAI или Grok, Ollama, LocalAI и vLLM
+- stack packs для WordPress, React и Angular
+- optional Lighthouse CI path для PR-level synthetic gating
 
 ## Что добавляет `v4.0.0`
 

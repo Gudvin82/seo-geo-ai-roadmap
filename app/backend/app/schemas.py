@@ -252,6 +252,11 @@ class ProviderConfigCreate(BaseModel):
             "anthropic",
             "gemini",
             "perplexity",
+            "mistral",
+            "cohere",
+            "deepseek",
+            "xai",
+            "grok",
             "ollama",
             "localai",
             "vllm",
@@ -296,7 +301,7 @@ class IntegrationConnectionCreate(BaseModel):
     @classmethod
     def validate_source_type(cls, value: str) -> str:
         source = value.strip().lower()
-        allowed = {"gsc", "ga4", "yandex_webmaster", "yandex_metrica"}
+        allowed = {"gsc", "ga4", "yandex_webmaster", "yandex_metrica", "crux"}
         if source not in allowed:
             raise ValueError(
                 f"Unsupported source_type '{value}'. Allowed: {', '.join(sorted(allowed))}."
@@ -534,6 +539,31 @@ class IntegrationSourceContractRead(BaseModel):
 
 class IntegrationContractsResponse(BaseModel):
     contracts: list[IntegrationSourceContractRead]
+
+
+class IntegrationVerificationRowRead(BaseModel):
+    id: str
+    surface_type: str
+    surface_name: str
+    source_type: str
+    readiness_tier: str
+    proof_level: str
+    credentials_status: str
+    property_identifier: Optional[str] = None
+    ci_workflow: str
+    ci_gates: list[str] = Field(default_factory=list)
+    capabilities: list[str] = Field(default_factory=list)
+    production_flow: list[str] = Field(default_factory=list)
+    verification_checks: list[str] = Field(default_factory=list)
+    latest_snapshot_source: Optional[str] = None
+    latest_snapshot_summary: dict[str, Any] = Field(default_factory=dict)
+    next_step: str
+
+
+class IntegrationVerificationMatrixRead(BaseModel):
+    project_id: int
+    generated_at: datetime
+    rows: list[IntegrationVerificationRowRead] = Field(default_factory=list)
 
 
 class ProductModeRead(BaseModel):

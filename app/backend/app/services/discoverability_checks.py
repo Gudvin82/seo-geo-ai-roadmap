@@ -11,7 +11,7 @@ from typing import Optional
 
 from .scan_security import safe_fetch_url_bytes, safe_fetch_url_text
 
-CHECKER_USER_AGENT = "Discoverability-Checks/3.7.0"
+CHECKER_USER_AGENT = "Discoverability-Checks/4.2.0"
 DEFAULT_TIMEOUT_SECONDS = 15
 
 AI_BOTS = [
@@ -169,6 +169,7 @@ class HtmlAnalysis:
     headings: list[str]
     text_blocks: list[str]
     section_markers: list[str]
+    visibility_markers: list[str]
     json_ld_nodes: list[dict | list]
     question_like_headings: list[str]
 
@@ -182,6 +183,7 @@ class _HTMLSignalParser(HTMLParser):
         self.headings: list[str] = []
         self.text_blocks: list[str] = []
         self.section_markers: list[str] = []
+        self.visibility_markers: list[str] = []
         self.json_ld_nodes: list[dict | list] = []
         self.question_like_headings: list[str] = []
         self._ignored_depth = 0
@@ -228,6 +230,18 @@ class _HTMLSignalParser(HTMLParser):
             for token in ["faq", "accordion", "question", "answer", "qa"]
         ):
             self.section_markers.append(marker)
+        if marker and any(
+            token in marker
+            for token in [
+                "sr-only",
+                "sronly",
+                "visually-hidden",
+                "screen-reader",
+                "screenreader",
+                "sr_only",
+            ]
+        ):
+            self.visibility_markers.append(marker)
 
     def handle_endtag(self, tag: str) -> None:
         if tag in {"script", "style", "noscript"} and self._ignored_depth:
@@ -286,6 +300,7 @@ def analyze_html(html: str) -> HtmlAnalysis:
         headings=parser.headings,
         text_blocks=parser.text_blocks,
         section_markers=parser.section_markers,
+        visibility_markers=parser.visibility_markers,
         json_ld_nodes=parser.json_ld_nodes,
         question_like_headings=parser.question_like_headings,
     )
@@ -416,6 +431,117 @@ def faq_detection_report(html: str) -> dict:
     }
 
 
+def ai_readability_report(html: str, *, page_url: Optional[str] = None) -> dict:
+    analysis = analyze_html(html)
+    warnings: list[str] = []
+    detected_layers: list[str] = []
+    quick_wins: list[str] = []
+
+    if analysis.title:
+        detected_layers.append("descriptive_title")
+    else:
+        warnings.append("Page title is missing.")
+        quick_wins.append("Add a specific, descriptive page title.")
+
+    if analysis.meta_tags.get("description"):
+        detected_layers.append("meta_description")
+    else:
+        warnings.append("Meta description is missing.")
+        quick_wins.append("Add a concise meta description with the page promise.")
+
+    if analysis.visibility_markers:
+        detected_layers.append("screen_reader_support")
+    else:
+        warnings.append("No sr-only or visually-hidden support markers were detected.")
+        quick_wins.append(
+            "Review whether hidden support text for assistive or AI parsing is needed."
+        )
+
+    schema = schema_coverage_report(html)
+    if schema["found_types"]:
+        detected_layers.append("structured_data")
+    else:
+        warnings.append("No structured data was detected.")
+        quick_wins.append("Publish baseline JSON-LD such as Organization and WebSite.")
+
+    faq = faq_detection_report(html)
+    if faq["status"] in {"pass", "needs-review"}:
+        detected_layers.append("answer_ready_blocks")
+    else:
+        warnings.append("Visible FAQ or answer-ready formatting is weak.")
+        quick_wins.append("Add visible Q&A or answer-ready blocks on important pages.")
+
+    remote_assets: dict[str, str] = {}
+    if page_url:
+        reasoning_url = resolve_public_file_url(page_url, "reasoning.json")
+        manifest_url = resolve_public_file_url(
+            f"{normalize_public_url(page_url).rstrip('/')}/.well-known/ai-manifest.json",
+            "ai-manifest.json",
+        )
+        reasoning_body, reasoning_error = try_fetch_url_text(reasoning_url)
+        manifest_body, manifest_error = try_fetch_url_text(manifest_url)
+        remote_assets["reasoning_json"] = "present" if reasoning_body else "missing"
+        remote_assets["ai_manifest"] = "present" if manifest_body else "missing"
+        if reasoning_body:
+            detected_layers.append("reasoning_json")
+        else:
+            warnings.append(
+                f"reasoning.json is not publicly available: {reasoning_error or 'missing'}"
+            )
+            quick_wins.append(
+                "Consider publishing reasoning.json if your operating model depends on explicit AI guidance."
+            )
+        if manifest_body:
+            detected_layers.append("ai_manifest")
+        else:
+            warnings.append(
+                f".well-known/ai-manifest.json is not publicly available: {manifest_error or 'missing'}"
+            )
+            quick_wins.append(
+                "Consider publishing .well-known/ai-manifest.json for machine-readable AI guidance."
+            )
+
+    score = 0
+    score += 15 if analysis.title else 0
+    score += 15 if analysis.meta_tags.get("description") else 0
+    score += 15 if analysis.visibility_markers else 0
+    score += 20 if schema["found_types"] else 0
+    score += 15 if faq["status"] in {"pass", "needs-review"} else 0
+    score += 10 if remote_assets.get("reasoning_json") == "present" else 0
+    score += 10 if remote_assets.get("ai_manifest") == "present" else 0
+
+    status = (
+        "pass"
+        if score >= 75 and not warnings[:2]
+        else "warn"
+        if score >= 45
+        else "fail"
+    )
+    return {
+        "status": status,
+        "score": score,
+        "detected_layers": detected_layers,
+        "missing_layers": [
+            layer
+            for layer in [
+                "descriptive_title",
+                "meta_description",
+                "screen_reader_support",
+                "structured_data",
+                "answer_ready_blocks",
+                "reasoning_json",
+                "ai_manifest",
+            ]
+            if layer not in detected_layers
+        ],
+        "warnings": warnings,
+        "quick_wins": quick_wins[:5],
+        "remote_assets": remote_assets,
+        "recommendation": "Tighten AI-readable page structure, machine-readable guidance files, and answer-ready formatting before expecting strong citation behavior.",
+        "limitation": "This audit is heuristic and cannot prove how a specific model or retrieval stack will parse the page.",
+    }
+
+
 def open_graph_report(html: str) -> dict:
     analysis = analyze_html(html)
     meta = analysis.meta_tags
@@ -458,6 +584,189 @@ def open_graph_report(html: str) -> dict:
         "missing_fields": missing,
         "warnings": warnings,
         "recommendation": "Complete missing Open Graph and Twitter Card fields and review generic previews.",
+    }
+
+
+def rag_chunk_readiness_report(html: str) -> dict:
+    analysis = analyze_html(html)
+    blocks = [block.strip() for block in analysis.text_blocks if block.strip()]
+    long_blocks = [block for block in blocks if len(block) > 1200]
+    short_headings = [heading for heading in analysis.headings if len(heading) < 6]
+    definition_signals = [
+        block
+        for block in blocks
+        if any(
+            token in block.lower()
+            for token in [" is ", " means ", " refers to ", " defined as ", " это "]
+        )
+    ]
+    warnings: list[str] = []
+    if len(analysis.headings) < 2:
+        warnings.append("Heading structure is shallow for chunk-friendly parsing.")
+    if long_blocks:
+        warnings.append("Some content sections look too long for clean RAG chunking.")
+    if short_headings:
+        warnings.append("Some headings are too short to anchor semantic chunk titles.")
+    if not definition_signals:
+        warnings.append("Definition-like explanatory blocks are weak or missing.")
+
+    avg_block_length = (
+        int(sum(len(block) for block in blocks) / len(blocks)) if blocks else 0
+    )
+    status = (
+        "pass"
+        if not warnings
+        else "warn"
+        if analysis.headings and avg_block_length < 1400
+        else "fail"
+    )
+    return {
+        "status": status,
+        "heading_count": len(analysis.headings),
+        "text_block_count": len(blocks),
+        "average_block_length": avg_block_length,
+        "long_block_count": len(long_blocks),
+        "definition_signal_count": len(definition_signals),
+        "warnings": warnings,
+        "recommendation": "Break long sections into tighter heading-led blocks and add explicit definition-style sentences where concepts matter.",
+        "limitation": "Chunk readiness is inferred from rendered HTML text, not from your real downstream embedding or retrieval pipeline.",
+    }
+
+
+def citability_score_report(
+    html: str,
+    *,
+    page_url: Optional[str] = None,
+    site_type: Optional[str] = None,
+) -> dict:
+    schema = schema_coverage_report(html, site_type=site_type)
+    faq = faq_detection_report(html)
+    social = open_graph_report(html)
+    technical = technical_seo_report(html, page_url or "https://example.com/")
+    readability = ai_readability_report(html, page_url=page_url)
+
+    checks = [
+        (
+            "title_and_description",
+            10,
+            bool(technical["title"] and technical["meta_description"]),
+        ),
+        ("canonical", 10, bool(technical["canonical_url"])),
+        ("hreflang_or_locale", 5, bool(technical["hreflang_refs"])),
+        ("schema_baseline", 20, bool(schema["found_types"])),
+        ("faq_answer_ready", 10, faq["status"] in {"pass", "needs-review"}),
+        ("social_metadata", 10, not social["missing_fields"]),
+        ("ai_readability", 15, readability["score"] >= 60),
+        ("clean_technical_baseline", 10, len(technical["warnings"]) <= 1),
+        (
+            "definition_and_chunking",
+            10,
+            rag_chunk_readiness_report(html)["status"] in {"pass", "warn"},
+        ),
+    ]
+    if page_url:
+        ai_txt_url = resolve_public_file_url(page_url, "ai.txt")
+        llms_url = resolve_public_file_url(page_url, "llms.txt")
+        ai_content, _ai_error = try_fetch_url_text(ai_txt_url)
+        llms_content, _llms_error = try_fetch_url_text(llms_url)
+        checks.append(("ai_guidance_files", 10, bool(ai_content or llms_content)))
+
+    score = sum(weight for _name, weight, passed in checks if passed)
+    quick_wins: list[str] = []
+    if not technical["canonical_url"]:
+        quick_wins.append("Add a canonical URL.")
+    if schema["missing_types"]:
+        quick_wins.append("Complete missing JSON-LD schema coverage.")
+    if social["missing_fields"]:
+        quick_wins.append("Fill missing Open Graph and Twitter Card fields.")
+    if faq["status"] == "warn":
+        quick_wins.append("Add visible Q&A or FAQ formatting.")
+    if readability["missing_layers"]:
+        quick_wins.append("Improve AI-readable structure and guidance layers.")
+
+    status = "pass" if score >= 75 else "warn" if score >= 45 else "fail"
+    return {
+        "status": status,
+        "score": score,
+        "max_score": sum(weight for _name, weight, _passed in checks),
+        "breakdown": [
+            {"check": name, "weight": weight, "passed": passed}
+            for name, weight, passed in checks
+        ],
+        "quick_wins": quick_wins[:5],
+        "recommendation": "Raise citation probability by tightening technical clarity, machine-readable facts, and answer-ready formatting on money pages.",
+        "limitation": "This score is a directional proxy for citation readiness, not a guarantee of mentions across volatile AI surfaces.",
+    }
+
+
+def _probe_public_url(url: str, user_agent: str) -> dict:
+    from .scan_security import normalize_public_url as secure_normalize_public_url
+
+    settings = _runtime_settings()
+    opener = urllib.request.build_opener(urllib.request.HTTPRedirectHandler())
+    current_url = secure_normalize_public_url(url, settings)
+    request = urllib.request.Request(
+        current_url,
+        headers={"User-Agent": user_agent},
+        method="GET",
+    )
+    try:
+        with opener.open(request, timeout=DEFAULT_TIMEOUT_SECONDS) as response:
+            headers = {key.lower(): value for key, value in response.headers.items()}
+            final_url = secure_normalize_public_url(response.geturl(), settings)
+            return {
+                "status_code": response.getcode(),
+                "final_url": final_url,
+                "headers": headers,
+                "blocked": False,
+            }
+    except urllib.error.HTTPError as exc:
+        headers = {key.lower(): value for key, value in exc.headers.items()}
+        return {
+            "status_code": exc.code,
+            "final_url": current_url,
+            "headers": headers,
+            "blocked": exc.code in {401, 403, 406, 429, 503},
+        }
+
+
+def _detect_cdn(headers: dict[str, str]) -> str:
+    joined = " ".join(f"{key}:{value}" for key, value in headers.items()).lower()
+    if "cloudflare" in joined or "cf-ray" in headers:
+        return "cloudflare"
+    if "cloudfront" in joined or "x-amz-cf-id" in headers:
+        return "cloudfront"
+    if "fastly" in joined:
+        return "fastly"
+    if "akamai" in joined:
+        return "akamai"
+    return "unknown"
+
+
+def cdn_ai_blocking_report(page_url: str) -> dict:
+    probes = []
+    for bot in ["GPTBot", "ClaudeBot", "PerplexityBot"]:
+        probe = _probe_public_url(page_url, bot)
+        probe["bot"] = bot
+        probes.append(probe)
+    detected_cdn = _detect_cdn(probes[0]["headers"] if probes else {})
+    blocked = [probe["bot"] for probe in probes if probe["blocked"]]
+    warnings: list[str] = []
+    if blocked:
+        warnings.append(
+            f"Potential CDN or edge blocking detected for: {', '.join(blocked)}."
+        )
+    if detected_cdn == "unknown":
+        warnings.append(
+            "Could not confidently identify a CDN or edge layer from response headers."
+        )
+    return {
+        "status": "warn" if blocked or detected_cdn == "unknown" else "pass",
+        "detected_cdn": detected_cdn,
+        "probes": probes,
+        "warnings": warnings,
+        "recommendation": "Review CDN, WAF, and bot-management rules to ensure public AI crawlers are not blocked by accident.",
+        "limitation": "A successful or blocked probe does not prove long-term bot treatment across every edge path or challenge mode.",
     }
 
 
@@ -795,6 +1104,49 @@ def ai_txt_report(
             "Keep ai.txt short, explicit, and aligned with robots.txt and llms.txt.",
             "Avoid contradictory access guidance across AI-facing files.",
         ],
+    }
+
+
+def crux_field_data_report(payload: dict) -> dict:
+    record = payload.get("record") if isinstance(payload, dict) else {}
+    key = "urlNormalizationDetails"
+    normalized = (record or {}).get(key) or {}
+    metrics = (record or {}).get("metrics") or payload.get("metrics") or {}
+    extracted = {}
+    warnings: list[str] = []
+    for metric_name in [
+        "largest_contentful_paint",
+        "interaction_to_next_paint",
+        "cumulative_layout_shift",
+    ]:
+        metric_payload = metrics.get(metric_name) or {}
+        percentiles = metric_payload.get("percentiles") or {}
+        p75 = percentiles.get("p75")
+        if p75 is None:
+            warnings.append(f"{metric_name} p75 is missing from the CrUX payload.")
+        extracted[metric_name] = {
+            "p75": p75,
+            "good_threshold": (
+                2500
+                if metric_name == "largest_contentful_paint"
+                else 200
+                if metric_name == "interaction_to_next_paint"
+                else 0.1
+            ),
+        }
+    return {
+        "status": "pass"
+        if extracted and not warnings
+        else "warn"
+        if extracted
+        else "fail",
+        "collection_scope": normalized.get("originalUrl")
+        or payload.get("url")
+        or "unknown",
+        "metrics": extracted,
+        "warnings": warnings,
+        "recommendation": "Use field data as the real-user performance layer alongside synthetic audits and release gating.",
+        "limitation": "CrUX data is aggregated and lagging; it is not a real-time per-release truth source.",
     }
 
 

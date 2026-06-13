@@ -27,11 +27,15 @@ from ..models import (
     now_utc,
 )
 from .discoverability_checks import (
+    ai_readability_report,
     ai_txt_report,
     bots_report,
+    cdn_ai_blocking_report,
+    citability_score_report,
     classify_finding_status,
     faq_detection_report,
     open_graph_report,
+    rag_chunk_readiness_report,
     resolve_public_file_url,
     robots_sitemap_report,
     schema_coverage_report,
@@ -43,7 +47,7 @@ from .scan_security import (
     safe_fetch_url_text,
 )
 
-SCANNER_SCHEMA_VERSION = "v4.1.0"
+SCANNER_SCHEMA_VERSION = "v4.2.0"
 SCAN_JOB_TERMINAL_STATES = {
     "partial_success",
     "completed",
@@ -662,17 +666,17 @@ def _build_summary(row: ScanJob, settings: Settings) -> dict:
         "passive": [
             "URL normalization and public-host validation",
             "Surface-level crawlability, AI policy, and discoverability hints",
-            "Heuristic readiness summary for SEO, GEO, AI, schema, FAQ, and metadata surfaces",
+            "Heuristic readiness summary for SEO, GEO, AI readability, citability, schema, FAQ, metadata, and chunking surfaces",
         ],
         "active": [
             "Ownership-gated active verification path",
             "Extended reachability and public-surface discoverability checks",
-            "Artifact-ready summary with caution notes",
+            "Artifact-ready summary with AI readability, citability, CDN bot, and chunking notes",
         ],
         "full": [
             "Ownership-gated active verification path",
             "Extended reachability and public-surface discoverability checks",
-            "Expanded artifact pack and notification summary",
+            "Expanded artifact pack, notification summary, and machine-readable GEO/AI findings",
         ],
     }
     issue_rows = _build_issue_rows(module_results)
@@ -689,7 +693,8 @@ def _build_summary(row: ScanJob, settings: Settings) -> dict:
         "scan_mode": row.scan_mode,
         "executive_summary": (
             f"{split.hostname} was processed through the {row.scan_mode} scanner foundation. "
-            "This output is safe for self-hosted intake and operator review, not a penetration test."
+            "This output is safe for self-hosted intake and operator review, not a penetration test. "
+            "The report includes citation-readiness, AI readability, edge-policy, and chunking heuristics."
         ),
         "checked_items": checks[row.scan_mode],
         "not_checked": [
@@ -778,6 +783,18 @@ def _run_discoverability_modules(row: ScanJob) -> list[dict]:
     )
     modules.append(
         _safe_module(
+            "ai_readability",
+            "AI readability layers",
+            lambda: _html_required_module(
+                html,
+                html_error,
+                lambda body: ai_readability_report(body, page_url=row.normalized_url),
+                "Unable to fetch page HTML for AI readability checks.",
+            ),
+        )
+    )
+    modules.append(
+        _safe_module(
             "schema_coverage",
             "Structured data coverage",
             lambda: _html_required_module(
@@ -802,6 +819,18 @@ def _run_discoverability_modules(row: ScanJob) -> list[dict]:
     )
     modules.append(
         _safe_module(
+            "citability_score",
+            "Citation probability and quick wins",
+            lambda: _html_required_module(
+                html,
+                html_error,
+                lambda body: citability_score_report(body, page_url=row.normalized_url),
+                "Unable to fetch page HTML for citability scoring.",
+            ),
+        )
+    )
+    modules.append(
+        _safe_module(
             "social_meta",
             "Open Graph and Twitter card completeness",
             lambda: _html_required_module(
@@ -810,6 +839,25 @@ def _run_discoverability_modules(row: ScanJob) -> list[dict]:
                 open_graph_report,
                 "Unable to fetch page HTML for social metadata checks.",
             ),
+        )
+    )
+    modules.append(
+        _safe_module(
+            "rag_chunk_readiness",
+            "RAG chunk readiness",
+            lambda: _html_required_module(
+                html,
+                html_error,
+                rag_chunk_readiness_report,
+                "Unable to fetch page HTML for chunking checks.",
+            ),
+        )
+    )
+    modules.append(
+        _safe_module(
+            "cdn_ai_bot_blocking",
+            "CDN and edge blocking for AI bots",
+            lambda: _cdn_ai_bot_module(row),
         )
     )
     modules.append(
@@ -873,6 +921,19 @@ def _bot_module(row: ScanJob) -> dict:
         "limitations": [
             "robots.txt policy does not prove actual inclusion in search or AI answer surfaces."
         ],
+        "raw": report,
+    }
+
+
+def _cdn_ai_bot_module(row: ScanJob) -> dict:
+    report = cdn_ai_blocking_report(row.normalized_url)
+    blocked = [item["bot"] for item in report["probes"] if item["blocked"]]
+    return {
+        "status": report["status"],
+        "observed_fact": f"Detected CDN: {report['detected_cdn']}; blocked bots: {', '.join(blocked) or 'none'}.",
+        "inferred_issue": "; ".join(report["warnings"]),
+        "recommendation": report["recommendation"],
+        "limitations": [report["limitation"]],
         "raw": report,
     }
 

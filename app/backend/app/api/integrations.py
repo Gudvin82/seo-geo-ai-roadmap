@@ -9,15 +9,19 @@ from sqlalchemy.orm import Session
 from ..access import record_audit_log, require_project_access
 from ..database import get_db
 from ..deps import get_current_user
-from ..models import IntegrationConnection, User
+from ..models import CmsConnector, IntegrationConnection, User
 from ..schemas import (
     IntegrationConnectionCreate,
     IntegrationConnectionRead,
     IntegrationContractsResponse,
     IntegrationSourceContractRead,
+    IntegrationVerificationMatrixRead,
+    IntegrationVerificationRowRead,
 )
+from ..services.cms import cms_contract
 from ..services.integrations import (
     all_integration_contracts,
+    build_integration_verification_row,
     compact_integration_summary,
     integration_contract,
     sync_integration_source,
@@ -133,7 +137,11 @@ def sync_integration(
     if not row:
         raise HTTPException(status_code=404, detail="Integration not found.")
     require_project_access(db, row.project_id, current_user, minimum_role="editor")
-    snapshot = sync_integration_source(row.source_type)
+    snapshot = sync_integration_source(
+        row.source_type,
+        property_identifier=row.property_identifier,
+        config=json.loads(row.config_json or "{}"),
+    )
     snapshot["summary"] = compact_integration_summary(snapshot)
     row.latest_snapshot_json = json.dumps(snapshot, ensure_ascii=False)
     row.last_sync_status = "completed"
@@ -175,3 +183,90 @@ def integration_readiness_plan(
         "credential_status": "configured" if row.credentials_env_var else "missing",
         "next_step": contract["next_step"],
     }
+
+
+@router.get("/verification-matrix", response_model=IntegrationVerificationMatrixRead)
+def integration_verification_matrix(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> IntegrationVerificationMatrixRead:
+    require_project_access(db, project_id, current_user, minimum_role="viewer")
+    integration_rows = (
+        db.query(IntegrationConnection)
+        .filter(IntegrationConnection.project_id == project_id)
+        .order_by(IntegrationConnection.id.desc())
+        .all()
+    )
+    cms_rows = (
+        db.query(CmsConnector)
+        .filter(CmsConnector.project_id == project_id)
+        .order_by(CmsConnector.id.desc())
+        .all()
+    )
+
+    rows: list[IntegrationVerificationRowRead] = []
+    for row in integration_rows:
+        rows.append(
+            IntegrationVerificationRowRead(
+                **build_integration_verification_row(
+                    row.source_type,
+                    label=row.label,
+                    credentials_env_var=row.credentials_env_var,
+                    property_identifier=row.property_identifier,
+                    latest_snapshot=json.loads(row.latest_snapshot_json or "{}"),
+                )
+            )
+        )
+    for row in cms_rows:
+        contract = cms_contract(row.cms_type)
+        inventory = json.loads(row.last_inventory_json or "{}")
+        status = inventory.get("status", "")
+        proof_level = (
+            "starter_or_stub"
+            if any(token in status for token in ["starter", "fallback"])
+            else "live_inventory_or_reviewed_flow"
+            if inventory
+            else "contract_only"
+        )
+        rows.append(
+            IntegrationVerificationRowRead(
+                id=f"cms-{row.id}",
+                surface_type="cms",
+                surface_name=row.label,
+                source_type=row.cms_type,
+                readiness_tier=contract["readiness_tier"],
+                proof_level=proof_level,
+                credentials_status="configured" if row.auth_env_var else "missing",
+                property_identifier=row.base_url,
+                ci_workflow=".github/workflows/python-tests.yml",
+                ci_gates=[
+                    "inventory sync",
+                    "patch package generation",
+                    "approval-first apply path",
+                    "post-apply verification",
+                ],
+                capabilities=[
+                    "inventory",
+                    "patch package",
+                    "reviewed writeback path",
+                ],
+                production_flow=contract["production_path"],
+                verification_checks=[
+                    "credentials configured",
+                    "inventory synced",
+                    "patch preview generated",
+                    "approval path defined",
+                    "verify or rollback path available",
+                ],
+                latest_snapshot_source=inventory.get("status"),
+                latest_snapshot_summary=inventory,
+                next_step=contract["next_step"],
+            )
+        )
+
+    return IntegrationVerificationMatrixRead(
+        project_id=project_id,
+        generated_at=datetime.utcnow(),
+        rows=rows,
+    )

@@ -38,7 +38,16 @@ def test_provider_update_flow(client: TestClient, auth_headers: dict[str, str]) 
 
 
 def test_provider_registry_contains_required_providers() -> None:
-    for name in ("openai", "anthropic", "gemini", "perplexity"):
+    for name in (
+        "openai",
+        "anthropic",
+        "gemini",
+        "perplexity",
+        "mistral",
+        "cohere",
+        "deepseek",
+        "xai",
+    ):
         assert name in PROVIDERS
 
 

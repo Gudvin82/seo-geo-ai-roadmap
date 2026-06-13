@@ -152,12 +152,26 @@ def test_workspace_project_and_audit_flow(
     )
     assert integration_contracts.status_code == 200
     assert integration_contracts.json()["contracts"]
+    assert any(
+        item["source_type"] == "crux"
+        for item in integration_contracts.json()["contracts"]
+    )
     integration_plan = client.get(
         f"/api/v1/integrations/{integration_id}/readiness-plan",
         headers=auth_headers,
     )
     assert integration_plan.status_code == 200
     assert integration_plan.json()["ci_first_class"] is True
+    integration_matrix = client.get(
+        f"/api/v1/integrations/verification-matrix?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert integration_matrix.status_code == 200
+    assert integration_matrix.json()["rows"]
+    assert any(
+        item["surface_type"] == "integration"
+        for item in integration_matrix.json()["rows"]
+    )
 
     cms = client.post(
         "/api/v1/cms",

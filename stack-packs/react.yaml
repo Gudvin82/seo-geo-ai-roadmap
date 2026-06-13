@@ -1,0 +1,22 @@
+---
+id: react
+label: React stack pack
+primary_surfaces:
+  - rendering
+  - metadata
+  - chunking
+  - ai_readability
+recommended_checks:
+  - technical_seo_basics
+  - social_meta
+  - rag_chunk_readiness
+  - ai_readability
+  - citability_score
+framework_specific_rules:
+  - verify metadata is rendered server-side or prerendered
+  - confirm canonical and hreflang are not client-only
+  - test route-based title and description changes
+  - ensure public FAQ or answer blocks are in rendered HTML
+delivery_notes:
+  - use CI gating for metadata regressions
+  - re-check critical routes after deployments

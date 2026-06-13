@@ -13,6 +13,12 @@
 | `schema-coverage-checker.py` | Аудирует покрытие JSON-LD schema на реальной странице | `python scripts/schema-coverage-checker.py --url https://example.com --site-type service` |
 | `faq-detector.py` | Ищет FAQ и answer-ready patterns в HTML страницы | `python scripts/faq-detector.py --url https://example.com` |
 | `open-graph-checker.py` | Проверяет полноту Open Graph и Twitter Card | `python scripts/open-graph-checker.py --url https://example.com` |
+| `ai_readability_audit.py` | Аудирует AI readability layers: видимую структуру, schema, FAQ и guidance files | `python scripts/ai_readability_audit.py --url https://example.com` |
+| `citability_score.py` | Считает heuristic citation-readiness score и quick wins | `python scripts/citability_score.py --url https://example.com --site-type service` |
+| `check_cdn_blocking.py` | Проверяет, не блокирует ли edge-слой major AI bots | `python scripts/check_cdn_blocking.py --url https://example.com` |
+| `rag_chunk_audit.py` | Проверяет, насколько контент готов к RAG chunking | `python scripts/rag_chunk_audit.py --url https://example.com/article` |
+| `crux_field_data.py` | Загружает или валидирует CrUX field-data payload | `python scripts/crux_field_data.py --url https://example.com` |
+| `integration_verification_matrix.py` | Строит integration и CMS verification matrix | `python scripts/integration_verification_matrix.py --json` |
 | `robots-sitemap-link-checker.py` | Проверяет связку robots.txt и sitemap вместе | `python scripts/robots-sitemap-link-checker.py --url https://example.com` |
 | `ai-share-of-voice-tracker.py` | Создает заготовки для учета AI Share of Voice | `python scripts/ai-share-of-voice-tracker.py "Example AI Agency" --queries "best GEO agency,ai visibility audit"` |
 | `serp-intent-cluster-helper.py` | Группирует ключевые фразы по rough intent | `python scripts/serp-intent-cluster-helper.py "best ai agency" "what is geo"` |

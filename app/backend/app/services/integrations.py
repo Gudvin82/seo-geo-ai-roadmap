@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime
 from typing import Any
 
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v4.1.0"
+CONTRACT_VERSION = "v4.2.0"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {
@@ -115,6 +116,32 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
         ],
         "next_step": "Use Metrica as the RU engagement and conversion layer paired with Yandex Webmaster for indexation and diagnostics.",
     },
+    "crux": {
+        "source_type": "crux",
+        "label": "Chrome UX Report",
+        "readiness_tier": "production_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["CRUX_API_KEY"],
+        "recommended_ci_workflow": ".github/workflows/lighthouse-ci.yml",
+        "ci_gates": [
+            "field data refresh",
+            "core web vitals regression check",
+            "executive dashboard refresh",
+        ],
+        "production_flow": [
+            "connect CrUX API key",
+            "bind an origin or URL to the integration config",
+            "compare field data against synthetic checks",
+            "use scheduled refresh for release and post-fix verification",
+        ],
+        "capabilities": [
+            "real-user CWV field data",
+            "origin or URL scope tracking",
+            "executive dashboard support",
+            "release regression context",
+        ],
+        "next_step": "Use CrUX as the field-data layer that complements synthetic audits and release gating.",
+    },
 }
 
 
@@ -166,7 +193,12 @@ def _yandex_metrica_stub() -> dict[str, Any]:
     }
 
 
-def sync_integration_source(source_type: str) -> dict[str, Any]:
+def sync_integration_source(
+    source_type: str,
+    *,
+    property_identifier: str | None = None,
+    config: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     source = source_type.strip().lower()
     contract = integration_contract(source)
     if source == "gsc":
@@ -183,6 +215,36 @@ def sync_integration_source(source_type: str) -> dict[str, Any]:
         payload = json.loads(stdout)
     elif source == "yandex_metrica":
         payload = _yandex_metrica_stub()
+    elif source == "crux":
+        target_url = (
+            (config or {}).get("url") or property_identifier or "https://example.com/"
+        )
+        api_key = os.environ.get("CRUX_API_KEY", "").strip()
+        if api_key:
+            code, stdout, stderr = run_script(
+                "crux_field_data.py", ["--url", target_url, "--json"]
+            )
+            if code == 0:
+                payload = json.loads(stdout)
+            else:
+                payload = {
+                    "source": "crux-starter-fallback",
+                    "note": stderr
+                    or "CrUX live import failed; returning starter fallback.",
+                    "target_url": target_url,
+                    "metrics": {},
+                }
+        else:
+            payload = {
+                "source": "crux-starter",
+                "note": "CRUX_API_KEY is missing; returning starter payload.",
+                "target_url": target_url,
+                "metrics": {
+                    "largest_contentful_paint": {"p75": 2800},
+                    "interaction_to_next_paint": {"p75": 240},
+                    "cumulative_layout_shift": {"p75": 0.12},
+                },
+            }
     else:
         raise ValueError(f"Unsupported integration source '{source_type}'.")
 
@@ -208,4 +270,54 @@ def compact_integration_summary(snapshot: dict[str, Any]) -> dict[str, Any]:
         "top_pages": [row.get("page") for row in top_pages[:3]],
         "metrics": metrics,
         "imported_at": datetime.utcnow().isoformat() + "Z",
+    }
+
+
+def _integration_proof_level(source_type: str, snapshot: dict[str, Any]) -> str:
+    source = str(snapshot.get("source") or "").lower()
+    if not snapshot:
+        return "contract_only"
+    if "stub" in source or "starter" in source or "fallback" in source:
+        return "starter_or_stub"
+    if source_type == "crux" and snapshot.get("metrics"):
+        return "live_or_sampled_metrics"
+    return "live_api_or_runtime"
+
+
+def build_integration_verification_row(
+    source_type: str,
+    *,
+    label: str,
+    credentials_env_var: str | None = None,
+    property_identifier: str | None = None,
+    latest_snapshot: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    contract = integration_contract(source_type)
+    snapshot = latest_snapshot or {}
+    proof_level = _integration_proof_level(source_type, snapshot)
+    return {
+        "id": source_type,
+        "surface_type": "integration",
+        "surface_name": label,
+        "source_type": source_type,
+        "readiness_tier": contract["readiness_tier"],
+        "proof_level": proof_level,
+        "credentials_status": "configured" if credentials_env_var else "missing",
+        "property_identifier": property_identifier,
+        "ci_workflow": contract["recommended_ci_workflow"],
+        "ci_gates": contract["ci_gates"],
+        "capabilities": contract["capabilities"],
+        "production_flow": contract["production_flow"],
+        "verification_checks": [
+            "credentials configured",
+            "manual sync completed",
+            "snapshot imported",
+            "CI or scheduled refresh defined",
+            "evidence attached to executive output",
+        ],
+        "latest_snapshot_source": snapshot.get("source"),
+        "latest_snapshot_summary": compact_integration_summary(snapshot)
+        if snapshot
+        else {},
+        "next_step": contract["next_step"],
     }

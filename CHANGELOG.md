@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.2.0 — Production Proof, GEO Signal Expansion, and Wider Provider Coverage
+
+- Added scanner-first GEO modules for AI readability, citation probability, CDN or edge AI-bot blocking, and RAG chunk readiness
+- Added `scripts/crux_field_data.py` plus a new `crux` integration contract for field-data oriented CWV tracking
+- Added a machine-readable integration verification matrix endpoint and JSON schema
+- Expanded provider coverage with Mistral, Cohere, DeepSeek, and xAI or Grok aliases
+- Added stack packs for WordPress, React, and Angular plus an optional Lighthouse CI workflow path
+- Added bilingual v4.2 production-proof docs and extended script coverage for the new modules
+
 ## v4.1.0 — Security Hardening, Governed CMS Apply Flow, and Operator Follow-Up
 
 - Closed scan-job access gaps so task bundles and graph runtime now require the same session or user boundary as the scanner result surface

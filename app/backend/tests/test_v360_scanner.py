@@ -135,13 +135,15 @@ def test_scan_job_lifecycle_and_artifacts(client, settings, monkeypatch) -> None
         "csv",
         "html",
     }
-    assert all(item["schema_version"] == "v4.1.0" for item in artifact_payload)
+    assert all(item["schema_version"] == "v4.2.0" for item in artifact_payload)
 
     result = client.get(
         f"/api/v1/scan-jobs/{payload['scan_job_id']}/result",
         headers=_scanner_headers(),
     )
     assert result.status_code == 200
+    module_ids = {item["issue_id"] for item in result.json()["issues"]}
+    assert "ai_readability" in module_ids or "citability_score" in module_ids
     assert result.json()["tasks_endpoint"].endswith(
         f"/api/v1/tasks/scan-job/{payload['scan_job_id']}"
     )

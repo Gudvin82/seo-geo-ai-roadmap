@@ -188,6 +188,7 @@ market и language claims.
 - `ga4`
 - `yandex_webmaster`
 - `yandex_metrica`
+- `crux`
 
 ## CMS connectors и patch-package flow
 
@@ -195,6 +196,7 @@ market и language claims.
 - `POST /api/v1/cms`
 - `POST /api/v1/cms/{connector_id}/inventory`
 - `POST /api/v1/cms/{connector_id}/patch-package`
+- `GET /api/v1/integrations/verification-matrix?project_id={project_id}`
 
 Режимы writeback:
 

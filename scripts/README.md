@@ -13,6 +13,12 @@
 | `schema-coverage-checker.py` | Audit JSON-LD schema coverage on a real page | `python scripts/schema-coverage-checker.py --url https://example.com --site-type service` |
 | `faq-detector.py` | Detect FAQ and answer-ready patterns in page HTML | `python scripts/faq-detector.py --url https://example.com` |
 | `open-graph-checker.py` | Check Open Graph and Twitter Card completeness | `python scripts/open-graph-checker.py --url https://example.com` |
+| `ai_readability_audit.py` | Audit AI readability layers such as visible structure, schema, FAQ, and guidance files | `python scripts/ai_readability_audit.py --url https://example.com` |
+| `citability_score.py` | Score heuristic citation readiness and list quick wins | `python scripts/citability_score.py --url https://example.com --site-type service` |
+| `check_cdn_blocking.py` | Probe whether edge rules block major AI bots | `python scripts/check_cdn_blocking.py --url https://example.com` |
+| `rag_chunk_audit.py` | Check whether content is segmented cleanly for RAG pipelines | `python scripts/rag_chunk_audit.py --url https://example.com/article` |
+| `crux_field_data.py` | Fetch or validate CrUX field-data payloads | `python scripts/crux_field_data.py --url https://example.com` |
+| `integration_verification_matrix.py` | Render the integration and CMS verification matrix | `python scripts/integration_verification_matrix.py --json` |
 | `robots-sitemap-link-checker.py` | Verify robots.txt and sitemap linkage together | `python scripts/robots-sitemap-link-checker.py --url https://example.com` |
 | `ai-share-of-voice-tracker.py` | Create AI Share of Voice tracking scaffolds | `python scripts/ai-share-of-voice-tracker.py "Example AI Agency" --queries "best GEO agency,ai visibility audit"` |
 | `serp-intent-cluster-helper.py` | Group keywords by rough search intent | `python scripts/serp-intent-cluster-helper.py "best ai agency" "what is geo"` |

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gudvin82.github.io/seo-geo-ai-roadmap/contracts/integration-verification.schema.json",
+  "title": "Integration Verification Matrix",
+  "type": "object",
+  "required": ["project_id", "generated_at", "rows"],
+  "properties": {
+    "project_id": { "type": "integer" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "surface_type",
+          "surface_name",
+          "source_type",
+          "readiness_tier",
+          "proof_level",
+          "credentials_status",
+          "ci_workflow",
+          "verification_checks",
+          "next_step"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "surface_type": { "type": "string" },
+          "surface_name": { "type": "string" },
+          "source_type": { "type": "string" },
+          "readiness_tier": { "type": "string" },
+          "proof_level": { "type": "string" },
+          "credentials_status": { "type": "string" },
+          "property_identifier": { "type": ["string", "null"] },
+          "ci_workflow": { "type": "string" },
+          "ci_gates": { "type": "array", "items": { "type": "string" } },
+          "capabilities": { "type": "array", "items": { "type": "string" } },
+          "production_flow": { "type": "array", "items": { "type": "string" } },
+          "verification_checks": { "type": "array", "items": { "type": "string" } },
+          "latest_snapshot_source": { "type": ["string", "null"] },
+          "latest_snapshot_summary": { "type": "object" },
+          "next_step": { "type": "string" }
+        }
+      }
+    }
+  }
+}

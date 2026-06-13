@@ -1,0 +1,23 @@
+---
+id: wordpress
+label: WordPress stack pack
+primary_surfaces:
+  - technical_seo
+  - schema
+  - faq
+  - metadata
+recommended_checks:
+  - schema_coverage
+  - technical_seo_basics
+  - faq_answer_ready
+  - social_meta
+  - ai_readability
+  - citability_score
+cms_specific_rules:
+  - verify Yoast or Rank Math canonical behavior
+  - check theme output for duplicate title and meta tags
+  - review block-editor FAQ rendering versus FAQPage schema
+  - validate robots and sitemap plugins do not contradict each other
+delivery_notes:
+  - generate a patch package before any publish action
+  - keep human-approved publish mode enabled for production

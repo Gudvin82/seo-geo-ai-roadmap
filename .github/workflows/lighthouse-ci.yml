@@ -1,0 +1,38 @@
+---
+name: lighthouse-ci
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check target configuration
+        id: target
+        run: |
+          if [ -z "${{ vars.LIGHTHOUSE_TARGET_URL }}" ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "No LIGHTHOUSE_TARGET_URL configured. Skipping Lighthouse run."
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout
+        if: steps.target.outputs.configured == 'true'
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        if: steps.target.outputs.configured == 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Run Lighthouse CI
+        if: steps.target.outputs.configured == 'true'
+        run: |
+          npm install -g @lhci/cli
+          lhci autorun \
+            --collect.url="${{ vars.LIGHTHOUSE_TARGET_URL }}" \
+            --upload.target=temporary-public-storage

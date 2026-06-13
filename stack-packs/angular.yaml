@@ -1,0 +1,22 @@
+---
+id: angular
+label: Angular stack pack
+primary_surfaces:
+  - rendering
+  - metadata
+  - schema
+  - chunking
+recommended_checks:
+  - technical_seo_basics
+  - schema_coverage
+  - rag_chunk_readiness
+  - social_meta
+  - citability_score
+framework_specific_rules:
+  - confirm Angular Universal or prerender output exists
+  - verify route-level metadata tags on important pages
+  - check JSON-LD survives hydration and minification
+  - keep definition-style blocks and FAQs in rendered HTML
+delivery_notes:
+  - treat prerender coverage as a release gate
+  - review chunking on long knowledge pages after each content batch

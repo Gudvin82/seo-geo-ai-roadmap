@@ -145,6 +145,54 @@ class PerplexityProvider(JsonHttpProvider):
         return body["choices"][0]["message"]["content"]
 
 
+class MistralProvider(OpenAIProvider):
+    provider_name = "mistral"
+    endpoint = "https://api.mistral.ai/v1/chat/completions"
+
+
+class CohereProvider(JsonHttpProvider):
+    provider_name = "cohere"
+    endpoint = "https://api.cohere.ai/v2/chat"
+
+    def build_payload(self, prompt: str, system_prompt: Optional[str] = None) -> dict:
+        return {
+            "model": self.model,
+            "messages": [
+                *(
+                    [{"role": "system", "content": system_prompt}]
+                    if system_prompt
+                    else []
+                ),
+                {"role": "user", "content": prompt},
+            ],
+        }
+
+    def build_headers(self) -> dict[str, str]:
+        return {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+        }
+
+    def parse_content(self, body: dict) -> str:
+        message = body.get("message") or {}
+        content = message.get("content") or []
+        if content and isinstance(content, list):
+            first = content[0]
+            if isinstance(first, dict):
+                return str(first.get("text", ""))
+        raise ProviderError("cohere returned an unexpected response shape.")
+
+
+class DeepSeekProvider(OpenAIProvider):
+    provider_name = "deepseek"
+    endpoint = "https://api.deepseek.com/chat/completions"
+
+
+class XAIProvider(OpenAIProvider):
+    provider_name = "xai"
+    endpoint = "https://api.x.ai/v1/chat/completions"
+
+
 class OllamaProvider(OpenAIProvider):
     provider_name = "ollama"
     requires_api_key = False
@@ -181,6 +229,11 @@ PROVIDERS: dict[str, type[BaseProvider]] = {
     "claude": AnthropicProvider,
     "gemini": GeminiProvider,
     "perplexity": PerplexityProvider,
+    "mistral": MistralProvider,
+    "cohere": CohereProvider,
+    "deepseek": DeepSeekProvider,
+    "xai": XAIProvider,
+    "grok": XAIProvider,
     "ollama": OllamaProvider,
     "localai": LocalAIProvider,
     "vllm": VLLMProvider,

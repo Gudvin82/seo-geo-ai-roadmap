@@ -103,6 +103,7 @@ operator or an AI coding agent can use end to end:
 - Research loop: [docs/en/research-build-improve-repeat-v380.md](./docs/en/research-build-improve-repeat-v380.md)
 - Framework integrations: [docs/en/framework-integrations-v380.md](./docs/en/framework-integrations-v380.md)
 - Integration production flows: [docs/en/integration-production-flows-v380.md](./docs/en/integration-production-flows-v380.md)
+- v4.2 production proof: [docs/en/v420-production-proof.md](./docs/en/v420-production-proof.md)
 - Product modes: [docs/en/product-modes-v380.md](./docs/en/product-modes-v380.md)
 - CI gating: [docs/en/ci-gating-v380.md](./docs/en/ci-gating-v380.md)
 - Executive dashboard: [docs/en/executive-dashboard-v380.md](./docs/en/executive-dashboard-v380.md)
@@ -129,6 +130,17 @@ operator or an AI coding agent can use end to end:
 - sharper scanner / product-app / repo-operator separation plus expanded machine-readable contracts
 - trusted delivery targets plus PR proposal generation with auto-merge eligibility flags for trusted repositories
 - real Telegram webhook runtime, richer Chrome and VS Code operator packages, and a managed-cloud Kubernetes pack
+
+## What `v4.2.0` adds
+
+- AI readability auditing for visible structure, machine-readable guidance layers, and answer-ready support
+- heuristic citability scoring with machine-readable breakdown and quick wins
+- CDN or edge checks for GPTBot, ClaudeBot, and PerplexityBot blocking
+- RAG chunk-readiness checks for long sections, heading depth, and definition-style content
+- CrUX field-data path plus a new integration verification matrix endpoint
+- wider provider coverage: OpenAI, Anthropic, Gemini, Perplexity, Mistral, Cohere, DeepSeek, xAI or Grok, Ollama, LocalAI, and vLLM
+- stack packs for WordPress, React, and Angular
+- optional Lighthouse CI path for PR-level synthetic gating
 
 ## What `v4.0.0` adds
 
