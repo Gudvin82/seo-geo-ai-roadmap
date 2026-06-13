@@ -108,40 +108,40 @@ To move from "strong framework" to "10/10 proof-first product", the roadmap is:
 - store outputs, timestamps, providers, and citations
 - compare answers over time
 
-2. Public proof dataset
+1. Public proof dataset
 
 - publish more before and after cases
 - include screenshots, input prompts, and bounded score logic
 - keep fact vs inference explicit
 
-3. Docs consolidation
+1. Docs consolidation
 
 - one current docs spine
 - one changelog
 - one archived release-history layer
 
-4. Cost governance
+1. Cost governance
 
 - budget caps by provider
 - monitoring frequency controls
 - per-run and per-project cost accounting
 
-5. Integration maturity
+1. Integration maturity
 
 - move more integrations from `starter_or_stub` to `live_api_or_runtime`
 - keep the verification matrix honest
 
-6. Monitoring maturity
+1. Monitoring maturity
 
 - scheduled AI SoV tracking
 - alerting on citation drop, fact drift, and bot-policy regressions
 
-7. Russian-market depth
+1. Russian-market depth
 
 - deepen Yandex, YandexAdditional, and RU market measurement flows
 - add stronger RU-specific case evidence
 
-8. Community proof
+1. Community proof
 
 - issues
 - operator feedback

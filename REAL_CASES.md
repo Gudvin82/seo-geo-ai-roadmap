@@ -28,13 +28,13 @@ Current public signals observed:
 - legal documents, operator identity, and policy links are visible
 - `robots.txt` now explicitly allows the target AI crawler set, including `ClaudeBot` and `YandexAdditional`
 
-### Current snapshot
+### sitepravo.ru current snapshot
 
 - Current public snapshot: `88/100`
 - Current findings count in the bounded rollout model: `14`
 - Current explicit AI-bot allow coverage in rollout records: `14/14`
 
-### Bounded before / after implementation record
+### sitepravo.ru bounded before / after implementation record
 
 - Before GEO AI crawler hardening: `88/100`
 - After GEO AI crawler hardening: `88/100`
@@ -57,13 +57,13 @@ Current public signals observed:
 - `llms.txt` is detailed and public
 - `robots.txt` now explicitly allows the target AI crawler set, including `ClaudeBot` and `YandexAdditional`
 
-### Current snapshot
+### auditguard.ru current snapshot
 
 - Current public snapshot: `94/100`
 - Current findings count in the bounded rollout model: `11`
 - Current explicit AI-bot allow coverage in rollout records: `14/14`
 
-### Bounded before / after implementation record
+### auditguard.ru bounded before / after implementation record
 
 - Before AI crawler hardening and false-positive cleanup: `92/100`
 - After AI crawler hardening and false-positive cleanup: `94/100`

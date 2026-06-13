@@ -37,20 +37,20 @@ Important nuance:
 
 ## auditguard.ru
 
-### Before
+### auditguard.ru before
 
 - quality `llms.txt` and `ai.txt` already existed
 - only `6/14` key AI bots had explicit allow rules in rollout records
 - several meaningful bots were still `unspecified`
 - a detector also produced false-positive “leak” findings around the public AI-facing files
 
-### After
+### auditguard.ru after
 
 - all `14/14` target AI bots became explicitly allowed in rollout records
 - the false-positive leak interpretation was removed
 - the current public `robots.txt` reflects the stronger AI crawler policy
 
-### Bounded before / after
+### auditguard.ru bounded before / after
 
 | Metric | Before | After | Delta |
 |---|---:|---:|---:|
@@ -58,7 +58,7 @@ Important nuance:
 | Total findings | 13 | 11 | -2 |
 | `robots.txt`: explicit AI-bot allow coverage | 6/14 | 14/14 | +8 bots |
 
-### Interpretation
+### auditguard.ru interpretation
 
 This is a good example of a real GEO-layer improvement that is not just
 content-deep:
@@ -69,18 +69,18 @@ content-deep:
 
 ## sitepravo.ru
 
-### Before
+### sitepravo.ru before
 
 - for this legal-first surface, the GEO block was not strongly reflected in the product score
 - rollout records still showed only `6/14` key AI bots as explicitly allowed
 
-### After
+### sitepravo.ru after
 
 - explicit AI crawler coverage reached `14/14` in rollout records
 - current public `robots.txt` confirms clear allows for the target AI set
 - total findings decreased by one in the bounded rollout record
 
-### Bounded before / after
+### sitepravo.ru bounded before / after
 
 | Metric | Before | After | Delta |
 |---|---:|---:|---:|
@@ -88,7 +88,7 @@ content-deep:
 | Total findings | 15 | 14 | -1 |
 | `robots.txt`: explicit AI-bot allow coverage | 6/14 | 14/14 | +8 bots |
 
-### Interpretation
+### sitepravo.ru interpretation
 
 This is the more subtle case:
 

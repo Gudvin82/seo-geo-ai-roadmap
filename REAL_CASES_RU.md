@@ -28,13 +28,13 @@
 - видны юридические документы, данные оператора и policy links
 - `robots.txt` теперь явно разрешает целевой AI crawler set, включая `ClaudeBot` и `YandexAdditional`
 
-### Текущий snapshot
+### Текущий snapshot sitepravo.ru
 
 - Current public snapshot: `88/100`
 - Current findings count в bounded rollout model: `14`
 - Current explicit AI-bot allow coverage в rollout records: `14/14`
 
-### Ограниченный before / after implementation record
+### Ограниченный before / after implementation record sitepravo.ru
 
 - До GEO AI crawler hardening: `88/100`
 - После GEO AI crawler hardening: `88/100`
@@ -57,13 +57,13 @@
 - `llms.txt` подробный и публичный
 - `robots.txt` теперь явно разрешает целевой AI crawler set, включая `ClaudeBot` и `YandexAdditional`
 
-### Текущий snapshot
+### Текущий snapshot auditguard.ru
 
 - Current public snapshot: `94/100`
 - Current findings count в bounded rollout model: `11`
 - Current explicit AI-bot allow coverage в rollout records: `14/14`
 
-### Ограниченный before / after implementation record
+### Ограниченный before / after implementation record auditguard.ru
 
 - До AI crawler hardening и false-positive cleanup: `92/100`
 - После AI crawler hardening и false-positive cleanup: `94/100`

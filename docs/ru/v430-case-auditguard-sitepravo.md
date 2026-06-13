@@ -37,20 +37,20 @@ Methodology source: <https://github.com/Gudvin82/seo-geo-ai-roadmap>
 
 ## auditguard.ru
 
-### До
+### auditguard.ru до
 
 - качественные `llms.txt` и `ai.txt` уже существовали
 - только `6/14` ключевых AI bots имели explicit allow rules в rollout records
 - несколько значимых bots все еще были `unspecified`
 - detector также давал false-positive “leak” findings вокруг публичных AI-facing files
 
-### После
+### auditguard.ru после
 
 - все `14/14` target AI bots стали explicitly allowed в rollout records
 - false-positive leak interpretation была убрана
 - текущий public `robots.txt` отражает более сильную AI crawler policy
 
-### Bounded before / after
+### auditguard.ru bounded before / after
 
 | Метрика | До | После | Delta |
 |---|---:|---:|---:|
@@ -58,7 +58,7 @@ Methodology source: <https://github.com/Gudvin82/seo-geo-ai-roadmap>
 | Total findings | 13 | 11 | -2 |
 | `robots.txt`: explicit AI-bot allow coverage | 6/14 | 14/14 | +8 bots |
 
-### Интерпретация
+### Интерпретация auditguard.ru
 
 Это хороший пример реального GEO-layer improvement, который не сводится только
 к content changes:
@@ -69,18 +69,18 @@ Methodology source: <https://github.com/Gudvin82/seo-geo-ai-roadmap>
 
 ## sitepravo.ru
 
-### До
+### sitepravo.ru до
 
 - для этой legal-first поверхности GEO block слабо отражался в product score
 - rollout records все еще показывали только `6/14` key AI bots как explicitly allowed
 
-### После
+### sitepravo.ru после
 
 - explicit AI crawler coverage дошла до `14/14` в rollout records
 - текущий public `robots.txt` подтверждает clear allows для target AI set
 - total findings снизились на один в bounded rollout record
 
-### Bounded before / after
+### sitepravo.ru bounded before / after
 
 | Метрика | До | После | Delta |
 |---|---:|---:|---:|
@@ -88,7 +88,7 @@ Methodology source: <https://github.com/Gudvin82/seo-geo-ai-roadmap>
 | Total findings | 15 | 14 | -1 |
 | `robots.txt`: explicit AI-bot allow coverage | 6/14 | 14/14 | +8 bots |
 
-### Интерпретация
+### Интерпретация sitepravo.ru
 
 Это более тонкий кейс:
 

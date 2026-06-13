@@ -109,40 +109,40 @@ Verdict: `true`
 - сохранять outputs, timestamps, providers и citations
 - сравнивать ответы во времени
 
-2. Public proof dataset
+1. Public proof dataset
 
 - публиковать больше before / after cases
 - добавлять screenshots, input prompts и bounded score logic
 - всегда явно разделять fact и inference
 
-3. Docs consolidation
+1. Docs consolidation
 
 - один current docs spine
 - один changelog
 - один archived release-history layer
 
-4. Cost governance
+1. Cost governance
 
 - budget caps по providers
 - frequency controls для monitoring
 - per-run и per-project cost accounting
 
-5. Integration maturity
+1. Integration maturity
 
 - переводить integrations из `starter_or_stub` в `live_api_or_runtime`
 - держать verification matrix честной
 
-6. Monitoring maturity
+1. Monitoring maturity
 
 - scheduled AI SoV tracking
 - alerting по citation drop, fact drift и bot-policy regressions
 
-7. Russian-market depth
+1. Russian-market depth
 
 - углублять Yandex, YandexAdditional и RU market measurement flows
 - добавлять более сильные RU-specific case evidence
 
-8. Community proof
+1. Community proof
 
 - issues
 - operator feedback
