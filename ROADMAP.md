@@ -1,5 +1,14 @@
 # Repository Roadmap
 
+## v4.3.x stabilization
+
+- turn external criticism into concrete proof work instead of defensive marketing
+- publish more public before or after cases with explicit fact vs inference boundaries
+- consolidate current docs and archive release-history noise more aggressively
+- deepen live AI SoV, citation measurement, and provider cost governance
+- keep improving RU-market proof around Yandex, YandexAdditional, and answer-engine discoverability
+- grow the community-proof layer through installs, operator feedback, and external pull requests
+
 ## v4.0.x stabilization
 
 - keep AI Agent Mode honest, useful, and approval-bound instead of pretending to be silent production autopilot

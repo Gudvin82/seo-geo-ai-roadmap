@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.3.0 — Public Case Studies, Review Response, and 10/10 Upgrade Path
+
+- Added bilingual public case studies for `anmalishev.ru`, `auditguard.ru`, and `sitepravo.ru` with explicit fact vs inference boundaries
+- Updated `REAL_CASES.md` and `REAL_CASES_RU.md` so the repository now shows concrete public before/after implementation framing instead of abstract-only snapshots
+- Added a bilingual review-response layer that classifies external criticism as true, partial, outdated, or not-yet-proven and turns it into a roadmap
+- Added a stronger `10/10` upgrade path for proof, integration maturity, monitoring, cost governance, docs consolidation, and repeatable case evidence
+- Updated README, docs-site real-cases surface, and roadmap links for the new v4.3.0 evidence layer
+
 ## v4.2.0 — Production Proof, GEO Signal Expansion, and Wider Provider Coverage
 
 - Added scanner-first GEO modules for AI readability, citation probability, CDN or edge AI-bot blocking, and RAG chunk readiness

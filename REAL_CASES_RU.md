@@ -1,9 +1,10 @@
 # Реальные Кейсы
 
-Этот файл не заявляет private customer telemetry. Он моделирует, как
-методология репозитория читает три публичных сайта по открытым сигналам и
-честной ручной оценке. Числа ниже — это прозрачные snapshot scores, а не
-завышенные claims об успехе.
+Этот файл не заявляет private customer telemetry. Он объединяет:
+
+- текущие public signals, которые можно проверить сейчас
+- bounded implementation records из процесса внедрения
+- прозрачную оценку по методологии вместо завышенных success claims
 
 Модель scoring в этом файле:
 
@@ -13,112 +14,110 @@
 - AI readiness и answer extraction: `0-20`
 - Reporting и operator packaging: `0-20`
 
+Подробные кейсы:
+
+- [anmalishev.ru — public before / after case](./docs/ru/v430-case-anmalishev.md)
+- [auditguard.ru + sitepravo.ru — AI crawler access и public before / after case](./docs/ru/v430-case-auditguard-sitepravo.md)
+
 ## sitepravo.ru
 
-Публично наблюдаемые сигналы:
+Текущие публично наблюдаемые сигналы:
 
 - legal-service positioning выражено явно
 - на сайте заявлены `570+` параметров и `15` направлений
 - видны юридические документы, данные оператора и policy links
-- уже присутствует cross-linking с sister entities
+- `robots.txt` теперь явно разрешает целевой AI crawler set, включая `ClaudeBot` и `YandexAdditional`
 
-### Snapshot score SitePravo
+### Текущий snapshot
 
-- Technical SEO и crawl readiness: `16/20`
-- Factual consistency и truth-center discipline: `15/20`
-- Entity clarity и trust proof: `18/20`
-- AI readiness и answer extraction: `16/20`
-- Reporting и operator packaging: `17/20`
-- Total public snapshot: `82/100`
+- Current public snapshot: `88/100`
+- Current findings count в bounded rollout model: `14`
+- Current explicit AI-bot allow coverage в rollout records: `14/14`
 
-### Ограниченная before/after модель SitePravo
+### Ограниченный before / after implementation record
 
-- До первого v3-style pass: `82/100`
-- После первой 30-day цели по truth-center и AI-surface sync: `88/100`
-- Ожидаемая дельта: `+6`
+- До GEO AI crawler hardening: `88/100`
+- После GEO AI crawler hardening: `88/100`
+- Findings delta в rollout record: `15 -> 14`
+- Explicit AI-bot allow coverage в rollout record: `6/14 -> 14/14`
 
-Вероятные источники роста:
+Интерпретация:
 
-- свести повторяющиеся fact surfaces к одному canonical truth center
-- жестче развести cross-entity boundaries с `anmalishev.ru` и sibling products
-- синхронизировать numeric claims между главной, metadata, docs и AI-facing
-  files
+- score не вырос, потому что public product report для этой поверхности GEO-слой почти не взвешивает
+- при этом AI crawler access реально улучшился
+- это хороший пример “реального discoverability-улучшения без vanity-metric inflation”
 
 ## auditguard.ru
 
-Публично наблюдаемые сигналы:
+Текущие публично наблюдаемые сигналы:
 
 - public-first framing технического аудита понятен сразу
-- на homepage явно показаны `340+` параметров, `46+` tools и проверки за `2-5`
-  минут
+- на homepage явно показаны `340+` параметров, `46+` tools и проверки за `2-5` минут
 - сервис объясняет scope, legal basis и boundary "только публичный контур"
-- trust и evidence framing сильные
+- `llms.txt` подробный и публичный
+- `robots.txt` теперь явно разрешает целевой AI crawler set, включая `ClaudeBot` и `YandexAdditional`
 
-### Snapshot score AuditGuard
+### Текущий snapshot
 
-- Technical SEO и crawl readiness: `17/20`
-- Factual consistency и truth-center discipline: `14/20`
-- Entity clarity и trust proof: `16/20`
-- AI readiness и answer extraction: `15/20`
-- Reporting и operator packaging: `18/20`
-- Total public snapshot: `80/100`
+- Current public snapshot: `94/100`
+- Current findings count в bounded rollout model: `11`
+- Current explicit AI-bot allow coverage в rollout records: `14/14`
 
-### Ограниченная before/after модель AuditGuard
+### Ограниченный before / after implementation record
 
-- До первого v3-style pass: `80/100`
-- После первой 30-day цели по fact-sync и entity-governance: `86/100`
-- Ожидаемая дельта: `+6`
+- До AI crawler hardening и false-positive cleanup: `92/100`
+- После AI crawler hardening и false-positive cleanup: `94/100`
+- Findings delta в rollout record: `13 -> 11`
+- Explicit AI-bot allow coverage в rollout record: `6/14 -> 14/14`
 
-Вероятные источники роста:
+Интерпретация:
 
-- более жесткая синхронизация между public copy, evidence pages и AI-facing
-  files
-- более четкое разделение AuditGuard и окружающей product ecosystem
-- более сильная benchmark-reporting дисциплина внутри self-hosted app flow
+- intent для AI crawlers стал заметно яснее
+- false-positive leak findings вокруг `llms.txt` и `ai.txt` убраны
+- рост подтверждается и bounded score, и текущим public `robots.txt`
 
 ## anmalishev.ru
 
-Публично наблюдаемые сигналы:
+Текущие публично наблюдаемые сигналы:
 
 - founder identity, legal details и location указаны явно
 - RU и EN service surfaces уже видны
 - сайт связывает consulting, products, case studies и methodology assets
-- позиционирование "практический AI для бизнеса" звучит ясно и коммерчески
-  предметно
+- текущий `sitemap.xml` включает усиленные canonical surfaces: `/contacts`, `/projects/seo-geo-ai-roadmap.html`, `/expert/yandex-neuro-ai-visibility.html` и `/expert/ai-site-audit.html`
+- текущие `llms.txt` и `ai.txt` согласованы и публичны
+- текущий `robots.txt` сохраняет public AI и search surfaces открытыми, при этом закрывает admin и raw-template paths
 
-### Snapshot score anmalishev.ru
+### Текущий snapshot
 
-- Technical SEO и crawl readiness: `15/20`
-- Factual consistency и truth-center discipline: `14/20`
-- Entity clarity и trust proof: `17/20`
-- AI readiness и answer extraction: `17/20`
-- Reporting и operator packaging: `15/20`
-- Total public snapshot: `78/100`
+- Current public snapshot: `88/100`
 
-### Ограниченная before/after модель anmalishev.ru
+### Ограниченный before / after implementation record
 
-- До первого v3-style pass: `78/100`
-- После первой 30-day цели по entity-hierarchy и bilingual fact-sync: `85/100`
-- Ожидаемая дельта: `+7`
+- До June public-surface expansion: `79/100`
+- После June public-surface expansion: `88/100`
+- Methodology delta: `+9`
 
-Вероятные источники роста:
+Публично видимые источники роста:
 
-- более явное разделение founder entity, offers, products и frameworks
-- единый canonical fact layer для legal, service и product claims
-- более явные AI-facing truth surfaces для multilingual routing
+- более сильный homepage entity и trust graph
+- выделенная canonical contacts surface
+- выделенная Yandex AI / Neuro page
+- выделенная AI site audit page
+- выделенная repository-overview page
+- более плотная согласованность между `llms.txt`, `ai.txt`, `robots.txt` и `sitemap.xml`
 
 ## Общие выводы
 
 - factual consistency — это отдельная подсистема, а не примечание на полях
-- public proof важнее там, где несколько связанных сущностей активно
-  cross-link'аются
-- двуязычная discoverability лучше работает, когда EN и RU ведутся как
-  production layers
-- AI visibility дает лучший результат, когда усиливает technical SEO, а не
-  пытается ее заменить
+- public proof важнее там, где несколько связанных сущностей активно cross-link'аются
+- двуязычная discoverability лучше работает, когда EN и RU ведутся как production layers
+- AI visibility дает лучший результат, когда усиливает technical SEO, а не пытается ее заменить
+- явная AI crawler policy может давать реальный public delta, даже если продуктовый score это пока отражает слабо
+- сильный кейс должен отделять current public facts от bounded rollout records и от непроверенных private outcomes
 
 См. также:
 
 - [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
 - [docs/ru/canonical-facts-and-entity-consistency.md](./docs/ru/canonical-facts-and-entity-consistency.md)
+- [docs/ru/v430-review-response-and-upgrade-path.md](./docs/ru/v430-review-response-and-upgrade-path.md)
 - [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)

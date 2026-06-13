@@ -106,6 +106,8 @@ discoverability. Ее можно развернуть на своем компь
 - Framework integrations: [docs/ru/framework-integrations-v380.md](./docs/ru/framework-integrations-v380.md)
 - Integration production flows: [docs/ru/integration-production-flows-v380.md](./docs/ru/integration-production-flows-v380.md)
 - v4.2 production proof: [docs/ru/v420-production-proof.md](./docs/ru/v420-production-proof.md)
+- v4.3 response на внешний review и upgrade path: [docs/ru/v430-review-response-and-upgrade-path.md](./docs/ru/v430-review-response-and-upgrade-path.md)
+- v4.3 public case studies: [docs/ru/v430-case-anmalishev.md](./docs/ru/v430-case-anmalishev.md), [docs/ru/v430-case-auditguard-sitepravo.md](./docs/ru/v430-case-auditguard-sitepravo.md)
 - Product modes: [docs/ru/product-modes-v380.md](./docs/ru/product-modes-v380.md)
 - CI gating: [docs/ru/ci-gating-v380.md](./docs/ru/ci-gating-v380.md)
 - Executive dashboard: [docs/ru/executive-dashboard-v380.md](./docs/ru/executive-dashboard-v380.md)
@@ -141,6 +143,13 @@ discoverability. Ее можно развернуть на своем компь
 - расширенное покрытие провайдеров: OpenAI, Anthropic, Gemini, Perplexity, Mistral, Cohere, DeepSeek, xAI или Grok, Ollama, LocalAI и vLLM
 - stack packs для WordPress, React и Angular
 - optional Lighthouse CI path для PR-level synthetic gating
+
+## Что добавляет `v4.3.0`
+
+- двуязычные public case studies по `anmalishev.ru`, `auditguard.ru` и `sitepravo.ru`
+- структурированный ответ на внешнюю критику репозитория с вердиктами: `true`, `partial`, `outdated` или `not yet proven`
+- конкретный план “как дойти до 10/10” по proof loops, integration maturity, docs consolidation, cost governance и monitoring
+- более сильный real-case слой внутри `REAL_CASES.md`, а не только абстрактные bounded models
 
 ## Что добавляет `v4.0.0`
 

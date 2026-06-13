@@ -4,6 +4,9 @@ The repository now explicitly includes real-world implementation framing:
 
 - [REAL_CASES.md](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/REAL_CASES.md)
 - [REAL_CASES_RU.md](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/REAL_CASES_RU.md)
+- [anmalishev.ru case](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/v430-case-anmalishev.md)
+- [auditguard.ru + sitepravo.ru case](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/v430-case-auditguard-sitepravo.md)
+- [review response and 10/10 upgrade path](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/v430-review-response-and-upgrade-path.md)
 
 Referenced public implementation patterns:
 

@@ -1,9 +1,10 @@
 # Real Cases
 
-This file does not claim private customer telemetry. It models how the
-repository's methodology reads three public websites using public-facing
-evidence and bounded manual scoring. The numbers below are transparent snapshot
-scores, not exaggerated success claims.
+This file does not claim private customer telemetry. It combines:
+
+- current public signals that can be checked now
+- bounded implementation records from the rollout process
+- transparent methodology scoring rather than exaggerated success claims
 
 Scoring model used in this file:
 
@@ -13,109 +14,110 @@ Scoring model used in this file:
 - AI readiness and answer extraction: `0-20`
 - Reporting and operator packaging: `0-20`
 
+Detailed case studies:
+
+- [anmalishev.ru — public before / after case](./docs/en/v430-case-anmalishev.md)
+- [auditguard.ru + sitepravo.ru — AI crawler access and public before / after case](./docs/en/v430-case-auditguard-sitepravo.md)
+
 ## sitepravo.ru
 
-Public signals observed:
+Current public signals observed:
 
 - legal-service positioning is explicit
 - public copy claims `570+` parameters and `15` directions
 - legal documents, operator identity, and policy links are visible
-- cross-linking with sister entities is already present
+- `robots.txt` now explicitly allows the target AI crawler set, including `ClaudeBot` and `YandexAdditional`
 
-### SitePravo snapshot score
+### Current snapshot
 
-- Technical SEO and crawl readiness: `16/20`
-- Factual consistency and truth-center discipline: `15/20`
-- Entity clarity and trust proof: `18/20`
-- AI readiness and answer extraction: `16/20`
-- Reporting and operator packaging: `17/20`
-- Total public snapshot: `82/100`
+- Current public snapshot: `88/100`
+- Current findings count in the bounded rollout model: `14`
+- Current explicit AI-bot allow coverage in rollout records: `14/14`
 
-### SitePravo bounded before/after model
+### Bounded before / after implementation record
 
-- Before first v3-style pass: `82/100`
-- After first 30-day truth-center and AI-surface sync target: `88/100`
-- Expected gain: `+6`
+- Before GEO AI crawler hardening: `88/100`
+- After GEO AI crawler hardening: `88/100`
+- Findings delta in rollout record: `15 -> 14`
+- AI-bot explicit allow coverage in rollout record: `6/14 -> 14/14`
 
-Likely sources of gain:
+Interpretation:
 
-- reduce repeated fact surfaces into one canonical truth center
-- tighten cross-entity boundaries with `anmalishev.ru` and sibling products
-- keep numeric claims synchronized across homepage, metadata, docs, and
-  AI-facing files
+- the score stayed flat because the public product report for this surface does not weigh the GEO layer strongly
+- the AI crawler access layer still improved materially
+- this is a good example of “real discoverability improvement without vanity-metric inflation”
 
 ## auditguard.ru
 
-Public signals observed:
+Current public signals observed:
 
 - public-first technical audit framing is clear
 - homepage exposes `340+` parameters, `46+` tools, and `2-5` minute checks
 - service explains scope, legal basis, and public-only audit boundary
-- trust and evidence framing are strong
+- `llms.txt` is detailed and public
+- `robots.txt` now explicitly allows the target AI crawler set, including `ClaudeBot` and `YandexAdditional`
 
-### AuditGuard snapshot score
+### Current snapshot
 
-- Technical SEO and crawl readiness: `17/20`
-- Factual consistency and truth-center discipline: `14/20`
-- Entity clarity and trust proof: `16/20`
-- AI readiness and answer extraction: `15/20`
-- Reporting and operator packaging: `18/20`
-- Total public snapshot: `80/100`
+- Current public snapshot: `94/100`
+- Current findings count in the bounded rollout model: `11`
+- Current explicit AI-bot allow coverage in rollout records: `14/14`
 
-### AuditGuard bounded before/after model
+### Bounded before / after implementation record
 
-- Before first v3-style pass: `80/100`
-- After first 30-day fact-sync and entity-governance target: `86/100`
-- Expected gain: `+6`
+- Before AI crawler hardening and false-positive cleanup: `92/100`
+- After AI crawler hardening and false-positive cleanup: `94/100`
+- Findings delta in rollout record: `13 -> 11`
+- AI-bot explicit allow coverage in rollout record: `6/14 -> 14/14`
 
-Likely sources of gain:
+Interpretation:
 
-- tighter synchronization between public copy, evidence pages, and AI-facing
-  files
-- sharper separation between AuditGuard and the surrounding product ecosystem
-- stronger repeatable benchmark reporting inside the self-hosted app flow
+- AI crawler intent became materially clearer
+- false-positive leak findings around `llms.txt` and `ai.txt` were removed
+- the gain is measurable both in bounded score and in public `robots.txt`
 
 ## anmalishev.ru
 
-Public signals observed:
+Current public signals observed:
 
 - founder identity, legal details, and location are explicit
 - RU and EN service surfaces are already visible
 - the site links consulting, products, case studies, and methodology assets
-- "practical AI for business" positioning is clear and commercially grounded
+- current `sitemap.xml` includes stronger canonical surfaces such as `/contacts`, `/projects/seo-geo-ai-roadmap.html`, `/expert/yandex-neuro-ai-visibility.html`, and `/expert/ai-site-audit.html`
+- current `llms.txt` and `ai.txt` are coherent and public
+- current `robots.txt` keeps public AI and search surfaces open while protecting admin or raw-template paths
 
-### anmalishev.ru snapshot score
+### Current snapshot
 
-- Technical SEO and crawl readiness: `15/20`
-- Factual consistency and truth-center discipline: `14/20`
-- Entity clarity and trust proof: `17/20`
-- AI readiness and answer extraction: `17/20`
-- Reporting and operator packaging: `15/20`
-- Total public snapshot: `78/100`
+- Current public snapshot: `88/100`
 
-### anmalishev.ru bounded before/after model
+### Bounded before / after implementation record
 
-- Before first v3-style pass: `78/100`
-- After first 30-day entity-hierarchy and bilingual fact-sync target: `85/100`
-- Expected gain: `+7`
+- Before the June public-surface expansion: `79/100`
+- After the June public-surface expansion: `88/100`
+- Methodology delta: `+9`
 
-Likely sources of gain:
+Publicly visible sources of gain:
 
-- clearer separation between founder entity, offers, products, and frameworks
-- one canonical fact layer for legal, service, and product claims
-- more explicit AI-facing truth surfaces for multilingual routing
+- stronger homepage entity and trust graph
+- dedicated canonical contacts surface
+- dedicated Yandex AI / Neuro page
+- dedicated AI site audit page
+- dedicated repository-overview page
+- tighter alignment between `llms.txt`, `ai.txt`, `robots.txt`, and `sitemap.xml`
 
 ## Cross-case lessons
 
 - factual consistency is its own subsystem, not a side note
 - public proof matters more when several related entities cross-link
-- bilingual discoverability performs better when EN and RU are governed as
-  production layers
-- AI visibility works best when it reinforces technical SEO instead of trying
-  to replace it
+- bilingual discoverability performs better when EN and RU are governed as production layers
+- AI visibility works best when it reinforces technical SEO instead of trying to replace it
+- explicit AI crawler policy can create a real public delta even when a product score does not fully reflect it yet
+- good case studies should separate current public facts from bounded rollout records and from unproven private outcomes
 
 See also:
 
 - [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
 - [docs/en/canonical-facts-and-entity-consistency.md](./docs/en/canonical-facts-and-entity-consistency.md)
+- [docs/en/v430-review-response-and-upgrade-path.md](./docs/en/v430-review-response-and-upgrade-path.md)
 - [WALKTHROUGH.md](./WALKTHROUGH.md)

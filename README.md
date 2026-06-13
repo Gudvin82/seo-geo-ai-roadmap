@@ -104,6 +104,8 @@ operator or an AI coding agent can use end to end:
 - Framework integrations: [docs/en/framework-integrations-v380.md](./docs/en/framework-integrations-v380.md)
 - Integration production flows: [docs/en/integration-production-flows-v380.md](./docs/en/integration-production-flows-v380.md)
 - v4.2 production proof: [docs/en/v420-production-proof.md](./docs/en/v420-production-proof.md)
+- v4.3 review response and upgrade path: [docs/en/v430-review-response-and-upgrade-path.md](./docs/en/v430-review-response-and-upgrade-path.md)
+- v4.3 public case studies: [docs/en/v430-case-anmalishev.md](./docs/en/v430-case-anmalishev.md), [docs/en/v430-case-auditguard-sitepravo.md](./docs/en/v430-case-auditguard-sitepravo.md)
 - Product modes: [docs/en/product-modes-v380.md](./docs/en/product-modes-v380.md)
 - CI gating: [docs/en/ci-gating-v380.md](./docs/en/ci-gating-v380.md)
 - Executive dashboard: [docs/en/executive-dashboard-v380.md](./docs/en/executive-dashboard-v380.md)
@@ -141,6 +143,13 @@ operator or an AI coding agent can use end to end:
 - wider provider coverage: OpenAI, Anthropic, Gemini, Perplexity, Mistral, Cohere, DeepSeek, xAI or Grok, Ollama, LocalAI, and vLLM
 - stack packs for WordPress, React, and Angular
 - optional Lighthouse CI path for PR-level synthetic gating
+
+## What `v4.3.0` adds
+
+- bilingual public case studies for `anmalishev.ru`, `auditguard.ru`, and `sitepravo.ru`
+- a structured response to external repository criticism with verdicts: `true`, `partial`, `outdated`, or `not yet proven`
+- a concrete `10/10` upgrade plan covering proof loops, integration maturity, docs consolidation, cost governance, and monitoring
+- stronger real-case framing inside `REAL_CASES.md` instead of abstract-only bounded models
 
 ## What `v4.0.0` adds
 
