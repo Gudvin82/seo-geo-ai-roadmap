@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seo-geo-ai-backend
+  namespace: seo-geo-ai
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: seo-geo-ai-backend
+  template:
+    metadata:
+      labels:
+        app: seo-geo-ai-backend
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/gudvin82/seo-geo-ai-roadmap-backend:4.1.0
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: seo-geo-ai-config
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8000
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000

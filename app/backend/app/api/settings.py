@@ -47,6 +47,12 @@ def repo_assets() -> dict:
         ],
         "glossary": ["GLOSSARY.md", "GLOSSARY_RU.md"],
         "agents": ["AGENTS.md"],
+        "extensions": [
+            "extensions/vscode/",
+            "extensions/chrome/",
+            "integrations/telegram/bot_stub.py",
+        ],
+        "managed_cloud": ["infra/k8s/"],
     }
 
 

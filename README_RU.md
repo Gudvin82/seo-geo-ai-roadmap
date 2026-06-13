@@ -127,6 +127,8 @@ discoverability. Ее можно развернуть на своем компь
 - report assistant endpoint и app-surface для operator Q&A по сохраненным отчетам
 - более сильные production-flow и CI-readiness paths для GSC, GA4, Yandex и CMS integrations
 - еще более четкое разделение scanner / product-app / repo-operator surfaces плюс расширенные machine-readable contracts
+- trusted delivery targets и генерация PR proposal с auto-merge eligibility flags для trusted repositories
+- реальный Telegram webhook runtime, более зрелые Chrome и VS Code operator packages и managed-cloud Kubernetes pack
 
 ## Что добавляет `v4.0.0`
 
@@ -365,6 +367,9 @@ snapshot-оценками для:
 
 ## Latest changes
 
+- `v4.1.0`: security hardening, recoverable scanner execution, governed CMS lifecycle,
+  report assistant, trusted delivery targets, Telegram webhook runtime,
+  repo-ready Chrome/VS Code packages и managed cloud deployment assets
 - `v4.0.0`: AI Agent Mode, one-click URL audit result flow, task generation and export,
   dynamic graph runtime, managed API boundary, contracts catalog, GitHub Action path,
   and VS Code / Chrome / Telegram scaffolds

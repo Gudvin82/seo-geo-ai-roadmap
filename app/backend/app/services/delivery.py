@@ -100,3 +100,74 @@ def build_client_delivery_pack(
             "prioritized implementation pack",
         ],
     }
+
+
+def build_pr_proposal(
+    *,
+    project: dict[str, Any],
+    findings: list[dict[str, Any]],
+    repository: str,
+    base_branch: str,
+    auto_merge_mode: str,
+    required_checks: list[str],
+    report_language: str,
+) -> dict[str, Any]:
+    top_findings = findings[:5]
+    branch_slug = project["name"].strip().lower().replace(" ", "-")
+    branch_name = f"seo-geo-ai/{branch_slug}-improvements"
+    title = (
+        f"Improve SEO/GEO/AI discoverability for {project['name']}"
+        if report_language == "en"
+        else f"Улучшить SEO/GEO/AI discoverability для {project['name']}"
+    )
+    bullet_lines = []
+    issue_backlog = []
+    for index, finding in enumerate(top_findings, start=1):
+        finding_title = finding.get("title") or f"Finding {index}"
+        recommendation = finding.get("recommendation") or "Review and refine this area."
+        bullet_lines.append(f"- {finding_title}: {recommendation}")
+        issue_backlog.append(
+            {
+                "title": finding_title,
+                "priority": finding.get("priority_label") or "planned",
+                "recommendation": recommendation,
+            }
+        )
+    body_markdown = "\n".join(
+        [
+            f"# {title}",
+            "",
+            f"Repository: `{repository}`",
+            f"Base branch: `{base_branch}`",
+            "",
+            "## Proposed changes",
+            *bullet_lines,
+            "",
+            "## Governance",
+            f"- Auto-merge mode: `{auto_merge_mode}`",
+            f"- Required checks: {', '.join(required_checks) if required_checks else 'manual review only'}",
+            "- Human approval is still required before applying risky or wide-scope changes.",
+        ]
+    )
+    return {
+        "repository": repository,
+        "base_branch": base_branch,
+        "branch_name": branch_name,
+        "title": title,
+        "body_markdown": body_markdown,
+        "changed_files": [
+            "content pages",
+            "structured data templates",
+            "llms.txt",
+            "metadata and internal links",
+        ],
+        "issue_backlog": issue_backlog,
+        "auto_merge_eligible": auto_merge_mode == "trusted_after_checks",
+        "auto_merge_mode": auto_merge_mode,
+        "required_checks": required_checks,
+        "external_next_step": (
+            "Open a PR in the trusted repository, wait for required checks, then enable auto-merge."
+            if auto_merge_mode == "trusted_after_checks"
+            else "Open a PR and keep the final merge approval manual."
+        ),
+    }

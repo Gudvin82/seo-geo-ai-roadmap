@@ -37,6 +37,7 @@ class Settings:
     scanner_smtp_password: str = ""
     scanner_smtp_from_email: str = ""
     scanner_telegram_bot_token: str = ""
+    scanner_telegram_webhook_secret: str = ""
 
     def cors_origin_list(self) -> list[str]:
         if self.cors_origins.strip() == "*":
@@ -104,4 +105,7 @@ def load_settings() -> Settings:
         scanner_smtp_password=os.getenv("SCANNER_SMTP_PASSWORD", ""),
         scanner_smtp_from_email=os.getenv("SCANNER_SMTP_FROM_EMAIL", ""),
         scanner_telegram_bot_token=os.getenv("SCANNER_TELEGRAM_BOT_TOKEN", ""),
+        scanner_telegram_webhook_secret=os.getenv(
+            "SCANNER_TELEGRAM_WEBHOOK_SECRET", ""
+        ),
     )

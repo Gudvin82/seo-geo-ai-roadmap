@@ -443,6 +443,33 @@ class PatchPackRead(BaseModel):
     outputs: dict[str, Any]
 
 
+class PRProposalRequest(BaseModel):
+    workspace_id: int
+    project_id: int
+    audit_run_id: Optional[int] = None
+    trusted_target_id: int
+    report_language: str = "en"
+    audience: str = "developer"
+    review_mode: str = "draft"
+
+
+class PRProposalRead(BaseModel):
+    workspace_id: int
+    project_id: int
+    trusted_target_id: int
+    repository: str
+    base_branch: str
+    branch_name: str
+    title: str
+    body_markdown: str
+    changed_files: list[str] = Field(default_factory=list)
+    issue_backlog: list[dict[str, Any]] = Field(default_factory=list)
+    auto_merge_eligible: bool
+    auto_merge_mode: str
+    required_checks: list[str] = Field(default_factory=list)
+    external_next_step: str
+
+
 class ProjectImportRequest(BaseModel):
     workspace_id: int
     payload: dict[str, Any]
@@ -876,6 +903,37 @@ class NotificationEndpointRead(BaseModel):
     is_enabled: bool
     retry_policy: dict[str, Any] = Field(default_factory=dict)
     created_at: datetime
+
+
+class TrustedDeliveryTargetCreate(BaseModel):
+    workspace_id: int
+    label: str
+    repository: str
+    base_branch: str = "main"
+    allowed_domains: list[str] = Field(default_factory=list)
+    auto_merge_mode: Literal["disabled", "trusted_after_checks"] = "disabled"
+    required_checks: list[str] = Field(default_factory=list)
+    is_enabled: bool = True
+
+
+class TrustedDeliveryTargetRead(BaseModel):
+    id: int
+    workspace_id: int
+    label: str
+    repository: str
+    base_branch: str
+    allowed_domains: list[str] = Field(default_factory=list)
+    auto_merge_mode: str
+    required_checks: list[str] = Field(default_factory=list)
+    is_enabled: bool
+    created_at: datetime
+
+
+class TelegramWebhookRead(BaseModel):
+    ok: bool = True
+    action: str
+    message: str
+    scan_job_id: Optional[int] = None
 
 
 class FactDriftSurface(BaseModel):

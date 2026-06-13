@@ -1115,15 +1115,20 @@ def _send_email(settings: Settings, recipient: str, payload: dict) -> None:
 
 
 def _send_telegram(settings: Settings, chat_id: str, payload: dict) -> None:
+    _send_telegram_text(
+        settings,
+        chat_id,
+        f"Scan job {payload['scan_job_id']} completed for {payload['target_url']}",
+    )
+
+
+def _send_telegram_text(settings: Settings, chat_id: str, text: str) -> None:
     if not settings.scanner_telegram_bot_token:
         raise RuntimeError("Telegram bot token is not configured.")
     url = (
         f"https://api.telegram.org/bot{settings.scanner_telegram_bot_token}/sendMessage"
     )
-    body = {
-        "chat_id": chat_id,
-        "text": f"Scan job {payload['scan_job_id']} completed for {payload['target_url']}",
-    }
+    body = {"chat_id": chat_id, "text": text}
     _send_webhook_with_settings(
         settings, url, body, settings.scanner_webhook_timeout_seconds
     )

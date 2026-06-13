@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seo-geo-ai-frontend
+  namespace: seo-geo-ai
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: seo-geo-ai-frontend
+  template:
+    metadata:
+      labels:
+        app: seo-geo-ai-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/gudvin82/seo-geo-ai-roadmap-frontend:4.1.0
+          ports:
+            - containerPort: 80

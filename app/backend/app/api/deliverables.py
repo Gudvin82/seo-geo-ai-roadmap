@@ -9,9 +9,22 @@ from sqlalchemy.orm import Session
 from ..access import record_audit_log, require_project_access
 from ..database import get_db
 from ..deps import get_current_user
-from ..models import Artifact, AuditRun, Project, Report, SovRun, User, Workspace
-from ..schemas import PatchPackRead, PatchPackRequest
-from ..services.delivery import build_client_delivery_pack, build_patch_pack
+from ..models import (
+    Artifact,
+    AuditRun,
+    Project,
+    Report,
+    SovRun,
+    TrustedDeliveryTarget,
+    User,
+    Workspace,
+)
+from ..schemas import PatchPackRead, PatchPackRequest, PRProposalRead, PRProposalRequest
+from ..services.delivery import (
+    build_client_delivery_pack,
+    build_patch_pack,
+    build_pr_proposal,
+)
 
 router = APIRouter(prefix="/deliverables", tags=["deliverables"])
 
@@ -208,4 +221,92 @@ def generate_client_pack(
         audience=payload.audience,
         review_mode=payload.mode,
         outputs=pack,
+    )
+
+
+@router.post("/pr-proposal", response_model=PRProposalRead)
+def generate_pr_proposal(
+    payload: PRProposalRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> PRProposalRead:
+    project, _ = require_project_access(
+        db, payload.project_id, current_user, minimum_role="editor"
+    )
+    if project.workspace_id != payload.workspace_id:
+        raise HTTPException(
+            status_code=400, detail="Project and workspace do not match."
+        )
+    audit_run = _latest_audit(db, project.id, payload.audit_run_id)
+    if not audit_run:
+        raise HTTPException(
+            status_code=400,
+            detail="Run at least one audit before generating a PR proposal.",
+        )
+    target = db.get(TrustedDeliveryTarget, payload.trusted_target_id)
+    if (
+        not target
+        or target.workspace_id != project.workspace_id
+        or not target.is_enabled
+    ):
+        raise HTTPException(
+            status_code=404, detail="Trusted delivery target was not found."
+        )
+    allowed_domains = json.loads(target.allowed_domains_json or "[]")
+    if allowed_domains and project.website_url not in allowed_domains:
+        raise HTTPException(
+            status_code=400,
+            detail="Project website is not allowed for this trusted delivery target.",
+        )
+    findings = json.loads(audit_run.finding_groups_json or "[]")
+    proposal = build_pr_proposal(
+        project={
+            "id": project.id,
+            "name": project.name,
+            "website_url": project.website_url,
+            "market": project.market,
+            "language": project.language,
+        },
+        findings=findings,
+        repository=target.repository,
+        base_branch=target.base_branch,
+        auto_merge_mode=target.auto_merge_mode,
+        required_checks=json.loads(target.required_checks_json or "[]"),
+        report_language=payload.report_language,
+    )
+    _write_artifact(
+        db,
+        project=project,
+        audit_run=audit_run,
+        artifact_type="pr_proposal",
+        payload=proposal,
+    )
+    record_audit_log(
+        db,
+        "deliverable.pr_proposal_generated",
+        user_id=current_user.id,
+        workspace_id=project.workspace_id,
+        project_id=project.id,
+        metadata={
+            "trusted_target_id": target.id,
+            "repository": target.repository,
+            "auto_merge_mode": target.auto_merge_mode,
+        },
+    )
+    db.commit()
+    return PRProposalRead(
+        workspace_id=project.workspace_id,
+        project_id=project.id,
+        trusted_target_id=target.id,
+        repository=proposal["repository"],
+        base_branch=proposal["base_branch"],
+        branch_name=proposal["branch_name"],
+        title=proposal["title"],
+        body_markdown=proposal["body_markdown"],
+        changed_files=proposal["changed_files"],
+        issue_backlog=proposal["issue_backlog"],
+        auto_merge_eligible=proposal["auto_merge_eligible"],
+        auto_merge_mode=proposal["auto_merge_mode"],
+        required_checks=proposal["required_checks"],
+        external_next_step=proposal["external_next_step"],
     )

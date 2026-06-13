@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: seo-geo-ai-backend
+  namespace: seo-geo-ai
+spec:
+  selector:
+    app: seo-geo-ai-backend
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seo-geo-ai-frontend
+  namespace: seo-geo-ai
+spec:
+  selector:
+    app: seo-geo-ai-frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80

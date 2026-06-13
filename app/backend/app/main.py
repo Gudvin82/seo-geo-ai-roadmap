@@ -30,7 +30,9 @@ from .api import (
     settings,
     sov,
     task_center,
+    telegram,
     tools,
+    trusted_delivery,
     workspaces,
 )
 from .config import Settings, load_settings
@@ -121,6 +123,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
     app.include_router(artifacts.router, prefix=settings_obj.api_prefix)
     app.include_router(sov.router, prefix=settings_obj.api_prefix)
     app.include_router(notifications.router, prefix=settings_obj.api_prefix)
+    app.include_router(trusted_delivery.router, prefix=settings_obj.api_prefix)
     app.include_router(deliverables.router, prefix=settings_obj.api_prefix)
     app.include_router(exports.router, prefix=settings_obj.api_prefix)
     app.include_router(settings.router, prefix=settings_obj.api_prefix)
@@ -129,6 +132,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
     app.include_router(graph_runtime.router, prefix=settings_obj.api_prefix)
     app.include_router(contracts.router, prefix=settings_obj.api_prefix)
     app.include_router(tools.router, prefix=settings_obj.api_prefix)
+    app.include_router(telegram.router, prefix=settings_obj.api_prefix)
     return app
 
 

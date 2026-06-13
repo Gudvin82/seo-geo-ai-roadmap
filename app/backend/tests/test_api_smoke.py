@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from app.services import scan_jobs
 from fastapi.testclient import TestClient
 
 
@@ -224,6 +225,38 @@ def test_workspace_project_and_audit_flow(
     assert patch_pack.status_code == 200
     assert "issue_backlog" in patch_pack.json()["outputs"]
 
+    trusted_target = client.post(
+        "/api/v1/trusted-delivery-targets",
+        json={
+            "workspace_id": workspace_id,
+            "label": "Trusted marketing repo",
+            "repository": "Gudvin82/example-site",
+            "base_branch": "main",
+            "allowed_domains": ["https://example.com"],
+            "auto_merge_mode": "trusted_after_checks",
+            "required_checks": ["python-tests", "markdown-lint", "link-check"],
+            "is_enabled": True,
+        },
+        headers=auth_headers,
+    )
+    assert trusted_target.status_code == 200
+
+    pr_proposal = client.post(
+        "/api/v1/deliverables/pr-proposal",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "trusted_target_id": trusted_target.json()["id"],
+            "report_language": "en",
+            "audience": "developer",
+            "review_mode": "draft",
+        },
+        headers=auth_headers,
+    )
+    assert pr_proposal.status_code == 200
+    assert pr_proposal.json()["auto_merge_eligible"] is True
+    assert pr_proposal.json()["required_checks"]
+
     audit_tasks = client.get(
         f"/api/v1/tasks/audit-run/{audit.json()['audit_job_id']}",
         headers=auth_headers,
@@ -311,3 +344,31 @@ def test_workspace_project_and_audit_flow(
     )
     assert imported.status_code == 200
     assert imported.json()["project_id"] > 0
+
+
+def test_telegram_webhook_path(client: TestClient, settings, monkeypatch) -> None:
+    settings.allow_public_intake = True
+    settings.allow_anonymous_submission = True
+    settings.scanner_telegram_webhook_secret = "telegram-secret"
+    monkeypatch.setattr(
+        scan_jobs,
+        "_launch_scan_job",
+        lambda local_settings, job_id: scan_jobs._run_scan_job(local_settings, job_id),
+    )
+    monkeypatch.setattr(
+        scan_jobs, "_deliver_notifications", lambda local_settings, row, artifacts: []
+    )
+
+    response = client.post(
+        "/api/v1/telegram/webhook",
+        json={
+            "message": {
+                "chat": {"id": 123456},
+                "text": "/geo audit https://example.com",
+            }
+        },
+        headers={"X-Telegram-Bot-Api-Secret-Token": "telegram-secret"},
+    )
+    assert response.status_code == 200
+    assert response.json()["action"] == "audit"
+    assert response.json()["scan_job_id"] > 0

@@ -127,6 +127,8 @@ operator or an AI coding agent can use end to end:
 - report assistant follow-up endpoint and app surface for operator Q&A on stored reports
 - stronger production-flow and CI-readiness planning for GSC, GA4, Yandex, and CMS integrations
 - sharper scanner / product-app / repo-operator separation plus expanded machine-readable contracts
+- trusted delivery targets plus PR proposal generation with auto-merge eligibility flags for trusted repositories
+- real Telegram webhook runtime, richer Chrome and VS Code operator packages, and a managed-cloud Kubernetes pack
 
 ## What `v4.0.0` adds
 
@@ -363,6 +365,9 @@ See [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md).
 
 ## Latest changes
 
+- `v4.1.0`: security hardening, recoverable scanner execution, governed CMS lifecycle,
+  report assistant, trusted delivery targets, Telegram webhook runtime, repo-ready
+  Chrome/VS Code packages, and managed cloud deployment assets
 - `v4.0.0`: AI Agent Mode, one-click URL audit result flow, task generation and export,
   dynamic graph runtime, managed API boundary, contracts catalog, GitHub Action path,
   and VS Code / Chrome / Telegram scaffolds

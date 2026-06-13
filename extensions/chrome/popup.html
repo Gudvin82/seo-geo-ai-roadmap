@@ -1,12 +1,58 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>SEO GEO AI Page Audit</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 16px;
+        width: 340px;
+        background: #f5f7fa;
+        color: #16202a;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: 18px;
+      }
+      label,
+      button {
+        display: block;
+        width: 100%;
+      }
+      input,
+      button {
+        box-sizing: border-box;
+        margin-top: 6px;
+        margin-bottom: 12px;
+        padding: 10px 12px;
+      }
+      .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+        background: white;
+        border: 1px solid #d7dde5;
+        padding: 10px;
+        min-height: 90px;
+      }
+    </style>
+  </head>
   <body>
     <h1>One-Click Page Audit</h1>
     <label>
       API base
       <input id="api" value="http://localhost:8000/api/v1" />
     </label>
-    <button id="audit">Audit current tab</button>
+    <div class="actions">
+      <button id="save" type="button">Save</button>
+      <button id="audit" type="button">Audit current tab</button>
+    </div>
     <pre id="status"></pre>
     <script src="popup.js"></script>
   </body>

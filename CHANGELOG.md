@@ -9,6 +9,9 @@
 - Added governed CMS change requests with preview, approve, apply, verify, and rollback lifecycle states
 - Added report assistant follow-up endpoint plus frontend operator surface for asking focused questions about stored reports
 - Expanded integration contracts with clearer production flows, CI-first readiness planning, and stronger machine-readable contract coverage
+- Added trusted delivery targets, PR proposal generation, and governed auto-merge eligibility flags for trusted repositories
+- Added a real Telegram webhook runtime plus richer repo-ready Chrome and VS Code operator packages
+- Added a managed-cloud Kubernetes pack for DigitalOcean Kubernetes, GKE, and EKS style deployment paths
 - Updated EN/RU architecture notes, app version markers, frontend surfaces, contract catalog, and tests for the new v4.1.0 runtime
 
 ## v4.0.0 — AI Agent Mode, Product Surfaces, and One-Click Delivery

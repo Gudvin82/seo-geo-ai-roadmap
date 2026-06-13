@@ -357,6 +357,21 @@ class NotificationEndpoint(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
 
 
+class TrustedDeliveryTarget(Base):
+    __tablename__ = "trusted_delivery_targets"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"))
+    label: Mapped[str] = mapped_column(String(255))
+    repository: Mapped[str] = mapped_column(String(255))
+    base_branch: Mapped[str] = mapped_column(String(255), default="main")
+    allowed_domains_json: Mapped[str] = mapped_column(Text, default="[]")
+    auto_merge_mode: Mapped[str] = mapped_column(String(32), default="disabled")
+    required_checks_json: Mapped[str] = mapped_column(Text, default="[]")
+    is_enabled: Mapped[bool] = mapped_column(Boolean, default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+
 class SovRun(Base):
     __tablename__ = "sov_runs"
 

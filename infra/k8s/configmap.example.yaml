@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: seo-geo-ai-config
+  namespace: seo-geo-ai
+data:
+  APP_DEFAULT_REPORT_LANGUAGE: "en"
+  APP_CORS_ORIGINS: "https://your-frontend.example"
+  ALLOW_PUBLIC_INTAKE: "true"
+  ALLOW_ANONYMOUS_SUBMISSION: "true"
+  ALLOW_ACTIVE_SCAN: "false"

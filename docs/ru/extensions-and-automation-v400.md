@@ -1,14 +1,15 @@
-# Extensions and Automation v4.0.0
+# Extensions and Automation v4.1.0
 
-`v4.0.0` запускает три продуктовых distribution path:
+`v4.1.0` переводит эти поверхности из базовых scaffolds в repo-ready operator
+packages:
 
 - GitHub Action: `.github/actions/ai-visibility-check/action.yml`
-- scaffold VS Code extension: `extensions/vscode/`
-- scaffold Chrome extension: `extensions/chrome/`
-- scaffold Telegram bot: `integrations/telegram/bot_stub.py`
+- VS Code extension package: `extensions/vscode/`
+- Chrome extension package: `extensions/chrome/`
+- Telegram webhook runtime: `POST /api/v1/telegram/webhook`
 
-Это честные scaffolds:
+Что теперь входит:
 
-- их достаточно, чтобы показать product boundary и command flow
-- их достаточно, чтобы AI-агенты могли продолжить разработку
-- они не выдаются за полностью зрелые marketplace packages
+- локально устанавливаемые extension packages с README и privacy notes
+- реальный Telegram bot command path для `/geo audit`
+- честные packaging boundaries для последующей marketplace publication

@@ -1,12 +1,14 @@
 {
   "name": "seo-geo-ai-roadmap",
   "displayName": "SEO GEO AI Roadmap",
-  "description": "Run /geo command flows and review discoverability outputs from VS Code.",
-  "version": "4.0.0",
+  "description": "Run scanner, dashboard, and agent-mode flows against your self-hosted SEO GEO AI backend.",
+  "version": "4.1.0",
+  "publisher": "Gudvin82",
   "engines": {
     "vscode": "^1.95.0"
   },
   "categories": ["Other"],
+  "keywords": ["seo", "geo", "ai", "scanner", "discoverability"],
   "activationEvents": [
     "onCommand:seoGeoAi.audit",
     "onCommand:seoGeoAi.summary",
@@ -26,7 +28,35 @@
         "command": "seoGeoAi.agentMode",
         "title": "SEO GEO AI: Start Agent Mode"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "SEO GEO AI",
+      "properties": {
+        "seoGeoAi.apiBase": {
+          "type": "string",
+          "default": "http://localhost:8000/api/v1",
+          "description": "Self-hosted backend API base URL."
+        },
+        "seoGeoAi.authToken": {
+          "type": "string",
+          "default": "",
+          "description": "Optional bearer token for authenticated app endpoints."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "lint": "node --check src/extension.js"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Gudvin82/seo-geo-ai-roadmap.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Gudvin82/seo-geo-ai-roadmap/issues"
+  },
+  "homepage": "https://github.com/Gudvin82/seo-geo-ai-roadmap"
   },
   "main": "./src/extension.js"
 }

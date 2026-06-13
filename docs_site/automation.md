@@ -1,10 +1,11 @@
 # Automation and Extensions
 
-`v4.0.0` includes:
+`v4.1.0` includes:
 
 - first-class GitHub Action path
-- VS Code extension scaffold
-- Chrome extension scaffold
-- Telegram bot scaffold
+- VS Code extension package
+- Chrome extension package
+- Telegram webhook runtime
 
-These are intentionally honest start points, not overclaimed mature apps.
+These are repo-ready operator paths. Marketplace publication and hosted SaaS
+rollout still remain external deployment steps.

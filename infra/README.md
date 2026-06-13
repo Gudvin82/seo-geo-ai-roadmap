@@ -1,11 +1,17 @@
 # Infrastructure Notes
 
-`infra/` is the place for future production deployment assets such as:
+`infra/` now contains a practical managed-cloud starter pack in addition to
+general deployment notes.
 
-- reverse proxy examples
-- container orchestration manifests
-- managed database notes
-- observability or backup guides
+Included in `v4.1.0`:
 
-For `v2.0.0`, the primary supported deployment path is documented in
-[`DEPLOYMENT.md`](../DEPLOYMENT.md) and [`DEPLOYMENT_RU.md`](../DEPLOYMENT_RU.md).
+- `k8s/namespace.yaml`
+- `k8s/configmap.example.yaml`
+- `k8s/backend-deployment.yaml`
+- `k8s/frontend-deployment.yaml`
+- `k8s/services.yaml`
+- `k8s/ingress.example.yaml`
+
+The primary baseline path is still documented in [`DEPLOYMENT.md`](../DEPLOYMENT.md)
+and [`DEPLOYMENT_RU.md`](../DEPLOYMENT_RU.md), while the Kubernetes pack gives
+teams a repo-native starting point for DigitalOcean Kubernetes, GKE, and EKS.

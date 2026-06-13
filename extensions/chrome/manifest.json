@@ -1,10 +1,12 @@
 {
   "manifest_version": 3,
   "name": "SEO GEO AI Page Audit",
-  "version": "4.0.0",
-  "description": "Send the current tab into the discoverability scanner or app flow.",
+  "version": "4.1.0",
+  "description": "Run a passive SEO/GEO/AI audit for the current tab against your self-hosted backend.",
   "permissions": ["activeTab", "tabs", "storage"],
+  "host_permissions": ["http://localhost:8000/*", "https://*/*", "http://*/*"],
   "action": {
     "default_popup": "popup.html"
-  }
+  },
+  "minimum_chrome_version": "120"
 }
