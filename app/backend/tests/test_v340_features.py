@@ -34,7 +34,9 @@ def test_command_router_rejects_unknown_command(client) -> None:
 
 
 def test_command_router_supports_geo_prefix_and_alias(client) -> None:
-    response = client.post("/api/v1/tools/command-router", json={"command": "/geo scan"})
+    response = client.post(
+        "/api/v1/tools/command-router", json={"command": "/geo scan"}
+    )
     assert response.status_code == 200
     payload = response.json()
     assert payload["command"] == "audit"

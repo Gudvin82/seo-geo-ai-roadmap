@@ -78,7 +78,11 @@ COMMAND_CATALOG: dict[str, CommandRoute] = {
             "truth center alignment notes",
             "entity cleanup tasks",
         ],
-        use_cases=["brand governance", "legal/trust review", "multi-market consistency"],
+        use_cases=[
+            "brand governance",
+            "legal/trust review",
+            "multi-market consistency",
+        ],
         next_step="Use the truth center as the canonical source, then align website, schema, and llms.txt surfaces.",
     ),
     "citability": CommandRoute(
@@ -136,7 +140,11 @@ COMMAND_CATALOG: dict[str, CommandRoute] = {
             "history view",
             "recurring ops cadence",
         ],
-        use_cases=["retainer reporting", "regression detection", "proof of improvement"],
+        use_cases=[
+            "retainer reporting",
+            "regression detection",
+            "proof of improvement",
+        ],
         next_step="Define the recurring schedule, artifact expectations, and the comparison questions before the next run.",
     ),
     "content": CommandRoute(
@@ -246,7 +254,11 @@ COMMAND_CATALOG: dict[str, CommandRoute] = {
             "issue dependency map",
             "surface relationship explanation",
         ],
-        use_cases=["client explanation", "operator prioritization", "sales walkthrough"],
+        use_cases=[
+            "client explanation",
+            "operator prioritization",
+            "sales walkthrough",
+        ],
         next_step="Open the graph view, switch between site, surface, issue, and trust modes, then export the graph snapshot with the recommended fix order.",
     ),
     "llmstxt": CommandRoute(
@@ -275,7 +287,11 @@ COMMAND_CATALOG: dict[str, CommandRoute] = {
             "validation report",
             "publish checklist",
         ],
-        use_cases=["AI discoverability hygiene", "content access guidance", "operator onboarding"],
+        use_cases=[
+            "AI discoverability hygiene",
+            "content access guidance",
+            "operator onboarding",
+        ],
         next_step="Generate a first llms.txt draft, validate it, then publish and re-check the live file.",
     ),
     "platforms": CommandRoute(
@@ -332,7 +348,11 @@ COMMAND_CATALOG: dict[str, CommandRoute] = {
             "first blockers list",
             "escalation recommendation",
         ],
-        use_cases=["pre-sales discovery", "lightweight founder check", "first-call audit"],
+        use_cases=[
+            "pre-sales discovery",
+            "lightweight founder check",
+            "first-call audit",
+        ],
         next_step="Use the quick route to find the first obvious blockers, then escalate to a full audit if needed.",
     ),
     "report": CommandRoute(
@@ -420,7 +440,11 @@ COMMAND_CATALOG: dict[str, CommandRoute] = {
             "missing entity fields list",
             "recommended markup pack",
         ],
-        use_cases=["entity SEO", "service schema upgrade", "trust-surface reinforcement"],
+        use_cases=[
+            "entity SEO",
+            "service schema upgrade",
+            "trust-surface reinforcement",
+        ],
         next_step="Validate syntax first, then strengthen the business and entity meaning carried by the schema.",
     ),
     "technical": CommandRoute(
