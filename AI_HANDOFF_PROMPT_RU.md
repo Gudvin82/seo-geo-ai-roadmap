@@ -37,7 +37,8 @@ https://github.com/Gudvin82/seo-geo-ai-roadmap
 12. Вызвать `GET /api/v1/scanner/config` и учитывать feature flags до показа режимов в UI.
 13. Для режимов `active` и `full` требовать ownership verification через HTML file, meta tag или DNS TXT до отправки job.
 14. Создать scan job через `POST /api/v1/scan-jobs`, затем отслеживать его через `GET /api/v1/scan-jobs/{id}` и `GET /api/v1/scan-jobs/{id}/events`.
-15. Вернуть ссылки на artifacts, поведение notifications и public-service limitations вместе с результатом сканирования.
+15. Если важен discoverability coverage layer, отдельно проверить `robots.txt`, `YandexAdditional`, `ai.txt`, schema coverage, FAQ/answer-ready patterns, Open Graph/Twitter и связку robots+sitemap.
+16. Вернуть ссылки на artifacts, поведение notifications, public-service limitations и все heuristic uncertainty вместе с результатом сканирования.
 
 Правила:
 - Не заявляй "готово" без проверки.

@@ -8,7 +8,7 @@
 | Perplexity | citation-heavy answer assembly | direct answers, FAQ, explicit sources, proof pages | answer mix changes often |
 | Google AI Overviews | search-result-layer summarization | technical SEO, structured data, source credibility | follows Google changes and official guidance |
 | Bing Copilot | Bing ecosystem and answer synthesis | crawlable pages, entity clarity, clear offer pages | no stable public control layer |
-| Yandex Neuro | RU-local context and entity framing | Yandex-friendly entity signals, regional proof, RU content clarity | still evolving quickly |
+| Yandex Neuro | RU-local context and entity framing | Yandex-friendly entity signals, regional proof, RU content clarity, explicit `YandexAdditional` policy | still evolving quickly |
 
 ## Shared patterns
 
@@ -21,4 +21,4 @@
 
 - Perplexity tends to reward visible source structure.
 - Google AI Overviews remains tightly connected to search-quality fundamentals.
-- RU surfaces require stronger local entity signals and regional proof.
+- RU surfaces require stronger local entity signals, regional proof, and explicit separation between `YandexBot` and `YandexAdditional` policy.

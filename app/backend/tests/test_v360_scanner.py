@@ -131,7 +131,7 @@ def test_scan_job_lifecycle_and_artifacts(client, settings, monkeypatch) -> None
         "csv",
         "html",
     }
-    assert all(item["schema_version"] == "v3.6.0" for item in artifact_payload)
+    assert all(item["schema_version"] == "v3.7.0" for item in artifact_payload)
 
 
 def test_webhook_delivery_mock(client, settings, monkeypatch) -> None:

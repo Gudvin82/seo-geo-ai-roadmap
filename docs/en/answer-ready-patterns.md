@@ -55,6 +55,18 @@ Check each page for the following:
 - are numbers, offers, locations, and claims tied to evidence?
 - is there a clean next action after the answer block?
 
+## Practical detector
+
+`v3.7.0` adds a first heuristic detector:
+
+```bash
+python scripts/faq-detector.py --url https://example.com
+```
+
+It looks for visible FAQ sections, question-like headings, FAQ schema, and
+accordion-like patterns. It is useful for operator review, not as a perfect
+truth source.
+
 ## Common mistakes
 
 - generic intro paragraphs before the answer

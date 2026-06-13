@@ -96,6 +96,8 @@ discoverability. Ее можно развернуть на своем компь
 - API reference: [docs/ru/api-reference.md](./docs/ru/api-reference.md)
 - Hosted validator: [docs site validator](./docs_site/validator.md)
 - Scanner foundation: [docs/ru/public-scanner-v360.md](./docs/ru/public-scanner-v360.md)
+- Discoverability coverage: [docs/ru/discoverability-coverage-v370.md](./docs/ru/discoverability-coverage-v370.md)
+- AI guidance file: [docs/ru/ai-txt.md](./docs/ru/ai-txt.md)
 - Command surface: [docs/ru/command-catalog-v340.md](./docs/ru/command-catalog-v340.md)
 - Bootstrap guide: [docs/ru/bootstrap-guide-v340.md](./docs/ru/bootstrap-guide-v340.md)
 - Architecture note: [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
@@ -126,6 +128,16 @@ discoverability. Ее можно развернуть на своем компь
 - scanner-oriented bootstrap mode для команд, которые строят client-facing intake surface
 - публичная архитектурная справка на EN и RU с описанием deployment, audit flow и развития scanner-контура
 - расширение command-catalog под `deploy` и `scanner` сценарии
+
+## Что добавляет `v3.7.0`
+
+- реальное RU/Yandex AI hardening с отдельной политикой для `YandexAdditional`
+- практическая валидация `ai.txt` и проверка противоречий с `robots.txt` и `llms.txt`
+- аудит покрытия structured data с поддержкой `WebSite` schema
+- эвристический detector FAQ / answer-ready блоков
+- проверка полноты Open Graph и Twitter Card
+- интегрированная проверка связки `robots.txt` ↔ sitemap
+- RU guidance по маркировке AI-контента как practical compliance, а не legal advice
 
 ## Что добавляет `v3.6.0`
 

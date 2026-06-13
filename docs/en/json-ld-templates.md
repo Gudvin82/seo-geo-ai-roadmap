@@ -6,6 +6,7 @@ as blind copy-paste blocks.
 ## Included templates
 
 - `organization-schema.json`
+- `website-schema.json`
 - `faq-schema.json`
 - `howto-schema.json`
 - `product-schema.json`
@@ -15,6 +16,7 @@ as blind copy-paste blocks.
 ## When to use each one
 
 - Organization: brand entity, logo, sameAs, canonical identity
+- WebSite: site-level identity, search action, language framing, and publisher linkage
 - Service: agency or expert service pages with offer definition
 - Product: SaaS, software, or productized offer pages
 - FAQ: objection handling, support answers, direct-response sections
@@ -35,6 +37,7 @@ as blind copy-paste blocks.
 3. Check that the page visibly contains the same facts.
 4. Validate the JSON locally.
 5. Re-test after deployment.
+6. If checking a live page, run `python scripts/schema-coverage-checker.py --url https://example.com --site-type service`.
 
 ## Minimum production checklist
 

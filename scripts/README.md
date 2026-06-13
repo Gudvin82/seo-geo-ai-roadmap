@@ -7,8 +7,13 @@
 | `generate_llms_txt.py` | Generate `llms.txt` from a sitemap | `python scripts/generate_llms_txt.py --sitemap-url https://example.com/sitemap.xml` |
 | `check-llms-txt.py` | Validate `llms.txt` structure from file or URL | `python scripts/check-llms-txt.py --file examples/sample-llms.txt` |
 | `check-robots-ai-bots.py` | Check AI/search bot access in `robots.txt` | `python scripts/check-robots-ai-bots.py --url https://example.com` |
+| `check-ai-txt.py` | Validate `ai.txt` and review contradictions with `robots.txt` / `llms.txt` | `python scripts/check-ai-txt.py --url https://example.com` |
 | `sitemap-checker.py` | Fetch a sitemap and count entries | `python scripts/sitemap-checker.py --url https://example.com/sitemap.xml` |
 | `schema-validator.py` | Validate JSON schema files | `python scripts/schema-validator.py --file templates/schema/service-schema.json` |
+| `schema-coverage-checker.py` | Audit JSON-LD schema coverage on a real page | `python scripts/schema-coverage-checker.py --url https://example.com --site-type service` |
+| `faq-detector.py` | Detect FAQ and answer-ready patterns in page HTML | `python scripts/faq-detector.py --url https://example.com` |
+| `open-graph-checker.py` | Check Open Graph and Twitter Card completeness | `python scripts/open-graph-checker.py --url https://example.com` |
+| `robots-sitemap-link-checker.py` | Verify robots.txt and sitemap linkage together | `python scripts/robots-sitemap-link-checker.py --url https://example.com` |
 | `ai-share-of-voice-tracker.py` | Create AI Share of Voice tracking scaffolds | `python scripts/ai-share-of-voice-tracker.py "Example AI Agency" --queries "best GEO agency,ai visibility audit"` |
 | `serp-intent-cluster-helper.py` | Group keywords by rough search intent | `python scripts/serp-intent-cluster-helper.py "best ai agency" "what is geo"` |
 | `content-inventory-helper.py` | Create a markdown content inventory table from URLs | `python scripts/content-inventory-helper.py https://example.com/ https://example.com/faq` |

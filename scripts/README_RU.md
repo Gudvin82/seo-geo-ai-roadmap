@@ -7,8 +7,13 @@
 | `generate_llms_txt.py` | Генерирует `llms.txt` из sitemap | `python scripts/generate_llms_txt.py --sitemap-url https://example.com/sitemap.xml` |
 | `check-llms-txt.py` | Проверяет структуру `llms.txt` по файлу или URL | `python scripts/check-llms-txt.py --file examples/sample-llms.txt` |
 | `check-robots-ai-bots.py` | Проверяет доступ AI/search-ботов в `robots.txt` | `python scripts/check-robots-ai-bots.py --url https://example.com` |
+| `check-ai-txt.py` | Проверяет `ai.txt` и ищет противоречия с `robots.txt` / `llms.txt` | `python scripts/check-ai-txt.py --url https://example.com` |
 | `sitemap-checker.py` | Загружает sitemap и считает URL | `python scripts/sitemap-checker.py --url https://example.com/sitemap.xml` |
 | `schema-validator.py` | Проверяет JSON schema-файлы | `python scripts/schema-validator.py --file templates/schema/service-schema.json` |
+| `schema-coverage-checker.py` | Аудирует покрытие JSON-LD schema на реальной странице | `python scripts/schema-coverage-checker.py --url https://example.com --site-type service` |
+| `faq-detector.py` | Ищет FAQ и answer-ready patterns в HTML страницы | `python scripts/faq-detector.py --url https://example.com` |
+| `open-graph-checker.py` | Проверяет полноту Open Graph и Twitter Card | `python scripts/open-graph-checker.py --url https://example.com` |
+| `robots-sitemap-link-checker.py` | Проверяет связку robots.txt и sitemap вместе | `python scripts/robots-sitemap-link-checker.py --url https://example.com` |
 | `ai-share-of-voice-tracker.py` | Создает заготовки для учета AI Share of Voice | `python scripts/ai-share-of-voice-tracker.py "Example AI Agency" --queries "best GEO agency,ai visibility audit"` |
 | `serp-intent-cluster-helper.py` | Группирует ключевые фразы по rough intent | `python scripts/serp-intent-cluster-helper.py "best ai agency" "what is geo"` |
 | `content-inventory-helper.py` | Создает markdown-таблицу инвентаризации контента по URL | `python scripts/content-inventory-helper.py https://example.com/ https://example.com/faq` |

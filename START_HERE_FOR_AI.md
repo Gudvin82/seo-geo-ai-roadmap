@@ -80,9 +80,17 @@ surface.
 For the implemented scanner foundation, use:
 
 1. [docs/en/public-scanner-v360.md](./docs/en/public-scanner-v360.md)
-2. `app/frontend/scanner.html`
-3. `GET /api/v1/scanner/config`
-4. `POST /api/v1/scanner/verification-requests`
-5. `POST /api/v1/scanner/consent-records`
-6. `POST /api/v1/scan-jobs`
-7. `GET /api/v1/scan-jobs/{id}`
+2. [docs/en/discoverability-coverage-v370.md](./docs/en/discoverability-coverage-v370.md)
+3. [docs/en/ai-txt.md](./docs/en/ai-txt.md)
+4. `python scripts/check-robots-ai-bots.py --url https://example.com`
+5. `python scripts/check-ai-txt.py --url https://example.com`
+6. `python scripts/schema-coverage-checker.py --url https://example.com --site-type service`
+7. `python scripts/faq-detector.py --url https://example.com`
+8. `python scripts/open-graph-checker.py --url https://example.com`
+9. `python scripts/robots-sitemap-link-checker.py --url https://example.com`
+10. `app/frontend/scanner.html`
+11. `GET /api/v1/scanner/config`
+12. `POST /api/v1/scanner/verification-requests`
+13. `POST /api/v1/scanner/consent-records`
+14. `POST /api/v1/scan-jobs`
+15. `GET /api/v1/scan-jobs/{id}`

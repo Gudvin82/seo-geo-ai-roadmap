@@ -21,6 +21,7 @@ nav:
   - Deployment: deployment.md
   - Commands: commands.md
   - Scanner Intake: scanner.md
+  - Discoverability Coverage: coverage.md
   - Validator: validator.md
   - API Overview: api.md
   - Operator Mode: operator-mode.md

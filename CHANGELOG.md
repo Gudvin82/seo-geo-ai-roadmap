@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.7.0 — RU AI Hardening, ai.txt, and Discoverability Coverage
+
+- Added real RU and AI bot policy hardening with separate `YandexAdditional` handling alongside `YandexBot`
+- Added `scripts/check-ai-txt.py`, `templates/ai.txt.example`, and EN/RU documentation for practical `ai.txt` usage and contradiction review
+- Added `templates/schema/website-schema.json` plus a new schema coverage checker that audits JSON-LD presence by site type instead of validating JSON syntax only
+- Added practical FAQ / answer-ready detection, Open Graph / Twitter Card completeness checks, and integrated robots.txt ↔ sitemap verification
+- Expanded the scanner reporting model so exported summaries now include module-level findings for AI bot policy, `ai.txt`, schema, FAQ, social metadata, and robots+sitemap linkage
+- Added RU-focused practical guidance for AI-content marking as a compliance-aware trust and GEO layer, explicitly framed as non-legal advice
+- Updated README, README_RU, AGENTS, AI handoff prompts, START_HERE docs, scripts reference, docs-site, and bilingual checklists for the new coverage layer
+
 ## v3.6.0 — Public Scanner Foundation, Ownership Verification, and Async Job UX
 
 - Added a dedicated scanner intake page with passive, active, and feature-flagged full scan modes

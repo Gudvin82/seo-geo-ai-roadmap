@@ -94,6 +94,8 @@ operator or an AI coding agent can use end to end:
 - API reference: [docs/en/api-reference.md](./docs/en/api-reference.md)
 - Hosted validator: [docs site validator](./docs_site/validator.md)
 - Scanner foundation: [docs/en/public-scanner-v360.md](./docs/en/public-scanner-v360.md)
+- Discoverability coverage: [docs/en/discoverability-coverage-v370.md](./docs/en/discoverability-coverage-v370.md)
+- AI guidance file: [docs/en/ai-txt.md](./docs/en/ai-txt.md)
 - Command surface: [docs/en/command-catalog-v340.md](./docs/en/command-catalog-v340.md)
 - Bootstrap guide: [docs/en/bootstrap-guide-v340.md](./docs/en/bootstrap-guide-v340.md)
 - Architecture note: [ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md)
@@ -124,6 +126,16 @@ operator or an AI coding agent can use end to end:
 - scanner-oriented bootstrap mode for teams building a client-facing intake surface
 - public architecture note in EN and RU describing deployment, audit flow, and scanner evolution
 - command-catalog expansion for `deploy` and `scanner` use cases
+
+## What `v3.7.0` adds
+
+- real RU/Yandex AI hardening with `YandexAdditional` as a distinct policy surface
+- practical `ai.txt` validation and contradiction review against `robots.txt` and `llms.txt`
+- structured data coverage auditing with `WebSite` schema support
+- heuristic FAQ / answer-ready detection for real pages
+- Open Graph and Twitter Card completeness checks for discoverability hygiene
+- integrated `robots.txt` ↔ sitemap linkage verification
+- RU AI-content marking guidance framed as practical compliance, not legal advice
 
 ## What `v3.6.0` adds
 

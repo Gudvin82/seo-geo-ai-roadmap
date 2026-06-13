@@ -27,9 +27,20 @@ from ..models import (
     VerificationToken,
     now_utc,
 )
+from .discoverability_checks import (
+    ai_txt_report,
+    bots_report,
+    classify_finding_status,
+    faq_detection_report,
+    open_graph_report,
+    resolve_public_file_url,
+    robots_sitemap_report,
+    schema_coverage_report,
+    try_fetch_url_text,
+)
 from .scan_security import normalize_target_url
 
-SCANNER_SCHEMA_VERSION = "v3.6.0"
+SCANNER_SCHEMA_VERSION = "v3.7.0"
 SCAN_JOB_TERMINAL_STATES = {
     "partial_success",
     "completed",
@@ -536,37 +547,25 @@ def _cancel_job(db: Session, row: ScanJob) -> None:
 
 def _build_summary(row: ScanJob, settings: Settings) -> dict:
     split = urlsplit(row.normalized_url)
+    module_results = _run_discoverability_modules(row)
     checks = {
         "passive": [
             "URL normalization and public-host validation",
-            "Surface-level crawlability and discoverability hints",
-            "Heuristic readiness summary for SEO, GEO, and AI discoverability",
+            "Surface-level crawlability, AI policy, and discoverability hints",
+            "Heuristic readiness summary for SEO, GEO, AI, schema, FAQ, and metadata surfaces",
         ],
         "active": [
             "Ownership-gated active verification path",
-            "Extended reachability and public-surface checks",
+            "Extended reachability and public-surface discoverability checks",
             "Artifact-ready summary with caution notes",
         ],
         "full": [
             "Ownership-gated active verification path",
-            "Extended reachability and public-surface checks",
+            "Extended reachability and public-surface discoverability checks",
             "Expanded artifact pack and notification summary",
         ],
     }
-    issue_rows = [
-        {
-            "issue_id": "scanner-limitations",
-            "severity": "medium",
-            "title": "Results remain heuristic without operator review",
-            "recommended_action": "Review the exported summary before treating it as a final client deliverable.",
-        },
-        {
-            "issue_id": "public-surface-variability",
-            "severity": "medium",
-            "title": "External sites may rate-limit or alter scanner visibility",
-            "recommended_action": "Re-run the scan later if the target was unstable or partially blocked.",
-        },
-    ]
+    issue_rows = _build_issue_rows(module_results)
     return {
         "schema_version": SCANNER_SCHEMA_VERSION,
         "job_id": row.id,
@@ -582,10 +581,258 @@ def _build_summary(row: ScanJob, settings: Settings) -> dict:
             "Authenticated application flows",
             "Private network surfaces",
             "Exploit-oriented or pentest behavior",
+            "Definitive legal advice or guaranteed compliance conclusions",
         ],
         "issues": issue_rows,
+        "module_results": module_results,
         "limitations": scanner_config_payload(settings)["limitations"],
     }
+
+
+def _build_issue_rows(module_results: list[dict]) -> list[dict]:
+    issue_rows = [
+        {
+            "issue_id": "scanner-limitations",
+            "severity": "medium",
+            "title": "Results remain heuristic without operator review",
+            "recommended_action": "Review the exported summary before treating it as a final client deliverable.",
+        },
+        {
+            "issue_id": "public-surface-variability",
+            "severity": "medium",
+            "title": "External sites may rate-limit or alter scanner visibility",
+            "recommended_action": "Re-run the scan later if the target was unstable or partially blocked.",
+        },
+    ]
+    for module in module_results:
+        if module["status"] in {"pass", "info"}:
+            continue
+        recommendation = module.get("recommendation") or "; ".join(
+            module.get("warnings", [])
+        )
+        issue_rows.append(
+            {
+                "issue_id": module["id"],
+                "severity": "high" if module["status"] == "fail" else "medium",
+                "title": module["title"],
+                "recommended_action": recommendation
+                or "Review the module output and align the public surface.",
+            }
+        )
+    return issue_rows
+
+
+def _run_discoverability_modules(row: ScanJob) -> list[dict]:
+    html, html_error = try_fetch_url_text(row.normalized_url)
+    llms_content, _ = try_fetch_url_text(
+        resolve_public_file_url(row.normalized_url, "llms.txt")
+    )
+    ai_content, ai_error = try_fetch_url_text(
+        resolve_public_file_url(row.normalized_url, "ai.txt")
+    )
+    robots_content, robots_error = try_fetch_url_text(
+        resolve_public_file_url(row.normalized_url, "robots.txt")
+    )
+
+    modules: list[dict] = []
+    modules.append(
+        _safe_module("ru_ai_bots", "RU and AI bot policy", lambda: _bot_module(row))
+    )
+    modules.append(
+        _safe_module(
+            "robots_sitemap_linkage",
+            "robots.txt and sitemap linkage",
+            lambda: _robots_sitemap_module(row),
+        )
+    )
+    modules.append(
+        _safe_module(
+            "ai_txt",
+            "ai.txt guidance and consistency",
+            lambda: _ai_txt_module(ai_content, ai_error, robots_content, llms_content),
+        )
+    )
+    modules.append(
+        _safe_module(
+            "schema_coverage",
+            "Structured data coverage",
+            lambda: _html_required_module(
+                html,
+                html_error,
+                lambda body: schema_coverage_report(body),
+                "Unable to fetch page HTML for schema coverage.",
+            ),
+        )
+    )
+    modules.append(
+        _safe_module(
+            "faq_answer_ready",
+            "FAQ and answer-ready coverage",
+            lambda: _html_required_module(
+                html,
+                html_error,
+                faq_detection_report,
+                "Unable to fetch page HTML for FAQ detection.",
+            ),
+        )
+    )
+    modules.append(
+        _safe_module(
+            "social_meta",
+            "Open Graph and Twitter card completeness",
+            lambda: _html_required_module(
+                html,
+                html_error,
+                open_graph_report,
+                "Unable to fetch page HTML for social metadata checks.",
+            ),
+        )
+    )
+    return modules
+
+
+def _safe_module(module_id: str, title: str, runner) -> dict:
+    try:
+        payload = runner()
+    except Exception as exc:  # pragma: no cover - defensive boundary
+        return {
+            "id": module_id,
+            "title": title,
+            "status": "needs-review",
+            "observed_fact": "",
+            "inferred_issue": f"{exc.__class__.__name__}: {exc}",
+            "recommendation": "Review this module manually because the automated check could not complete.",
+            "limitations": ["Automated module execution failed unexpectedly."],
+            "raw": {},
+        }
+    return {
+        "id": module_id,
+        "title": title,
+        "status": classify_finding_status(payload["status"]),
+        "observed_fact": payload.get("observed_fact", ""),
+        "inferred_issue": payload.get("inferred_issue", ""),
+        "recommendation": payload.get("recommendation", ""),
+        "limitations": payload.get("limitations", []),
+        "raw": payload.get("raw", {}),
+    }
+
+
+def _bot_module(row: ScanJob) -> dict:
+    report = bots_report(row.normalized_url)
+    yandex_additional = next(
+        item for item in report["results"] if item["bot"] == "YandexAdditional"
+    )
+    unclear = [
+        item["bot"] for item in report["results"] if item["status"] == "unspecified"
+    ]
+    return {
+        "status": "warn" if unclear else "pass",
+        "observed_fact": (
+            f"YandexAdditional is {yandex_additional['status']} and evaluated separately from YandexBot."
+        ),
+        "inferred_issue": (
+            f"Unclear policy for: {', '.join(unclear)}." if unclear else ""
+        ),
+        "recommendation": "Keep YandexBot and YandexAdditional policies explicit when RU AI discoverability matters.",
+        "limitations": [
+            "robots.txt policy does not prove actual inclusion in search or AI answer surfaces."
+        ],
+        "raw": report,
+    }
+
+
+def _robots_sitemap_module(row: ScanJob) -> dict:
+    report = robots_sitemap_report(
+        row.normalized_url,
+        sitemap_url=resolve_public_file_url(row.normalized_url, "sitemap.xml"),
+    )
+    return {
+        "status": report["status"],
+        "observed_fact": f"{len(report['declared_sitemaps'])} sitemap declaration(s) found in robots.txt.",
+        "inferred_issue": "; ".join(report["warnings"]),
+        "recommendation": "Declare reachable sitemap URLs in robots.txt and keep the linkage explicit.",
+        "limitations": [
+            "Reachable sitemap XML still does not guarantee desired indexing behavior."
+        ],
+        "raw": report,
+    }
+
+
+def _ai_txt_module(
+    ai_content: Optional[str],
+    ai_error: Optional[str],
+    robots_content: Optional[str],
+    llms_content: Optional[str],
+) -> dict:
+    if ai_content is None:
+        return {
+            "status": "warn",
+            "observed_fact": "ai.txt could not be loaded from the public site.",
+            "inferred_issue": ai_error or "Missing or unreachable ai.txt.",
+            "recommendation": "Publish ai.txt only if you have a clear, short AI guidance file to maintain.",
+            "limitations": [
+                "ai.txt is not a guaranteed standard across all crawlers and answer engines."
+            ],
+            "raw": {},
+        }
+    report = ai_txt_report(
+        ai_content, robots_content=robots_content, llms_content=llms_content
+    )
+    return {
+        "status": report["status"],
+        "observed_fact": f"ai.txt directives found: {', '.join(sorted(report['directives'].keys())) or 'none'}.",
+        "inferred_issue": "; ".join(report["warnings"] + report["contradictions"]),
+        "recommendation": "Keep ai.txt consistent with robots.txt and llms.txt, and avoid stale or conflicting route guidance.",
+        "limitations": [
+            "ai.txt semantics remain emergent and may be interpreted inconsistently."
+        ],
+        "raw": report,
+    }
+
+
+def _html_required_module(
+    html: Optional[str],
+    html_error: Optional[str],
+    runner,
+    error_message: str,
+) -> dict:
+    if html is None:
+        return {
+            "status": "needs-review",
+            "observed_fact": error_message,
+            "inferred_issue": html_error or error_message,
+            "recommendation": "Retry when the page is reachable or review the page source manually.",
+            "limitations": ["Public HTML could not be loaded during the scan."],
+            "raw": {},
+        }
+    report = runner(html)
+    warnings = report.get("warnings", [])
+    return {
+        "status": report["status"],
+        "observed_fact": _module_observed_fact(report),
+        "inferred_issue": "; ".join(warnings),
+        "recommendation": report.get("recommendation", ""),
+        "limitations": [report.get("limitation")] if report.get("limitation") else [],
+        "raw": report,
+    }
+
+
+def _module_observed_fact(report: dict) -> str:
+    if "found_types" in report:
+        return "Found schema types: " + ", ".join(report["found_types"] or ["none"])
+    if "visible_faq_headings" in report:
+        count = len(report["visible_faq_headings"]) + len(
+            report["question_like_headings"]
+        )
+        return f"Detected {count} FAQ or question-like signals."
+    if "fields" in report:
+        missing = report.get("missing_fields", [])
+        return (
+            "All required Open Graph and Twitter Card fields were found."
+            if not missing
+            else "Missing social metadata fields: " + ", ".join(missing)
+        )
+    return ""
 
 
 def _write_artifacts(settings: Settings, row: ScanJob, summary: dict) -> list[dict]:
@@ -613,6 +860,15 @@ def _write_artifacts(settings: Settings, row: ScanJob, summary: dict) -> list[di
     md_lines.extend([f"- {item}" for item in summary["checked_items"]])
     md_lines.extend(["", "## Not checked"])
     md_lines.extend([f"- {item}" for item in summary["not_checked"]])
+    md_lines.extend(["", "## Module results"])
+    for item in summary["module_results"]:
+        md_lines.append(
+            f"- `{item['id']}`: **{item['status']}** — {item['observed_fact']}"
+        )
+        if item["inferred_issue"]:
+            md_lines.append(f"  Issue: {item['inferred_issue']}")
+        if item["recommendation"]:
+            md_lines.append(f"  Next action: {item['recommendation']}")
     md_path.write_text("\n".join(md_lines) + "\n", encoding="utf-8")
     artifacts.append(_artifact_entry("summary", "markdown", md_path, row.id))
 
@@ -756,7 +1012,7 @@ def _verify_dns_txt(target_domain: str, challenge_value: str) -> bool:
 
 def _fetch_text(url: str) -> str:
     request = urllib.request.Request(
-        url, headers={"User-Agent": "Discoverability-Scanner/3.6.0"}
+        url, headers={"User-Agent": "Discoverability-Scanner/3.7.0"}
     )
     with urllib.request.urlopen(request, timeout=10) as response:
         return response.read().decode("utf-8", errors="replace")

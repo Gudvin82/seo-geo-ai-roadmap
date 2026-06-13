@@ -277,6 +277,16 @@ Or:
 Scanner requests are session-bound through the `X-Scanner-Session` header.
 Active and full scans require ownership verification plus consent.
 
+From `v3.7.0`, scanner artifacts and summaries may also include module-level
+results for:
+
+- RU and AI bot policy, including `YandexAdditional`
+- `ai.txt`
+- schema coverage
+- FAQ / answer-ready detection
+- Open Graph / Twitter Card completeness
+- `robots.txt` ↔ sitemap linkage
+
 ## Audit logs
 
 - `GET /api/v1/audit-logs?workspace_id={workspace_id}`

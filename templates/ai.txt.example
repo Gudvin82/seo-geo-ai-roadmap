@@ -1,14 +1,12 @@
-brand: Example AI Agency
-website: https://example.com
-primary_markets:
-  - Russia
-  - CIS
-  - International
-core_topics:
-  - SEO
-  - GEO
-  - AI discoverability
-trust_assets:
-  - case studies
-  - expert pages
-  - public reviews
+# Example ai.txt
+
+policy: allow-public-facts
+summary: Keep AI-facing guidance aligned with public facts, trust pages, and support routes.
+contact: mailto:team@example.com
+llms: https://example.com/llms.txt
+sitemap: https://example.com/sitemap.xml
+allow: /
+disallow: /private/
+preferred-agent: GPTBot
+preferred-agent: YandexAdditional
+notes: Do not invent pricing, guarantees, or unpublished service terms.

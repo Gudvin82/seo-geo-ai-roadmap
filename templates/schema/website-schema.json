@@ -1,0 +1,20 @@
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Example Brand",
+  "url": "https://example.com/",
+  "description": "Short summary of the site and its primary purpose.",
+  "inLanguage": [
+    "en",
+    "ru"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Example Brand"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://example.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}

@@ -45,6 +45,7 @@ If the user wants a public or semi-public scanner intake flow:
 
 - open `app/frontend/scanner.html`
 - read `docs/en/public-scanner-v360.md` or `docs/ru/public-scanner-v360.md`
+- read `docs/en/discoverability-coverage-v370.md` or `docs/ru/discoverability-coverage-v370.md`
 - use `GET /api/v1/scanner/config` before exposing scan modes in UI
 - require ownership verification before `active` or `full` scans
 - use `POST /api/v1/scan-jobs` and poll `GET /api/v1/scan-jobs/{id}`
@@ -192,6 +193,11 @@ python scripts/agent_handoff_pack.py --task audit-site --language en --target-ur
 python scripts/bootstrap_self_hosted.py --mode demo --format markdown
 python scripts/bootstrap_self_hosted.py --mode scanner --format markdown
 python scripts/check-robots-ai-bots.py --url https://example.com
+python scripts/check-ai-txt.py --url https://example.com
+python scripts/schema-coverage-checker.py --url https://example.com --site-type service
+python scripts/faq-detector.py --url https://example.com
+python scripts/open-graph-checker.py --url https://example.com
+python scripts/robots-sitemap-link-checker.py --url https://example.com
 python scripts/generate_llms_txt.py --sitemap-url https://example.com/sitemap.xml
 python scripts/ai-share-of-voice-tracker.py "Example AI Agency" --queries "best GEO agency,ai visibility audit"
 python scripts/sitemap-checker.py --url https://example.com/sitemap.xml
@@ -246,6 +252,8 @@ task type.
 - `docs/en/ai-operator-mode.md`
 - `docs/en/public-scanner-v360.md`
 - `docs/ru/public-scanner-v360.md`
+- `docs/en/discoverability-coverage-v370.md`
+- `docs/ru/discoverability-coverage-v370.md`
 - `app/frontend/scanner.html`
 - `app/frontend/scanner.js`
 

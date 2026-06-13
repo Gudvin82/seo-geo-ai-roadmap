@@ -37,7 +37,8 @@ If the task is to deploy or operate a public scanner flow:
 12. Call `GET /api/v1/scanner/config` and respect feature flags before exposing modes.
 13. For `active` or `full` scan modes, require ownership verification by HTML file, meta tag, or DNS TXT before job submission.
 14. Create a scan job with `POST /api/v1/scan-jobs`, then track it with `GET /api/v1/scan-jobs/{id}` and `GET /api/v1/scan-jobs/{id}/events`.
-15. Return artifact links, notification behavior, and public-service limitations together with the scan result.
+15. If discoverability coverage matters, also review `robots.txt`, `YandexAdditional`, `ai.txt`, schema coverage, FAQ/answer-ready signals, Open Graph/Twitter metadata, and robots+sitemap linkage.
+16. Return artifact links, notification behavior, public-service limitations, and any heuristic uncertainty together with the scan result.
 
 Rules:
 - Do not claim done without verification.

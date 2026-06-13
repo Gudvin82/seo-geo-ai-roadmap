@@ -6,6 +6,7 @@
 ## Что входит
 
 - `organization-schema.json`
+- `website-schema.json`
 - `faq-schema.json`
 - `howto-schema.json`
 - `product-schema.json`
@@ -15,6 +16,7 @@
 ## Когда какой шаблон уместен
 
 - Organization: brand entity, logo, sameAs и canonical identity
+- WebSite: site-level identity, search action, language framing и publisher linkage
 - Service: страницы услуг агентства или эксперта
 - Product: SaaS, software или productized offer pages
 - FAQ: снятие возражений и direct-response sections
@@ -35,6 +37,7 @@
 3. Убедитесь, что те же факты видны в самом page content.
 4. Провалидируйте JSON локально.
 5. Повторно проверьте после деплоя.
+6. Для live page прогоните `python scripts/schema-coverage-checker.py --url https://example.com --site-type service`.
 
 ## Минимальный production checklist
 

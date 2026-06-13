@@ -8,12 +8,20 @@
 | PerplexityBot | retrieval and citation-oriented fetching | ensure key pages are reachable |
 | Google-Extended | training-use control layer | manage separately from Googlebot |
 | Applebot-Extended | extended Apple AI usage control | document access intent explicitly |
+| YandexBot | classic Yandex search crawler | manage baseline RU search crawl policy explicitly |
+| YandexAdditional | Yandex Neuro and additional AI-service crawler layer | review separately from YandexBot when RU AI discoverability matters |
 
 ## Practical rule
 
 - `robots.txt` controls crawl access intent
 - `llms.txt` helps map priority pages and facts
 - `ai.txt` can complement AI-facing guidance
+
+## Why YandexAdditional matters
+
+`YandexBot` and `YandexAdditional` should not be treated as the same policy
+surface. `YandexBot` is the classic search crawler. `YandexAdditional` is the
+AI-relevant layer used for Yandex Neuro and related additional services.
 
 ## Example directives
 

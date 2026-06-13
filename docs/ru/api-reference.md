@@ -277,6 +277,16 @@ Command router payload:
 Scanner requests привязаны к `X-Scanner-Session` header.
 Active и full scan modes требуют ownership verification и consent.
 
+Начиная с `v3.7.0`, scanner artifacts и summary также могут включать
+module-level results для:
+
+- RU и AI bot policy, включая `YandexAdditional`
+- `ai.txt`
+- schema coverage
+- FAQ / answer-ready detection
+- полноты Open Graph / Twitter Card
+- связки `robots.txt` ↔ sitemap
+
 ## Audit logs
 
 - `GET /api/v1/audit-logs?workspace_id={workspace_id}`

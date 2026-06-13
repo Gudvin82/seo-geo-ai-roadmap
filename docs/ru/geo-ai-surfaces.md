@@ -8,7 +8,7 @@
 | Perplexity | citation-heavy answer assembly | direct answers, FAQ, explicit sources, proof pages | answer mix часто меняется |
 | Google AI Overviews | summarization поверх search-results layer | technical SEO, structured data, source credibility | зависит от Google updates и official guidance |
 | Bing Copilot | answer synthesis внутри Bing-экосистемы | crawlable pages, entity clarity, clear offer pages | нет стабильного публичного control layer |
-| Яндекс.Нейро | RU-local context и entity framing | Yandex-friendly entity signals, regional proof, RU content clarity | слой быстро развивается |
+| Яндекс.Нейро | RU-local context и entity framing | Yandex-friendly entity signals, regional proof, RU content clarity и явная политика `YandexAdditional` | слой быстро развивается |
 
 ## Общие паттерны
 
@@ -21,4 +21,4 @@
 
 - Perplexity чаще ценит явную структуру источников.
 - Google AI Overviews всё ещё жёстко завязан на search-quality fundamentals.
-- RU-поверхности требуют более сильных локальных entity-сигналов и regional proof.
+- RU-поверхности требуют более сильных локальных entity-сигналов, regional proof и явного разделения политики `YandexBot` и `YandexAdditional`.

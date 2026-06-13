@@ -1,6 +1,6 @@
 # Repository Roadmap
 
-## v3.6.x stabilization
+## v3.7.x stabilization
 
 - keep the validator, retry, and scheduling surfaces honest and reviewable
 - mature governance, fact drift, and trust-surface layers without overclaiming
@@ -8,6 +8,7 @@
 - deepen RU/EN parity across new operational and executive assets
 - keep the command surface and bootstrap guidance aligned with real self-hosted behavior
 - harden the new public scanner foundation without overclaiming public SaaS readiness
+- keep `ai.txt`, YandexAdditional, schema, FAQ, social metadata, and robots+sitemap checks connected to reporting instead of isolated scripts
 
 ## Near-term product direction
 
@@ -20,6 +21,7 @@
 - more durable scheduling and queue semantics where they improve real operations
 - safer CMS writeback execution beyond package preparation
 - stronger AI-agent onboarding and task-routing without turning the project into a black-box wrapper
+- more evaluator-ready proof bundles and current-limitations communication for external reviewers
 
 ## Guardrails for future work
 

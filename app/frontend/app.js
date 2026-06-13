@@ -40,7 +40,7 @@ const translations = {
     navReports: "Reports",
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
-    releaseBadge: "v3.6.0 public scanner foundation ownership verification async jobs",
+    releaseBadge: "v3.7.0 ru ai hardening ai.txt schema faq og robots sitemap",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -216,7 +216,7 @@ const translations = {
     navReports: "Отчеты",
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
-    releaseBadge: "v3.6.0 public scanner foundation ownership verification async jobs",
+    releaseBadge: "v3.7.0 ru ai hardening ai.txt schema faq og robots sitemap",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
