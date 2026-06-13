@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.8.0 — Graph Intelligence, Command UX, Reporting, and GTM Distribution
+
+- Added a richer canonical `/geo ...` command layer with aliases, examples, expected outputs, and use-case packaging for agents and operators
+- Added a new graph intelligence frontend at `app/frontend/graph.html` with site, surface, issue, and trust modes plus JSON export
+- Added EN/RU docs for graph intelligence, distribution and GTM packaging, research-to-re-measure workflow, and framework integrations
+- Added reporting packs for executive summary, fix pack, and graph snapshot delivery
+- Updated README, README_RU, AGENTS, AI handoff prompts, START_HERE docs, docs-site pages, and tests to reflect the new v3.8.0 operator surface
+
 ## v3.7.0 — RU AI Hardening, ai.txt, and Discoverability Coverage
 
 - Added real RU and AI bot policy hardening with separate `YandexAdditional` handling alongside `YandexBot`

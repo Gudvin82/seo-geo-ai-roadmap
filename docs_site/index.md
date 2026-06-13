@@ -12,6 +12,7 @@ validation, and release discipline.
 - [WALKTHROUGH.md](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/WALKTHROUGH.md)
 - [Hosted Validator](validator.md)
 - [Command Surface](commands.md)
+- [Graph Intelligence](graph.md)
 
 ## What this repository covers
 
@@ -20,6 +21,7 @@ validation, and release discipline.
 - Google plus Yandex patterns
 - factual consistency and entity governance
 - prompts, templates, scripts, examples, and tests
+- graph explainability, reporting packs, and GTM packaging
 
 ## Proof and implementation
 

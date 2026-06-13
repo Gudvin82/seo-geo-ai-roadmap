@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Discoverability Graph Intelligence</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="graph-shell">
+      <section class="scanner-hero">
+        <p class="eyebrow">v3.8.0 graph intelligence</p>
+        <h1>Discoverability Graph</h1>
+        <p class="hero-copy">
+          Explore site structure, discoverability surfaces, issue dependencies,
+          and trust relationships as one explainable graph.
+        </p>
+      </section>
+
+      <section class="graph-grid">
+        <article class="card graph-controls">
+          <h2>Graph mode</h2>
+          <label class="field">
+            <span>Mode</span>
+            <select id="graph-mode">
+              <option value="site">Site structure</option>
+              <option value="surface">Discoverability surfaces</option>
+              <option value="issues">Issue dependencies</option>
+              <option value="trust">Entity, fact, and trust graph</option>
+            </select>
+          </label>
+          <div class="scanner-actions">
+            <button id="graph-export" type="button">Export JSON</button>
+            <a class="nav-link graph-back-link" href="./index.html">Back to app</a>
+          </div>
+          <div class="status-box">
+            Ask four questions for any node:
+            <ul class="compact-list">
+              <li>What is this node?</li>
+              <li>Why does it matter?</li>
+              <li>What does it impact?</li>
+              <li>What should we fix next?</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="card graph-canvas-card">
+          <div class="graph-stage-header">
+            <div>
+              <h2 id="graph-title">Site structure graph</h2>
+              <p id="graph-subtitle" class="chart-copy"></p>
+            </div>
+          </div>
+          <div id="graph-canvas" class="graph-canvas"></div>
+        </article>
+
+        <article class="card graph-details">
+          <h2>Node details</h2>
+          <div id="graph-node-card" class="entity-card">
+            Select a node to inspect why it matters and what to fix next.
+          </div>
+          <div class="graph-question-grid">
+            <button class="ghost-button graph-question" data-question="what">What is this node?</button>
+            <button class="ghost-button graph-question" data-question="why">Why it matters</button>
+            <button class="ghost-button graph-question" data-question="impact">What it impacts</button>
+            <button class="ghost-button graph-question" data-question="next">What to fix next</button>
+          </div>
+          <div id="graph-answer" class="status-box"></div>
+        </article>
+      </section>
+    </main>
+
+    <script src="./graph.js"></script>
+  </body>
+</html>

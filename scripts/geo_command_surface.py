@@ -35,7 +35,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def render_markdown_catalog() -> str:
-    lines = ["# GEO Command Surface", ""]
+    lines = ["# GEO Command Surface", "", "Canonical prefix: `/geo ...`", ""]
     for item in command_catalog():
         lines.extend(
             [
@@ -43,9 +43,14 @@ def render_markdown_catalog() -> str:
                 item.summary,
                 "",
                 f"- Title: {item.title}",
+                f"- Intent: {item.intent}",
+                f"- Aliases: {', '.join(item.aliases) or 'n/a'}",
                 f"- Scripts: {', '.join(item.recommended_scripts) or 'n/a'}",
                 f"- Docs: {', '.join(item.recommended_docs) or 'n/a'}",
                 f"- API: {', '.join(item.api_routes) or 'n/a'}",
+                f"- Examples: {', '.join(item.example_invocations) or 'n/a'}",
+                f"- Outputs: {', '.join(item.output_artifacts) or 'n/a'}",
+                f"- Use cases: {', '.join(item.use_cases) or 'n/a'}",
                 f"- Next step: {item.next_step}",
                 "",
             ]
@@ -61,9 +66,14 @@ def render_markdown_route(command: str) -> str:
         route.summary,
         "",
         f"- Title: {route.title}",
+        f"- Intent: {route.intent}",
+        f"- Aliases: {', '.join(route.aliases) or 'n/a'}",
         f"- Scripts: {', '.join(route.recommended_scripts) or 'n/a'}",
         f"- Docs: {', '.join(route.recommended_docs) or 'n/a'}",
         f"- API: {', '.join(route.api_routes) or 'n/a'}",
+        f"- Examples: {', '.join(route.example_invocations) or 'n/a'}",
+        f"- Outputs: {', '.join(route.output_artifacts) or 'n/a'}",
+        f"- Use cases: {', '.join(route.use_cases) or 'n/a'}",
         f"- Next step: {route.next_step}",
     ]
     return "\n".join(lines) + "\n"
@@ -78,9 +88,14 @@ def main() -> int:
                 "command": item.command,
                 "title": item.title,
                 "summary": item.summary,
+                "intent": item.intent,
+                "aliases": item.aliases,
                 "recommended_scripts": item.recommended_scripts,
                 "recommended_docs": item.recommended_docs,
                 "api_routes": item.api_routes,
+                "example_invocations": item.example_invocations,
+                "output_artifacts": item.output_artifacts,
+                "use_cases": item.use_cases,
                 "next_step": item.next_step,
             }
             for item in command_catalog()
@@ -101,9 +116,14 @@ def main() -> int:
         "command": route.command,
         "title": route.title,
         "summary": route.summary,
+        "intent": route.intent,
+        "aliases": route.aliases,
         "recommended_scripts": route.recommended_scripts,
         "recommended_docs": route.recommended_docs,
         "api_routes": route.api_routes,
+        "example_invocations": route.example_invocations,
+        "output_artifacts": route.output_artifacts,
+        "use_cases": route.use_cases,
         "next_step": route.next_step,
     }
     if args.format == "json":

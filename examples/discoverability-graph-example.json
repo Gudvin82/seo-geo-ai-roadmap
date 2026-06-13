@@ -1,0 +1,33 @@
+{
+  "mode": "surface",
+  "title": "Discoverability surface graph",
+  "subtitle": "Example export from the graph intelligence layer.",
+  "nodes": [
+    {
+      "id": "robots",
+      "label": "robots.txt",
+      "tone": "accent"
+    },
+    {
+      "id": "sitemap",
+      "label": "sitemap.xml",
+      "tone": "neutral"
+    },
+    {
+      "id": "llmstxt",
+      "label": "llms.txt",
+      "tone": "accent"
+    },
+    {
+      "id": "schema",
+      "label": "JSON-LD schema",
+      "tone": "accent"
+    }
+  ],
+  "edges": [
+    ["robots", "sitemap"],
+    ["robots", "llmstxt"],
+    ["sitemap", "schema"],
+    ["llmstxt", "schema"]
+  ]
+}

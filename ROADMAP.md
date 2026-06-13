@@ -1,5 +1,12 @@
 # Repository Roadmap
 
+## v3.8.x stabilization
+
+- keep the new `/geo` command layer synchronized across API, CLI, docs, and AI handoff files
+- harden graph intelligence as an explainability surface, not a fake enterprise graph claim
+- keep reporting packs, GTM packaging, and use-case docs aligned with implemented product behavior
+- strengthen framework integrations, notification, and scanner delivery paths without overclaiming hosted SaaS readiness
+
 ## v3.7.x stabilization
 
 - keep the validator, retry, and scheduling surfaces honest and reviewable

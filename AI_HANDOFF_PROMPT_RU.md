@@ -25,6 +25,7 @@ https://github.com/Gudvin82/seo-geo-ai-roadmap
 7. Выполнить make verify-demo
 8. Выполнить make agent-self-check
 9. Если задача про реальный сайт, создать workspace и project, подключить providers и запустить canonical audit job.
+9a. Использовать канонический repo command path: `/geo quick`, `/geo audit`, `/geo graph`, `/geo report`, `/geo compare`.
 10. Вернуть:
    - URL
    - credentials, если использовался demo
@@ -38,7 +39,8 @@ https://github.com/Gudvin82/seo-geo-ai-roadmap
 13. Для режимов `active` и `full` требовать ownership verification через HTML file, meta tag или DNS TXT до отправки job.
 14. Создать scan job через `POST /api/v1/scan-jobs`, затем отслеживать его через `GET /api/v1/scan-jobs/{id}` и `GET /api/v1/scan-jobs/{id}/events`.
 15. Если важен discoverability coverage layer, отдельно проверить `robots.txt`, `YandexAdditional`, `ai.txt`, schema coverage, FAQ/answer-ready patterns, Open Graph/Twitter и связку robots+sitemap.
-16. Вернуть ссылки на artifacts, поведение notifications, public-service limitations и все heuristic uncertainty вместе с результатом сканирования.
+16. Открыть `app/frontend/graph.html`, если нужно объяснить связи между проблемами, trust nodes или порядок remediation.
+17. Вернуть ссылки на artifacts, поведение notifications, public-service limitations и все heuristic uncertainty вместе с результатом сканирования.
 
 Правила:
 - Не заявляй "готово" без проверки.

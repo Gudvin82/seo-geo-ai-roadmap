@@ -20,6 +20,7 @@ nav:
   - Architecture Note: architecture-note.md
   - Deployment: deployment.md
   - Commands: commands.md
+  - Graph Intelligence: graph.md
   - Scanner Intake: scanner.md
   - Discoverability Coverage: coverage.md
   - Validator: validator.md

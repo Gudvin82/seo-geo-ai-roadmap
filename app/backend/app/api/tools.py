@@ -27,9 +27,14 @@ def get_command_catalog() -> CommandCatalogResponse:
                 command=item.command,
                 title=item.title,
                 summary=item.summary,
+                intent=item.intent,
+                aliases=item.aliases,
                 recommended_scripts=item.recommended_scripts,
                 recommended_docs=item.recommended_docs,
                 api_routes=item.api_routes,
+                example_invocations=item.example_invocations,
+                output_artifacts=item.output_artifacts,
+                use_cases=item.use_cases,
                 next_step=item.next_step,
             )
             for item in command_catalog()
@@ -47,9 +52,14 @@ def command_router(payload: CommandRouterRequest) -> CommandRouteRead:
         command=item.command,
         title=item.title,
         summary=item.summary,
+        intent=item.intent,
+        aliases=item.aliases,
         recommended_scripts=item.recommended_scripts,
         recommended_docs=item.recommended_docs,
         api_routes=item.api_routes,
+        example_invocations=item.example_invocations,
+        output_artifacts=item.output_artifacts,
+        use_cases=item.use_cases,
         next_step=item.next_step,
     )
 

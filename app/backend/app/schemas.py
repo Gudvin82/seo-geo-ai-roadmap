@@ -429,9 +429,14 @@ class CommandRouteRead(BaseModel):
     command: str
     title: str
     summary: str
+    intent: str
+    aliases: list[str]
     recommended_scripts: list[str]
     recommended_docs: list[str]
     api_routes: list[str]
+    example_invocations: list[str]
+    output_artifacts: list[str]
+    use_cases: list[str]
     next_step: str
 
 

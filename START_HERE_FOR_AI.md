@@ -39,6 +39,16 @@ Use the built-in task pack generator:
 - `python scripts/agent_handoff_pack.py --task audit-site --language en --target-url https://example.com`
 - `python scripts/agent_handoff_pack.py --task deploy-scanner --language en`
 
+## Canonical command path in v3.8.0
+
+Use the repo as a `/geo ...` command system:
+
+- `/geo quick` for triage
+- `/geo audit` for a full baseline
+- `/geo graph` for explanation and dependency mapping
+- `/geo report` for executive and client output
+- `/geo compare` for re-measurement
+
 ## Ideal path
 
 1. Read [README.md](./README.md)
@@ -89,8 +99,9 @@ For the implemented scanner foundation, use:
 8. `python scripts/open-graph-checker.py --url https://example.com`
 9. `python scripts/robots-sitemap-link-checker.py --url https://example.com`
 10. `app/frontend/scanner.html`
-11. `GET /api/v1/scanner/config`
-12. `POST /api/v1/scanner/verification-requests`
-13. `POST /api/v1/scanner/consent-records`
-14. `POST /api/v1/scan-jobs`
-15. `GET /api/v1/scan-jobs/{id}`
+11. `app/frontend/graph.html`
+12. `GET /api/v1/scanner/config`
+13. `POST /api/v1/scanner/verification-requests`
+14. `POST /api/v1/scanner/consent-records`
+15. `POST /api/v1/scan-jobs`
+16. `GET /api/v1/scan-jobs/{id}`

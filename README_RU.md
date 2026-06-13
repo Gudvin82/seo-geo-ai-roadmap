@@ -99,10 +99,24 @@ discoverability. Ее можно развернуть на своем компь
 - Discoverability coverage: [docs/ru/discoverability-coverage-v370.md](./docs/ru/discoverability-coverage-v370.md)
 - AI guidance file: [docs/ru/ai-txt.md](./docs/ru/ai-txt.md)
 - Command surface: [docs/ru/command-catalog-v340.md](./docs/ru/command-catalog-v340.md)
+- v3.8 command UX: [docs/ru/command-catalog-v380.md](./docs/ru/command-catalog-v380.md)
+- Graph intelligence: [docs/ru/graph-intelligence-v380.md](./docs/ru/graph-intelligence-v380.md)
+- GTM and distribution: [docs/ru/distribution-and-gtm-v380.md](./docs/ru/distribution-and-gtm-v380.md)
+- Research loop: [docs/ru/research-build-improve-repeat-v380.md](./docs/ru/research-build-improve-repeat-v380.md)
+- Framework integrations: [docs/ru/framework-integrations-v380.md](./docs/ru/framework-integrations-v380.md)
 - Bootstrap guide: [docs/ru/bootstrap-guide-v340.md](./docs/ru/bootstrap-guide-v340.md)
 - Architecture note: [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
 - Evaluation kit: [EVALUATE_THIS_REPO_RU.md](./EVALUATE_THIS_REPO_RU.md)
 - Commercial boundary: [COMMERCIAL_ROADMAP_RU.md](./COMMERCIAL_ROADMAP_RU.md)
+
+## Что добавляет `v3.8.0`
+
+- канонический `/geo ...` command UX с алиасами, примерами, outputs и use-case packaging
+- interactive graph intelligence layer для структуры сайта, discoverability surfaces, issue dependencies и trust mapping
+- более сильную distribution и GTM-упаковку для agencies, founders, consultants и in-house команд
+- более ясный operating loop research → build → improve → re-measure
+- reporting packs для executive summaries, fix packs и graph snapshots
+- более понятные framework integration guidance для self-hosted scanner и delivery flows
 
 ## Что добавляет `v3.3.0`
 
@@ -159,7 +173,8 @@ discoverability. Ее можно развернуть на своем компь
 6. выполнить `make turnkey-demo`
 7. выполнить `make agent-self-check`
 8. если нужен scanner intake, открыть `app/frontend/scanner.html` и пройти встроенный verification/status flow
-9. отдельно отчитаться, что реально проверено, что смоделировано и где нужен
+9. если нужно объяснение или приоритизация, открыть `app/frontend/graph.html` и использовать `/geo graph`
+10. отдельно отчитаться, что реально проверено, что смоделировано и где нужен
    human review
 
 Репозиторий специально собран так, чтобы AI-агент мог развернуть его с нуля и

@@ -35,6 +35,14 @@ Fastest all-in-one option for a lazy demo deployment:
 
 - run `make turnkey-demo`
 
+Canonical operator path in `v3.8.0`:
+
+- `/geo quick`
+- `/geo audit`
+- `/geo graph`
+- `/geo report`
+- `/geo compare`
+
 If the user wants a ready task prompt instead of inventing one:
 
 - run `python scripts/agent_handoff_pack.py --task deploy-demo --language en`
@@ -44,6 +52,7 @@ If the user wants a ready task prompt instead of inventing one:
 If the user wants a public or semi-public scanner intake flow:
 
 - open `app/frontend/scanner.html`
+- open `app/frontend/graph.html` for issue and trust explainability
 - read `docs/en/public-scanner-v360.md` or `docs/ru/public-scanner-v360.md`
 - read `docs/en/discoverability-coverage-v370.md` or `docs/ru/discoverability-coverage-v370.md`
 - use `GET /api/v1/scanner/config` before exposing scan modes in UI

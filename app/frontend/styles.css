@@ -354,6 +354,12 @@ button:hover {
   padding: 32px 24px 48px;
 }
 
+.graph-shell {
+  max-width: 1340px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+}
+
 .scanner-hero {
   background: var(--panel);
   border: 1px solid rgba(255, 255, 255, 0.55);
@@ -370,9 +376,83 @@ button:hover {
   margin-bottom: 18px;
 }
 
+.graph-grid {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr) 320px;
+  gap: 18px;
+}
+
 .scanner-card h2,
-.scanner-card h3 {
+.scanner-card h3,
+.graph-controls h2,
+.graph-canvas-card h2,
+.graph-details h2 {
   margin-top: 0;
+}
+
+.graph-back-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.graph-stage-header {
+  margin-bottom: 14px;
+}
+
+.graph-canvas {
+  position: relative;
+  min-height: 620px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 26%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 250, 242, 0.96));
+}
+
+.graph-edges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.graph-line {
+  stroke: rgba(23, 34, 37, 0.25);
+  stroke-width: 1.2;
+}
+
+.graph-node {
+  position: absolute;
+  min-width: 118px;
+  max-width: 190px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  box-shadow: 0 12px 28px rgba(23, 34, 37, 0.12);
+}
+
+.graph-node.accent {
+  background: rgba(15, 118, 110, 0.92);
+}
+
+.graph-node.warning {
+  background: rgba(180, 83, 9, 0.92);
+}
+
+.graph-node.accent,
+.graph-node.warning {
+  color: white;
+}
+
+.graph-question-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
 }
 
 .scanner-columns {
@@ -449,6 +529,10 @@ button:hover {
 @media (max-width: 1040px) {
   .page-shell,
   .split {
+    grid-template-columns: 1fr;
+  }
+
+  .graph-grid {
     grid-template-columns: 1fr;
   }
 

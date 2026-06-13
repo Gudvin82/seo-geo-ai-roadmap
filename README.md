@@ -97,10 +97,24 @@ operator or an AI coding agent can use end to end:
 - Discoverability coverage: [docs/en/discoverability-coverage-v370.md](./docs/en/discoverability-coverage-v370.md)
 - AI guidance file: [docs/en/ai-txt.md](./docs/en/ai-txt.md)
 - Command surface: [docs/en/command-catalog-v340.md](./docs/en/command-catalog-v340.md)
+- v3.8 command UX: [docs/en/command-catalog-v380.md](./docs/en/command-catalog-v380.md)
+- Graph intelligence: [docs/en/graph-intelligence-v380.md](./docs/en/graph-intelligence-v380.md)
+- GTM and distribution: [docs/en/distribution-and-gtm-v380.md](./docs/en/distribution-and-gtm-v380.md)
+- Research loop: [docs/en/research-build-improve-repeat-v380.md](./docs/en/research-build-improve-repeat-v380.md)
+- Framework integrations: [docs/en/framework-integrations-v380.md](./docs/en/framework-integrations-v380.md)
 - Bootstrap guide: [docs/en/bootstrap-guide-v340.md](./docs/en/bootstrap-guide-v340.md)
 - Architecture note: [ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md)
 - Evaluation kit: [EVALUATE_THIS_REPO.md](./EVALUATE_THIS_REPO.md)
 - Commercial boundary: [COMMERCIAL_ROADMAP.md](./COMMERCIAL_ROADMAP.md)
+
+## What `v3.8.0` adds
+
+- canonical `/geo ...` command UX with aliases, examples, outputs, and use-case packaging
+- interactive graph intelligence layer for site structure, discoverability surfaces, issue dependencies, and trust mapping
+- stronger distribution and GTM packaging for agencies, founders, consultants, and in-house teams
+- clearer research → build → improve → re-measure operating loop
+- reporting packs for executive summaries, fix packs, and graph snapshots
+- clearer framework integration guidance for self-hosted scanner and delivery flows
 
 ## What `v3.3.0` adds
 
@@ -157,7 +171,8 @@ Give this repository to your AI coding agent and tell it:
 6. run `make turnkey-demo`
 7. run `make agent-self-check`
 8. if scanner intake is needed, open `app/frontend/scanner.html` and follow the built-in verification and status flow
-9. report what was verified, what was simulated, and what still needs human
+9. if explanation or prioritization is needed, open `app/frontend/graph.html` and use `/geo graph`
+10. report what was verified, what was simulated, and what still needs human
    review
 
 The repository is intentionally structured so an AI agent can deploy it from
