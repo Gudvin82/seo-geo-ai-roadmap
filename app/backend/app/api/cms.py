@@ -313,7 +313,9 @@ def create_cms_change_request(
     return _serialize_change_request(row)
 
 
-@router.post("/change-requests/{change_request_id}/approve", response_model=CmsChangeRequestRead)
+@router.post(
+    "/change-requests/{change_request_id}/approve", response_model=CmsChangeRequestRead
+)
 def approve_cms_change_request(
     change_request_id: int,
     db: Session = Depends(get_db),
@@ -331,7 +333,9 @@ def approve_cms_change_request(
     return _serialize_change_request(row)
 
 
-@router.post("/change-requests/{change_request_id}/apply", response_model=CmsChangeRequestRead)
+@router.post(
+    "/change-requests/{change_request_id}/apply", response_model=CmsChangeRequestRead
+)
 def apply_cms_change_request(
     change_request_id: int,
     db: Session = Depends(get_db),
@@ -342,7 +346,10 @@ def apply_cms_change_request(
         raise HTTPException(status_code=404, detail="CMS change request not found.")
     require_project_access(db, row.project_id, current_user, minimum_role="editor")
     if row.status not in {"approved", "preview_ready"}:
-        raise HTTPException(status_code=400, detail="Change request cannot be applied from the current state.")
+        raise HTTPException(
+            status_code=400,
+            detail="Change request cannot be applied from the current state.",
+        )
     preview = json.loads(row.preview_payload_json or "{}")
     row.status = "applied"
     row.applied_at = now_utc()
@@ -364,7 +371,9 @@ def apply_cms_change_request(
     return _serialize_change_request(row)
 
 
-@router.post("/change-requests/{change_request_id}/verify", response_model=CmsChangeRequestRead)
+@router.post(
+    "/change-requests/{change_request_id}/verify", response_model=CmsChangeRequestRead
+)
 def verify_cms_change_request(
     change_request_id: int,
     db: Session = Depends(get_db),
@@ -375,7 +384,10 @@ def verify_cms_change_request(
         raise HTTPException(status_code=404, detail="CMS change request not found.")
     require_project_access(db, row.project_id, current_user, minimum_role="viewer")
     if row.status not in {"applied", "approved"}:
-        raise HTTPException(status_code=400, detail="Change request must be applied before verification.")
+        raise HTTPException(
+            status_code=400,
+            detail="Change request must be applied before verification.",
+        )
     row.status = "verified"
     row.verified_at = now_utc()
     row.verification_payload_json = json.dumps(
@@ -395,7 +407,9 @@ def verify_cms_change_request(
     return _serialize_change_request(row)
 
 
-@router.post("/change-requests/{change_request_id}/rollback", response_model=CmsChangeRequestRead)
+@router.post(
+    "/change-requests/{change_request_id}/rollback", response_model=CmsChangeRequestRead
+)
 def rollback_cms_change_request(
     change_request_id: int,
     db: Session = Depends(get_db),

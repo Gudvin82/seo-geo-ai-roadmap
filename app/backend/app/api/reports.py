@@ -81,9 +81,7 @@ def ask_report_assistant(
         if isinstance(item, dict)
     ]
     follow_up_actions = [
-        benchmark.get("next_step")
-        if isinstance(benchmark, dict)
-        else None,
+        benchmark.get("next_step") if isinstance(benchmark, dict) else None,
         "Open the task bundle and assign owners for the highest-impact items.",
         "Run compare / re-audit after implementation to confirm the delta.",
     ]

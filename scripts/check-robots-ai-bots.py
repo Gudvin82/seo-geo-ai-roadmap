@@ -10,8 +10,6 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "app" / "backend"))
 
-from app.services.discoverability_checks import bots_report  # noqa: E402
-
 
 def print_table(results: list[dict]) -> None:
     print("| Bot | Kind | Status | Detected in | Why it matters | Recommended action |")
@@ -32,6 +30,8 @@ def main() -> int:
         "--url", required=True, help="Site URL, for example https://example.com"
     )
     args = parser.parse_args()
+    from app.services.discoverability_checks import bots_report  # noqa: E402
+
     try:
         payload = bots_report(args.url)
     except Exception as exc:

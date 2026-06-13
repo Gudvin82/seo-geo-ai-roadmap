@@ -116,7 +116,7 @@ operator or an AI coding agent can use end to end:
 - Evaluate first prompt: [EVALUATE_THIS_REPO_FIRST.md](./EVALUATE_THIS_REPO_FIRST.md)
 - Commercial boundary: [COMMERCIAL_ROADMAP.md](./COMMERCIAL_ROADMAP.md)
 
-## What `v4.0.0` adds
+## What `v4.0.0` introduced
 
 ## What `v4.1.0` adds
 

@@ -385,7 +385,11 @@ def executive_dashboard(
             ),
             "integrations_connected": len(integrations),
             "cms_connectors_connected": len(cms_connectors),
-            "product_modes": ["repo_methodology", "app_control_panel", "scanner_intake"],
+            "product_modes": [
+                "repo_methodology",
+                "app_control_panel",
+                "scanner_intake",
+            ],
             "ci_first_class": True,
         },
         priorities=priorities,

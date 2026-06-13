@@ -467,10 +467,19 @@ def technical_seo_report(html: str, page_url: str) -> dict:
     parsed = urllib.parse.urlparse(page_url)
     base_host = parsed.hostname or ""
 
-    canonical_url = next(
-        (item["href"] for item in analysis.link_tags if item.get("rel") == "canonical"),
-        "",
-    ) or meta.get("canonical") or meta.get("og:url") or ""
+    canonical_url = (
+        next(
+            (
+                item["href"]
+                for item in analysis.link_tags
+                if item.get("rel") == "canonical"
+            ),
+            "",
+        )
+        or meta.get("canonical")
+        or meta.get("og:url")
+        or ""
+    )
     hreflang_refs = [
         {"lang": item["hreflang"], "href": item["href"]}
         for item in analysis.link_tags
@@ -488,9 +497,17 @@ def technical_seo_report(html: str, page_url: str) -> dict:
         block for block in analysis.text_blocks if base_host and base_host in block
     ]
     heading_count = len(analysis.headings)
-    h1_count = len(
-        [heading for heading in analysis.headings if heading == analysis.headings[0]]
-    ) if analysis.headings else 0
+    h1_count = (
+        len(
+            [
+                heading
+                for heading in analysis.headings
+                if heading == analysis.headings[0]
+            ]
+        )
+        if analysis.headings
+        else 0
+    )
     title = analysis.title.strip()
     description = meta.get("description", "").strip()
     warnings: list[str] = []

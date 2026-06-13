@@ -38,9 +38,7 @@ def scan_graph_snapshot(
     scan_job = db.get(ScanJob, scan_job_id)
     if not scan_job:
         raise HTTPException(status_code=404, detail="Scan job not found.")
-    scan_jobs.authorize_scan_job_access(
-        scan_job, current_user, x_scanner_session
-    )
+    scan_jobs.authorize_scan_job_access(scan_job, current_user, x_scanner_session)
     summary = _read_scan_summary(scan_job)
     payload = build_graph_from_scan_summary(scan_job.id, summary)
     return GraphSnapshotRead(

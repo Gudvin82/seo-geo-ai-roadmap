@@ -341,9 +341,7 @@ class CmsChangeRequest(Base):
     approved_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     applied_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     verified_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
-    rolled_back_at: Mapped[Optional[datetime]] = mapped_column(
-        DateTime, nullable=True
-    )
+    rolled_back_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
 
 
 class NotificationEndpoint(Base):
