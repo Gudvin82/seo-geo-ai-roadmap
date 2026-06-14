@@ -1,5 +1,20 @@
 # Changelog
 
+## v5.1.0 — Managed-Runtime Maturity, Proof Timeline, and AI-to-App Scaffold
+
+- Expanded the executive dashboard into a more decision-grade operating center
+  with weekly narrative, anomaly detection, benchmark overlays, owner
+  suggestions, operating queue, and portfolio-style summary fields
+- Added SaaS-box workspace catalog and tenant overview routing so
+  organization-plus-tenant management is more visible in the product layer
+- Added a project proof timeline that combines evidence, experiments, audit
+  runs, reports, and artifacts into one causality stream
+- Added scaffold generation on top of AI-to-App manifest generation so the
+  platform now writes starter project files under `generated_projects/`
+- Added one-link builder, proof kit, and social-distribution center endpoints
+  to reduce handoff friction for external AI agents and operators
+- Bumped active runtime and contract markers to `v5.1.0`
+
 ## v5.0.0 — SaaS Box Foundation, Proof Layer, and AI-to-App Delivery
 
 - Added a stronger SaaS product foundation with organizations, tenant

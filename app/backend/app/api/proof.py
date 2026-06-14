@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -8,12 +9,14 @@ from sqlalchemy.orm import Session
 from ..access import record_audit_log, require_project_access
 from ..database import get_db
 from ..deps import get_current_user
-from ..models import EvidenceRecord, ExperimentRecord, User
+from ..models import Artifact, AuditRun, EvidenceRecord, ExperimentRecord, Report, User
 from ..schemas import (
     EvidenceRecordCreate,
     EvidenceRecordRead,
     ExperimentRecordCreate,
     ExperimentRecordRead,
+    ProofTimelineItemRead,
+    ProofTimelineRead,
 )
 
 router = APIRouter(prefix="/proof", tags=["proof"])
@@ -62,6 +65,133 @@ def evidence_labels() -> dict:
         ],
         "confidence_labels": ["weak", "partial", "strong"],
     }
+
+
+@router.get("/timeline", response_model=ProofTimelineRead)
+def proof_timeline(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> ProofTimelineRead:
+    require_project_access(db, project_id, current_user, minimum_role="viewer")
+    items: list[ProofTimelineItemRead] = []
+
+    for row in (
+        db.query(EvidenceRecord)
+        .filter(EvidenceRecord.project_id == project_id)
+        .order_by(EvidenceRecord.id.desc())
+        .limit(20)
+        .all()
+    ):
+        items.append(
+            ProofTimelineItemRead(
+                item_type="evidence",
+                title=row.title,
+                summary=row.summary,
+                created_at=row.created_at,
+                source_id=f"evidence:{row.id}",
+                links=json.loads(row.links_json or "[]"),
+                metadata={
+                    "label_type": row.label_type,
+                    "source_ref": row.source_ref,
+                },
+            )
+        )
+
+    for row in (
+        db.query(ExperimentRecord)
+        .filter(ExperimentRecord.project_id == project_id)
+        .order_by(ExperimentRecord.id.desc())
+        .limit(20)
+        .all()
+    ):
+        items.append(
+            ProofTimelineItemRead(
+                item_type="experiment",
+                title=row.source_type,
+                summary=row.change_summary,
+                created_at=row.created_at,
+                source_id=f"experiment:{row.id}",
+                confidence_label=row.confidence_label,
+                links=json.loads(row.evidence_links_json or "[]"),
+                metadata={
+                    "source_type": row.source_type,
+                    "source_id": row.source_id,
+                    "before_snapshot": json.loads(row.before_snapshot_json or "{}"),
+                    "after_snapshot": json.loads(row.after_snapshot_json or "{}"),
+                    "outcome_metrics": json.loads(row.outcome_metrics_json or "{}"),
+                },
+            )
+        )
+
+    for row in (
+        db.query(AuditRun)
+        .filter(AuditRun.project_id == project_id)
+        .order_by(AuditRun.id.desc())
+        .limit(20)
+        .all()
+    ):
+        items.append(
+            ProofTimelineItemRead(
+                item_type="audit_run",
+                title=f"Audit run #{row.id}",
+                summary=f"{row.status} · score {row.summary_score if row.summary_score is not None else 'pending'}",
+                created_at=row.created_at,
+                source_id=f"audit:{row.id}",
+                metadata={
+                    "mode": row.mode,
+                    "report_language": row.report_language,
+                    "selected_checks": json.loads(row.selected_checks_json or "[]"),
+                },
+            )
+        )
+
+    for row in (
+        db.query(Report)
+        .filter(Report.project_id == project_id)
+        .order_by(Report.id.desc())
+        .limit(20)
+        .all()
+    ):
+        items.append(
+            ProofTimelineItemRead(
+                item_type="report",
+                title=f"Report #{row.id}",
+                summary=f"{row.language} · {row.format}",
+                created_at=row.created_at,
+                source_id=f"report:{row.id}",
+                metadata={"audit_run_id": row.audit_run_id},
+            )
+        )
+
+    for row in (
+        db.query(Artifact)
+        .filter(Artifact.project_id == project_id)
+        .order_by(Artifact.id.desc())
+        .limit(20)
+        .all()
+    ):
+        items.append(
+            ProofTimelineItemRead(
+                item_type="artifact",
+                title=f"{row.artifact_type} artifact",
+                summary=row.file_path,
+                created_at=row.created_at,
+                source_id=f"artifact:{row.id}",
+                metadata={
+                    "format": row.format,
+                    "audit_run_id": row.audit_run_id,
+                    "metadata": json.loads(row.metadata_json or "{}"),
+                },
+            )
+        )
+
+    items.sort(key=lambda item: item.created_at, reverse=True)
+    return ProofTimelineRead(
+        project_id=project_id,
+        generated_at=datetime.utcnow(),
+        items=items[:50],
+    )
 
 
 @router.get("/evidence", response_model=list[EvidenceRecordRead])

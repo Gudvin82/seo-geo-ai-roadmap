@@ -36,6 +36,9 @@
         <nav class="nav">
           <button class="nav-link is-active" data-pane-target="overview-pane" data-i18n="navOverview">Overview</button>
           <button class="nav-link" data-pane-target="executive-pane" data-i18n="navExecutive">Executive</button>
+          <button class="nav-link" data-pane-target="saas-pane">SaaS Box</button>
+          <button class="nav-link" data-pane-target="proof-pane">Proof</button>
+          <button class="nav-link" data-pane-target="build-pane">AI-to-App</button>
           <a class="nav-link" href="./scanner.html">Scanner Intake</a>
           <a class="nav-link" href="./graph.html">Graph Intelligence</a>
           <button class="nav-link" data-pane-target="auth-pane" data-i18n="navAuth">Auth</button>
@@ -71,7 +74,7 @@
       <main class="main">
         <header class="hero">
           <div>
-            <p class="eyebrow" data-i18n="releaseBadge">v5.0.0 SaaS foundation, AI-to-App, and executive operating system</p>
+            <p class="eyebrow" data-i18n="releaseBadge">v5.1.0 managed-runtime maturity, proof timeline, and AI-to-App scaffold generation</p>
             <h2 data-i18n="heroTitle">Self-hosted daily operating system for SEO, GEO, and AI discoverability</h2>
             <p class="hero-copy" data-i18n="heroCopy">
               Give the repo to a human operator or an AI coding agent, deploy it,
@@ -231,12 +234,188 @@
             <div class="card">
               <h4 data-i18n="executiveNarrativeTitle">Narrative</h4>
               <div id="executive-narrative" class="project-meta"></div>
+              <h4>Weekly narrative</h4>
+              <div id="executive-weekly-narrative" class="project-meta"></div>
               <h4 data-i18n="executivePrioritiesTitle">Top priorities</h4>
               <div id="executive-priorities" class="stack"></div>
             </div>
             <div class="card">
               <h4 data-i18n="executiveMetricsTitle">Machine-readable dashboard</h4>
               <pre id="executive-dashboard-json" class="code-block"></pre>
+            </div>
+          </div>
+
+          <div class="split">
+            <div class="card">
+              <h4>Anomalies and owners</h4>
+              <div id="executive-anomalies" class="stack"></div>
+              <div id="executive-owners" class="stack"></div>
+            </div>
+            <div class="card">
+              <h4>Portfolio and benchmark overlays</h4>
+              <pre id="executive-portfolio" class="code-block"></pre>
+              <pre id="executive-benchmarks" class="code-block"></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane" id="saas-pane">
+          <div class="pane-header">
+            <h3>SaaS box foundation</h3>
+            <button id="refresh-saas" class="ghost-button">Refresh</button>
+          </div>
+          <div class="split">
+            <form id="organization-form" class="card form-card">
+              <h4>Create organization</h4>
+              <label class="field">
+                <span>Name</span>
+                <input name="name" type="text" required />
+              </label>
+              <label class="field">
+                <span>Slug</span>
+                <input name="slug" type="text" required />
+              </label>
+              <button type="submit">Create organization</button>
+            </form>
+            <form id="tenant-profile-form-v51" class="card form-card">
+              <h4>Create tenant profile</h4>
+              <label class="field">
+                <span>Workspace ID</span>
+                <input name="workspace_id" type="number" required />
+              </label>
+              <label class="field">
+                <span>Organization ID</span>
+                <input name="organization_id" type="number" />
+              </label>
+              <label class="field">
+                <span>Tenant name</span>
+                <input name="tenant_name" type="text" required />
+              </label>
+              <label class="field">
+                <span>Plan code</span>
+                <input name="plan_code" type="text" value="growth" />
+              </label>
+              <button type="submit">Save tenant</button>
+            </form>
+          </div>
+          <div class="split">
+            <div class="card">
+              <h4>Workspace catalog</h4>
+              <pre id="saas-catalog" class="code-block"></pre>
+            </div>
+            <div class="card">
+              <h4>Tenant overview</h4>
+              <pre id="saas-overview" class="code-block"></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane" id="proof-pane">
+          <div class="pane-header">
+            <h3>Proof and experiment center</h3>
+            <button id="refresh-proof" class="ghost-button">Refresh</button>
+          </div>
+          <div class="split">
+            <div class="card">
+              <h4>Proof timeline</h4>
+              <div id="proof-timeline" class="stack"></div>
+            </div>
+            <div class="card">
+              <h4>Proof kit</h4>
+              <pre id="proof-kit" class="code-block"></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane" id="build-pane">
+          <div class="pane-header">
+            <h3>AI-to-App generation wizard</h3>
+            <button id="refresh-build" class="ghost-button">Refresh</button>
+          </div>
+          <div class="split">
+            <form id="generation-form-v51" class="card form-card">
+              <h4>Generate and scaffold</h4>
+              <label class="field">
+                <span>Workspace ID</span>
+                <input name="workspace_id" type="number" />
+              </label>
+              <label class="field">
+                <span>Project ID</span>
+                <input name="project_id" type="number" />
+              </label>
+              <label class="field">
+                <span>Project type</span>
+                <select name="project_type">
+                  <option value="local_business">local_business</option>
+                  <option value="agency_client_workspace">agency_client_workspace</option>
+                  <option value="b2b_saas_company">b2b_saas_company</option>
+                  <option value="content_media_site">content_media_site</option>
+                  <option value="ecommerce_store">ecommerce_store</option>
+                  <option value="consultant_solo_workspace">consultant_solo_workspace</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Domain or URL</span>
+                <input name="domain_or_url" type="text" required />
+              </label>
+              <label class="field">
+                <span>Business type</span>
+                <input name="business_type" type="text" required />
+              </label>
+              <label class="field">
+                <span>Target geography</span>
+                <input name="target_geography" type="text" value="global" />
+              </label>
+              <label class="field">
+                <span>Primary stack</span>
+                <input name="primary_stack" type="text" value="fastapi + static frontend" />
+              </label>
+              <label class="field">
+                <span>Required integrations</span>
+                <input name="required_integrations" type="text" value="gsc,ga4,google_ads,yandex_webmaster,yandex_metrica,yandex_direct" />
+              </label>
+              <label class="field">
+                <span>Language preference</span>
+                <select name="language_preference">
+                  <option value="bilingual">bilingual</option>
+                  <option value="en">en</option>
+                  <option value="ru">ru</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Market mode</span>
+                <select name="market_mode">
+                  <option value="global">global</option>
+                  <option value="local">local</option>
+                  <option value="ru_market">ru_market</option>
+                  <option value="multilingual">multilingual</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Target mode</span>
+                <select name="target_mode">
+                  <option value="self_hosted">self_hosted</option>
+                  <option value="saas_box">saas_box</option>
+                  <option value="managed_deployment">managed_deployment</option>
+                </select>
+              </label>
+              <button type="submit">Generate scaffold</button>
+            </form>
+            <div class="card">
+              <h4>One-link builder</h4>
+              <pre id="one-link-builder" class="code-block"></pre>
+              <h4>Social and distribution center</h4>
+              <pre id="social-distribution-center" class="code-block"></pre>
+            </div>
+          </div>
+          <div class="split">
+            <div class="card">
+              <h4>Generation contracts</h4>
+              <pre id="generation-contracts" class="code-block"></pre>
+            </div>
+            <div class="card">
+              <h4>Generated scaffold</h4>
+              <pre id="generation-output" class="code-block"></pre>
             </div>
           </div>
         </section>

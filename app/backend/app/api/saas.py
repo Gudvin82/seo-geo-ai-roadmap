@@ -14,10 +14,12 @@ from ..models import Organization, TenantApiKey, TenantProfile, User
 from ..schemas import (
     OrganizationCreate,
     OrganizationRead,
+    OrganizationWorkspaceSummaryRead,
     TenantApiKeyCreate,
     TenantApiKeyRead,
     TenantProfileCreate,
     TenantProfileRead,
+    WorkspaceCatalogRead,
 )
 
 router = APIRouter(prefix="/saas", tags=["saas"])
@@ -87,6 +89,46 @@ def create_organization(
     db.commit()
     db.refresh(row)
     return row
+
+
+@router.get("/workspace-catalog", response_model=WorkspaceCatalogRead)
+def workspace_catalog(
+    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+) -> WorkspaceCatalogRead:
+    from ..models import Workspace
+
+    organizations = {
+        row.id: row
+        for row in db.query(Organization)
+        .filter(Organization.owner_user_id == current_user.id)
+        .all()
+    }
+    items: list[OrganizationWorkspaceSummaryRead] = []
+    for workspace in (
+        db.query(Workspace).filter(Workspace.owner_user_id == current_user.id).all()
+    ):
+        tenant = (
+            db.query(TenantProfile)
+            .filter(TenantProfile.workspace_id == workspace.id)
+            .order_by(TenantProfile.id.desc())
+            .first()
+        )
+        organization = organizations.get(tenant.organization_id) if tenant else None
+        items.append(
+            OrganizationWorkspaceSummaryRead(
+                organization_id=organization.id if organization else None,
+                organization_name=organization.name if organization else None,
+                workspace_id=workspace.id,
+                workspace_name=workspace.name,
+                workspace_slug=workspace.slug,
+                tenant_name=tenant.tenant_name if tenant else None,
+                plan_code=tenant.plan_code if tenant else None,
+                plan_status=tenant.plan_status if tenant else None,
+                usage_summary=json.loads(tenant.usage_json or "{}") if tenant else {},
+                quota_summary=json.loads(tenant.quota_json or "{}") if tenant else {},
+            )
+        )
+    return WorkspaceCatalogRead(items=items)
 
 
 @router.get("/tenant-profiles", response_model=list[TenantProfileRead])

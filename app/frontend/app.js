@@ -15,6 +15,15 @@ const state = {
   productModes: [],
   ciGating: {},
   executiveDashboard: null,
+  saasCatalog: [],
+  tenantOverview: null,
+  proofTimeline: [],
+  proofKit: {},
+  generationContracts: {},
+  generationManifests: [],
+  generationOutput: null,
+  oneLinkBuilder: {},
+  socialDistributionCenter: {},
   integrationContracts: [],
   cmsContracts: [],
   reportAssistant: null,
@@ -48,7 +57,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v5.0.0 SaaS foundation, AI-to-App, and executive operating system",
+      "v5.1.0 managed-runtime maturity, proof timeline, and AI-to-App scaffold generation",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -239,7 +248,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v5.0.0 SaaS foundation, AI-to-App и executive operating system",
+      "v5.1.0 managed-runtime maturity, proof timeline и AI-to-App scaffold generation",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -618,7 +627,12 @@ function renderExecutiveDashboard() {
     $("#executive-cms-count").textContent = "0";
     $("#executive-narrative").textContent =
       "Select a project and run an audit first.";
+    $("#executive-weekly-narrative").textContent = "";
     $("#executive-priorities").innerHTML = "";
+    $("#executive-anomalies").innerHTML = "";
+    $("#executive-owners").innerHTML = "";
+    $("#executive-portfolio").textContent = "";
+    $("#executive-benchmarks").textContent = "";
     $("#executive-dashboard-json").textContent = "";
     return;
   }
@@ -629,14 +643,88 @@ function renderExecutiveDashboard() {
   );
   $("#executive-cms-count").textContent = String((dashboard.cms || []).length);
   $("#executive-narrative").textContent = dashboard.narrative;
+  $("#executive-weekly-narrative").textContent =
+    dashboard.weekly_narrative || "";
   renderCards("#executive-priorities", dashboard.priorities || [], (row) =>
     simpleCard(row.title || "Priority", [
       `Priority score: ${row.priority_score ?? "n/a"}`,
       row.recommendation || "No recommendation yet.",
     ]),
   );
+  renderCards("#executive-anomalies", dashboard.anomalies || [], (row) =>
+    simpleCard(row.surface || "anomaly", [
+      `${row.severity || "watch"} · ${row.message || "No anomaly details"}`,
+      `Likely cause: ${row.likely_cause || "unknown"}`,
+    ]),
+  );
+  renderCards("#executive-owners", dashboard.owner_suggestions || [], (row) =>
+    simpleCard(row.owner || "owner", [
+      row.focus || "No focus",
+      `Priority: ${row.priority || "n/a"}`,
+    ]),
+  );
+  $("#executive-portfolio").textContent = JSON.stringify(
+    dashboard.portfolio_view || {},
+    null,
+    2,
+  );
+  $("#executive-benchmarks").textContent = JSON.stringify(
+    dashboard.benchmark_overlays || {},
+    null,
+    2,
+  );
   $("#executive-dashboard-json").textContent = JSON.stringify(
     dashboard,
+    null,
+    2,
+  );
+}
+
+function renderSaasCenter() {
+  $("#saas-catalog").textContent = JSON.stringify(
+    state.saasCatalog || [],
+    null,
+    2,
+  );
+  $("#saas-overview").textContent = JSON.stringify(
+    state.tenantOverview || {},
+    null,
+    2,
+  );
+}
+
+function renderProofCenter() {
+  renderCards("#proof-timeline", state.proofTimeline || [], (row) =>
+    simpleCard(row.title || row.item_type, [
+      `${row.item_type} · ${row.source_id}`,
+      row.summary || "No summary",
+      row.confidence_label ? `Confidence: ${row.confidence_label}` : "",
+    ].filter(Boolean)),
+  );
+  $("#proof-kit").textContent = JSON.stringify(state.proofKit || {}, null, 2);
+}
+
+function renderBuildCenter() {
+  $("#generation-contracts").textContent = JSON.stringify(
+    state.generationContracts || {},
+    null,
+    2,
+  );
+  $("#generation-output").textContent = JSON.stringify(
+    {
+      latest_scaffold: state.generationOutput,
+      manifests: state.generationManifests,
+    },
+    null,
+    2,
+  );
+  $("#one-link-builder").textContent = JSON.stringify(
+    state.oneLinkBuilder || {},
+    null,
+    2,
+  );
+  $("#social-distribution-center").textContent = JSON.stringify(
+    state.socialDistributionCenter || {},
     null,
     2,
   );
@@ -943,6 +1031,59 @@ async function refreshExecutiveDashboard() {
   renderExecutiveDashboard();
 }
 
+async function refreshSaasCenter() {
+  if (!state.token) {
+    return;
+  }
+  const [catalog, organizations] = await Promise.all([
+    apiRequest("/saas/workspace-catalog"),
+    apiRequest("/saas/organizations"),
+  ]);
+  state.saasCatalog = catalog.items || [];
+  state.organizations = organizations || [];
+  if (state.selectedWorkspaceId) {
+    try {
+      state.tenantOverview = await apiRequest(
+        `/saas/tenant-overview?workspace_id=${state.selectedWorkspaceId}`,
+      );
+    } catch (error) {
+      state.tenantOverview = { warning: error.message };
+    }
+  }
+  renderSaasCenter();
+}
+
+async function refreshProofCenter() {
+  if (!state.token || !state.selectedProjectId) {
+    return;
+  }
+  const [timeline, proofKit] = await Promise.all([
+    apiRequest(`/proof/timeline?project_id=${state.selectedProjectId}`),
+    apiRequest("/settings/proof-kit", { headers: {} }),
+  ]);
+  state.proofTimeline = timeline.items || [];
+  state.proofKit = proofKit;
+  renderProofCenter();
+}
+
+async function refreshBuildCenter() {
+  if (!state.token) {
+    return;
+  }
+  const [contracts, manifests, oneLinkBuilder, socialDistributionCenter] =
+    await Promise.all([
+      apiRequest("/generation/contracts"),
+      apiRequest("/generation/manifests"),
+      apiRequest("/settings/one-link-builder", { headers: {} }),
+      apiRequest("/settings/social-distribution-center", { headers: {} }),
+    ]);
+  state.generationContracts = contracts;
+  state.generationManifests = manifests;
+  state.oneLinkBuilder = oneLinkBuilder;
+  state.socialDistributionCenter = socialDistributionCenter;
+  renderBuildCenter();
+}
+
 function formPayload(form) {
   return Object.fromEntries(new FormData(form).entries());
 }
@@ -987,6 +1128,38 @@ async function handleProjectCreate(event) {
   event.currentTarget.reset();
   await refreshProjects();
   setStatus();
+}
+
+async function handleOrganizationCreate(event) {
+  event.preventDefault();
+  const payload = formPayload(event.currentTarget);
+  await apiRequest("/saas/organizations", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  log(`Organization ${payload.name} created.`);
+  event.currentTarget.reset();
+  await refreshSaasCenter();
+}
+
+async function handleTenantProfileCreateV51(event) {
+  event.preventDefault();
+  const payload = formPayload(event.currentTarget);
+  payload.workspace_id = Number(payload.workspace_id);
+  payload.organization_id = payload.organization_id
+    ? Number(payload.organization_id)
+    : null;
+  payload.plan_status = "active";
+  payload.quota = { monthly_syncs: 300, projects: 25 };
+  payload.usage = { monthly_syncs_used: state.integrationConnections.length };
+  payload.onboarding_state = { auth: "done", deploy: "in_progress" };
+  payload.tenant_settings = { ai_to_app: true, managed_runtime_goal: true };
+  await apiRequest("/saas/tenant-profiles", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  log(`Tenant profile ${payload.tenant_name} saved.`);
+  await refreshSaasCenter();
 }
 
 async function handleFactsCreate(event) {
@@ -1098,6 +1271,30 @@ async function handleNotificationCreate(event) {
   await refreshNotifications();
 }
 
+async function handleGenerationCreateV51(event) {
+  event.preventDefault();
+  const payload = formPayload(event.currentTarget);
+  payload.workspace_id = payload.workspace_id ? Number(payload.workspace_id) : null;
+  payload.project_id = payload.project_id ? Number(payload.project_id) : null;
+  payload.required_integrations = splitCsv(payload.required_integrations);
+  const manifest = await apiRequest("/generation/manifests/generate", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  const scaffold = await apiRequest(
+    `/generation/manifests/${manifest.id}/scaffold`,
+    {
+      method: "POST",
+    },
+  );
+  state.generationOutput = {
+    manifest,
+    scaffold,
+  };
+  log(`Generated scaffold for ${payload.domain_or_url}.`);
+  await refreshBuildCenter();
+}
+
 async function handleProjectExport() {
   if (!state.token || !state.selectedProjectId) {
     log("Select a project first.", "warning");
@@ -1146,7 +1343,11 @@ async function bootstrapAuthedState() {
   }
   if (state.selectedWorkspaceId) {
     await refreshProjects();
-    await Promise.all([refreshPromptSets(), refreshNotifications()]);
+    await Promise.all([
+      refreshPromptSets(),
+      refreshNotifications(),
+      refreshSaasCenter(),
+    ]);
   }
   if (!state.selectedProjectId && state.projects[0]) {
     state.selectedProjectId = String(state.projects[0].id);
@@ -1161,6 +1362,8 @@ async function bootstrapAuthedState() {
       refreshSovRuns(),
       refreshReportsAndArtifacts(),
       refreshExecutiveDashboard(),
+      refreshProofCenter(),
+      refreshBuildCenter(),
     ]);
   }
   setStatus();
@@ -1180,6 +1383,11 @@ function installEventListeners() {
   $("#login-form").addEventListener("submit", handleLogin);
   $("#workspace-form").addEventListener("submit", handleWorkspaceCreate);
   $("#project-form").addEventListener("submit", handleProjectCreate);
+  $("#organization-form").addEventListener("submit", handleOrganizationCreate);
+  $("#tenant-profile-form-v51").addEventListener(
+    "submit",
+    handleTenantProfileCreateV51,
+  );
   $("#facts-form").addEventListener("submit", handleFactsCreate);
   $("#provider-form").addEventListener("submit", handleProviderCreate);
   $("#integration-form").addEventListener("submit", handleIntegrationCreate);
@@ -1188,6 +1396,10 @@ function installEventListeners() {
   $("#audit-form").addEventListener("submit", handleAuditCreate);
   $("#sov-form").addEventListener("submit", handleSovCreate);
   $("#notification-form").addEventListener("submit", handleNotificationCreate);
+  $("#generation-form-v51").addEventListener(
+    "submit",
+    handleGenerationCreateV51,
+  );
   $("#patch-pack-form").addEventListener("submit", handlePatchPackCreate);
   $("#client-pack-form").addEventListener("submit", handleClientPackCreate);
   $("#refresh-workspaces").addEventListener("click", () => refreshWorkspaces().catch((error) => log(error.message, "warning")));
@@ -1203,6 +1415,9 @@ function installEventListeners() {
   $("#refresh-reports").addEventListener("click", () => refreshReportsAndArtifacts().catch((error) => log(error.message, "warning")));
   $("#ask-report-assistant").addEventListener("click", () => askReportAssistant().catch((error) => log(error.message, "warning")));
   $("#refresh-executive").addEventListener("click", () => refreshExecutiveDashboard().catch((error) => log(error.message, "warning")));
+  $("#refresh-saas").addEventListener("click", () => refreshSaasCenter().catch((error) => log(error.message, "warning")));
+  $("#refresh-proof").addEventListener("click", () => refreshProofCenter().catch((error) => log(error.message, "warning")));
+  $("#refresh-build").addEventListener("click", () => refreshBuildCenter().catch((error) => log(error.message, "warning")));
   $("#export-project").addEventListener("click", () => handleProjectExport().catch((error) => log(error.message, "warning")));
   $("#sign-out").addEventListener("click", () => {
     state.token = "";
@@ -1222,6 +1437,9 @@ async function init() {
     await bootstrapAuthedState();
     renderOverview();
     renderExecutiveDashboard();
+    renderSaasCenter();
+    renderProofCenter();
+    renderBuildCenter();
   } catch (error) {
     log(`Startup warning: ${error.message}`, "warning");
   }

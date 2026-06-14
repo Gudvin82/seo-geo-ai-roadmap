@@ -1,16 +1,24 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
+from urllib.parse import urlparse
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..deps import get_current_user
 from ..models import GeneratedProjectManifest, User
-from ..schemas import ProjectGenerationRead, ProjectGenerationRequest
+from ..schemas import (
+    ProjectGenerationRead,
+    ProjectGenerationRequest,
+    ProjectGenerationScaffoldRead,
+)
 
 router = APIRouter(prefix="/generation", tags=["generation"])
+
+GENERATED_ROOT = Path("generated_projects")
 
 
 BLUEPRINT_SCHEMA_FILES = [
@@ -63,10 +71,115 @@ def _serialize_manifest(row: GeneratedProjectManifest) -> ProjectGenerationRead:
     )
 
 
+def _slug_from_input(payload: ProjectGenerationRequest) -> str:
+    raw = urlparse(payload.domain_or_url).netloc or payload.domain_or_url
+    normalized = "".join(
+        character.lower() if character.isalnum() else "-" for character in raw.strip()
+    )
+    return (
+        "-".join(part for part in normalized.split("-") if part) or "generated-project"
+    )
+
+
+def _scaffold_files(
+    payload: ProjectGenerationRequest, manifest_id: int
+) -> dict[str, str]:
+    app_name = _slug_from_input(payload)
+    manifest = {
+        "project_type": payload.project_type,
+        "target_mode": payload.target_mode,
+        "business_type": payload.business_type,
+        "target_geography": payload.target_geography,
+        "primary_stack": payload.primary_stack,
+        "required_integrations": payload.required_integrations,
+        "language_preference": payload.language_preference,
+        "market_mode": payload.market_mode,
+        "domain_or_url": payload.domain_or_url,
+    }
+    return {
+        "README.md": "\n".join(
+            [
+                f"# {app_name}",
+                "",
+                "Generated with Discoverability OS AI-to-App mode.",
+                "",
+                "## Included surfaces",
+                "",
+                "- marketing/public site",
+                "- admin/operator shell",
+                "- scanner intake",
+                "- executive dashboard",
+                "- integration settings",
+                "- proof timeline",
+                "",
+                "## Next steps",
+                "",
+                "1. Fill `.env.example`.",
+                "2. Review `operator-handoff.json`.",
+                "3. Connect integrations.",
+                "4. Run the first audit and executive refresh.",
+                "",
+            ]
+        ),
+        "generated-manifest.json": json.dumps(
+            {"manifest_id": manifest_id, "input": manifest},
+            ensure_ascii=False,
+            indent=2,
+        ),
+        "operator-handoff.json": json.dumps(
+            {
+                "prompt": "Deploy this generated project, connect the requested integrations, and return the first executive summary.",
+                "required_integrations": payload.required_integrations,
+                "deploy_mode": payload.target_mode,
+                "language_preference": payload.language_preference,
+                "operator_rules": [
+                    "verify before claiming completion",
+                    "keep EN and RU aligned",
+                    "export evidence after the first audit",
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        ".env.example": "\n".join(
+            [
+                "APP_ENV=production",
+                "APP_DATABASE_URL=postgresql://user:password@localhost:5432/discoverability",
+                "OPENAI_API_KEY=",
+                "GSC_SERVICE_ACCOUNT_JSON=",
+                "GA4_SERVICE_ACCOUNT_JSON=",
+                "GOOGLE_ADS_DEVELOPER_TOKEN=",
+                "YANDEX_WEBMASTER_TOKEN=",
+                "YANDEX_METRICA_TOKEN=",
+                "YANDEX_DIRECT_TOKEN=",
+            ]
+        )
+        + "\n",
+        "app-shell.json": json.dumps(
+            {
+                "site": {
+                    "url": payload.domain_or_url,
+                    "business_type": payload.business_type,
+                },
+                "surfaces": [
+                    "overview",
+                    "executive",
+                    "scanner",
+                    "saas",
+                    "proof",
+                    "generation",
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+    }
+
+
 @router.get("/contracts")
 def generation_contracts() -> dict:
     return {
-        "project_generation_contract_version": "v5.0.0",
+        "project_generation_contract_version": "v5.1.0",
         "schema_files": BLUEPRINT_SCHEMA_FILES,
         "project_types": [
             "local_business",
@@ -139,3 +252,51 @@ def list_manifests(
         GeneratedProjectManifest.id.desc()
     )
     return [_serialize_manifest(row) for row in rows.limit(20).all()]
+
+
+@router.post(
+    "/manifests/{manifest_id}/scaffold", response_model=ProjectGenerationScaffoldRead
+)
+def scaffold_manifest(
+    manifest_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> ProjectGenerationScaffoldRead:
+    row = db.get(GeneratedProjectManifest, manifest_id)
+    if not row:
+        raise HTTPException(status_code=404, detail="Manifest not found.")
+    payload = ProjectGenerationRequest(**json.loads(row.input_json or "{}"))
+    slug = _slug_from_input(payload)
+    output_dir = GENERATED_ROOT / f"{slug}-{manifest_id}"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    generated_files: list[str] = []
+    for relative_path, content in _scaffold_files(payload, manifest_id).items():
+        target = output_dir / relative_path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(content, encoding="utf-8")
+        generated_files.append(str(target))
+    manifest = json.loads(row.manifest_json or "{}")
+    manifest["scaffold"] = {
+        "output_directory": str(output_dir),
+        "generated_files": generated_files,
+    }
+    row.status = "scaffolded"
+    row.manifest_json = json.dumps(manifest, ensure_ascii=False)
+    db.add(row)
+    db.commit()
+    return ProjectGenerationScaffoldRead(
+        manifest_id=row.id,
+        output_directory=str(output_dir),
+        generated_files=generated_files,
+        starter_urls={
+            "overview": "/",
+            "scanner": "/scanner.html",
+            "graph": "/graph.html",
+        },
+        next_steps=[
+            "fill the generated env example",
+            "review operator-handoff.json",
+            "connect requested integrations",
+            "run first audit and proof capture",
+        ],
+    )

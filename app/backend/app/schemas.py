@@ -769,9 +769,15 @@ class ExecutiveDashboardRead(BaseModel):
     executive_score: float
     health_band: str
     narrative: str
+    weekly_narrative: str = ""
     metrics: dict[str, Any]
     executive_layers: dict[str, Any] = Field(default_factory=dict)
     comparison_metrics: dict[str, Any] = Field(default_factory=dict)
+    benchmark_overlays: dict[str, Any] = Field(default_factory=dict)
+    anomalies: list[dict[str, Any]] = Field(default_factory=list)
+    owner_suggestions: list[dict[str, Any]] = Field(default_factory=list)
+    operating_queue: list[dict[str, Any]] = Field(default_factory=list)
+    portfolio_view: dict[str, Any] = Field(default_factory=dict)
     priorities: list[dict[str, Any]] = Field(default_factory=list)
     integrations: list[dict[str, Any]] = Field(default_factory=list)
     cms: list[dict[str, Any]] = Field(default_factory=list)
@@ -854,6 +860,23 @@ class ExperimentRecordRead(BaseModel):
     created_at: datetime
 
 
+class ProofTimelineItemRead(BaseModel):
+    item_type: str
+    title: str
+    summary: str
+    created_at: datetime
+    source_id: str
+    confidence_label: Optional[str] = None
+    links: list[str] = Field(default_factory=list)
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+
+class ProofTimelineRead(BaseModel):
+    project_id: int
+    generated_at: datetime
+    items: list[ProofTimelineItemRead] = Field(default_factory=list)
+
+
 class ProjectGenerationRequest(BaseModel):
     workspace_id: Optional[int] = None
     project_id: Optional[int] = None
@@ -887,6 +910,31 @@ class ProjectGenerationRead(BaseModel):
     input_payload: dict[str, Any] = Field(default_factory=dict)
     manifest: dict[str, Any] = Field(default_factory=dict)
     created_at: datetime
+
+
+class ProjectGenerationScaffoldRead(BaseModel):
+    manifest_id: int
+    output_directory: str
+    generated_files: list[str] = Field(default_factory=list)
+    starter_urls: dict[str, str] = Field(default_factory=dict)
+    next_steps: list[str] = Field(default_factory=list)
+
+
+class OrganizationWorkspaceSummaryRead(BaseModel):
+    organization_id: Optional[int] = None
+    organization_name: Optional[str] = None
+    workspace_id: int
+    workspace_name: str
+    workspace_slug: str
+    tenant_name: Optional[str] = None
+    plan_code: Optional[str] = None
+    plan_status: Optional[str] = None
+    usage_summary: dict[str, Any] = Field(default_factory=dict)
+    quota_summary: dict[str, Any] = Field(default_factory=dict)
+
+
+class WorkspaceCatalogRead(BaseModel):
+    items: list[OrganizationWorkspaceSummaryRead] = Field(default_factory=list)
 
 
 class TaskItemRead(BaseModel):

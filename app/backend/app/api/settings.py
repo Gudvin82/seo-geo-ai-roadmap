@@ -263,6 +263,110 @@ def operator_center() -> dict:
     }
 
 
+@router.get("/one-link-builder")
+def one_link_builder() -> dict:
+    return {
+        "promise": "Give one link and one prompt to an AI agent, then deploy a working SEO/GEO/AI operating workspace faster.",
+        "required_inputs": [
+            "domain_or_url",
+            "business_type",
+            "target_geography",
+            "language_preference",
+            "target_mode",
+        ],
+        "recommended_prompt": (
+            "Use this repository as the platform contract. Build the generated project, "
+            "connect the requested integrations, scaffold the scanner, admin, dashboard, "
+            "proof layer, and return deployment plus first-audit instructions."
+        ),
+        "deploy_paths": [
+            "local docker demo",
+            "self-hosted VPS docker compose",
+            "managed deployment starter",
+            "saas box mode starter",
+        ],
+        "first_class_docs": [
+            "BUILD_WITH_THIS_PLATFORM.md",
+            "GENERATE_PROJECT_FROM_URL.md",
+            "START_HERE_FOR_AI.md",
+        ],
+    }
+
+
+@router.get("/proof-kit")
+def proof_kit() -> dict:
+    return {
+        "labels": [
+            "public_fact",
+            "bounded_rollout_record",
+            "internal_evidence",
+            "demo_fixture",
+            "synthetic_example",
+        ],
+        "sample_tenants": [
+            {
+                "tenant_name": "Local service starter",
+                "plan_code": "starter",
+                "project_type": "local_business",
+                "suggested_integrations": [
+                    "gsc",
+                    "ga4",
+                    "google_business_profile",
+                    "crux",
+                ],
+            },
+            {
+                "tenant_name": "RU growth workspace",
+                "plan_code": "growth",
+                "project_type": "agency_client_workspace",
+                "suggested_integrations": [
+                    "yandex_webmaster",
+                    "yandex_metrica",
+                    "yandex_direct",
+                    "yandex_business",
+                ],
+            },
+        ],
+        "benchmark_fixtures": {
+            "ai_visibility_target": "0.20+ share for priority branded prompts",
+            "field_performance_target": "LCP p75 under 2500 ms",
+            "local_trust_target": "4.7+ average rating with active review flow",
+        },
+        "evidence_packs": [
+            "before_after_metric_pack",
+            "executive_summary_sample",
+            "client_delivery_sample",
+            "experiment_log_sample",
+        ],
+    }
+
+
+@router.get("/social-distribution-center")
+def social_distribution_center() -> dict:
+    return {
+        "connected_surfaces": [
+            "meta_ads",
+            "vk_ads",
+            "telegram_ads",
+            "youtube",
+            "linkedin_ads",
+            "instagram_facebook_organic",
+            "google_business_profile",
+            "yandex_business",
+        ],
+        "priority_expansions": [
+            "brand mention tracking",
+            "reputation event timeline",
+            "community demand comparison",
+            "local-business trust overlays",
+        ],
+        "mention_tracking_model": {
+            "starter_mode": "track mentions through evidence records and operator notes",
+            "next_mode": "connect external social monitoring or API-backed ingestion",
+        },
+    }
+
+
 @router.get("/product-modes", response_model=ProductModesResponse)
 def product_modes() -> ProductModesResponse:
     return ProductModesResponse(
@@ -700,6 +804,92 @@ def executive_dashboard(
             "instagram_site_clicks": _first_numeric(instagram_metrics, "site_clicks"),
         },
     }
+    benchmark_overlays = {
+        "seo_vs_geo_vs_paid": {
+            "seo_strength": comparison_metrics["organic_demand"]["google_clicks"]
+            + comparison_metrics["organic_demand"]["yandex_clicks"],
+            "geo_strength": comparison_metrics["ai_visibility"]["share_of_citation"],
+            "paid_strength": comparison_metrics["paid_demand"]["google_ads_cost"]
+            + comparison_metrics["paid_demand"]["yandex_direct_cost"],
+        },
+        "local_trust_vs_lead_generation": {
+            "review_count_total": _first_numeric(gbp_metrics, "review_count")
+            + _first_numeric(yb_metrics, "review_count"),
+            "conversion_signals": _first_numeric(ga4_metrics, "engagement_rate")
+            + _first_numeric(metrica_metrics, "goal_completion_rate"),
+        },
+        "ru_stack_vs_google_stack": {
+            "google_connected": len(
+                executive_layers["google_executive_layer"]["connected"]
+            ),
+            "ru_connected": len(executive_layers["ru_executive_layer"]["connected"]),
+        },
+    }
+    anomalies: list[dict[str, object]] = []
+    if _first_numeric(crux_metrics.get("largest_contentful_paint", {}), "p75") > 2500:
+        anomalies.append(
+            {
+                "severity": "high",
+                "surface": "crux",
+                "message": "Field LCP is above the preferred threshold.",
+                "likely_cause": "page weight or rendering bottlenecks",
+            }
+        )
+    if (
+        _first_numeric(google_ads_metrics, "cpa") > 20
+        or _first_numeric(direct_metrics, "cost_per_conversion") > 20
+    ):
+        anomalies.append(
+            {
+                "severity": "medium",
+                "surface": "paid_efficiency",
+                "message": "Paid acquisition efficiency is softening.",
+                "likely_cause": "keyword drift or landing-page mismatch",
+            }
+        )
+    owner_suggestions = [
+        {
+            "owner": "SEO lead",
+            "focus": "organic demand, indexation health, and answer-ready content",
+            "priority": "high",
+        },
+        {
+            "owner": "Growth or paid lead",
+            "focus": "paid demand, CTR, CPA, and landing-page alignment",
+            "priority": "medium",
+        },
+        {
+            "owner": "Content or GEO lead",
+            "focus": "AI visibility, brand-fact consistency, and citation share",
+            "priority": "high",
+        },
+    ]
+    operating_queue = [
+        {
+            "step": "refresh integrations",
+            "owner": "operator",
+            "status": "ready",
+        },
+        {
+            "step": "review executive anomalies",
+            "owner": "owner_or_admin",
+            "status": "ready" if anomalies else "watch",
+        },
+        {
+            "step": "capture proof delta",
+            "owner": "analyst",
+            "status": "ready",
+        },
+    ]
+    portfolio_view = {
+        "workspace_id": project.workspace_id,
+        "project_name": project.name,
+        "connected_surfaces_total": len(integrations) + len(cms_connectors),
+        "high_priority_items": len(
+            [item for item in priorities if item["priority_score"] >= 70]
+        ),
+        "anomaly_count": len(anomalies),
+    }
     return ExecutiveDashboardRead(
         project_id=project.id,
         workspace_id=project.workspace_id,
@@ -708,6 +898,10 @@ def executive_dashboard(
         narrative=(
             f"{project.name} is in {health_band} condition. "
             "Use scanner intake, structured audits, integrations, CMS review gates, and CI-backed re-measurement as one operating loop."
+        ),
+        weekly_narrative=(
+            f"This week {project.name} should focus on {len(priorities)} priority lanes, "
+            f"{len(anomalies)} anomaly checks, and {len(integrations)} connected integrations."
         ),
         metrics={
             "latest_audit_status": latest_audit.status,
@@ -747,6 +941,11 @@ def executive_dashboard(
         },
         executive_layers=executive_layers,
         comparison_metrics=comparison_metrics,
+        benchmark_overlays=benchmark_overlays,
+        anomalies=anomalies,
+        owner_suggestions=owner_suggestions,
+        operating_queue=operating_queue,
+        portfolio_view=portfolio_view,
         priorities=priorities,
         integrations=[
             {

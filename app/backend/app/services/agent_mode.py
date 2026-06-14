@@ -9,7 +9,7 @@ from .task_center import (
     build_task_bundle_from_scan_job,
 )
 
-AGENT_MODE_CONTRACT_VERSION = "v5.0.0"
+AGENT_MODE_CONTRACT_VERSION = "v5.1.0"
 SUPPORTED_AGENT_MODES = [
     "manual",
     "scheduled",

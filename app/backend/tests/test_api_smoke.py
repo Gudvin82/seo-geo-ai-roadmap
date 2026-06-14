@@ -438,6 +438,8 @@ def test_workspace_project_and_audit_flow(
     assert executive_dashboard.json()["executive_layers"]["ru_executive_layer"]
     assert executive_dashboard.json()["comparison_metrics"]["organic_demand"]
     assert executive_dashboard.json()["comparison_metrics"]["paid_demand"]
+    assert executive_dashboard.json()["weekly_narrative"]
+    assert executive_dashboard.json()["benchmark_overlays"]
 
     integration_detail = client.get(
         f"/api/v1/integrations/{google_ads_integration.json()['id']}/detail",
@@ -477,6 +479,13 @@ def test_workspace_project_and_audit_flow(
     )
     assert tenant_overview.status_code == 200
     assert tenant_overview.json()["roles_supported"]
+
+    workspace_catalog = client.get(
+        "/api/v1/saas/workspace-catalog",
+        headers=auth_headers,
+    )
+    assert workspace_catalog.status_code == 200
+    assert workspace_catalog.json()["items"]
 
     api_key = client.post(
         "/api/v1/saas/api-keys",
@@ -523,6 +532,13 @@ def test_workspace_project_and_audit_flow(
     )
     assert experiment.status_code == 200
 
+    proof_timeline = client.get(
+        f"/api/v1/proof/timeline?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert proof_timeline.status_code == 200
+    assert proof_timeline.json()["items"]
+
     generation_contracts = client.get(
         "/api/v1/generation/contracts", headers=auth_headers
     )
@@ -556,11 +572,34 @@ def test_workspace_project_and_audit_flow(
     assert generation_manifest.status_code == 200
     assert generation_manifest.json()["manifest"]["surfaces"]
 
+    generation_scaffold = client.post(
+        f"/api/v1/generation/manifests/{generation_manifest.json()['id']}/scaffold",
+        headers=auth_headers,
+    )
+    assert generation_scaffold.status_code == 200
+    assert generation_scaffold.json()["generated_files"]
+
     onboarding_center = client.get(
         "/api/v1/settings/onboarding-center", headers=auth_headers
     )
     assert onboarding_center.status_code == 200
     assert onboarding_center.json()["guided_steps"]
+
+    one_link_builder = client.get(
+        "/api/v1/settings/one-link-builder", headers=auth_headers
+    )
+    assert one_link_builder.status_code == 200
+    assert one_link_builder.json()["recommended_prompt"]
+
+    proof_kit = client.get("/api/v1/settings/proof-kit", headers=auth_headers)
+    assert proof_kit.status_code == 200
+    assert proof_kit.json()["sample_tenants"]
+
+    social_distribution = client.get(
+        "/api/v1/settings/social-distribution-center", headers=auth_headers
+    )
+    assert social_distribution.status_code == 200
+    assert social_distribution.json()["connected_surfaces"]
 
     operator_center = client.get(
         "/api/v1/settings/operator-center", headers=auth_headers

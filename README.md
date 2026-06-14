@@ -119,6 +119,7 @@ Use these files before making public claims:
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
 - Integration production matrix: [docs/en/integration-production-matrix-v450.md](./docs/en/integration-production-matrix-v450.md)
 - Provider catalog: [docs/en/provider-catalog-v450.md](./docs/en/provider-catalog-v450.md)
+- v5.1.0 release summary: [docs/en/v510-release.md](./docs/en/v510-release.md)
 - v5.0.0 release summary: [docs/en/v500-release.md](./docs/en/v500-release.md)
 - v4.6.0 release summary: [docs/en/v460-release.md](./docs/en/v460-release.md)
 - v4.5.2 release summary: [docs/en/v452-release.md](./docs/en/v452-release.md)
@@ -161,6 +162,14 @@ AI coding agent without inventing the prompt from scratch:
 - [Repo + site audit prompt](./prompts/en/repo-site-audit-agent-prompt.md)
 - [Deploy client scanner prompt](./prompts/en/deploy-client-scanner-agent-prompt.md)
 - [Improve existing site prompt](./prompts/en/improve-existing-site-agent-prompt.md)
+
+## What `v5.1.0` adds
+
+- a richer operating center with weekly narrative, anomaly detection, owner suggestions, benchmark overlays, and portfolio summaries
+- proof timeline views that connect evidence, experiments, audit runs, reports, and artifacts
+- SaaS-box UI and API surfaces for workspace catalog and tenant overview routing
+- AI-to-App scaffold generation that writes starter project files instead of stopping at manifests only
+- stronger one-link AI handoff with builder, proof-kit, and social-distribution center entrypoints
 
 ## What `v5.0.0` adds
 
