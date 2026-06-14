@@ -8,6 +8,8 @@ def test_frontend_shell_exists() -> None:
         "styles.css",
         "app.js",
         "graph.html",
+        "repo-understanding.html",
+        "integration-health.html",
         "graph.js",
         "nginx.conf",
         "Dockerfile",
@@ -47,6 +49,7 @@ def test_extension_and_contract_assets_exist() -> None:
         Path("BUILD_WITH_THIS_PLATFORM_RU.md"),
         Path("GENERATE_PROJECT_FROM_URL.md"),
         Path("GENERATE_PROJECT_FROM_URL_RU.md"),
+        Path("docs_site/assets/screenshots/project-badge-v530.png"),
     ]
     for path in required_paths:
         assert path.exists(), f"Missing v4.0.0 asset: {path}"

@@ -28,6 +28,11 @@
 | `check_hallucinations.py` | Создает стартовый отчет для проверки AI-галлюцинаций | `python scripts/check_hallucinations.py --brand-facts-file examples/brand-facts-example.md --questions-file examples/hallucination-questions-example.md --output-file hallucination-report.md` |
 | `gsc_data_stub.py` | Выдает starter-payload в форме Google Search Console | `python scripts/gsc_data_stub.py` |
 | `yandex_data_stub.py` | Выдает starter-payload в форме Яндекс-данных | `python scripts/yandex_data_stub.py` |
+| `x_ads_stub.py` | Выдает starter-payload в форме X Ads | `python scripts/x_ads_stub.py` |
+| `x_organic_stub.py` | Выдает starter-payload для X organic intelligence | `python scripts/x_organic_stub.py` |
+| `threads_stub.py` | Выдает starter-payload для Threads | `python scripts/threads_stub.py` |
+| `reddit_mentions_stub.py` | Выдает starter-payload для Reddit mentions | `python scripts/reddit_mentions_stub.py` |
+| `tiktok_organic_stub.py` | Выдает starter-payload для TikTok organic | `python scripts/tiktok_organic_stub.py` |
 | `provider_benchmark_stub.py` | Печатает scaffold для benchmark-оценки провайдеров | `python scripts/provider_benchmark_stub.py` |
 | `fact_drift_checker.py` | Сравнивает brand facts между поверхностями и ищет drift-паттерны | `python scripts/fact_drift_checker.py --surface website=./website.md --surface schema=./schema.md` |
 | `scheduled_check_runner.py` | Печатает execution plan для регулярной проверки | `python scripts/scheduled_check_runner.py --project-id 1 --check-type llms --frequency weekly --schedule-mode github_actions` |

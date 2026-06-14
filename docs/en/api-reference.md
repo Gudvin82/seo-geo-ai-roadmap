@@ -196,6 +196,11 @@ Starter source values:
 - `yandex_business`
 - `merchant_center`
 - `meta_ads`
+- `x_ads`
+- `x_organic`
+- `threads`
+- `reddit_mentions`
+- `tiktok_organic`
 - `vk_ads`
 - `telegram_ads`
 - `youtube`
@@ -243,6 +248,11 @@ summaries.
 - `GET /api/v1/settings/integration-starters`
 - `GET /api/v1/settings/vertical-packs`
 - `GET /api/v1/settings/review-mode`
+- `GET /api/v1/settings/social-distribution-center`
+- `GET /api/v1/settings/social-intelligence-center?project_id={project_id}`
+- `GET /api/v1/settings/saas-growth-center?workspace_id={workspace_id}`
+- `GET /api/v1/settings/repo-understanding-center`
+- `GET /api/v1/settings/deploy-wizard`
 
 ## Tools
 

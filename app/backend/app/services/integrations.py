@@ -7,7 +7,7 @@ from typing import Any
 
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v5.2.0"
+CONTRACT_VERSION = "v5.3.0"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {
@@ -322,6 +322,132 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
         ],
         "next_step": "Use Meta Ads as a paid amplification and remarketing layer, not as a substitute for search data.",
     },
+    "x_ads": {
+        "source_type": "x_ads",
+        "label": "X Ads",
+        "readiness_tier": "distribution_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["X_ADS_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "campaign baseline refresh",
+            "thought-leadership amplification review",
+            "lead cost review",
+        ],
+        "production_flow": [
+            "connect X Ads token",
+            "sync campaign spend clicks and leads",
+            "compare amplification demand with branded search and AI mentions",
+            "use it for distribution and executive narrative, not core search truth",
+        ],
+        "capabilities": [
+            "campaign spend import",
+            "click and CPL tracking",
+            "thought-leadership amplification context",
+        ],
+        "next_step": "Use X Ads where expert distribution and founder-led amplification affect demand generation.",
+    },
+    "x_organic": {
+        "source_type": "x_organic",
+        "label": "X Organic Intelligence",
+        "readiness_tier": "social_intelligence_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["X_ORGANIC_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "post performance refresh",
+            "mention trend review",
+            "content opportunity export",
+        ],
+        "production_flow": [
+            "connect X organic analytics or approved export token",
+            "sync post performance and mention signals",
+            "turn high-engagement posts into site and FAQ opportunities",
+            "feed repeated questions into GEO and content planning",
+        ],
+        "capabilities": [
+            "post performance import",
+            "mention tracking",
+            "content opportunity detection",
+            "community demand context",
+        ],
+        "next_step": "Use X organic as a community and insight layer that feeds content, proof, and founder-brand loops.",
+    },
+    "threads": {
+        "source_type": "threads",
+        "label": "Threads Intelligence",
+        "readiness_tier": "social_intelligence_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["THREADS_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "discussion performance refresh",
+            "question cluster review",
+            "site-click validation",
+        ],
+        "production_flow": [
+            "connect Threads analytics or approved export token",
+            "sync views, engagements, replies, and site clicks",
+            "cluster repeated questions and objections",
+            "reuse strong discussions for answer-ready pages and executive narratives",
+        ],
+        "capabilities": [
+            "discussion performance import",
+            "question cluster detection",
+            "site-click context",
+        ],
+        "next_step": "Use Threads where discussion quality and recurring objections inform product messaging and GEO content design.",
+    },
+    "reddit_mentions": {
+        "source_type": "reddit_mentions",
+        "label": "Reddit Mentions",
+        "readiness_tier": "social_intelligence_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["REDDIT_MONITOR_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "community mention refresh",
+            "sentiment review",
+            "opportunity export",
+        ],
+        "production_flow": [
+            "connect approved Reddit monitoring token or export",
+            "sync communities, mentions, and clicks",
+            "separate positive proof from negative objections",
+            "feed useful threads into public proof and FAQ planning",
+        ],
+        "capabilities": [
+            "community mention tracking",
+            "sentiment context",
+            "content opportunity detection",
+        ],
+        "next_step": "Use Reddit mentions when community trust, objections, and peer recommendations influence buying or citation patterns.",
+    },
+    "tiktok_organic": {
+        "source_type": "tiktok_organic",
+        "label": "TikTok Organic",
+        "readiness_tier": "social_intelligence_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["TIKTOK_ORGANIC_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "video performance refresh",
+            "comment signal review",
+            "site-click review",
+        ],
+        "production_flow": [
+            "connect TikTok analytics or approved export token",
+            "sync views, watch rate, profile clicks, and site clicks",
+            "promote high-retention ideas into site hooks and landing copy",
+            "convert top comments into FAQs and objection handling",
+        ],
+        "capabilities": [
+            "video performance import",
+            "comment-derived content opportunities",
+            "site-click context",
+        ],
+        "next_step": "Use TikTok organic where short-form demand and creator-style hooks influence acquisition and messaging.",
+    },
     "vk_ads": {
         "source_type": "vk_ads",
         "label": "VK Ads",
@@ -590,6 +716,22 @@ def sync_integration_source(
             }
     elif source == "meta_ads":
         payload = _run_json_script("meta_ads_stub.py", "Meta Ads starter failed.")
+    elif source == "x_ads":
+        payload = _run_json_script("x_ads_stub.py", "X Ads starter failed.")
+    elif source == "x_organic":
+        payload = _run_json_script(
+            "x_organic_stub.py", "X organic intelligence starter failed."
+        )
+    elif source == "threads":
+        payload = _run_json_script("threads_stub.py", "Threads starter failed.")
+    elif source == "reddit_mentions":
+        payload = _run_json_script(
+            "reddit_mentions_stub.py", "Reddit mentions starter failed."
+        )
+    elif source == "tiktok_organic":
+        payload = _run_json_script(
+            "tiktok_organic_stub.py", "TikTok organic starter failed."
+        )
     elif source == "vk_ads":
         payload = _run_json_script("vk_ads_stub.py", "VK Ads starter failed.")
     elif source == "telegram_ads":

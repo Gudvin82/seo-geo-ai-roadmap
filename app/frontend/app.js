@@ -20,6 +20,7 @@ const state = {
   portfolioDashboard: {},
   demoCenter: {},
   productizationCenter: {},
+  saasGrowthCenter: {},
   proofTimeline: [],
   proofKit: {},
   proofExportPack: {},
@@ -33,6 +34,7 @@ const state = {
   deployWizard: {},
   promptPacks: {},
   socialDistributionCenter: {},
+  socialIntelligenceCenter: {},
   localEntityCenter: {},
   integrationContracts: [],
   cmsContracts: [],
@@ -67,7 +69,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v5.2.0 repo understanding, deploy wizard, integration health, and multi-template AI-to-App delivery",
+      "v5.3.0 social intelligence, SaaS growth, and multi-channel AI-to-App delivery",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -258,7 +260,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v5.2.0 repo understanding, deploy wizard, integration health и multi-template AI-to-App delivery",
+      "v5.3.0 social intelligence, SaaS growth и multi-channel AI-to-App delivery",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -712,6 +714,11 @@ function renderSaasCenter() {
     null,
     2,
   );
+  $("#saas-growth-center").textContent = JSON.stringify(
+    state.saasGrowthCenter || {},
+    null,
+    2,
+  );
 }
 
 function renderProofCenter() {
@@ -776,6 +783,11 @@ function renderBuildCenter() {
   );
   $("#social-distribution-center").textContent = JSON.stringify(
     state.socialDistributionCenter || {},
+    null,
+    2,
+  );
+  $("#social-intelligence-center").textContent = JSON.stringify(
+    state.socialIntelligenceCenter || {},
     null,
     2,
   );
@@ -1102,6 +1114,9 @@ async function refreshSaasCenter() {
       apiRequest(
         `/settings/portfolio-dashboard?workspace_id=${state.selectedWorkspaceId}`,
       ),
+      apiRequest(
+        `/settings/saas-growth-center?workspace_id=${state.selectedWorkspaceId}`,
+      ),
     );
   }
   const [
@@ -1110,12 +1125,14 @@ async function refreshSaasCenter() {
     demoCenter,
     productizationCenter,
     portfolioDashboard,
+    saasGrowthCenter,
   ] = await Promise.all(requests);
   state.saasCatalog = catalog.items || [];
   state.organizations = organizations || [];
   state.demoCenter = demoCenter || {};
   state.productizationCenter = productizationCenter || {};
   state.portfolioDashboard = portfolioDashboard || {};
+  state.saasGrowthCenter = saasGrowthCenter || {};
   if (state.selectedWorkspaceId) {
     try {
       state.tenantOverview = await apiRequest(
@@ -1154,29 +1171,37 @@ async function refreshBuildCenter() {
   if (!state.token) {
     return;
   }
+  const socialIntelligenceRequest = state.selectedProjectId
+    ? apiRequest(
+        `/settings/social-intelligence-center?project_id=${state.selectedProjectId}`,
+      )
+    : Promise.resolve({});
   const [
     contracts,
     manifests,
     oneLinkBuilder,
     socialDistributionCenter,
+    socialIntelligenceCenter,
     repoUnderstanding,
     deployWizard,
     promptPacks,
     localEntityCenter,
   ] = await Promise.all([
-      apiRequest("/generation/contracts"),
-      apiRequest("/generation/manifests"),
-      apiRequest("/settings/one-link-builder", { headers: {} }),
-      apiRequest("/settings/social-distribution-center", { headers: {} }),
-      apiRequest("/settings/repo-understanding-center", { headers: {} }),
-      apiRequest("/settings/deploy-wizard", { headers: {} }),
-      apiRequest("/settings/prompt-packs", { headers: {} }),
+    apiRequest("/generation/contracts"),
+    apiRequest("/generation/manifests"),
+    apiRequest("/settings/one-link-builder", { headers: {} }),
+    apiRequest("/settings/social-distribution-center", { headers: {} }),
+    socialIntelligenceRequest,
+    apiRequest("/settings/repo-understanding-center", { headers: {} }),
+    apiRequest("/settings/deploy-wizard", { headers: {} }),
+    apiRequest("/settings/prompt-packs", { headers: {} }),
       apiRequest("/settings/local-entity-center", { headers: {} }),
     ]);
   state.generationContracts = contracts;
   state.generationManifests = manifests;
   state.oneLinkBuilder = oneLinkBuilder;
   state.socialDistributionCenter = socialDistributionCenter;
+  state.socialIntelligenceCenter = socialIntelligenceCenter;
   state.repoUnderstanding = repoUnderstanding;
   state.deployWizard = deployWizard;
   state.promptPacks = promptPacks;

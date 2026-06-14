@@ -132,6 +132,11 @@ def integration_starters() -> dict:
             "scripts/yandex_business_stub.py",
             "scripts/merchant_center_stub.py",
             "scripts/meta_ads_stub.py",
+            "scripts/x_ads_stub.py",
+            "scripts/x_organic_stub.py",
+            "scripts/threads_stub.py",
+            "scripts/reddit_mentions_stub.py",
+            "scripts/tiktok_organic_stub.py",
             "scripts/vk_ads_stub.py",
             "scripts/telegram_ads_stub.py",
             "scripts/youtube_analytics_stub.py",
@@ -358,6 +363,11 @@ def social_distribution_center() -> dict:
     return {
         "connected_surfaces": [
             "meta_ads",
+            "x_ads",
+            "x_organic",
+            "threads",
+            "reddit_mentions",
+            "tiktok_organic",
             "vk_ads",
             "telegram_ads",
             "youtube",
@@ -371,11 +381,154 @@ def social_distribution_center() -> dict:
             "reputation event timeline",
             "community demand comparison",
             "local-business trust overlays",
+            "social content opportunity queue",
+            "founder-led thought leadership parsing",
+            "comment-to-faq extraction",
         ],
         "mention_tracking_model": {
             "starter_mode": "track mentions through evidence records and operator notes",
             "next_mode": "connect external social monitoring or API-backed ingestion",
         },
+        "useful_workflows": [
+            "parse best posts into FAQ and answer-ready pages",
+            "turn repeated social questions into landing-page objections",
+            "map community mentions to executive narrative and proof packs",
+            "compare social amplification with branded search and AI citations",
+        ],
+    }
+
+
+@router.get("/social-intelligence-center")
+def social_intelligence_center(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    project, _ = require_project_access(
+        db, project_id, current_user, minimum_role="viewer"
+    )
+    integration_rows = (
+        db.query(IntegrationConnection)
+        .filter(IntegrationConnection.project_id == project_id)
+        .order_by(IntegrationConnection.id.desc())
+        .all()
+    )
+    snapshots = {
+        row.source_type: json.loads(row.latest_snapshot_json or "{}")
+        for row in integration_rows
+    }
+    supported_surfaces = [
+        "meta_ads",
+        "x_ads",
+        "x_organic",
+        "threads",
+        "reddit_mentions",
+        "tiktok_organic",
+        "vk_ads",
+        "telegram_ads",
+        "youtube",
+        "linkedin_ads",
+        "instagram_facebook_organic",
+    ]
+    connected = [surface for surface in supported_surfaces if surface in snapshots]
+    opportunity_queue: list[dict[str, str]] = []
+    for surface in ["x_organic", "threads", "reddit_mentions", "tiktok_organic"]:
+        snapshot = snapshots.get(surface) or {}
+        for idea in snapshot.get("opportunities", [])[:2]:
+            opportunity_queue.append(
+                {
+                    "surface": surface,
+                    "type": "content_opportunity",
+                    "action": idea,
+                }
+            )
+
+    comparison = {
+        "supporting_social_clicks": sum(
+            float((snapshots.get(surface, {}).get("metrics") or {}).get("site_clicks", 0))
+            for surface in supported_surfaces
+        ),
+        "supporting_social_leads": sum(
+            float((snapshots.get(surface, {}).get("metrics") or {}).get("leads", 0))
+            for surface in supported_surfaces
+        ),
+        "supporting_social_mentions": sum(
+            float((snapshots.get(surface, {}).get("metrics") or {}).get("mentions", 0))
+            for surface in supported_surfaces
+        ),
+    }
+    return {
+        "project_id": project.id,
+        "project_name": project.name,
+        "connected_surfaces": connected,
+        "social_modes": [
+            "amplification",
+            "community demand",
+            "reputation sensing",
+            "content opportunity parsing",
+        ],
+        "opportunity_queue": opportunity_queue,
+        "executive_use_cases": [
+            "feed social questions into GEO content planning",
+            "link amplification data to brand demand and AI visibility",
+            "turn positive community proof into client-safe deliverables",
+        ],
+        "comparison": comparison,
+    }
+
+
+@router.get("/saas-growth-center")
+def saas_growth_center(
+    workspace_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    require_workspace_access(db, workspace_id, current_user, minimum_role="viewer")
+    projects = (
+        db.query(Project)
+        .filter(Project.workspace_id == workspace_id)
+        .order_by(Project.id.asc())
+        .all()
+    )
+    return {
+        "workspace_id": workspace_id,
+        "client_surfaces": [
+            "executive dashboard",
+            "client-safe proof exports",
+            "scanner intake",
+            "operator board",
+            "integration health center",
+            "social intelligence center",
+        ],
+        "growth_loops": [
+            "audit -> proof -> client report -> fix -> rerun",
+            "social question -> FAQ -> landing update -> citation lift",
+            "campaign demand -> search demand -> conversion narrative",
+        ],
+        "default_service_tiers": [
+            {
+                "tier": "starter",
+                "best_for": "one brand or solo operator",
+                "includes": ["scanner", "audits", "proof", "basic social intelligence"],
+            },
+            {
+                "tier": "agency",
+                "best_for": "multi-client workspace",
+                "includes": ["portfolio view", "client-safe exports", "operator board", "integration health"],
+            },
+            {
+                "tier": "growth",
+                "best_for": "teams that need search + social + AI operating center",
+                "includes": ["executive overlays", "social opportunity queue", "SaaS governance surfaces"],
+            },
+        ],
+        "project_count": len(projects),
+        "service_promises": [
+            "self-hosted by default",
+            "AI-agent deployable",
+            "client-report ready",
+            "search + GEO + social intelligence in one operating layer",
+        ],
     }
 
 
@@ -1232,6 +1385,11 @@ def executive_dashboard(
         integration_metrics.get("merchant_center", {}).get("metrics") or {}
     )
     meta_metrics = integration_metrics.get("meta_ads", {}).get("metrics") or {}
+    x_ads_metrics = integration_metrics.get("x_ads", {}).get("metrics") or {}
+    x_organic_metrics = integration_metrics.get("x_organic", {}).get("metrics") or {}
+    threads_metrics = integration_metrics.get("threads", {}).get("metrics") or {}
+    reddit_metrics = integration_metrics.get("reddit_mentions", {}).get("metrics") or {}
+    tiktok_metrics = integration_metrics.get("tiktok_organic", {}).get("metrics") or {}
     vk_metrics = integration_metrics.get("vk_ads", {}).get("metrics") or {}
     telegram_metrics = integration_metrics.get("telegram_ads", {}).get("metrics") or {}
     youtube_metrics = integration_metrics.get("youtube", {}).get("metrics") or {}
@@ -1286,6 +1444,11 @@ def executive_dashboard(
         "distribution_layer": {
             "sources": [
                 "meta_ads",
+                "x_ads",
+                "x_organic",
+                "threads",
+                "reddit_mentions",
+                "tiktok_organic",
                 "vk_ads",
                 "telegram_ads",
                 "youtube",
@@ -1296,6 +1459,11 @@ def executive_dashboard(
                 source
                 for source in [
                     "meta_ads",
+                    "x_ads",
+                    "x_organic",
+                    "threads",
+                    "reddit_mentions",
+                    "tiktok_organic",
                     "vk_ads",
                     "telegram_ads",
                     "youtube",
@@ -1352,6 +1520,7 @@ def executive_dashboard(
             "cpa_google_ads": _first_numeric(google_ads_metrics, "cpa"),
             "cpa_yandex_direct": _first_numeric(direct_metrics, "cost_per_conversion"),
             "cpl_meta_ads": _first_numeric(meta_metrics, "cpl"),
+            "cpl_x_ads": _first_numeric(x_ads_metrics, "cpl"),
             "cpl_vk_ads": _first_numeric(vk_metrics, "cpl"),
             "cpl_linkedin_ads": _first_numeric(linkedin_metrics, "cpl"),
         },
@@ -1361,6 +1530,10 @@ def executive_dashboard(
             "merchant_approval_rate": _first_numeric(merchant_metrics, "approval_rate"),
         },
         "distribution": {
+            "x_organic_site_clicks": _first_numeric(x_organic_metrics, "site_clicks"),
+            "threads_site_clicks": _first_numeric(threads_metrics, "site_clicks"),
+            "reddit_site_clicks": _first_numeric(reddit_metrics, "site_clicks"),
+            "tiktok_site_clicks": _first_numeric(tiktok_metrics, "site_clicks"),
             "telegram_clicks": _first_numeric(telegram_metrics, "clicks"),
             "youtube_site_clicks": _first_numeric(youtube_metrics, "site_clicks"),
             "instagram_site_clicks": _first_numeric(instagram_metrics, "site_clicks"),

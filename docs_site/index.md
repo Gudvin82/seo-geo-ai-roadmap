@@ -1,5 +1,7 @@
 # SEO + GEO + AI Discoverability OS
 
+![Project badge](assets/screenshots/project-badge-v530.png)
+
 This docs site is a public delivery layer for the repository. The repository
 itself remains the source of truth for methodology, execution assets,
 validation, and release discipline.

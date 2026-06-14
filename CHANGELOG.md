@@ -1,5 +1,13 @@
 # Changelog
 
+## v5.3.0 — Social Intelligence, SaaS Growth, and Public Project Packaging
+
+- Added starter integrations for X Ads, X Organic, Threads, Reddit mentions, and TikTok organic
+- Added social-intelligence-center and saas-growth-center machine-readable endpoints
+- Expanded the distribution and social layer from supporting context into a more useful parsing and opportunity surface
+- Added a public project image asset and embedded it into README and docs-site entry surfaces
+- Bumped active runtime and contract markers to `v5.3.0`
+
 ## v5.2.0 — Repo Understanding, Deploy Wizard, and Productized Runtime Paths
 
 - Added repo-understanding mode so AI agents and operators can map architecture, product surfaces, and deployment entrypoints faster

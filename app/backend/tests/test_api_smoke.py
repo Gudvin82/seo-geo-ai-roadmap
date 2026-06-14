@@ -172,6 +172,26 @@ def test_workspace_project_and_audit_flow(
         item["source_type"] == "meta_ads"
         for item in integration_contracts.json()["contracts"]
     )
+    assert any(
+        item["source_type"] == "x_ads"
+        for item in integration_contracts.json()["contracts"]
+    )
+    assert any(
+        item["source_type"] == "x_organic"
+        for item in integration_contracts.json()["contracts"]
+    )
+    assert any(
+        item["source_type"] == "threads"
+        for item in integration_contracts.json()["contracts"]
+    )
+    assert any(
+        item["source_type"] == "reddit_mentions"
+        for item in integration_contracts.json()["contracts"]
+    )
+    assert any(
+        item["source_type"] == "tiktok_organic"
+        for item in integration_contracts.json()["contracts"]
+    )
     integration_plan = client.get(
         f"/api/v1/integrations/{integration_id}/readiness-plan",
         headers=auth_headers,
@@ -270,6 +290,26 @@ def test_workspace_project_and_audit_flow(
         headers=auth_headers,
     )
     assert social_sync.status_code == 200
+
+    x_ads_integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "x_ads",
+            "label": "X Thought Leadership Ads",
+            "property_identifier": "x-ads-account-1",
+            "credentials_env_var": "X_ADS_TOKEN",
+            "config": {},
+        },
+        headers=auth_headers,
+    )
+    assert x_ads_integration.status_code == 200
+    x_ads_sync = client.post(
+        f"/api/v1/integrations/{x_ads_integration.json()['id']}/sync",
+        headers=auth_headers,
+    )
+    assert x_ads_sync.status_code == 200
 
     cms = client.post(
         "/api/v1/cms",
@@ -546,7 +586,7 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v5.2.0"
+        generation_contracts.json()["project_generation_contract_version"] == "v5.3.0"
     )
 
     generation_manifest = client.post(
@@ -608,6 +648,15 @@ def test_workspace_project_and_audit_flow(
     )
     assert social_distribution.status_code == 200
     assert social_distribution.json()["connected_surfaces"]
+    assert social_distribution.json()["useful_workflows"]
+
+    social_intelligence = client.get(
+        f"/api/v1/settings/social-intelligence-center?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert social_intelligence.status_code == 200
+    assert social_intelligence.json()["social_modes"]
+    assert social_intelligence.json()["executive_use_cases"]
 
     repo_understanding = client.get(
         "/api/v1/settings/repo-understanding-center", headers=auth_headers
@@ -638,6 +687,13 @@ def test_workspace_project_and_audit_flow(
     )
     assert productization_center.status_code == 200
     assert productization_center.json()["billing_abstraction"]
+
+    saas_growth_center = client.get(
+        f"/api/v1/settings/saas-growth-center?workspace_id={workspace_id}",
+        headers=auth_headers,
+    )
+    assert saas_growth_center.status_code == 200
+    assert saas_growth_center.json()["default_service_tiers"]
 
     portfolio_dashboard = client.get(
         f"/api/v1/settings/portfolio-dashboard?workspace_id={workspace_id}",

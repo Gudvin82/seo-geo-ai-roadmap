@@ -28,6 +28,11 @@
 | `check_hallucinations.py` | Create a starter hallucination-checking report from brand facts and questions | `python scripts/check_hallucinations.py --brand-facts-file examples/brand-facts-example.md --questions-file examples/hallucination-questions-example.md --output-file hallucination-report.md` |
 | `gsc_data_stub.py` | Emit a Google Search Console shaped starter payload | `python scripts/gsc_data_stub.py` |
 | `yandex_data_stub.py` | Emit a Yandex shaped starter payload | `python scripts/yandex_data_stub.py` |
+| `x_ads_stub.py` | Emit a starter X Ads payload | `python scripts/x_ads_stub.py` |
+| `x_organic_stub.py` | Emit a starter X organic intelligence payload | `python scripts/x_organic_stub.py` |
+| `threads_stub.py` | Emit a starter Threads payload | `python scripts/threads_stub.py` |
+| `reddit_mentions_stub.py` | Emit a starter Reddit mentions payload | `python scripts/reddit_mentions_stub.py` |
+| `tiktok_organic_stub.py` | Emit a starter TikTok organic payload | `python scripts/tiktok_organic_stub.py` |
 | `provider_benchmark_stub.py` | Print a provider benchmark rubric scaffold | `python scripts/provider_benchmark_stub.py` |
 | `fact_drift_checker.py` | Compare brand facts across surfaces and flag drift patterns | `python scripts/fact_drift_checker.py --surface website=./website.md --surface schema=./schema.md` |
 | `scheduled_check_runner.py` | Print the execution plan for a recurring check | `python scripts/scheduled_check_runner.py --project-id 1 --check-type llms --frequency weekly --schedule-mode github_actions` |

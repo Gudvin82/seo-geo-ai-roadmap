@@ -13,6 +13,8 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-app-009688?logo=fastapi&logoColor=white)](./app/backend/app/main.py)
 ![Self-Hosted Ready](https://img.shields.io/badge/self--hosted-ready-1f6f50)
 
+![SEO GEO AI Project Badge](./docs_site/assets/screenshots/project-badge-v530.png)
+
 Бесплатная, прозрачная, self-hosted платформа для SEO, GEO и AI
 discoverability. Ее можно развернуть на своем компьютере или сервере,
 подключить свои AI providers, запускать аудиты, отслеживать AI Share of Voice,
@@ -121,6 +123,7 @@ discoverability. Ее можно развернуть на своем компь
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
 - Матрица production-flow интеграций: [docs/ru/integration-production-matrix-v450.md](./docs/ru/integration-production-matrix-v450.md)
 - Каталог провайдеров: [docs/ru/provider-catalog-v450.md](./docs/ru/provider-catalog-v450.md)
+- Сводка релиза v5.3.0: [docs/ru/v530-release.md](./docs/ru/v530-release.md)
 - Сводка релиза v5.2.0: [docs/ru/v520-release.md](./docs/ru/v520-release.md)
 - Сводка релиза v5.1.0: [docs/ru/v510-release.md](./docs/ru/v510-release.md)
 - Сводка релиза v5.0.0: [docs/ru/v500-release.md](./docs/ru/v500-release.md)
@@ -165,6 +168,13 @@ discoverability. Ее можно развернуть на своем компь
 - [Prompt: оценка репозитория и сайта](./prompts/ru/repo-site-audit-agent-prompt.md)
 - [Prompt: развернуть client scanner](./prompts/ru/deploy-client-scanner-agent-prompt.md)
 - [Prompt: улучшить существующий сайт](./prompts/ru/improve-existing-site-agent-prompt.md)
+
+## Что добавляет `v5.3.0`
+
+- более сильный social intelligence слой с X Ads, X Organic, Threads, Reddit mentions и TikTok organic starter integrations
+- новый social-intelligence center, который превращает посты, mentions, replies и comments в content opportunities и executive signals
+- более сильный SaaS growth слой с service tiers, client surfaces, growth loops и более понятной упаковкой для agencies и operators
+- публичный image asset проекта, добавленный в репозиторий и docs site для более сильной публичной упаковки
 
 ## Что добавляет `v5.2.0`
 

@@ -13,6 +13,8 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-app-009688?logo=fastapi&logoColor=white)](./app/backend/app/main.py)
 ![Self-Hosted Ready](https://img.shields.io/badge/self--hosted-ready-1f6f50)
 
+![SEO GEO AI Project Badge](./docs_site/assets/screenshots/project-badge-v530.png)
+
 Free, transparent, self-hosted platform for SEO, GEO, and AI discoverability.
 Deploy it on your own machine or server, connect your own AI providers, run
 audits, track AI share of voice, manage brand facts, and deliver bilingual
@@ -119,6 +121,7 @@ Use these files before making public claims:
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
 - Integration production matrix: [docs/en/integration-production-matrix-v450.md](./docs/en/integration-production-matrix-v450.md)
 - Provider catalog: [docs/en/provider-catalog-v450.md](./docs/en/provider-catalog-v450.md)
+- v5.3.0 release summary: [docs/en/v530-release.md](./docs/en/v530-release.md)
 - v5.2.0 release summary: [docs/en/v520-release.md](./docs/en/v520-release.md)
 - v5.1.0 release summary: [docs/en/v510-release.md](./docs/en/v510-release.md)
 - v5.0.0 release summary: [docs/en/v500-release.md](./docs/en/v500-release.md)
@@ -163,6 +166,13 @@ AI coding agent without inventing the prompt from scratch:
 - [Repo + site audit prompt](./prompts/en/repo-site-audit-agent-prompt.md)
 - [Deploy client scanner prompt](./prompts/en/deploy-client-scanner-agent-prompt.md)
 - [Improve existing site prompt](./prompts/en/improve-existing-site-agent-prompt.md)
+
+## What `v5.3.0` adds
+
+- stronger social intelligence with X Ads, X Organic, Threads, Reddit mentions, and TikTok organic starter integrations
+- a new social-intelligence center that turns posts, mentions, replies, and comments into content opportunities and executive signals
+- a stronger SaaS growth layer with service tiers, client surfaces, growth loops, and clearer packaging for agencies and operators
+- a public project image asset added to the repository and docs site so the product presents better in GitHub and public delivery
 
 ## What `v5.2.0` adds
 
