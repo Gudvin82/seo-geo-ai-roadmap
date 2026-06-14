@@ -445,7 +445,9 @@ def social_intelligence_center(
 
     comparison = {
         "supporting_social_clicks": sum(
-            float((snapshots.get(surface, {}).get("metrics") or {}).get("site_clicks", 0))
+            float(
+                (snapshots.get(surface, {}).get("metrics") or {}).get("site_clicks", 0)
+            )
             for surface in supported_surfaces
         ),
         "supporting_social_leads": sum(
@@ -514,12 +516,21 @@ def saas_growth_center(
             {
                 "tier": "agency",
                 "best_for": "multi-client workspace",
-                "includes": ["portfolio view", "client-safe exports", "operator board", "integration health"],
+                "includes": [
+                    "portfolio view",
+                    "client-safe exports",
+                    "operator board",
+                    "integration health",
+                ],
             },
             {
                 "tier": "growth",
                 "best_for": "teams that need search + social + AI operating center",
-                "includes": ["executive overlays", "social opportunity queue", "SaaS governance surfaces"],
+                "includes": [
+                    "executive overlays",
+                    "social opportunity queue",
+                    "SaaS governance surfaces",
+                ],
             },
         ],
         "project_count": len(projects),
