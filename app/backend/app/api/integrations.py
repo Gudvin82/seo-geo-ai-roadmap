@@ -270,7 +270,9 @@ def integration_detail(
         else "contract_only",
         freshness=latest_event.freshness_label if latest_event else "never_synced",
         readiness_tier=contract["readiness_tier"],
-        runtime_level=latest_event.provenance_level if latest_event else "contract_only",
+        runtime_level=latest_event.provenance_level
+        if latest_event
+        else "contract_only",
         last_successful_pull=row.last_sync_at,
         last_error=latest_event.error_summary if latest_event else None,
         recommended_next_steps=contract.get("production_flow", [])

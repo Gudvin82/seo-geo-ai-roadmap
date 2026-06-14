@@ -1,19 +1,21 @@
+import contextlib
+import io
 import json
-import subprocess
-import sys
+import runpy
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def _run(script_name: str) -> dict:
-    result = subprocess.run(
-        [sys.executable, str(ROOT / "scripts" / script_name)],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    return json.loads(result.stdout)
+    stdout = io.StringIO()
+    with contextlib.redirect_stdout(stdout):
+        try:
+            runpy.run_path(str(ROOT / "scripts" / script_name), run_name="__main__")
+        except SystemExit as error:
+            if error.code not in (0, None):
+                raise
+    return json.loads(stdout.getvalue())
 
 
 def test_google_ads_stub_outputs_metrics() -> None:

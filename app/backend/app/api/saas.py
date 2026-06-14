@@ -123,9 +123,7 @@ def create_tenant_profile(
         plan_status=payload.plan_status,
         quota_json=json.dumps(payload.quota, ensure_ascii=False),
         usage_json=json.dumps(payload.usage, ensure_ascii=False),
-        onboarding_state_json=json.dumps(
-            payload.onboarding_state, ensure_ascii=False
-        ),
+        onboarding_state_json=json.dumps(payload.onboarding_state, ensure_ascii=False),
         tenant_settings_json=json.dumps(payload.tenant_settings, ensure_ascii=False),
     )
     db.add(row)
@@ -207,7 +205,9 @@ def create_api_key(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> TenantApiKeyRead:
-    require_workspace_access(db, payload.workspace_id, current_user, minimum_role="admin")
+    require_workspace_access(
+        db, payload.workspace_id, current_user, minimum_role="admin"
+    )
     token = f"sgai_{secrets.token_urlsafe(24)}"
     row = TenantApiKey(
         workspace_id=payload.workspace_id,
