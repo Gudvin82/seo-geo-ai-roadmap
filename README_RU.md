@@ -119,6 +119,7 @@ discoverability. Ее можно развернуть на своем компь
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
 - Матрица production-flow интеграций: [docs/ru/integration-production-matrix-v450.md](./docs/ru/integration-production-matrix-v450.md)
 - Каталог провайдеров: [docs/ru/provider-catalog-v450.md](./docs/ru/provider-catalog-v450.md)
+- Сводка релиза v4.6.0: [docs/ru/v460-release.md](./docs/ru/v460-release.md)
 - Сводка релиза v4.5.2: [docs/ru/v452-release.md](./docs/ru/v452-release.md)
 - Сводка релиза v4.5.0: [docs/ru/v450-release.md](./docs/ru/v450-release.md)
 - Deployment: [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
@@ -159,6 +160,12 @@ discoverability. Ее можно развернуть на своем компь
 - [Prompt: оценка репозитория и сайта](./prompts/ru/repo-site-audit-agent-prompt.md)
 - [Prompt: развернуть client scanner](./prompts/ru/deploy-client-scanner-agent-prompt.md)
 - [Prompt: улучшить существующий сайт](./prompts/ru/improve-existing-site-agent-prompt.md)
+
+## Что добавляет `v4.6.0`
+
+- first-class starter integrations для Google Ads, IndexNow, Google Business Profile, Yandex Business, Merchant Center, Meta Ads, VK Ads, Telegram, YouTube, LinkedIn и Instagram или Facebook organic
+- executive dashboard, который разделяет Google, RU, local-business и distribution layers
+- более сильную сравнительную рамку для organic demand, paid demand, AI visibility и landing-page conversion
 
 ## Что добавляет `v4.5.2`
 

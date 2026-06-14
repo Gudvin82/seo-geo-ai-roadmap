@@ -8,10 +8,21 @@ This is the shortest operational view of the integration layer.
 | --- | --- | --- | --- | --- |
 | GSC | search visibility | `production_guided` | env-aware verification matrix | connect service account and schedule recurring sync |
 | GA4 | outcome and engagement | `production_guided` | env-aware verification matrix | validate imported baseline and use it in executive mode |
+| Google Ads | paid search demand | `production_guided` | env-aware verification matrix | connect credentials and compare brand/non-brand demand with GSC and GA4 |
 | Yandex Webmaster | RU search visibility | `production_guided` | env-aware verification matrix | connect token and keep it in the same compare loop as GSC |
 | Yandex Metrica | RU analytics | `production_guided` | env-aware verification matrix | pair with Webmaster for RU diagnostics plus conversion context |
 | Yandex Direct | RU paid demand and landing alignment | `production_guided` | env-aware verification matrix | connect token and compare spend plus demand shifts with organic and AI visibility |
 | CrUX | field data | `production_guided` | env-aware verification matrix | combine real-user CWV with synthetic checks and CI gating |
+| IndexNow | fast indexation signal | `production_guided` | env-aware verification matrix | configure push path for fresh URLs |
+| Google Business Profile | local trust and maps demand | `production_guided` | env-aware verification matrix | connect profile and review local actions |
+| Yandex Business | RU local trust and maps demand | `production_guided` | env-aware verification matrix | connect profile and compare with RU local landing performance |
+| Merchant Center | commerce feed health | `production_guided` | env-aware verification matrix | track approvals and product feed issues |
+| Meta Ads | paid distribution | `distribution_guided` | env-aware verification matrix | use as amplification and remarketing context |
+| VK Ads | RU paid distribution | `distribution_guided` | env-aware verification matrix | compare with RU search demand and conversions |
+| Telegram ads or channel analytics | community distribution | `distribution_guided` | env-aware verification matrix | use for channel-demand validation |
+| YouTube Analytics | media distribution | `distribution_guided` | env-aware verification matrix | compare video demand with branded search and site clicks |
+| LinkedIn Ads | B2B paid distribution | `distribution_guided` | env-aware verification matrix | use for B2B demand amplification |
+| Instagram or Facebook organic | social distribution | `distribution_guided` | env-aware verification matrix | use as a supporting distribution signal |
 | WordPress | governed CMS | `production_guided` | CMS contract plus inventory flow | move from inventory to reviewed patch bundles |
 | Webflow | governed CMS | `production_guided` | CMS contract plus export-first flow | keep publish behind review |
 | Bitrix | governed CMS | `production_guided` | CMS contract plus mapping validation | validate field mapping before automation |

@@ -111,9 +111,20 @@ def integration_starters() -> dict:
         "search_data": [
             "scripts/gsc_data_stub.py",
             "scripts/ga4_data_stub.py",
+            "scripts/google_ads_stub.py",
             "scripts/yandex_data_stub.py",
             "scripts/yandex_metrica_stub.py",
             "scripts/yandex_direct_stub.py",
+            "scripts/indexnow_stub.py",
+            "scripts/google_business_profile_stub.py",
+            "scripts/yandex_business_stub.py",
+            "scripts/merchant_center_stub.py",
+            "scripts/meta_ads_stub.py",
+            "scripts/vk_ads_stub.py",
+            "scripts/telegram_ads_stub.py",
+            "scripts/youtube_analytics_stub.py",
+            "scripts/linkedin_ads_stub.py",
+            "scripts/instagram_facebook_organic_stub.py",
         ],
         "notifications": [
             "Slack webhook",
@@ -332,6 +343,9 @@ def service_foundation() -> ServiceFoundationRead:
             "choose your deployment target",
             "choose one SSO strategy or stay with native auth first",
             "choose one billing strategy or stay free and internal first",
+            "connect Google search, analytics, and paid stack",
+            "connect Yandex search, analytics, and paid stack",
+            "add local-business and distribution layers only after core search truth is in place",
             "enable integrations and scanner intake under your own domain",
         ],
     )
@@ -400,6 +414,34 @@ def managed_api_boundary() -> ManagedApiBoundaryRead:
     )
 
 
+def _integration_metrics_by_source(
+    integrations: list[IntegrationConnection],
+) -> dict[str, dict[str, object]]:
+    rows: dict[str, dict[str, object]] = {}
+    for row in integrations:
+        snapshot = json.loads(row.latest_snapshot_json or "{}")
+        rows[row.source_type] = {
+            "label": row.label,
+            "status": row.last_sync_status or "created",
+            "metrics": snapshot.get("metrics") or {},
+            "rows": snapshot.get("rows") or [],
+            "campaigns": snapshot.get("campaigns") or [],
+            "locations": snapshot.get("locations") or [],
+            "profiles": snapshot.get("profiles") or [],
+            "videos": snapshot.get("videos") or [],
+            "channels": snapshot.get("channels") or [],
+            "top_pages": snapshot.get("top_pages") or [],
+        }
+    return rows
+
+
+def _first_numeric(mapping: dict[str, object], key: str, default: float = 0.0) -> float:
+    value = mapping.get(key, default)
+    if isinstance(value, (int, float)):
+        return float(value)
+    return default
+
+
 @router.get("/executive-dashboard", response_model=ExecutiveDashboardRead)
 def executive_dashboard(
     project_id: int,
@@ -454,6 +496,158 @@ def executive_dashboard(
         health_band = "watch"
     else:
         health_band = "critical"
+    integration_metrics = _integration_metrics_by_source(integrations)
+    gsc_metrics = integration_metrics.get("gsc", {}).get("rows") or []
+    ga4_metrics = integration_metrics.get("ga4", {}).get("metrics") or {}
+    google_ads_metrics = integration_metrics.get("google_ads", {}).get("metrics") or {}
+    webmaster_metrics = (
+        integration_metrics.get("yandex_webmaster", {}).get("rows") or []
+    )
+    metrica_metrics = integration_metrics.get("yandex_metrica", {}).get("metrics") or {}
+    direct_metrics = integration_metrics.get("yandex_direct", {}).get("metrics") or {}
+    crux_metrics = integration_metrics.get("crux", {}).get("metrics") or {}
+    gbp_metrics = (
+        integration_metrics.get("google_business_profile", {}).get("metrics") or {}
+    )
+    yb_metrics = integration_metrics.get("yandex_business", {}).get("metrics") or {}
+    merchant_metrics = (
+        integration_metrics.get("merchant_center", {}).get("metrics") or {}
+    )
+    meta_metrics = integration_metrics.get("meta_ads", {}).get("metrics") or {}
+    vk_metrics = integration_metrics.get("vk_ads", {}).get("metrics") or {}
+    telegram_metrics = integration_metrics.get("telegram_ads", {}).get("metrics") or {}
+    youtube_metrics = integration_metrics.get("youtube", {}).get("metrics") or {}
+    linkedin_metrics = integration_metrics.get("linkedin_ads", {}).get("metrics") or {}
+    instagram_metrics = (
+        integration_metrics.get("instagram_facebook_organic", {}).get("metrics") or {}
+    )
+    executive_layers = {
+        "google_executive_layer": {
+            "sources": ["gsc", "ga4", "google_ads", "crux"],
+            "connected": [
+                source
+                for source in ["gsc", "ga4", "google_ads", "crux"]
+                if source in integration_metrics
+            ],
+            "focus": "organic demand, paid demand, user behavior, and field data",
+        },
+        "ru_executive_layer": {
+            "sources": [
+                "yandex_webmaster",
+                "yandex_metrica",
+                "yandex_direct",
+            ],
+            "connected": [
+                source
+                for source in [
+                    "yandex_webmaster",
+                    "yandex_metrica",
+                    "yandex_direct",
+                ]
+                if source in integration_metrics
+            ],
+            "focus": "RU visibility, RU analytics, RU paid demand",
+        },
+        "local_business_layer": {
+            "sources": [
+                "google_business_profile",
+                "yandex_business",
+                "merchant_center",
+            ],
+            "connected": [
+                source
+                for source in [
+                    "google_business_profile",
+                    "yandex_business",
+                    "merchant_center",
+                ]
+                if source in integration_metrics
+            ],
+            "focus": "maps trust, local demand, and e-commerce feed health",
+        },
+        "distribution_layer": {
+            "sources": [
+                "meta_ads",
+                "vk_ads",
+                "telegram_ads",
+                "youtube",
+                "linkedin_ads",
+                "instagram_facebook_organic",
+            ],
+            "connected": [
+                source
+                for source in [
+                    "meta_ads",
+                    "vk_ads",
+                    "telegram_ads",
+                    "youtube",
+                    "linkedin_ads",
+                    "instagram_facebook_organic",
+                ]
+                if source in integration_metrics
+            ],
+            "focus": "distribution, audience demand, and supporting paid or social context",
+        },
+        "ru_geo_ai_layer": {
+            "signals": [
+                "YandexBot",
+                "YandexAdditional",
+                "RU entity readiness",
+                "RU answer-ready content",
+                "RU snippets and trust blocks",
+            ]
+        },
+    }
+    comparison_metrics = {
+        "organic_demand": {
+            "google_clicks": sum(
+                int(item.get("clicks", 0)) for item in gsc_metrics[:10]
+            ),
+            "yandex_clicks": sum(
+                int(item.get("clicks", 0)) for item in webmaster_metrics[:10]
+            ),
+        },
+        "paid_demand": {
+            "google_ads_cost": _first_numeric(google_ads_metrics, "cost"),
+            "google_ads_conversions": _first_numeric(google_ads_metrics, "conversions"),
+            "yandex_direct_cost": _first_numeric(direct_metrics, "spend"),
+            "yandex_direct_conversions": _first_numeric(direct_metrics, "conversions"),
+        },
+        "ai_visibility": {
+            "share_of_citation": round(executive_score / 100, 3),
+            "share_of_demand_brand": max(
+                _first_numeric(google_ads_metrics, "brand_share_of_demand"),
+                _first_numeric(direct_metrics, "brand_share_of_demand"),
+            ),
+        },
+        "landing_page_conversion": {
+            "ga4_engagement_rate": _first_numeric(ga4_metrics, "engagement_rate"),
+            "ga4_sessions": _first_numeric(ga4_metrics, "sessions"),
+            "metrica_goal_completion_rate": _first_numeric(
+                metrica_metrics, "goal_completion_rate"
+            ),
+            "metrica_visits": _first_numeric(metrica_metrics, "visits"),
+        },
+        "efficiency": {
+            "ctr_google_ads": _first_numeric(google_ads_metrics, "ctr"),
+            "ctr_yandex_direct": _first_numeric(direct_metrics, "ctr"),
+            "cpa_google_ads": _first_numeric(google_ads_metrics, "cpa"),
+            "cpa_yandex_direct": _first_numeric(direct_metrics, "cost_per_conversion"),
+            "cpl_meta_ads": _first_numeric(meta_metrics, "cpl"),
+            "cpl_vk_ads": _first_numeric(vk_metrics, "cpl"),
+            "cpl_linkedin_ads": _first_numeric(linkedin_metrics, "cpl"),
+        },
+        "local_and_commerce": {
+            "google_business_reviews": _first_numeric(gbp_metrics, "review_count"),
+            "yandex_business_reviews": _first_numeric(yb_metrics, "review_count"),
+            "merchant_approval_rate": _first_numeric(merchant_metrics, "approval_rate"),
+        },
+        "distribution": {
+            "telegram_clicks": _first_numeric(telegram_metrics, "clicks"),
+            "youtube_site_clicks": _first_numeric(youtube_metrics, "site_clicks"),
+            "instagram_site_clicks": _first_numeric(instagram_metrics, "site_clicks"),
+        },
+    }
     return ExecutiveDashboardRead(
         project_id=project.id,
         workspace_id=project.workspace_id,
@@ -473,13 +667,34 @@ def executive_dashboard(
             ),
             "integrations_connected": len(integrations),
             "cms_connectors_connected": len(cms_connectors),
+            "google_surface_connected": len(
+                executive_layers["google_executive_layer"]["connected"]
+            ),
+            "ru_surface_connected": len(
+                executive_layers["ru_executive_layer"]["connected"]
+            ),
+            "distribution_surface_connected": len(
+                executive_layers["distribution_layer"]["connected"]
+            ),
+            "local_surface_connected": len(
+                executive_layers["local_business_layer"]["connected"]
+            ),
             "product_modes": [
                 "repo_methodology",
                 "app_control_panel",
                 "scanner_intake",
+                "service_builder",
             ],
             "ci_first_class": True,
+            "brand_queries_supported": "google_ads" in integration_metrics
+            or "yandex_direct" in integration_metrics,
+            "non_brand_queries_supported": "gsc" in integration_metrics
+            or "yandex_webmaster" in integration_metrics,
+            "crux_field_data_available": "crux" in integration_metrics
+            and bool(crux_metrics),
         },
+        executive_layers=executive_layers,
+        comparison_metrics=comparison_metrics,
         priorities=priorities,
         integrations=[
             {

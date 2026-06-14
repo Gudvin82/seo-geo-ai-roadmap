@@ -160,6 +160,18 @@ def test_workspace_project_and_audit_flow(
         item["source_type"] == "yandex_direct"
         for item in integration_contracts.json()["contracts"]
     )
+    assert any(
+        item["source_type"] == "google_ads"
+        for item in integration_contracts.json()["contracts"]
+    )
+    assert any(
+        item["source_type"] == "google_business_profile"
+        for item in integration_contracts.json()["contracts"]
+    )
+    assert any(
+        item["source_type"] == "meta_ads"
+        for item in integration_contracts.json()["contracts"]
+    )
     integration_plan = client.get(
         f"/api/v1/integrations/{integration_id}/readiness-plan",
         headers=auth_headers,
@@ -197,6 +209,67 @@ def test_workspace_project_and_audit_flow(
     )
     assert direct_sync.status_code == 200
     assert direct_sync.json()["last_sync_status"] == "completed"
+
+    google_ads_integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "google_ads",
+            "label": "Google Ads Demand Layer",
+            "property_identifier": "ads-account-1",
+            "credentials_env_var": "GOOGLE_ADS_DEVELOPER_TOKEN",
+            "config": {},
+        },
+        headers=auth_headers,
+    )
+    assert google_ads_integration.status_code == 200
+    google_ads_sync = client.post(
+        f"/api/v1/integrations/{google_ads_integration.json()['id']}/sync",
+        headers=auth_headers,
+    )
+    assert google_ads_sync.status_code == 200
+    assert google_ads_sync.json()["last_sync_status"] == "completed"
+
+    local_business_integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "google_business_profile",
+            "label": "Google Business Profile",
+            "property_identifier": "location-1",
+            "credentials_env_var": "GBP_SERVICE_ACCOUNT_JSON",
+            "config": {},
+        },
+        headers=auth_headers,
+    )
+    assert local_business_integration.status_code == 200
+    local_business_sync = client.post(
+        f"/api/v1/integrations/{local_business_integration.json()['id']}/sync",
+        headers=auth_headers,
+    )
+    assert local_business_sync.status_code == 200
+
+    social_integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "meta_ads",
+            "label": "Meta Ads Amplification",
+            "property_identifier": "meta-account-1",
+            "credentials_env_var": "META_ADS_TOKEN",
+            "config": {},
+        },
+        headers=auth_headers,
+    )
+    assert social_integration.status_code == 200
+    social_sync = client.post(
+        f"/api/v1/integrations/{social_integration.json()['id']}/sync",
+        headers=auth_headers,
+    )
+    assert social_sync.status_code == 200
 
     cms = client.post(
         "/api/v1/cms",
@@ -361,6 +434,10 @@ def test_workspace_project_and_audit_flow(
     )
     assert executive_dashboard.status_code == 200
     assert executive_dashboard.json()["executive_score"] >= 0
+    assert executive_dashboard.json()["executive_layers"]["google_executive_layer"]
+    assert executive_dashboard.json()["executive_layers"]["ru_executive_layer"]
+    assert executive_dashboard.json()["comparison_metrics"]["organic_demand"]
+    assert executive_dashboard.json()["comparison_metrics"]["paid_demand"]
 
     managed_boundary = client.get(
         "/api/v1/settings/managed-api-boundary",

@@ -117,6 +117,7 @@ Use these files before making public claims:
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
 - Integration production matrix: [docs/en/integration-production-matrix-v450.md](./docs/en/integration-production-matrix-v450.md)
 - Provider catalog: [docs/en/provider-catalog-v450.md](./docs/en/provider-catalog-v450.md)
+- v4.6.0 release summary: [docs/en/v460-release.md](./docs/en/v460-release.md)
 - v4.5.2 release summary: [docs/en/v452-release.md](./docs/en/v452-release.md)
 - v4.5.0 release summary: [docs/en/v450-release.md](./docs/en/v450-release.md)
 - Deployment: [DEPLOYMENT.md](./DEPLOYMENT.md)
@@ -157,6 +158,12 @@ AI coding agent without inventing the prompt from scratch:
 - [Repo + site audit prompt](./prompts/en/repo-site-audit-agent-prompt.md)
 - [Deploy client scanner prompt](./prompts/en/deploy-client-scanner-agent-prompt.md)
 - [Improve existing site prompt](./prompts/en/improve-existing-site-agent-prompt.md)
+
+## What `v4.6.0` adds
+
+- first-class Google Ads, IndexNow, Google Business Profile, Yandex Business, Merchant Center, Meta Ads, VK Ads, Telegram, YouTube, LinkedIn, and Instagram or Facebook organic starter integrations
+- an executive dashboard that separates Google, RU, local-business, and distribution layers
+- stronger comparison framing for organic demand, paid demand, AI visibility, and landing-page conversion
 
 ## What `v4.5.2` adds
 

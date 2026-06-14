@@ -48,7 +48,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
 
     if settings_obj.auto_create_schema:
         Base.metadata.create_all(bind=initialized_engine)
-    app = FastAPI(title=settings_obj.app_name, version="4.5.2")
+    app = FastAPI(title=settings_obj.app_name, version="4.6.0")
     app.state.settings = settings_obj
     app.add_middleware(
         CORSMiddleware,
@@ -95,7 +95,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
 
     @app.get("/healthz")
     def healthz() -> dict:
-        return {"status": "ok", "version": "4.5.2"}
+        return {"status": "ok", "version": "4.6.0"}
 
     @app.get("/readyz")
     def readyz() -> dict:

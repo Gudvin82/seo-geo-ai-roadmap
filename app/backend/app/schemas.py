@@ -344,10 +344,21 @@ class IntegrationConnectionCreate(BaseModel):
         allowed = {
             "gsc",
             "ga4",
+            "google_ads",
             "yandex_webmaster",
             "yandex_metrica",
             "yandex_direct",
             "crux",
+            "indexnow",
+            "google_business_profile",
+            "yandex_business",
+            "merchant_center",
+            "meta_ads",
+            "vk_ads",
+            "telegram_ads",
+            "youtube",
+            "linkedin_ads",
+            "instagram_facebook_organic",
         }
         if source not in allowed:
             raise ValueError(
@@ -642,6 +653,8 @@ class ExecutiveDashboardRead(BaseModel):
     health_band: str
     narrative: str
     metrics: dict[str, Any]
+    executive_layers: dict[str, Any] = Field(default_factory=dict)
+    comparison_metrics: dict[str, Any] = Field(default_factory=dict)
     priorities: list[dict[str, Any]] = Field(default_factory=list)
     integrations: list[dict[str, Any]] = Field(default_factory=list)
     cms: list[dict[str, Any]] = Field(default_factory=list)

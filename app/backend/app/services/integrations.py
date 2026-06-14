@@ -7,7 +7,7 @@ from typing import Any
 
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v4.5.2"
+CONTRACT_VERSION = "v4.6.0"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {
@@ -63,6 +63,34 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
             "executive dashboard rollup",
         ],
         "next_step": "Use GA4 as the executive outcome layer after core crawlability and discoverability signals are stable.",
+    },
+    "google_ads": {
+        "source_type": "google_ads",
+        "label": "Google Ads",
+        "readiness_tier": "production_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["GOOGLE_ADS_DEVELOPER_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "campaign baseline refresh",
+            "search-term drift review",
+            "brand vs non-brand split review",
+            "cost-to-conversion validation",
+        ],
+        "production_flow": [
+            "connect Google Ads credentials",
+            "sync campaigns, ad groups, and search terms",
+            "separate brand and non-brand demand",
+            "compare paid demand with organic and AI visibility",
+        ],
+        "capabilities": [
+            "campaign import",
+            "ad group import",
+            "search terms import",
+            "cost and conversion tracking",
+            "brand vs non-brand demand context",
+        ],
+        "next_step": "Use Google Ads as the paid-demand layer paired with GSC and GA4 for full-funnel search interpretation.",
     },
     "yandex_webmaster": {
         "source_type": "yandex_webmaster",
@@ -143,6 +171,106 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
         ],
         "next_step": "Use Yandex Direct as the paid-demand companion to Yandex Webmaster and Metrica when RU acquisition quality matters.",
     },
+    "indexnow": {
+        "source_type": "indexnow",
+        "label": "IndexNow",
+        "readiness_tier": "production_guided",
+        "sync_mode": "manual_or_scheduled_push",
+        "required_env_vars": ["INDEXNOW_KEY"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "fresh-url push",
+            "submission success review",
+            "indexation delta verification",
+        ],
+        "production_flow": [
+            "configure IndexNow key",
+            "submit changed URLs in batches",
+            "verify acceptance rate",
+            "compare post-submit indexation with GSC and Webmaster",
+        ],
+        "capabilities": [
+            "fresh URL submission",
+            "batch diagnostics",
+            "indexation acceleration support",
+        ],
+        "next_step": "Use IndexNow as the fast-change distribution layer for pages that need fresher discovery signals.",
+    },
+    "google_business_profile": {
+        "source_type": "google_business_profile",
+        "label": "Google Business Profile",
+        "readiness_tier": "production_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["GBP_SERVICE_ACCOUNT_JSON"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "rating refresh",
+            "review trend review",
+            "local action validation",
+        ],
+        "production_flow": [
+            "connect profile credentials",
+            "sync ratings, reviews, and local actions",
+            "compare profile demand with local landing performance",
+            "attach local proof to executive and client outputs",
+        ],
+        "capabilities": [
+            "ratings and reviews import",
+            "calls and direction-request context",
+            "local SEO proof support",
+        ],
+        "next_step": "Use Google Business Profile whenever local intent, maps demand, or trust signals affect conversion.",
+    },
+    "yandex_business": {
+        "source_type": "yandex_business",
+        "label": "Yandex Business",
+        "readiness_tier": "production_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["YANDEX_BUSINESS_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "map visibility refresh",
+            "review trend review",
+            "route-build and click validation",
+        ],
+        "production_flow": [
+            "connect Yandex Business token",
+            "sync maps reviews and local actions",
+            "compare local RU demand with landing-page performance",
+            "use results in RU executive and local-service delivery",
+        ],
+        "capabilities": [
+            "rating and review import",
+            "maps action context",
+            "RU local SEO proof support",
+        ],
+        "next_step": "Use Yandex Business alongside Webmaster and Metrica when local RU intent matters.",
+    },
+    "merchant_center": {
+        "source_type": "merchant_center",
+        "label": "Google Merchant Center",
+        "readiness_tier": "production_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["MERCHANT_CENTER_SERVICE_ACCOUNT_JSON"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "feed health review",
+            "product approval-rate review",
+            "top issue export",
+        ],
+        "production_flow": [
+            "connect Merchant Center credentials",
+            "sync product feed diagnostics",
+            "compare feed health with landing and conversion performance",
+            "track approval-rate regressions over time",
+        ],
+        "capabilities": [
+            "feed diagnostics import",
+            "product approval tracking",
+            "e-commerce issue visibility",
+        ],
+        "next_step": "Use Merchant Center for e-commerce properties where feed health affects discoverability and conversions.",
+    },
     "crux": {
         "source_type": "crux",
         "label": "Chrome UX Report",
@@ -168,6 +296,156 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
             "release regression context",
         ],
         "next_step": "Use CrUX as the field-data layer that complements synthetic audits and release gating.",
+    },
+    "meta_ads": {
+        "source_type": "meta_ads",
+        "label": "Meta Ads",
+        "readiness_tier": "distribution_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["META_ADS_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "retargeting baseline refresh",
+            "lead cost review",
+            "landing alignment check",
+        ],
+        "production_flow": [
+            "connect Meta Ads token",
+            "sync campaign spend and lead data",
+            "compare retargeting efficiency with organic and AI demand",
+            "use as a paid amplification layer, not core SEO truth",
+        ],
+        "capabilities": [
+            "campaign spend import",
+            "lead and CPL tracking",
+            "retargeting context",
+        ],
+        "next_step": "Use Meta Ads as a paid amplification and remarketing layer, not as a substitute for search data.",
+    },
+    "vk_ads": {
+        "source_type": "vk_ads",
+        "label": "VK Ads",
+        "readiness_tier": "distribution_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["VK_ADS_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "RU campaign baseline refresh",
+            "lead cost review",
+            "landing alignment review",
+        ],
+        "production_flow": [
+            "connect VK Ads token",
+            "sync spend clicks and leads",
+            "compare RU paid demand with Webmaster and Direct",
+            "use it as a RU growth layer around the core search stack",
+        ],
+        "capabilities": [
+            "campaign spend import",
+            "lead and CPL tracking",
+            "RU paid distribution context",
+        ],
+        "next_step": "Use VK Ads when RU paid acquisition and community demand need to be measured next to search channels.",
+    },
+    "telegram_ads": {
+        "source_type": "telegram_ads",
+        "label": "Telegram Ads or Channel Analytics",
+        "readiness_tier": "distribution_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["TELEGRAM_ADS_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "reach baseline refresh",
+            "click and lead review",
+            "channel demand validation",
+        ],
+        "production_flow": [
+            "connect Telegram ads or channel analytics token",
+            "sync channel reach clicks and leads",
+            "compare channel demand with landing conversion",
+            "use it as a community and distribution signal layer",
+        ],
+        "capabilities": [
+            "channel reach import",
+            "click tracking",
+            "community demand context",
+        ],
+        "next_step": "Use Telegram when your distribution model depends on channels, communities, or post-driven demand.",
+    },
+    "youtube": {
+        "source_type": "youtube",
+        "label": "YouTube Analytics",
+        "readiness_tier": "distribution_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["YOUTUBE_ANALYTICS_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "video performance refresh",
+            "site-click review",
+            "channel growth validation",
+        ],
+        "production_flow": [
+            "connect YouTube Analytics token",
+            "sync video and channel performance",
+            "compare media demand with branded search and citations",
+            "use it as a discoverability and content-distribution layer",
+        ],
+        "capabilities": [
+            "video metrics import",
+            "watch-time context",
+            "site-click tracking",
+        ],
+        "next_step": "Use YouTube where educational video or branded media affects search and AI demand.",
+    },
+    "linkedin_ads": {
+        "source_type": "linkedin_ads",
+        "label": "LinkedIn Ads",
+        "readiness_tier": "distribution_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["LINKEDIN_ADS_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "B2B campaign refresh",
+            "lead cost review",
+            "landing alignment review",
+        ],
+        "production_flow": [
+            "connect LinkedIn Ads token",
+            "sync spend clicks and lead data",
+            "compare B2B demand with branded search and conversion paths",
+            "use it as a B2B amplification layer",
+        ],
+        "capabilities": [
+            "campaign spend import",
+            "lead and CPL tracking",
+            "B2B distribution context",
+        ],
+        "next_step": "Use LinkedIn Ads for B2B acquisition where paid awareness shapes search and conversion demand.",
+    },
+    "instagram_facebook_organic": {
+        "source_type": "instagram_facebook_organic",
+        "label": "Instagram or Facebook Organic",
+        "readiness_tier": "distribution_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["META_GRAPH_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "reach baseline refresh",
+            "engagement trend review",
+            "site-click validation",
+        ],
+        "production_flow": [
+            "connect Meta Graph token",
+            "sync reach engagement and site-click data",
+            "compare organic social demand with brand demand and conversion",
+            "use it as a supporting content-distribution signal",
+        ],
+        "capabilities": [
+            "reach import",
+            "engagement tracking",
+            "site-click context",
+        ],
+        "next_step": "Use Instagram or Facebook organic data as a supporting distribution signal, not as the core SEO or GEO layer.",
     },
 }
 
@@ -232,6 +510,13 @@ def _yandex_metrica_stub() -> dict[str, Any]:
     }
 
 
+def _run_json_script(script_name: str, error_message: str) -> dict[str, Any]:
+    code, stdout, stderr = run_script(script_name, [])
+    if code != 0:
+        raise RuntimeError(stderr or error_message)
+    return json.loads(stdout)
+
+
 def sync_integration_source(
     source_type: str,
     *,
@@ -241,24 +526,38 @@ def sync_integration_source(
     source = source_type.strip().lower()
     contract = integration_contract(source)
     if source == "gsc":
-        code, stdout, stderr = run_script("gsc_data_stub.py", [])
-        if code != 0:
-            raise RuntimeError(stderr or "GSC starter import failed.")
-        payload = json.loads(stdout)
+        payload = _run_json_script("gsc_data_stub.py", "GSC starter import failed.")
     elif source == "ga4":
         payload = _ga4_stub()
+    elif source == "google_ads":
+        payload = _run_json_script(
+            "google_ads_stub.py", "Google Ads starter import failed."
+        )
     elif source == "yandex_webmaster":
-        code, stdout, stderr = run_script("yandex_data_stub.py", [])
-        if code != 0:
-            raise RuntimeError(stderr or "Yandex Webmaster starter import failed.")
-        payload = json.loads(stdout)
+        payload = _run_json_script(
+            "yandex_data_stub.py", "Yandex Webmaster starter import failed."
+        )
     elif source == "yandex_metrica":
         payload = _yandex_metrica_stub()
     elif source == "yandex_direct":
-        code, stdout, stderr = run_script("yandex_direct_stub.py", [])
-        if code != 0:
-            raise RuntimeError(stderr or "Yandex Direct starter import failed.")
-        payload = json.loads(stdout)
+        payload = _run_json_script(
+            "yandex_direct_stub.py", "Yandex Direct starter import failed."
+        )
+    elif source == "indexnow":
+        payload = _run_json_script("indexnow_stub.py", "IndexNow starter failed.")
+    elif source == "google_business_profile":
+        payload = _run_json_script(
+            "google_business_profile_stub.py",
+            "Google Business Profile starter import failed.",
+        )
+    elif source == "yandex_business":
+        payload = _run_json_script(
+            "yandex_business_stub.py", "Yandex Business starter import failed."
+        )
+    elif source == "merchant_center":
+        payload = _run_json_script(
+            "merchant_center_stub.py", "Merchant Center starter import failed."
+        )
     elif source == "crux":
         target_url = (
             (config or {}).get("url") or property_identifier or "https://example.com/"
@@ -289,6 +588,27 @@ def sync_integration_source(
                     "cumulative_layout_shift": {"p75": 0.12},
                 },
             }
+    elif source == "meta_ads":
+        payload = _run_json_script("meta_ads_stub.py", "Meta Ads starter failed.")
+    elif source == "vk_ads":
+        payload = _run_json_script("vk_ads_stub.py", "VK Ads starter failed.")
+    elif source == "telegram_ads":
+        payload = _run_json_script(
+            "telegram_ads_stub.py", "Telegram ads starter failed."
+        )
+    elif source == "youtube":
+        payload = _run_json_script(
+            "youtube_analytics_stub.py", "YouTube analytics starter failed."
+        )
+    elif source == "linkedin_ads":
+        payload = _run_json_script(
+            "linkedin_ads_stub.py", "LinkedIn Ads starter failed."
+        )
+    elif source == "instagram_facebook_organic":
+        payload = _run_json_script(
+            "instagram_facebook_organic_stub.py",
+            "Instagram or Facebook organic starter failed.",
+        )
     else:
         raise ValueError(f"Unsupported integration source '{source_type}'.")
 

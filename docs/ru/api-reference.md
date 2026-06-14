@@ -186,9 +186,21 @@ market и language claims.
 
 - `gsc`
 - `ga4`
+- `google_ads`
 - `yandex_webmaster`
 - `yandex_metrica`
+- `yandex_direct`
 - `crux`
+- `indexnow`
+- `google_business_profile`
+- `yandex_business`
+- `merchant_center`
+- `meta_ads`
+- `vk_ads`
+- `telegram_ads`
+- `youtube`
+- `linkedin_ads`
+- `instagram_facebook_organic`
 
 ## CMS connectors и patch-package flow
 

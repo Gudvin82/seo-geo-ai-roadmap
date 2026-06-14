@@ -1,5 +1,12 @@
 # Changelog
 
+## v4.6.0 — Google, Yandex, Local Business, and Distribution Executive Stack
+
+- Added first-class integration contracts and starter sync paths for Google Ads, IndexNow, Google Business Profile, Yandex Business, Merchant Center, Meta Ads, VK Ads, Telegram ads or channel analytics, YouTube Analytics, LinkedIn Ads, and Instagram or Facebook organic analytics
+- Expanded the executive dashboard to include Google, RU, local-business, and distribution layers plus comparison metrics for organic demand, paid demand, AI visibility, landing-page conversion, CTR, CPA, CPL, and share-of-demand style readings
+- Added new starter integration scripts and API smoke coverage so the broader executive stack is exercised through both script-level and API-level paths
+- Updated app version markers and frontend integration surfaces to `v4.6.0`
+
 ## v4.5.2 — Service Foundation, Yandex Direct, and Expanded Provider Matrix
 
 - Added 10 more hosted or online providers and 10 more local or self-hosted runtimes so the repo now supports a much wider deployment surface for hybrid, local-first, and cost-controlled AI operations

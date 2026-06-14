@@ -48,7 +48,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v4.5.2 service foundation, Yandex Direct, expanded provider matrix",
+      "v4.6.0 Google, Yandex, local-business, and distribution executive stack",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -56,7 +56,7 @@ const translations = {
     badgeRepo: "Repo methodology",
     badgeApp: "App workflow",
     badgeProviders:
-      "OpenAI / Claude / Gemini / Perplexity / OpenRouter / Groq / Ollama / LM Studio",
+      "OpenAI / Claude / Gemini / Google Ads / Yandex / CrUX / Meta / VK / Ollama / LM Studio",
     metricAuth: "Auth status",
     metricWorkspace: "Active workspace",
     metricProject: "Active project",
@@ -239,7 +239,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v4.5.2 service foundation, Yandex Direct, expanded provider matrix",
+      "v4.6.0 Google, Yandex, local-business и distribution executive stack",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -247,7 +247,7 @@ const translations = {
     badgeRepo: "Методология репо",
     badgeApp: "Продуктовый workflow",
     badgeProviders:
-      "OpenAI / Claude / Gemini / Perplexity / OpenRouter / Groq / Ollama / LM Studio",
+      "OpenAI / Claude / Gemini / Google Ads / Yandex / CrUX / Meta / VK / Ollama / LM Studio",
     metricAuth: "Статус авторизации",
     metricWorkspace: "Активный воркспейс",
     metricProject: "Активный проект",
