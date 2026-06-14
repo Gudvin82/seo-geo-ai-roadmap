@@ -239,7 +239,9 @@ def test_scanner_rate_limit_window_is_enforced(client, settings, monkeypatch) ->
     settings.allow_public_intake = True
     settings.allow_anonymous_submission = True
     settings.scanner_max_submissions_per_ip_per_window = 1
-    monkeypatch.setattr(scan_jobs, "_launch_scan_job", lambda local_settings, job_id: None)
+    monkeypatch.setattr(
+        scan_jobs, "_launch_scan_job", lambda local_settings, job_id: None
+    )
 
     consent = client.post(
         "/api/v1/scanner/consent-records",

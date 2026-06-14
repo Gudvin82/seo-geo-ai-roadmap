@@ -310,7 +310,8 @@ def create_scan_job(
         .filter(
             ScanJob.requester_ip == source_ip,
             ScanJob.created_at
-            >= now_utc() - timedelta(seconds=settings.scanner_rate_limit_window_seconds),
+            >= now_utc()
+            - timedelta(seconds=settings.scanner_rate_limit_window_seconds),
         )
         .count()
     )

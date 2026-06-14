@@ -23,8 +23,8 @@ from ..services.integrations import (
     all_integration_contracts,
     build_integration_verification_row,
     compact_integration_summary,
-    integration_env_status,
     integration_contract,
+    integration_env_status,
     sync_integration_source,
 )
 

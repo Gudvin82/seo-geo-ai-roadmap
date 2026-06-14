@@ -240,7 +240,9 @@ class AzureOpenAIProvider(OpenAIProvider):
 
 class CloudflareProvider(OpenAIProvider):
     provider_name = "cloudflare"
-    endpoint = "https://api.cloudflare.com/client/v4/accounts/example/ai/v1/chat/completions"
+    endpoint = (
+        "https://api.cloudflare.com/client/v4/accounts/example/ai/v1/chat/completions"
+    )
 
 
 class OllamaProvider(OpenAIProvider):

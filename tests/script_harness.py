@@ -39,8 +39,9 @@ def run_script_main(script_relative_path: str, *args: str) -> ScriptResult:
     argv_before = sys.argv[:]
     sys.argv = [str(script_path), *args]
     try:
-        with contextlib.redirect_stdout(stdout_buffer), contextlib.redirect_stderr(
-            stderr_buffer
+        with (
+            contextlib.redirect_stdout(stdout_buffer),
+            contextlib.redirect_stderr(stderr_buffer),
         ):
             try:
                 result = module.main()
