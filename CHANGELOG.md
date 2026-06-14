@@ -1,5 +1,24 @@
 # Changelog
 
+## v5.0.0 — SaaS Box Foundation, Proof Layer, and AI-to-App Delivery
+
+- Added a stronger SaaS product foundation with organizations, tenant
+  profiles, tenant-scoped API keys, onboarding state, usage summary, and
+  expanded RBAC-ready role support
+- Added provider-detail runtime views with sync history, freshness, readiness
+  tier, provenance labels, retry state, diagnostics, and recommended next
+  actions for integration operations
+- Added first-class proof primitives with labeled evidence records, experiment
+  history, before or after snapshots, confidence labels, and project-linked
+  attribution records
+- Added AI-to-App generation contracts, generated project manifests, and
+  build-from-link entrypoints so an external AI agent can scaffold a working
+  platform shell under a machine-readable contract
+- Added onboarding-center and operator-center API surfaces plus bilingual
+  release-facing docs for the new SaaS, proof, generation, and operator layers
+- Bumped active runtime, frontend product copy, and machine-readable contract
+  markers to `v5.0.0`
+
 ## v4.6.0 — Google, Yandex, Local Business, and Distribution Executive Stack
 
 - Added first-class integration contracts and starter sync paths for Google Ads, IndexNow, Google Business Profile, Yandex Business, Merchant Center, Meta Ads, VK Ads, Telegram ads or channel analytics, YouTube Analytics, LinkedIn Ads, and Instagram or Facebook organic analytics

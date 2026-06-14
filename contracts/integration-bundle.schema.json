@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Integration Bundle",
+  "type": "object",
+  "required": ["sources"],
+  "properties": {
+    "sources": { "type": "array", "items": { "type": "string" } },
+    "required_secrets": { "type": "array", "items": { "type": "string" } },
+    "recommended_ci_workflows": { "type": "array", "items": { "type": "string" } }
+  }
+}

@@ -17,7 +17,15 @@ from .models import (
     WorkspaceMembership,
 )
 
-ROLE_LEVELS = {"viewer": 10, "editor": 20, "admin": 30, "owner": 40}
+ROLE_LEVELS = {
+    "client_viewer": 10,
+    "viewer": 10,
+    "analyst": 20,
+    "editor": 20,
+    "operator": 25,
+    "admin": 30,
+    "owner": 40,
+}
 
 
 def normalize_role(role: str) -> str:

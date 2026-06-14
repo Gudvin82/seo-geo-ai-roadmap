@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Site Shell",
+  "type": "object",
+  "properties": {
+    "marketing_site": { "type": "boolean" },
+    "language_mode": { "type": "string" },
+    "public_routes": { "type": "array", "items": { "type": "string" } }
+  }
+}

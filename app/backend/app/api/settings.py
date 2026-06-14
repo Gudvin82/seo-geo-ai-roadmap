@@ -211,6 +211,58 @@ def review_mode() -> dict:
     }
 
 
+@router.get("/onboarding-center")
+def onboarding_center() -> dict:
+    return {
+        "guided_steps": [
+            "create organization or workspace",
+            "create tenant profile",
+            "connect one provider",
+            "connect core integrations",
+            "run first audit",
+            "verify executive dashboard",
+            "generate handoff or build manifest",
+        ],
+        "environment_validator": [
+            "API base configured",
+            "database reachable",
+            "provider secrets present",
+            "integration secrets present",
+            "scanner mode boundaries confirmed",
+        ],
+        "troubleshooting_paths": [
+            "provider auth mismatch",
+            "integration credential missing",
+            "scanner ownership verification blocked",
+            "sync freshness stale",
+            "dashboard waiting on first audit",
+        ],
+    }
+
+
+@router.get("/operator-center")
+def operator_center() -> dict:
+    return {
+        "runbooks": [
+            "first-day operator runbook",
+            "weekly executive review",
+            "integration failure triage",
+            "scanner queue review",
+            "client handoff pack",
+        ],
+        "agency_playbooks": [
+            "multi-client workspace setup",
+            "white-label reporting path",
+            "issue-to-patch-to-remeasure loop",
+        ],
+        "cost_governance": [
+            "prefer one hosted provider plus one local fallback",
+            "run expensive checks on schedule, not on every click",
+            "separate core search truth from supporting social context",
+        ],
+    }
+
+
 @router.get("/product-modes", response_model=ProductModesResponse)
 def product_modes() -> ProductModesResponse:
     return ProductModesResponse(

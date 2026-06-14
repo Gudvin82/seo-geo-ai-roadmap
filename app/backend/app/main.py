@@ -18,13 +18,16 @@ from .api import (
     contracts,
     deliverables,
     exports,
+    generation,
     graph_runtime,
     integrations,
     notifications,
     projects,
     prompt_sets,
+    proof,
     providers,
     reports,
+    saas,
     scanner,
     scheduled_checks,
     settings,
@@ -48,7 +51,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
 
     if settings_obj.auto_create_schema:
         Base.metadata.create_all(bind=initialized_engine)
-    app = FastAPI(title=settings_obj.app_name, version="4.6.0")
+    app = FastAPI(title=settings_obj.app_name, version="5.0.0")
     app.state.settings = settings_obj
     app.add_middleware(
         CORSMiddleware,
@@ -95,7 +98,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
 
     @app.get("/healthz")
     def healthz() -> dict:
-        return {"status": "ok", "version": "4.6.0"}
+        return {"status": "ok", "version": "5.0.0"}
 
     @app.get("/readyz")
     def readyz() -> dict:
@@ -126,6 +129,9 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
     app.include_router(trusted_delivery.router, prefix=settings_obj.api_prefix)
     app.include_router(deliverables.router, prefix=settings_obj.api_prefix)
     app.include_router(exports.router, prefix=settings_obj.api_prefix)
+    app.include_router(generation.router, prefix=settings_obj.api_prefix)
+    app.include_router(proof.router, prefix=settings_obj.api_prefix)
+    app.include_router(saas.router, prefix=settings_obj.api_prefix)
     app.include_router(settings.router, prefix=settings_obj.api_prefix)
     app.include_router(agent_mode.router, prefix=settings_obj.api_prefix)
     app.include_router(task_center.router, prefix=settings_obj.api_prefix)

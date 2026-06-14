@@ -7,10 +7,10 @@
 1. [README_RU.md](./README_RU.md)
 2. [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
 3. [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
-4. [docs/ru/15-minute-onboarding-v450.md](./docs/ru/15-minute-onboarding-v450.md)
-5. [docs/ru/integration-production-matrix-v450.md](./docs/ru/integration-production-matrix-v450.md)
-6. [docs/ru/provider-catalog-v450.md](./docs/ru/provider-catalog-v450.md)
-7. [docs/ru/v450-release.md](./docs/ru/v450-release.md)
+4. [BUILD_WITH_THIS_PLATFORM_RU.md](./BUILD_WITH_THIS_PLATFORM_RU.md)
+5. [GENERATE_PROJECT_FROM_URL_RU.md](./GENERATE_PROJECT_FROM_URL_RU.md)
+6. [docs/ru/15-minute-onboarding-v450.md](./docs/ru/15-minute-onboarding-v450.md)
+7. [docs/ru/v500-release.md](./docs/ru/v500-release.md)
 
 ## Выберите свой режим
 
@@ -18,6 +18,7 @@
 - AI coding agent: [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
 - Построить свой self-hosted сервис: [ONE_DAY_SERVICE_BLUEPRINT_RU.md](./ONE_DAY_SERVICE_BLUEPRINT_RU.md)
 - Оператор публичного scanner: [docs/ru/public-scanner-v360.md](./docs/ru/public-scanner-v360.md)
+- AI-to-App builder: [BUILD_WITH_THIS_PLATFORM_RU.md](./BUILD_WITH_THIS_PLATFORM_RU.md)
 
 ## Основа доказательств и границ
 

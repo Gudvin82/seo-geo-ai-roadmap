@@ -99,7 +99,15 @@ class WorkspaceMembershipUpdate(BaseModel):
     @field_validator("role")
     @classmethod
     def validate_role(cls, value: str) -> str:
-        allowed = {"owner", "admin", "editor", "viewer"}
+        allowed = {
+            "owner",
+            "admin",
+            "editor",
+            "viewer",
+            "operator",
+            "analyst",
+            "client_viewer",
+        }
         role = value.strip().lower()
         if role not in allowed:
             raise ValueError(
@@ -121,7 +129,15 @@ class WorkspaceInviteCreate(BaseModel):
     @field_validator("role")
     @classmethod
     def validate_role(cls, value: str) -> str:
-        allowed = {"owner", "admin", "editor", "viewer"}
+        allowed = {
+            "owner",
+            "admin",
+            "editor",
+            "viewer",
+            "operator",
+            "analyst",
+            "client_viewer",
+        }
         role = value.strip().lower()
         if role not in allowed:
             raise ValueError(
@@ -163,13 +179,78 @@ class WorkspaceInviteUpdate(BaseModel):
     def validate_role(cls, value: Optional[str]) -> Optional[str]:
         if value is None:
             return value
-        allowed = {"owner", "admin", "editor", "viewer"}
+        allowed = {
+            "owner",
+            "admin",
+            "editor",
+            "viewer",
+            "operator",
+            "analyst",
+            "client_viewer",
+        }
         role = value.strip().lower()
         if role not in allowed:
             raise ValueError(
                 f"Unsupported role '{value}'. Allowed: {', '.join(sorted(allowed))}."
             )
         return role
+
+
+class OrganizationCreate(BaseModel):
+    name: str
+    slug: str
+
+
+class OrganizationRead(BaseModel):
+    id: int
+    owner_user_id: int
+    name: str
+    slug: str
+    created_at: datetime
+
+
+class TenantProfileCreate(BaseModel):
+    workspace_id: int
+    organization_id: Optional[int] = None
+    tenant_name: str
+    plan_code: str = "starter"
+    plan_status: str = "active"
+    quota: dict[str, Any] = Field(default_factory=dict)
+    usage: dict[str, Any] = Field(default_factory=dict)
+    onboarding_state: dict[str, Any] = Field(default_factory=dict)
+    tenant_settings: dict[str, Any] = Field(default_factory=dict)
+
+
+class TenantProfileRead(BaseModel):
+    id: int
+    workspace_id: int
+    organization_id: Optional[int]
+    tenant_name: str
+    plan_code: str
+    plan_status: str
+    quota: dict[str, Any] = Field(default_factory=dict)
+    usage: dict[str, Any] = Field(default_factory=dict)
+    onboarding_state: dict[str, Any] = Field(default_factory=dict)
+    tenant_settings: dict[str, Any] = Field(default_factory=dict)
+    created_at: datetime
+
+
+class TenantApiKeyCreate(BaseModel):
+    workspace_id: int
+    label: str
+    scopes: list[str] = Field(default_factory=list)
+
+
+class TenantApiKeyRead(BaseModel):
+    id: int
+    workspace_id: int
+    label: str
+    key_prefix: str
+    scopes: list[str] = Field(default_factory=list)
+    is_enabled: bool
+    last_used_at: Optional[datetime]
+    created_at: datetime
+    plain_text_token: Optional[str] = None
 
 
 class ProjectCreate(BaseModel):
@@ -625,6 +706,42 @@ class IntegrationVerificationMatrixRead(BaseModel):
     rows: list[IntegrationVerificationRowRead] = Field(default_factory=list)
 
 
+class IntegrationSyncEventRead(BaseModel):
+    id: int
+    status: str
+    attempt_number: int
+    retry_count: int
+    scope_status: str
+    credential_status: str
+    dataset_status: str
+    provenance_level: str
+    freshness_label: str
+    error_summary: Optional[str]
+    metadata: dict[str, Any] = Field(default_factory=dict)
+    started_at: datetime
+    finished_at: Optional[datetime]
+
+
+class IntegrationDetailRead(BaseModel):
+    id: int
+    workspace_id: int
+    project_id: int
+    source_type: str
+    label: str
+    connection_state: str
+    credential_status: str
+    scope_status: str
+    dataset_availability: str
+    freshness: str
+    readiness_tier: str
+    runtime_level: str
+    last_successful_pull: Optional[datetime]
+    last_error: Optional[str]
+    recommended_next_steps: list[str] = Field(default_factory=list)
+    sync_logs: list[IntegrationSyncEventRead] = Field(default_factory=list)
+    latest_snapshot_summary: dict[str, Any] = Field(default_factory=dict)
+
+
 class ProductModeRead(BaseModel):
     id: str
     title: str
@@ -679,6 +796,97 @@ class ServiceFoundationRead(BaseModel):
     deployment_targets: list[str] = Field(default_factory=list)
     not_yet_turnkey: list[str] = Field(default_factory=list)
     best_next_steps: list[str] = Field(default_factory=list)
+
+
+class EvidenceRecordCreate(BaseModel):
+    workspace_id: int
+    project_id: int
+    label_type: Literal[
+        "public_fact",
+        "bounded_rollout_record",
+        "internal_evidence",
+        "demo_fixture",
+        "synthetic_example",
+    ]
+    title: str
+    summary: str = ""
+    source_ref: str = ""
+    links: list[str] = Field(default_factory=list)
+
+
+class EvidenceRecordRead(BaseModel):
+    id: int
+    workspace_id: int
+    project_id: int
+    label_type: str
+    title: str
+    summary: str
+    source_ref: str
+    links: list[str] = Field(default_factory=list)
+    created_at: datetime
+
+
+class ExperimentRecordCreate(BaseModel):
+    workspace_id: int
+    project_id: int
+    source_type: str
+    source_id: str
+    change_summary: str
+    confidence_label: Literal["weak", "partial", "strong"] = "partial"
+    before_snapshot: dict[str, Any] = Field(default_factory=dict)
+    after_snapshot: dict[str, Any] = Field(default_factory=dict)
+    evidence_links: list[str] = Field(default_factory=list)
+    outcome_metrics: dict[str, Any] = Field(default_factory=dict)
+
+
+class ExperimentRecordRead(BaseModel):
+    id: int
+    workspace_id: int
+    project_id: int
+    source_type: str
+    source_id: str
+    change_summary: str
+    confidence_label: str
+    before_snapshot: dict[str, Any] = Field(default_factory=dict)
+    after_snapshot: dict[str, Any] = Field(default_factory=dict)
+    evidence_links: list[str] = Field(default_factory=list)
+    outcome_metrics: dict[str, Any] = Field(default_factory=dict)
+    created_at: datetime
+
+
+class ProjectGenerationRequest(BaseModel):
+    workspace_id: Optional[int] = None
+    project_id: Optional[int] = None
+    project_type: Literal[
+        "local_business",
+        "agency_client_workspace",
+        "b2b_saas_company",
+        "content_media_site",
+        "ecommerce_store",
+        "consultant_solo_workspace",
+    ]
+    domain_or_url: str
+    business_type: str
+    target_geography: str
+    primary_stack: str
+    required_integrations: list[str] = Field(default_factory=list)
+    language_preference: Literal["en", "ru", "bilingual"] = "bilingual"
+    market_mode: Literal["local", "global", "ru_market", "multilingual"] = "global"
+    target_mode: Literal["self_hosted", "saas_box", "managed_deployment"] = (
+        "self_hosted"
+    )
+
+
+class ProjectGenerationRead(BaseModel):
+    id: int
+    workspace_id: Optional[int]
+    project_id: Optional[int]
+    blueprint_type: str
+    target_mode: str
+    status: str
+    input_payload: dict[str, Any] = Field(default_factory=dict)
+    manifest: dict[str, Any] = Field(default_factory=dict)
+    created_at: datetime
 
 
 class TaskItemRead(BaseModel):

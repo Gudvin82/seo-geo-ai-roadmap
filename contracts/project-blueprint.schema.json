@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Blueprint",
+  "type": "object",
+  "required": ["project_type", "target_mode", "surfaces", "integration_bundle"],
+  "properties": {
+    "project_type": { "type": "string" },
+    "target_mode": { "type": "string" },
+    "surfaces": { "type": "array", "items": { "type": "string" } },
+    "integration_bundle": { "type": "array", "items": { "type": "string" } }
+  }
+}

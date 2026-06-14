@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Admin Shell",
+  "type": "object",
+  "properties": {
+    "auth_enabled": { "type": "boolean" },
+    "rbac_roles": { "type": "array", "items": { "type": "string" } },
+    "management_surfaces": { "type": "array", "items": { "type": "string" } }
+  }
+}

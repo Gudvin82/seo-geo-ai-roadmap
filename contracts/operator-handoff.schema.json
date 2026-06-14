@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Operator Handoff",
+  "type": "object",
+  "properties": {
+    "language_preference": { "type": "string" },
+    "verified_vs_assumed_rule": { "type": "boolean" },
+    "missing_questions_policy": { "type": "string" },
+    "generated_checklists": { "type": "array", "items": { "type": "string" } }
+  }
+}

@@ -9,12 +9,14 @@ from sqlalchemy.orm import Session
 from ..access import record_audit_log, require_project_access
 from ..database import get_db
 from ..deps import get_current_user
-from ..models import CmsConnector, IntegrationConnection, User
+from ..models import CmsConnector, IntegrationConnection, IntegrationSyncEvent, User
 from ..schemas import (
     IntegrationConnectionCreate,
     IntegrationConnectionRead,
     IntegrationContractsResponse,
+    IntegrationDetailRead,
     IntegrationSourceContractRead,
+    IntegrationSyncEventRead,
     IntegrationVerificationMatrixRead,
     IntegrationVerificationRowRead,
 )
@@ -63,6 +65,24 @@ def _serialize(row: IntegrationConnection) -> IntegrationConnectionRead:
         sync_freshness=freshness,
         next_step=contract["next_step"],
         created_at=row.created_at,
+    )
+
+
+def _serialize_sync_event(row: IntegrationSyncEvent) -> IntegrationSyncEventRead:
+    return IntegrationSyncEventRead(
+        id=row.id,
+        status=row.status,
+        attempt_number=row.attempt_number,
+        retry_count=row.retry_count,
+        scope_status=row.scope_status,
+        credential_status=row.credential_status,
+        dataset_status=row.dataset_status,
+        provenance_level=row.provenance_level,
+        freshness_label=row.freshness_label,
+        error_summary=row.error_summary,
+        metadata=json.loads(row.metadata_json or "{}"),
+        started_at=row.started_at,
+        finished_at=row.finished_at,
     )
 
 
@@ -141,16 +161,67 @@ def sync_integration(
     if not row:
         raise HTTPException(status_code=404, detail="Integration not found.")
     require_project_access(db, row.project_id, current_user, minimum_role="editor")
-    snapshot = sync_integration_source(
-        row.source_type,
-        property_identifier=row.property_identifier,
-        config=json.loads(row.config_json or "{}"),
+    contract = integration_contract(row.source_type)
+    event = IntegrationSyncEvent(
+        integration_connection_id=row.id,
+        status="running",
+        attempt_number=1,
+        retry_count=0,
+        scope_status="starter_scope",
+        credential_status="configured" if row.credentials_env_var else "missing",
+        dataset_status="sync_started",
+        provenance_level="starter_sync",
+        freshness_label="sync_in_progress",
+        metadata_json=json.dumps({"source_type": row.source_type}, ensure_ascii=False),
     )
-    snapshot["summary"] = compact_integration_summary(snapshot)
-    row.latest_snapshot_json = json.dumps(snapshot, ensure_ascii=False)
-    row.last_sync_status = "completed"
-    row.last_sync_at = datetime.utcnow()
+    db.add(event)
+    db.flush()
+    try:
+        snapshot = sync_integration_source(
+            row.source_type,
+            property_identifier=row.property_identifier,
+            config=json.loads(row.config_json or "{}"),
+        )
+        snapshot["summary"] = compact_integration_summary(snapshot)
+        row.latest_snapshot_json = json.dumps(snapshot, ensure_ascii=False)
+        row.last_sync_status = "completed"
+        row.last_sync_at = datetime.utcnow()
+        event.status = "completed"
+        event.scope_status = "verified_contract_scope"
+        event.credential_status = (
+            "configured" if row.credentials_env_var else "missing_but_starter_allowed"
+        )
+        event.dataset_status = "available"
+        event.provenance_level = (
+            "managed_runtime"
+            if contract["readiness_tier"] == "managed_runtime"
+            else "live_runtime"
+            if "live" in str(snapshot.get("source", "")).lower()
+            else "starter_sync"
+        )
+        event.freshness_label = "fresh"
+        event.finished_at = datetime.utcnow()
+        event.metadata_json = json.dumps(
+            {
+                "source_type": row.source_type,
+                "recommended_ci_workflow": contract["recommended_ci_workflow"],
+            },
+            ensure_ascii=False,
+        )
+    except Exception as exc:
+        row.last_sync_status = "failed"
+        event.status = "failed"
+        event.retry_count = 1
+        event.dataset_status = "unavailable"
+        event.error_summary = str(exc)
+        event.freshness_label = "stale"
+        event.finished_at = datetime.utcnow()
+        db.add(row)
+        db.add(event)
+        db.commit()
+        raise
     db.add(row)
+    db.add(event)
     record_audit_log(
         db,
         "integration.synced",
@@ -162,6 +233,53 @@ def sync_integration(
     db.commit()
     db.refresh(row)
     return _serialize(row)
+
+
+@router.get("/{integration_id}/detail", response_model=IntegrationDetailRead)
+def integration_detail(
+    integration_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> IntegrationDetailRead:
+    row = db.get(IntegrationConnection, integration_id)
+    if not row:
+        raise HTTPException(status_code=404, detail="Integration not found.")
+    require_project_access(db, row.project_id, current_user, minimum_role="viewer")
+    contract = integration_contract(row.source_type)
+    latest_snapshot = json.loads(row.latest_snapshot_json or "{}")
+    events = (
+        db.query(IntegrationSyncEvent)
+        .filter(IntegrationSyncEvent.integration_connection_id == row.id)
+        .order_by(IntegrationSyncEvent.id.desc())
+        .all()
+    )
+    latest_event = events[0] if events else None
+    return IntegrationDetailRead(
+        id=row.id,
+        workspace_id=row.workspace_id,
+        project_id=row.project_id,
+        source_type=row.source_type,
+        label=row.label,
+        connection_state=row.last_sync_status or "created",
+        credential_status=latest_event.credential_status
+        if latest_event
+        else ("configured" if row.credentials_env_var else "missing"),
+        scope_status=latest_event.scope_status if latest_event else "unknown",
+        dataset_availability=latest_event.dataset_status
+        if latest_event
+        else "contract_only",
+        freshness=latest_event.freshness_label if latest_event else "never_synced",
+        readiness_tier=contract["readiness_tier"],
+        runtime_level=latest_event.provenance_level if latest_event else "contract_only",
+        last_successful_pull=row.last_sync_at,
+        last_error=latest_event.error_summary if latest_event else None,
+        recommended_next_steps=contract.get("production_flow", [])
+        + [contract["next_step"]],
+        sync_logs=[_serialize_sync_event(event) for event in events[:10]],
+        latest_snapshot_summary=compact_integration_summary(latest_snapshot)
+        if latest_snapshot
+        else {},
+    )
 
 
 @router.get("/{integration_id}/readiness-plan")

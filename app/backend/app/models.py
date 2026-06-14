@@ -62,6 +62,9 @@ class Workspace(Base):
         back_populates="workspace"
     )
     audit_logs: Mapped[list["AuditLog"]] = relationship(back_populates="workspace")
+    tenant_profiles: Mapped[list["TenantProfile"]] = relationship(
+        back_populates="workspace"
+    )
 
 
 class WorkspaceMembership(Base):
@@ -80,6 +83,26 @@ class WorkspaceMembership(Base):
     user: Mapped[User] = relationship(
         back_populates="memberships", foreign_keys=[user_id]
     )
+
+
+class Organization(Base):
+    __tablename__ = "organizations"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    owner_user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    name: Mapped[str] = mapped_column(String(255))
+    slug: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+
+class OrganizationMembership(Base):
+    __tablename__ = "organization_memberships"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    organization_id: Mapped[int] = mapped_column(ForeignKey("organizations.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    role: Mapped[str] = mapped_column(String(32), default="client_viewer")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
 
 
 class WorkspaceInvite(Base):
@@ -299,6 +322,34 @@ class IntegrationConnection(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
 
     project: Mapped[Project] = relationship(back_populates="integration_connections")
+    sync_events: Mapped[list["IntegrationSyncEvent"]] = relationship(
+        back_populates="integration_connection"
+    )
+
+
+class IntegrationSyncEvent(Base):
+    __tablename__ = "integration_sync_events"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    integration_connection_id: Mapped[int] = mapped_column(
+        ForeignKey("integration_connections.id"), index=True
+    )
+    status: Mapped[str] = mapped_column(String(64), default="created")
+    attempt_number: Mapped[int] = mapped_column(Integer, default=1)
+    retry_count: Mapped[int] = mapped_column(Integer, default=0)
+    scope_status: Mapped[str] = mapped_column(String(64), default="starter_scope")
+    credential_status: Mapped[str] = mapped_column(String(64), default="missing")
+    dataset_status: Mapped[str] = mapped_column(String(64), default="contract_only")
+    provenance_level: Mapped[str] = mapped_column(String(64), default="starter_sync")
+    freshness_label: Mapped[str] = mapped_column(String(64), default="never_synced")
+    error_summary: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    metadata_json: Mapped[str] = mapped_column(Text, default="{}")
+    started_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+    finished_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+    integration_connection: Mapped[IntegrationConnection] = relationship(
+        back_populates="sync_events"
+    )
 
 
 class CmsConnector(Base):
@@ -357,6 +408,40 @@ class NotificationEndpoint(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
 
 
+class TenantProfile(Base):
+    __tablename__ = "tenant_profiles"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"), index=True)
+    organization_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("organizations.id"), nullable=True
+    )
+    tenant_name: Mapped[str] = mapped_column(String(255))
+    plan_code: Mapped[str] = mapped_column(String(64), default="starter")
+    plan_status: Mapped[str] = mapped_column(String(64), default="active")
+    quota_json: Mapped[str] = mapped_column(Text, default="{}")
+    usage_json: Mapped[str] = mapped_column(Text, default="{}")
+    onboarding_state_json: Mapped[str] = mapped_column(Text, default="{}")
+    tenant_settings_json: Mapped[str] = mapped_column(Text, default="{}")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+    workspace: Mapped[Workspace] = relationship(back_populates="tenant_profiles")
+
+
+class TenantApiKey(Base):
+    __tablename__ = "tenant_api_keys"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"), index=True)
+    label: Mapped[str] = mapped_column(String(255))
+    key_prefix: Mapped[str] = mapped_column(String(32), index=True)
+    token_hash: Mapped[str] = mapped_column(String(255))
+    scopes_json: Mapped[str] = mapped_column(Text, default="[]")
+    is_enabled: Mapped[bool] = mapped_column(Boolean, default=True)
+    last_used_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+
 class TrustedDeliveryTarget(Base):
     __tablename__ = "trusted_delivery_targets"
 
@@ -412,6 +497,55 @@ class AuditLog(Base):
     user: Mapped[Optional[User]] = relationship(back_populates="audit_logs")
     workspace: Mapped[Optional[Workspace]] = relationship(back_populates="audit_logs")
     project: Mapped[Optional[Project]] = relationship(back_populates="audit_logs")
+
+
+class EvidenceRecord(Base):
+    __tablename__ = "evidence_records"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"))
+    project_id: Mapped[int] = mapped_column(ForeignKey("projects.id"))
+    label_type: Mapped[str] = mapped_column(String(64))
+    title: Mapped[str] = mapped_column(String(255))
+    summary: Mapped[str] = mapped_column(Text, default="")
+    source_ref: Mapped[str] = mapped_column(String(255), default="")
+    links_json: Mapped[str] = mapped_column(Text, default="[]")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+
+class ExperimentRecord(Base):
+    __tablename__ = "experiment_records"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"))
+    project_id: Mapped[int] = mapped_column(ForeignKey("projects.id"))
+    source_type: Mapped[str] = mapped_column(String(64))
+    source_id: Mapped[str] = mapped_column(String(128))
+    change_summary: Mapped[str] = mapped_column(Text, default="")
+    confidence_label: Mapped[str] = mapped_column(String(32), default="weak")
+    before_snapshot_json: Mapped[str] = mapped_column(Text, default="{}")
+    after_snapshot_json: Mapped[str] = mapped_column(Text, default="{}")
+    evidence_links_json: Mapped[str] = mapped_column(Text, default="[]")
+    outcome_metrics_json: Mapped[str] = mapped_column(Text, default="{}")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+
+class GeneratedProjectManifest(Base):
+    __tablename__ = "generated_project_manifests"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("workspaces.id"), nullable=True
+    )
+    project_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("projects.id"), nullable=True
+    )
+    blueprint_type: Mapped[str] = mapped_column(String(128))
+    target_mode: Mapped[str] = mapped_column(String(64), default="self_hosted")
+    status: Mapped[str] = mapped_column(String(64), default="generated")
+    input_json: Mapped[str] = mapped_column(Text, default="{}")
+    manifest_json: Mapped[str] = mapped_column(Text, default="{}")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
 
 
 class VerificationRequest(Base):

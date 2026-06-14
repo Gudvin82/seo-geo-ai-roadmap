@@ -48,7 +48,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v4.6.0 Google, Yandex, local-business, and distribution executive stack",
+      "v5.0.0 SaaS foundation, AI-to-App, and executive operating system",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -239,7 +239,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v4.6.0 Google, Yandex, local-business и distribution executive stack",
+      "v5.0.0 SaaS foundation, AI-to-App и executive operating system",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:

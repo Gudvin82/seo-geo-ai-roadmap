@@ -35,6 +35,18 @@ def test_extension_and_contract_assets_exist() -> None:
         Path("contracts/audit-run.schema.json"),
         Path("contracts/task-bundle.schema.json"),
         Path("contracts/graph-snapshot.schema.json"),
+        Path("contracts/project-blueprint.schema.json"),
+        Path("contracts/integration-bundle.schema.json"),
+        Path("contracts/site-shell.schema.json"),
+        Path("contracts/admin-shell.schema.json"),
+        Path("contracts/scanner-config.schema.json"),
+        Path("contracts/dashboard-config.schema.json"),
+        Path("contracts/tenant-setup.schema.json"),
+        Path("contracts/operator-handoff.schema.json"),
+        Path("BUILD_WITH_THIS_PLATFORM.md"),
+        Path("BUILD_WITH_THIS_PLATFORM_RU.md"),
+        Path("GENERATE_PROJECT_FROM_URL.md"),
+        Path("GENERATE_PROJECT_FROM_URL_RU.md"),
     ]
     for path in required_paths:
         assert path.exists(), f"Missing v4.0.0 asset: {path}"

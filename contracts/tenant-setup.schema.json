@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tenant Setup",
+  "type": "object",
+  "properties": {
+    "organization_name": { "type": "string" },
+    "tenant_name": { "type": "string" },
+    "plan_code": { "type": "string" },
+    "roles_supported": { "type": "array", "items": { "type": "string" } }
+  }
+}

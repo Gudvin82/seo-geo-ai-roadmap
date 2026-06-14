@@ -114,11 +114,14 @@ discoverability. Ее можно развернуть на своем компь
 - Быстрый вход для человека: [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
 - Быстрый вход для ИИ: [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
 - Онбординг за 15 минут: [docs/ru/15-minute-onboarding-v450.md](./docs/ru/15-minute-onboarding-v450.md)
+- Build with this platform: [BUILD_WITH_THIS_PLATFORM_RU.md](./BUILD_WITH_THIS_PLATFORM_RU.md)
+- Generate project from URL: [GENERATE_PROJECT_FROM_URL_RU.md](./GENERATE_PROJECT_FROM_URL_RU.md)
 - Публичная readiness-рамка: [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
 - One-day blueprint сервиса: [ONE_DAY_SERVICE_BLUEPRINT_RU.md](./ONE_DAY_SERVICE_BLUEPRINT_RU.md)
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
 - Матрица production-flow интеграций: [docs/ru/integration-production-matrix-v450.md](./docs/ru/integration-production-matrix-v450.md)
 - Каталог провайдеров: [docs/ru/provider-catalog-v450.md](./docs/ru/provider-catalog-v450.md)
+- Сводка релиза v5.0.0: [docs/ru/v500-release.md](./docs/ru/v500-release.md)
 - Сводка релиза v4.6.0: [docs/ru/v460-release.md](./docs/ru/v460-release.md)
 - Сводка релиза v4.5.2: [docs/ru/v452-release.md](./docs/ru/v452-release.md)
 - Сводка релиза v4.5.0: [docs/ru/v450-release.md](./docs/ru/v450-release.md)
@@ -160,6 +163,14 @@ discoverability. Ее можно развернуть на своем компь
 - [Prompt: оценка репозитория и сайта](./prompts/ru/repo-site-audit-agent-prompt.md)
 - [Prompt: развернуть client scanner](./prompts/ru/deploy-client-scanner-agent-prompt.md)
 - [Prompt: улучшить существующий сайт](./prompts/ru/improve-existing-site-agent-prompt.md)
+
+## Что добавляет `v5.0.0`
+
+- более сильную SaaS box foundation с organizations, tenant profiles, tenant API keys, onboarding state, usage и role-ready isolation
+- detail views по интеграциям: sync history, freshness, readiness tier, provenance labels, retry state, diagnostics и recommended next actions
+- proof и attribution records для evidence labels, experiment history, before/after snapshots и confidence labels
+- AI-to-App generation contracts и manifest generation, чтобы внешний AI мог собрать site, admin, scanner, dashboard и operator handoff pack по явному machine-readable contract
+- onboarding-center и operator-center surfaces, чтобы setup, troubleshooting и recurring operations были ближе к реальному product layer
 
 ## Что добавляет `v4.6.0`
 

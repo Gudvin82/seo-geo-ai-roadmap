@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Scanner Config",
+  "type": "object",
+  "properties": {
+    "scan_mode": { "type": "string" },
+    "rate_limits": { "type": "object" },
+    "ownership_verification_required": { "type": "boolean" }
+  }
+}

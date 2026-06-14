@@ -439,6 +439,135 @@ def test_workspace_project_and_audit_flow(
     assert executive_dashboard.json()["comparison_metrics"]["organic_demand"]
     assert executive_dashboard.json()["comparison_metrics"]["paid_demand"]
 
+    integration_detail = client.get(
+        f"/api/v1/integrations/{google_ads_integration.json()['id']}/detail",
+        headers=auth_headers,
+    )
+    assert integration_detail.status_code == 200
+    assert integration_detail.json()["sync_logs"]
+    assert integration_detail.json()["runtime_level"]
+
+    organization = client.post(
+        "/api/v1/saas/organizations",
+        json={"name": "Demo Org", "slug": "demo-org"},
+        headers=auth_headers,
+    )
+    assert organization.status_code == 200
+
+    tenant_profile = client.post(
+        "/api/v1/saas/tenant-profiles",
+        json={
+            "workspace_id": workspace_id,
+            "organization_id": organization.json()["id"],
+            "tenant_name": "Demo Tenant",
+            "plan_code": "growth",
+            "plan_status": "active",
+            "quota": {"monthly_syncs": 200},
+            "usage": {"monthly_syncs_used": 12},
+            "onboarding_state": {"auth": "done", "integrations": "partial"},
+            "tenant_settings": {"managed_mode": False},
+        },
+        headers=auth_headers,
+    )
+    assert tenant_profile.status_code == 200
+
+    tenant_overview = client.get(
+        f"/api/v1/saas/tenant-overview?workspace_id={workspace_id}",
+        headers=auth_headers,
+    )
+    assert tenant_overview.status_code == 200
+    assert tenant_overview.json()["roles_supported"]
+
+    api_key = client.post(
+        "/api/v1/saas/api-keys",
+        json={
+            "workspace_id": workspace_id,
+            "label": "Automation key",
+            "scopes": ["scanner:read", "reports:read"],
+        },
+        headers=auth_headers,
+    )
+    assert api_key.status_code == 200
+    assert api_key.json()["plain_text_token"].startswith("sgai_")
+
+    evidence = client.post(
+        "/api/v1/proof/evidence",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "label_type": "public_fact",
+            "title": "Public before/after result",
+            "summary": "Directly visible public change.",
+            "source_ref": "case-study",
+            "links": ["https://example.com/case"],
+        },
+        headers=auth_headers,
+    )
+    assert evidence.status_code == 200
+
+    experiment = client.post(
+        "/api/v1/proof/experiments",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "audit_run",
+            "source_id": str(audit.json()["audit_job_id"]),
+            "change_summary": "Updated page structure and AI guidance files.",
+            "confidence_label": "partial",
+            "before_snapshot": {"score": 82},
+            "after_snapshot": {"score": 86.1},
+            "evidence_links": ["artifact://report/1"],
+            "outcome_metrics": {"organic_clicks_delta": 12},
+        },
+        headers=auth_headers,
+    )
+    assert experiment.status_code == 200
+
+    generation_contracts = client.get(
+        "/api/v1/generation/contracts", headers=auth_headers
+    )
+    assert generation_contracts.status_code == 200
+    assert generation_contracts.json()["schema_files"]
+
+    generation_manifest = client.post(
+        "/api/v1/generation/manifests/generate",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "project_type": "local_business",
+            "domain_or_url": "https://example.com",
+            "business_type": "legal services",
+            "target_geography": "Moscow",
+            "primary_stack": "wordpress",
+            "required_integrations": [
+                "gsc",
+                "ga4",
+                "google_ads",
+                "yandex_webmaster",
+                "yandex_metrica",
+                "yandex_direct",
+            ],
+            "language_preference": "bilingual",
+            "market_mode": "ru_market",
+            "target_mode": "saas_box",
+        },
+        headers=auth_headers,
+    )
+    assert generation_manifest.status_code == 200
+    assert generation_manifest.json()["manifest"]["surfaces"]
+
+    onboarding_center = client.get(
+        "/api/v1/settings/onboarding-center", headers=auth_headers
+    )
+    assert onboarding_center.status_code == 200
+    assert onboarding_center.json()["guided_steps"]
+
+    operator_center = client.get(
+        "/api/v1/settings/operator-center", headers=auth_headers
+    )
+    assert operator_center.status_code == 200
+    assert operator_center.json()["runbooks"]
+
     managed_boundary = client.get(
         "/api/v1/settings/managed-api-boundary",
         headers=auth_headers,

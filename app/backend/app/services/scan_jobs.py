@@ -48,7 +48,7 @@ from .scan_security import (
     safe_fetch_url_text,
 )
 
-SCANNER_SCHEMA_VERSION = "v4.6.0"
+SCANNER_SCHEMA_VERSION = "v5.0.0"
 SCAN_JOB_TERMINAL_STATES = {
     "partial_success",
     "completed",
@@ -1317,7 +1317,7 @@ def _fetch_text(url: str) -> str:
         url,
         _scanner_runtime_settings(),
         timeout=10,
-        headers={"User-Agent": "Discoverability-Scanner/4.6.0"},
+        headers={"User-Agent": "Discoverability-Scanner/5.0.0"},
     )
     return content
 
@@ -1335,7 +1335,7 @@ def _try_fetch_scanner_text(
         content, _final_url, _redirect_chain = safe_fetch_url_text(
             url,
             settings,
-            headers={"User-Agent": "Discoverability-Scanner/4.6.0"},
+            headers={"User-Agent": "Discoverability-Scanner/5.0.0"},
         )
         return content, None
     except Exception as exc:

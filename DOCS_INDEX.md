@@ -7,10 +7,10 @@ This file is the shortest path through the repository if you are new here.
 1. [README.md](./README.md)
 2. [WALKTHROUGH.md](./WALKTHROUGH.md)
 3. [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
-4. [docs/en/15-minute-onboarding-v450.md](./docs/en/15-minute-onboarding-v450.md)
-5. [docs/en/integration-production-matrix-v450.md](./docs/en/integration-production-matrix-v450.md)
-6. [docs/en/provider-catalog-v450.md](./docs/en/provider-catalog-v450.md)
-7. [docs/en/v450-release.md](./docs/en/v450-release.md)
+4. [BUILD_WITH_THIS_PLATFORM.md](./BUILD_WITH_THIS_PLATFORM.md)
+5. [GENERATE_PROJECT_FROM_URL.md](./GENERATE_PROJECT_FROM_URL.md)
+6. [docs/en/15-minute-onboarding-v450.md](./docs/en/15-minute-onboarding-v450.md)
+7. [docs/en/v500-release.md](./docs/en/v500-release.md)
 
 ## Pick your mode
 
@@ -18,6 +18,7 @@ This file is the shortest path through the repository if you are new here.
 - AI coding agent: [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
 - Self-hosted service builder: [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
 - Public scanner operator: [docs/en/public-scanner-v360.md](./docs/en/public-scanner-v360.md)
+- AI-to-App builder: [BUILD_WITH_THIS_PLATFORM.md](./BUILD_WITH_THIS_PLATFORM.md)
 
 ## Core proof and boundaries
 

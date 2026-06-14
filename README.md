@@ -112,11 +112,14 @@ Use these files before making public claims:
 - Human quickstart: [WALKTHROUGH.md](./WALKTHROUGH.md)
 - AI quickstart: [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
 - 15-minute onboarding: [docs/en/15-minute-onboarding-v450.md](./docs/en/15-minute-onboarding-v450.md)
+- Build with this platform: [BUILD_WITH_THIS_PLATFORM.md](./BUILD_WITH_THIS_PLATFORM.md)
+- Generate project from URL: [GENERATE_PROJECT_FROM_URL.md](./GENERATE_PROJECT_FROM_URL.md)
 - Public readiness: [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
 - One-day service blueprint: [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
 - Integration production matrix: [docs/en/integration-production-matrix-v450.md](./docs/en/integration-production-matrix-v450.md)
 - Provider catalog: [docs/en/provider-catalog-v450.md](./docs/en/provider-catalog-v450.md)
+- v5.0.0 release summary: [docs/en/v500-release.md](./docs/en/v500-release.md)
 - v4.6.0 release summary: [docs/en/v460-release.md](./docs/en/v460-release.md)
 - v4.5.2 release summary: [docs/en/v452-release.md](./docs/en/v452-release.md)
 - v4.5.0 release summary: [docs/en/v450-release.md](./docs/en/v450-release.md)
@@ -158,6 +161,14 @@ AI coding agent without inventing the prompt from scratch:
 - [Repo + site audit prompt](./prompts/en/repo-site-audit-agent-prompt.md)
 - [Deploy client scanner prompt](./prompts/en/deploy-client-scanner-agent-prompt.md)
 - [Improve existing site prompt](./prompts/en/improve-existing-site-agent-prompt.md)
+
+## What `v5.0.0` adds
+
+- a stronger SaaS box foundation with organizations, tenant profiles, tenant API keys, onboarding state, usage, and role-ready isolation
+- integration detail views with sync history, freshness, readiness tier, provenance labels, retry state, diagnostics, and recommended next actions
+- proof and attribution records for evidence labels, experiment history, before or after snapshots, and confidence labels
+- AI-to-App generation contracts plus manifest generation so an external AI can build a site, admin, scanner, dashboard, and operator handoff pack from a clear machine-readable contract
+- onboarding-center and operator-center surfaces so setup, troubleshooting, and recurring operations are easier to run as a real product layer
 
 ## What `v4.6.0` adds
 
