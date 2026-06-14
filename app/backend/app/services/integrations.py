@@ -7,7 +7,7 @@ from typing import Any
 
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v4.2.0"
+CONTRACT_VERSION = "v4.5.0"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {
@@ -155,6 +155,18 @@ def integration_contract(source_type: str) -> dict[str, Any]:
     }
 
 
+def integration_env_status(contract: dict[str, Any]) -> dict[str, Any]:
+    required = contract.get("required_env_vars", [])
+    present = [name for name in required if os.getenv(name, "").strip()]
+    missing = [name for name in required if name not in present]
+    return {
+        "required_env_vars": required,
+        "present_env_vars": present,
+        "missing_env_vars": missing,
+        "live_credentials_ready": not missing,
+    }
+
+
 def all_integration_contracts() -> list[dict[str, Any]]:
     return [integration_contract(key) for key in sorted(INTEGRATION_CONTRACTS)]
 
@@ -295,6 +307,7 @@ def build_integration_verification_row(
     contract = integration_contract(source_type)
     snapshot = latest_snapshot or {}
     proof_level = _integration_proof_level(source_type, snapshot)
+    env_status = integration_env_status(contract)
     return {
         "id": source_type,
         "surface_type": "integration",
@@ -302,7 +315,9 @@ def build_integration_verification_row(
         "source_type": source_type,
         "readiness_tier": contract["readiness_tier"],
         "proof_level": proof_level,
-        "credentials_status": "configured" if credentials_env_var else "missing",
+        "credentials_status": "configured"
+        if credentials_env_var or env_status["live_credentials_ready"]
+        else "missing",
         "property_identifier": property_identifier,
         "ci_workflow": contract["recommended_ci_workflow"],
         "ci_gates": contract["ci_gates"],
@@ -319,5 +334,6 @@ def build_integration_verification_row(
         "latest_snapshot_summary": compact_integration_summary(snapshot)
         if snapshot
         else {},
+        "env_status": env_status,
         "next_step": contract["next_step"],
     }

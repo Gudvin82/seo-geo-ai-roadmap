@@ -14,6 +14,11 @@ class PublicScannerConfigRead(BaseModel):
     allowed_schemes: list[str]
     max_url_length: int
     max_concurrent_submissions_per_ip: int
+    max_concurrent_submissions_per_domain: int
+    max_pending_jobs_total: int
+    rate_limit_window_seconds: int
+    max_submissions_per_ip_per_window: int
+    notification_retry_attempts: int
     dangerous_modes_feature_flagged: bool = True
     limitations: list[str]
 
@@ -117,6 +122,9 @@ class ScanJobRead(BaseModel):
     current_stage: str
     error_summary: Optional[str]
     report_artifacts: list[dict[str, Any]] = Field(default_factory=list)
+    queue_position: Optional[int] = None
+    queue_depth: int = 0
+    active_jobs_for_domain: int = 0
     created_at: datetime
     started_at: Optional[datetime]
     finished_at: Optional[datetime]

@@ -5,6 +5,7 @@ import hashlib
 import json
 import smtplib
 import threading
+import time
 from datetime import timedelta
 from email.message import EmailMessage
 from pathlib import Path
@@ -47,7 +48,7 @@ from .scan_security import (
     safe_fetch_url_text,
 )
 
-SCANNER_SCHEMA_VERSION = "v4.2.0"
+SCANNER_SCHEMA_VERSION = "v4.5.0"
 SCAN_JOB_TERMINAL_STATES = {
     "partial_success",
     "completed",
@@ -70,6 +71,21 @@ def scanner_config_payload(settings: Settings) -> dict:
         "allowed_schemes": settings.scanner_allowed_scheme_list(),
         "max_url_length": settings.scanner_max_url_length,
         "max_concurrent_submissions_per_ip": settings.scanner_max_concurrent_submissions_per_ip,
+        "max_concurrent_submissions_per_domain": getattr(
+            settings, "scanner_max_concurrent_submissions_per_domain", 2
+        ),
+        "max_pending_jobs_total": getattr(
+            settings, "scanner_max_pending_jobs_total", 25
+        ),
+        "rate_limit_window_seconds": getattr(
+            settings, "scanner_rate_limit_window_seconds", 600
+        ),
+        "max_submissions_per_ip_per_window": getattr(
+            settings, "scanner_max_submissions_per_ip_per_window", 6
+        ),
+        "notification_retry_attempts": getattr(
+            settings, "scanner_notification_retry_attempts", 2
+        ),
         "dangerous_modes_feature_flagged": True,
         "limitations": [
             "This scanner does not replace a penetration test.",
@@ -289,6 +305,20 @@ def create_scan_job(
         raise HTTPException(
             status_code=429, detail="Submission limit reached for this IP."
         )
+    recent_for_ip = (
+        db.query(ScanJob)
+        .filter(
+            ScanJob.requester_ip == source_ip,
+            ScanJob.created_at
+            >= now_utc() - timedelta(seconds=settings.scanner_rate_limit_window_seconds),
+        )
+        .count()
+    )
+    if recent_for_ip >= settings.scanner_max_submissions_per_ip_per_window:
+        raise HTTPException(
+            status_code=429,
+            detail="Rate limit reached for this IP within the current window.",
+        )
     active_for_domain = (
         db.query(ScanJob)
         .filter(
@@ -296,9 +326,17 @@ def create_scan_job(
         )
         .count()
     )
-    if active_for_domain >= settings.scanner_max_concurrent_submissions_per_ip:
+    if active_for_domain >= settings.scanner_max_concurrent_submissions_per_domain:
         raise HTTPException(
             status_code=429, detail="Submission limit reached for this domain."
+        )
+    active_total = (
+        db.query(ScanJob).filter(ScanJob.status.in_(SCAN_JOB_ACTIVE_STATES)).count()
+    )
+    if active_total >= settings.scanner_max_pending_jobs_total:
+        raise HTTPException(
+            status_code=429,
+            detail="Scanner queue is currently full. Try again shortly.",
         )
 
     row = ScanJob(
@@ -364,7 +402,32 @@ def cancel_scan_job(db: Session, scan_job_id: int) -> ScanJob:
     return row
 
 
-def serialize_scan_job(row: ScanJob) -> dict:
+def scan_job_queue_context(db: Session, row: ScanJob) -> dict:
+    queue_position = None
+    if row.status == "queued":
+        queue_position = (
+            db.query(ScanJob)
+            .filter(ScanJob.status == "queued", ScanJob.id <= row.id)
+            .count()
+        )
+    queue_depth = db.query(ScanJob).filter(ScanJob.status == "queued").count()
+    active_jobs_for_domain = (
+        db.query(ScanJob)
+        .filter(
+            ScanJob.target_domain == row.target_domain,
+            ScanJob.status.in_(SCAN_JOB_ACTIVE_STATES),
+        )
+        .count()
+    )
+    return {
+        "queue_position": queue_position,
+        "queue_depth": queue_depth,
+        "active_jobs_for_domain": active_jobs_for_domain,
+    }
+
+
+def serialize_scan_job(row: ScanJob, *, queue_context: dict | None = None) -> dict:
+    queue_context = queue_context or {}
     return {
         "id": row.id,
         "submitted_url": row.submitted_url,
@@ -376,6 +439,9 @@ def serialize_scan_job(row: ScanJob) -> dict:
         "current_stage": row.current_stage,
         "error_summary": row.error_summary,
         "report_artifacts": json.loads(row.report_artifacts_json or "[]"),
+        "queue_position": queue_context.get("queue_position"),
+        "queue_depth": queue_context.get("queue_depth", 0),
+        "active_jobs_for_domain": queue_context.get("active_jobs_for_domain", 0),
         "created_at": row.created_at,
         "started_at": row.started_at,
         "finished_at": row.finished_at,
@@ -1121,23 +1187,41 @@ def _deliver_notifications(
     }
     errors: list[str] = []
     if row.webhook_url:
-        try:
-            _send_webhook(
+        error = _retry_notification(
+            settings,
+            lambda: _send_webhook(
                 row.webhook_url, payload, settings.scanner_webhook_timeout_seconds
-            )
-        except Exception as exc:  # pragma: no cover - depends on external sink
-            errors.append(f"webhook: {exc}")
+            ),
+        )
+        if error:
+            errors.append(f"webhook: {error}")
     if row.notification_email:
-        try:
-            _send_email(settings, row.notification_email, payload)
-        except Exception as exc:  # pragma: no cover - depends on smtp
-            errors.append(f"email: {exc}")
+        error = _retry_notification(
+            settings, lambda: _send_email(settings, row.notification_email, payload)
+        )
+        if error:
+            errors.append(f"email: {error}")
     if row.telegram_chat_id:
-        try:
-            _send_telegram(settings, row.telegram_chat_id, payload)
-        except Exception as exc:  # pragma: no cover - depends on telegram
-            errors.append(f"telegram: {exc}")
+        error = _retry_notification(
+            settings, lambda: _send_telegram(settings, row.telegram_chat_id, payload)
+        )
+        if error:
+            errors.append(f"telegram: {error}")
     return errors
+
+
+def _retry_notification(settings: Settings, callback) -> str | None:
+    last_error: Exception | None = None
+    attempts = max(1, settings.scanner_notification_retry_attempts)
+    for attempt in range(attempts):
+        try:
+            callback()
+            return None
+        except Exception as exc:  # pragma: no cover - depends on external sink
+            last_error = exc
+            if attempt + 1 < attempts:
+                time.sleep(max(0, settings.scanner_notification_retry_backoff_seconds))
+    return str(last_error) if last_error else "unknown notification error"
 
 
 def _send_webhook(url: str, payload: dict, timeout: int) -> None:
@@ -1232,7 +1316,7 @@ def _fetch_text(url: str) -> str:
         url,
         _scanner_runtime_settings(),
         timeout=10,
-        headers={"User-Agent": "Discoverability-Scanner/4.1.0"},
+        headers={"User-Agent": "Discoverability-Scanner/4.5.0"},
     )
     return content
 
@@ -1250,7 +1334,7 @@ def _try_fetch_scanner_text(
         content, _final_url, _redirect_chain = safe_fetch_url_text(
             url,
             settings,
-            headers={"User-Agent": "Discoverability-Scanner/4.1.0"},
+            headers={"User-Agent": "Discoverability-Scanner/4.5.0"},
         )
         return content, None
     except Exception as exc:

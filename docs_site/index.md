@@ -8,8 +8,11 @@ validation, and release discipline.
 
 - [Repository README](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/README.md)
 - [Russian README](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/README_RU.md)
+- [Docs Index](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/DOCS_INDEX.md)
+- [Russian Docs Index](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/DOCS_INDEX_RU.md)
 - [AGENTS.md](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/AGENTS.md)
 - [WALKTHROUGH.md](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/WALKTHROUGH.md)
+- [15-Minute Onboarding](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/15-minute-onboarding-v450.md)
 - [Hosted Validator](validator.md)
 - [Public Readiness](readiness.md)
 - [Service Blueprint](service-blueprint.md)

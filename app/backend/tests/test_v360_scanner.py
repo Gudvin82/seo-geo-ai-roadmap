@@ -121,6 +121,8 @@ def test_scan_job_lifecycle_and_artifacts(client, settings, monkeypatch) -> None
     status = client.get(payload["status_endpoint"], headers=_scanner_headers())
     assert status.status_code == 200
     assert status.json()["status"] == "completed"
+    assert "queue_depth" in status.json()
+    assert "active_jobs_for_domain" in status.json()
 
     events = client.get(payload["events_endpoint"], headers=_scanner_headers())
     assert events.status_code == 200
@@ -135,7 +137,7 @@ def test_scan_job_lifecycle_and_artifacts(client, settings, monkeypatch) -> None
         "csv",
         "html",
     }
-    assert all(item["schema_version"] == "v4.2.0" for item in artifact_payload)
+    assert all(item["schema_version"] == "v4.5.0" for item in artifact_payload)
 
     result = client.get(
         f"/api/v1/scan-jobs/{payload['scan_job_id']}/result",
@@ -216,6 +218,75 @@ def test_webhook_delivery_mock(client, settings, monkeypatch) -> None:
     assert sent
     assert sent[0]["url"] == "https://hooks.example.test/scanner"
     assert sent[0]["payload"]["status"] == "completed"
+
+
+def test_notification_retry_succeeds_after_first_failure(settings, monkeypatch) -> None:
+    settings.scanner_notification_retry_attempts = 2
+    settings.scanner_notification_retry_backoff_seconds = 0
+    attempts = {"count": 0}
+
+    def flaky() -> None:
+        attempts["count"] += 1
+        if attempts["count"] == 1:
+            raise RuntimeError("temporary failure")
+
+    error = scan_jobs._retry_notification(settings, flaky)
+    assert error is None
+    assert attempts["count"] == 2
+
+
+def test_scanner_rate_limit_window_is_enforced(client, settings, monkeypatch) -> None:
+    settings.allow_public_intake = True
+    settings.allow_anonymous_submission = True
+    settings.scanner_max_submissions_per_ip_per_window = 1
+    monkeypatch.setattr(scan_jobs, "_launch_scan_job", lambda local_settings, job_id: None)
+
+    consent = client.post(
+        "/api/v1/scanner/consent-records",
+        json={
+            "url": "https://example.com",
+            "scan_mode": "passive",
+            "consent_scope": "passive_ack",
+            "ownership_confirmed": False,
+            "load_warning_accepted": False,
+            "limitations_accepted": True,
+        },
+        headers=_scanner_headers(),
+    )
+    first = client.post(
+        "/api/v1/scan-jobs",
+        json={
+            "url": "https://example.com",
+            "scan_mode": "passive",
+            "consent_record_id": consent.json()["id"],
+        },
+        headers=_scanner_headers(),
+    )
+    assert first.status_code == 200
+
+    second_consent = client.post(
+        "/api/v1/scanner/consent-records",
+        json={
+            "url": "https://example.net",
+            "scan_mode": "passive",
+            "consent_scope": "passive_ack",
+            "ownership_confirmed": False,
+            "load_warning_accepted": False,
+            "limitations_accepted": True,
+        },
+        headers=_scanner_headers(),
+    )
+    second = client.post(
+        "/api/v1/scan-jobs",
+        json={
+            "url": "https://example.net",
+            "scan_mode": "passive",
+            "consent_record_id": second_consent.json()["id"],
+        },
+        headers=_scanner_headers(),
+    )
+    assert second.status_code == 429
+    assert "rate limit" in second.json()["detail"].lower()
 
 
 def test_scanner_blocks_non_standard_webhook_port(client, settings) -> None:

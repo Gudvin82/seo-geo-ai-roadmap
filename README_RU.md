@@ -19,6 +19,7 @@ discoverability. Ее можно развернуть на своем компь
 вести brand facts и выдавать двуязычные отчеты без обязательного paid cloud.
 
 [English version](./README.md)
+[Карта документации](./DOCS_INDEX_RU.md)
 
 ## Что это такое
 
@@ -109,11 +110,16 @@ discoverability. Ее можно развернуть на своем компь
 
 ## С чего начать
 
+- Карта docs: [DOCS_INDEX_RU.md](./DOCS_INDEX_RU.md)
 - Быстрый вход для человека: [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
 - Быстрый вход для ИИ: [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
+- Онбординг за 15 минут: [docs/ru/15-minute-onboarding-v450.md](./docs/ru/15-minute-onboarding-v450.md)
 - Публичная readiness-рамка: [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
 - One-day blueprint сервиса: [ONE_DAY_SERVICE_BLUEPRINT_RU.md](./ONE_DAY_SERVICE_BLUEPRINT_RU.md)
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
+- Матрица production-flow интеграций: [docs/ru/integration-production-matrix-v450.md](./docs/ru/integration-production-matrix-v450.md)
+- Каталог провайдеров: [docs/ru/provider-catalog-v450.md](./docs/ru/provider-catalog-v450.md)
+- Сводка релиза v4.5.0: [docs/ru/v450-release.md](./docs/ru/v450-release.md)
 - Deployment: [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
 - Verification: [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
 - API reference: [docs/ru/api-reference.md](./docs/ru/api-reference.md)
@@ -152,6 +158,15 @@ discoverability. Ее можно развернуть на своем компь
 - [Prompt: оценка репозитория и сайта](./prompts/ru/repo-site-audit-agent-prompt.md)
 - [Prompt: развернуть client scanner](./prompts/ru/deploy-client-scanner-agent-prompt.md)
 - [Prompt: улучшить существующий сайт](./prompts/ru/improve-existing-site-agent-prompt.md)
+
+## Что добавляет `v4.5.0`
+
+- полностью зеленый root-plus-backend pytest path без оговорок
+- более сильные scanner abuse controls, queue visibility и notification retries
+- environment-aware integration verification для GSC, GA4, Yandex и CrUX
+- заметно более широкий каталог hosted и local providers
+- более ясная docs consolidation через явные актуальные entrypoints и onboarding за 15 минут
+- более четкая маршрутизация по RU market depth через Yandex и RU GEO entrypoints
 
 ## Что добавляет `v4.4.0`
 

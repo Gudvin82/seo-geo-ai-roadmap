@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
-GRAPH_CONTRACT_VERSION = "v4.0.0"
+GRAPH_CONTRACT_VERSION = "v4.5.0"
 
 
 def build_graph_from_scan_summary(

@@ -29,8 +29,14 @@ class Settings:
     scanner_allowed_schemes: str = "https,http"
     scanner_max_url_length: int = 2048
     scanner_max_concurrent_submissions_per_ip: int = 3
+    scanner_max_concurrent_submissions_per_domain: int = 2
+    scanner_max_pending_jobs_total: int = 25
+    scanner_rate_limit_window_seconds: int = 600
+    scanner_max_submissions_per_ip_per_window: int = 6
     scanner_verification_ttl_minutes: int = 30
     scanner_webhook_timeout_seconds: int = 10
+    scanner_notification_retry_attempts: int = 2
+    scanner_notification_retry_backoff_seconds: int = 1
     scanner_smtp_host: str = ""
     scanner_smtp_port: int = 587
     scanner_smtp_username: str = ""
@@ -93,11 +99,29 @@ def load_settings() -> Settings:
         scanner_max_concurrent_submissions_per_ip=int(
             os.getenv("SCANNER_MAX_CONCURRENT_SUBMISSIONS_PER_IP", "3")
         ),
+        scanner_max_concurrent_submissions_per_domain=int(
+            os.getenv("SCANNER_MAX_CONCURRENT_SUBMISSIONS_PER_DOMAIN", "2")
+        ),
+        scanner_max_pending_jobs_total=int(
+            os.getenv("SCANNER_MAX_PENDING_JOBS_TOTAL", "25")
+        ),
+        scanner_rate_limit_window_seconds=int(
+            os.getenv("SCANNER_RATE_LIMIT_WINDOW_SECONDS", "600")
+        ),
+        scanner_max_submissions_per_ip_per_window=int(
+            os.getenv("SCANNER_MAX_SUBMISSIONS_PER_IP_PER_WINDOW", "6")
+        ),
         scanner_verification_ttl_minutes=int(
             os.getenv("SCANNER_VERIFICATION_TTL_MINUTES", "30")
         ),
         scanner_webhook_timeout_seconds=int(
             os.getenv("SCANNER_WEBHOOK_TIMEOUT_SECONDS", "10")
+        ),
+        scanner_notification_retry_attempts=int(
+            os.getenv("SCANNER_NOTIFICATION_RETRY_ATTEMPTS", "2")
+        ),
+        scanner_notification_retry_backoff_seconds=int(
+            os.getenv("SCANNER_NOTIFICATION_RETRY_BACKOFF_SECONDS", "1")
         ),
         scanner_smtp_host=os.getenv("SCANNER_SMTP_HOST", ""),
         scanner_smtp_port=int(os.getenv("SCANNER_SMTP_PORT", "587")),

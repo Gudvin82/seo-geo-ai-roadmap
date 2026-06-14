@@ -193,6 +193,56 @@ class XAIProvider(OpenAIProvider):
     endpoint = "https://api.x.ai/v1/chat/completions"
 
 
+class OpenRouterProvider(OpenAIProvider):
+    provider_name = "openrouter"
+    endpoint = "https://openrouter.ai/api/v1/chat/completions"
+
+
+class GroqProvider(OpenAIProvider):
+    provider_name = "groq"
+    endpoint = "https://api.groq.com/openai/v1/chat/completions"
+
+
+class TogetherProvider(OpenAIProvider):
+    provider_name = "together"
+    endpoint = "https://api.together.xyz/v1/chat/completions"
+
+
+class FireworksProvider(OpenAIProvider):
+    provider_name = "fireworks"
+    endpoint = "https://api.fireworks.ai/inference/v1/chat/completions"
+
+
+class SambaNovaProvider(OpenAIProvider):
+    provider_name = "sambanova"
+    endpoint = "https://api.sambanova.ai/v1/chat/completions"
+
+
+class CerebrasProvider(OpenAIProvider):
+    provider_name = "cerebras"
+    endpoint = "https://api.cerebras.ai/v1/chat/completions"
+
+
+class NvidiaNIMProvider(OpenAIProvider):
+    provider_name = "nvidia_nim"
+    endpoint = "https://integrate.api.nvidia.com/v1/chat/completions"
+
+
+class DeepInfraProvider(OpenAIProvider):
+    provider_name = "deepinfra"
+    endpoint = "https://api.deepinfra.com/v1/openai/chat/completions"
+
+
+class AzureOpenAIProvider(OpenAIProvider):
+    provider_name = "azure_openai"
+    endpoint = "https://example-resource.openai.azure.com/openai/deployments/example/chat/completions?api-version=2024-10-21"
+
+
+class CloudflareProvider(OpenAIProvider):
+    provider_name = "cloudflare"
+    endpoint = "https://api.cloudflare.com/client/v4/accounts/example/ai/v1/chat/completions"
+
+
 class OllamaProvider(OpenAIProvider):
     provider_name = "ollama"
     requires_api_key = False
@@ -223,6 +273,105 @@ class VLLMProvider(OpenAIProvider):
         return headers
 
 
+class LMStudioProvider(OpenAIProvider):
+    provider_name = "lmstudio"
+    requires_api_key = False
+    endpoint = "http://localhost:1234/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        headers = {"Content-Type": "application/json"}
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
+        return headers
+
+
+class LlamaCppProvider(OpenAIProvider):
+    provider_name = "llamacpp"
+    requires_api_key = False
+    endpoint = "http://localhost:8080/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class KoboldCppProvider(OpenAIProvider):
+    provider_name = "koboldcpp"
+    requires_api_key = False
+    endpoint = "http://localhost:5001/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class TextGenWebUIProvider(OpenAIProvider):
+    provider_name = "textgenwebui"
+    requires_api_key = False
+    endpoint = "http://localhost:5000/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class TabbyAPIProvider(OpenAIProvider):
+    provider_name = "tabbyapi"
+    requires_api_key = False
+    endpoint = "http://localhost:5000/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        headers = {"Content-Type": "application/json"}
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
+        return headers
+
+
+class SGLangProvider(OpenAIProvider):
+    provider_name = "sglang"
+    requires_api_key = False
+    endpoint = "http://localhost:30000/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class MistralRSProvider(OpenAIProvider):
+    provider_name = "mistralrs"
+    requires_api_key = False
+    endpoint = "http://localhost:8081/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class AphroditeProvider(OpenAIProvider):
+    provider_name = "aphrodite"
+    requires_api_key = False
+    endpoint = "http://localhost:2242/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class JanProvider(OpenAIProvider):
+    provider_name = "jan"
+    requires_api_key = False
+    endpoint = "http://localhost:1337/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class OpenWebUIProvider(OpenAIProvider):
+    provider_name = "openwebui"
+    requires_api_key = False
+    endpoint = "http://localhost:3000/ollama/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        headers = {"Content-Type": "application/json"}
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
+        return headers
+
+
 PROVIDERS: dict[str, type[BaseProvider]] = {
     "openai": OpenAIProvider,
     "anthropic": AnthropicProvider,
@@ -234,9 +383,29 @@ PROVIDERS: dict[str, type[BaseProvider]] = {
     "deepseek": DeepSeekProvider,
     "xai": XAIProvider,
     "grok": XAIProvider,
+    "openrouter": OpenRouterProvider,
+    "groq": GroqProvider,
+    "together": TogetherProvider,
+    "fireworks": FireworksProvider,
+    "sambanova": SambaNovaProvider,
+    "cerebras": CerebrasProvider,
+    "nvidia_nim": NvidiaNIMProvider,
+    "deepinfra": DeepInfraProvider,
+    "azure_openai": AzureOpenAIProvider,
+    "cloudflare": CloudflareProvider,
     "ollama": OllamaProvider,
     "localai": LocalAIProvider,
     "vllm": VLLMProvider,
+    "lmstudio": LMStudioProvider,
+    "llamacpp": LlamaCppProvider,
+    "koboldcpp": KoboldCppProvider,
+    "textgenwebui": TextGenWebUIProvider,
+    "tabbyapi": TabbyAPIProvider,
+    "sglang": SGLangProvider,
+    "mistralrs": MistralRSProvider,
+    "aphrodite": AphroditeProvider,
+    "jan": JanProvider,
+    "openwebui": OpenWebUIProvider,
 }
 
 

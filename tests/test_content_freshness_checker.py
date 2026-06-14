@@ -1,20 +1,12 @@
 from __future__ import annotations
 
-import subprocess
-import sys
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = REPO_ROOT / "scripts" / "content_freshness_checker.py"
+from tests.script_harness import run_script_main
 
 
-def run_command(*args: str) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        [sys.executable, str(SCRIPT), *args],
-        capture_output=True,
-        text=True,
-        cwd=REPO_ROOT,
-    )
+def run_command(*args: str):
+    return run_script_main("scripts/content_freshness_checker.py", *args)
 
 
 def test_generates_markdown_report(tmp_path: Path) -> None:

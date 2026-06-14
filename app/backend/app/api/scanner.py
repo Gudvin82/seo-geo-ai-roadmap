@@ -268,7 +268,11 @@ def get_scan_job(
     if not row:
         raise HTTPException(status_code=404, detail="Scan job not found.")
     _authorize_scan_job(row, current_user, _session_id(x_scanner_session))
-    return ScanJobRead(**scan_jobs.serialize_scan_job(row))
+    return ScanJobRead(
+        **scan_jobs.serialize_scan_job(
+            row, queue_context=scan_jobs.scan_job_queue_context(db, row)
+        )
+    )
 
 
 @jobs_router.post("/{scan_job_id}/cancel", response_model=ScanJobRead)
@@ -283,7 +287,11 @@ def cancel_scan_job(
         raise HTTPException(status_code=404, detail="Scan job not found.")
     _authorize_scan_job(row, current_user, _session_id(x_scanner_session))
     cancelled = scan_jobs.cancel_scan_job(db, scan_job_id)
-    return ScanJobRead(**scan_jobs.serialize_scan_job(cancelled))
+    return ScanJobRead(
+        **scan_jobs.serialize_scan_job(
+            cancelled, queue_context=scan_jobs.scan_job_queue_context(db, cancelled)
+        )
+    )
 
 
 @jobs_router.get("/{scan_job_id}/events", response_model=list[ScanJobEventRead])
@@ -358,7 +366,7 @@ def get_scan_job_result(
     ]
     return ScanJobResultRead(
         scan_job_id=row.id,
-        schema_version=summary.get("schema_version", "v4.1.0"),
+        schema_version=summary.get("schema_version", "v4.5.0"),
         target_url=summary.get("target_url", row.normalized_url),
         target_domain=summary.get("target_domain", row.target_domain),
         site_type=summary.get("site_type"),

@@ -257,9 +257,29 @@ class ProviderConfigCreate(BaseModel):
             "deepseek",
             "xai",
             "grok",
+            "openrouter",
+            "groq",
+            "together",
+            "fireworks",
+            "sambanova",
+            "cerebras",
+            "nvidia_nim",
+            "deepinfra",
+            "azure_openai",
+            "cloudflare",
             "ollama",
             "localai",
             "vllm",
+            "lmstudio",
+            "llamacpp",
+            "koboldcpp",
+            "textgenwebui",
+            "tabbyapi",
+            "sglang",
+            "mistralrs",
+            "aphrodite",
+            "jan",
+            "openwebui",
         }
         if provider not in allowed:
             raise ValueError(
@@ -557,6 +577,7 @@ class IntegrationVerificationRowRead(BaseModel):
     verification_checks: list[str] = Field(default_factory=list)
     latest_snapshot_source: Optional[str] = None
     latest_snapshot_summary: dict[str, Any] = Field(default_factory=dict)
+    env_status: dict[str, Any] = Field(default_factory=dict)
     next_step: str
 
 

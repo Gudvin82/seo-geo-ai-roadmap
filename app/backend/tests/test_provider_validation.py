@@ -51,3 +51,16 @@ def test_provider_config_validation(
         headers=auth_headers,
     )
     assert local_provider.status_code == 200
+
+    expanded_provider = client.post(
+        "/api/v1/providers",
+        json={
+            "workspace_id": workspace_id,
+            "provider_name": "openrouter",
+            "label": "OpenRouter routing",
+            "model": "openai/gpt-4.1-mini",
+            "api_key_env_var": "OPENROUTER_API_KEY",
+        },
+        headers=auth_headers,
+    )
+    assert expanded_provider.status_code == 200

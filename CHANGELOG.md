@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.5.0 — Clean Test Path, Stronger Runtime Controls, and Faster Entry
+
+- Reworked root script tests so the combined repository and backend pytest path now runs green together from the repository root
+- Added stronger scanner public-runtime controls including per-IP submission windows, per-domain concurrency caps, queue depth and position visibility, and notification retries
+- Expanded the provider registry with a wider hosted and local runtime catalog for hybrid or fully self-hosted deployment patterns
+- Upgraded the integration verification layer with environment-aware readiness reporting for GSC, GA4, Yandex, and CrUX flows
+- Added EN/RU docs consolidation entrypoints, 15-minute onboarding guides, provider catalogs, integration production matrix docs, and v4.5.0 release summaries
+
 ## v4.4.0 — Public Readiness, One-Day Service Blueprint, and AI-Agent Scenarios
 
 - Added explicit EN/RU public-product readiness docs so the repository can be described accurately as a self-hosted platform and product foundation

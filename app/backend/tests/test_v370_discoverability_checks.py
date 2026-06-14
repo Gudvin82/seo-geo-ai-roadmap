@@ -213,7 +213,7 @@ def test_scanner_summary_includes_v370_module_results(monkeypatch) -> None:
         "_scanner_runtime_settings",
         lambda: settings,
     )
-    assert summary["schema_version"] == "v4.2.0"
+    assert summary["schema_version"] == "v4.5.0"
     module_ids = {item["id"] for item in summary["module_results"]}
     assert {
         "ru_ai_bots",

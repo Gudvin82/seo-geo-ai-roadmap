@@ -23,6 +23,7 @@ from ..services.integrations import (
     all_integration_contracts,
     build_integration_verification_row,
     compact_integration_summary,
+    integration_env_status,
     integration_contract,
     sync_integration_source,
 )
@@ -32,6 +33,7 @@ router = APIRouter(prefix="/integrations", tags=["integrations"])
 
 def _serialize(row: IntegrationConnection) -> IntegrationConnectionRead:
     contract = integration_contract(row.source_type)
+    env_status = integration_env_status(contract)
     freshness = "never_synced"
     if row.last_sync_at:
         freshness = "fresh" if row.last_sync_status == "completed" else "stale"
@@ -50,7 +52,9 @@ def _serialize(row: IntegrationConnection) -> IntegrationConnectionRead:
         readiness_tier=contract["readiness_tier"],
         sync_mode=contract["sync_mode"],
         required_env_vars=contract["required_env_vars"],
-        credential_status="configured" if row.credentials_env_var else "missing",
+        credential_status="configured"
+        if row.credentials_env_var or env_status["live_credentials_ready"]
+        else "missing",
         recommended_ci_workflow=contract["recommended_ci_workflow"],
         ci_gates=contract["ci_gates"],
         contract_version=contract["contract_version"],
@@ -171,6 +175,7 @@ def integration_readiness_plan(
         raise HTTPException(status_code=404, detail="Integration not found.")
     require_project_access(db, row.project_id, current_user, minimum_role="viewer")
     contract = integration_contract(row.source_type)
+    env_status = integration_env_status(contract)
     return {
         "integration_id": row.id,
         "source_type": row.source_type,
@@ -180,7 +185,10 @@ def integration_readiness_plan(
         "ci_gates": contract["ci_gates"],
         "production_flow": contract.get("production_flow", []),
         "current_status": row.last_sync_status or "created",
-        "credential_status": "configured" if row.credentials_env_var else "missing",
+        "credential_status": "configured"
+        if row.credentials_env_var or env_status["live_credentials_ready"]
+        else "missing",
+        "env_status": env_status,
         "next_step": contract["next_step"],
     }
 

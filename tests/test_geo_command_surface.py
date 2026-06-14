@@ -1,28 +1,10 @@
 from __future__ import annotations
 
-import subprocess
-import sys
-import time
-from pathlib import Path
-
-REPO_ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = REPO_ROOT / "scripts" / "geo_command_surface.py"
+from tests.script_harness import run_script_main
 
 
-def run_command(*args: str) -> subprocess.CompletedProcess[str]:
-    last_error: BlockingIOError | None = None
-    for _ in range(3):
-        try:
-            return subprocess.run(
-                [sys.executable, str(SCRIPT), *args],
-                capture_output=True,
-                text=True,
-                cwd=REPO_ROOT,
-            )
-        except BlockingIOError as exc:
-            last_error = exc
-            time.sleep(0.05)
-    raise last_error or AssertionError("subprocess execution failed")
+def run_command(*args: str):
+    return run_script_main("scripts/geo_command_surface.py", *args)
 
 
 def test_help_works() -> None:

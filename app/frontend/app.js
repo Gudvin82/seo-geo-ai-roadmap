@@ -48,14 +48,15 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v4.4.0 public-readiness, service blueprint, and AI-agent delivery",
+      "v4.5.0 clean test path, stronger integrations, simpler onboarding",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
       "Give the repo to a human operator or an AI coding agent, deploy it, connect providers, run audits, collect evidence, and re-run on the same sites with measurable deltas.",
     badgeRepo: "Repo methodology",
     badgeApp: "App workflow",
-    badgeProviders: "OpenAI / Claude / Gemini / Perplexity / Ollama / LocalAI",
+    badgeProviders:
+      "OpenAI / Claude / Gemini / Perplexity / OpenRouter / Groq / Ollama / LM Studio",
     metricAuth: "Auth status",
     metricWorkspace: "Active workspace",
     metricProject: "Active project",
@@ -238,14 +239,15 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v4.4.0 public-readiness, service blueprint, and AI-agent delivery",
+      "v4.5.0 чистый test path, stronger integrations, simpler onboarding",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
       "Передайте репозиторий человеку-оператору или AI coding agent, разверните стек, подключите провайдеров, запускайте аудиты, собирайте evidence и сравнивайте повторы по тем же сайтам.",
     badgeRepo: "Методология репо",
     badgeApp: "Продуктовый workflow",
-    badgeProviders: "OpenAI / Claude / Gemini / Perplexity / Ollama / LocalAI",
+    badgeProviders:
+      "OpenAI / Claude / Gemini / Perplexity / OpenRouter / Groq / Ollama / LM Studio",
     metricAuth: "Статус авторизации",
     metricWorkspace: "Активный воркспейс",
     metricProject: "Активный проект",

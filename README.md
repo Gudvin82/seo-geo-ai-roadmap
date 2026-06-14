@@ -19,6 +19,7 @@ audits, track AI share of voice, manage brand facts, and deliver bilingual
 reports without mandatory paid cloud.
 
 [Русская версия](./README_RU.md)
+[Documentation index](./DOCS_INDEX.md)
 
 ## What this is
 
@@ -107,11 +108,16 @@ Use these files before making public claims:
 
 ## Start here
 
+- Docs map: [DOCS_INDEX.md](./DOCS_INDEX.md)
 - Human quickstart: [WALKTHROUGH.md](./WALKTHROUGH.md)
 - AI quickstart: [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
+- 15-minute onboarding: [docs/en/15-minute-onboarding-v450.md](./docs/en/15-minute-onboarding-v450.md)
 - Public readiness: [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
 - One-day service blueprint: [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
+- Integration production matrix: [docs/en/integration-production-matrix-v450.md](./docs/en/integration-production-matrix-v450.md)
+- Provider catalog: [docs/en/provider-catalog-v450.md](./docs/en/provider-catalog-v450.md)
+- v4.5.0 release summary: [docs/en/v450-release.md](./docs/en/v450-release.md)
 - Deployment: [DEPLOYMENT.md](./DEPLOYMENT.md)
 - Verification: [VERIFY_DEPLOYMENT.md](./VERIFY_DEPLOYMENT.md)
 - API reference: [docs/en/api-reference.md](./docs/en/api-reference.md)
@@ -150,6 +156,15 @@ AI coding agent without inventing the prompt from scratch:
 - [Repo + site audit prompt](./prompts/en/repo-site-audit-agent-prompt.md)
 - [Deploy client scanner prompt](./prompts/en/deploy-client-scanner-agent-prompt.md)
 - [Improve existing site prompt](./prompts/en/improve-existing-site-agent-prompt.md)
+
+## What `v4.5.0` adds
+
+- fully green root-plus-backend pytest path without caveats
+- stronger scanner abuse controls, queue visibility, and notification retries
+- environment-aware integration verification for GSC, GA4, Yandex, and CrUX
+- much wider provider catalog across hosted and local runtimes
+- clearer docs consolidation through explicit current entrypoints and 15-minute onboarding
+- sharper RU market routing through Yandex and RU GEO entrypoints
 
 ## What `v4.4.0` adds
 
