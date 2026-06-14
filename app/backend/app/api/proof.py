@@ -194,6 +194,65 @@ def proof_timeline(
     )
 
 
+@router.get("/export-pack")
+def proof_export_pack(
+    project_id: int,
+    client_safe: bool = False,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    require_project_access(db, project_id, current_user, minimum_role="viewer")
+    timeline = proof_timeline(project_id=project_id, db=db, current_user=current_user)
+    items = timeline.items[:12]
+    markdown_lines = [
+        f"# Proof Pack for project #{project_id}",
+        "",
+        f"Generated at: {timeline.generated_at.isoformat()}",
+        "",
+    ]
+    client_lines = [
+        "# Client-Safe Proof Pack",
+        "",
+        "This export keeps operator-sensitive metadata out of the summary.",
+        "",
+    ]
+    for item in items:
+        markdown_lines.extend(
+            [
+                f"## {item.title}",
+                "",
+                f"- Type: {item.item_type}",
+                f"- Source: {item.source_id}",
+                f"- Created: {item.created_at.isoformat()}",
+                f"- Summary: {item.summary}",
+                "",
+            ]
+        )
+        client_lines.extend([f"- {item.title}: {item.summary}", ""])
+    export_payload = {
+        "project_id": project_id,
+        "generated_at": timeline.generated_at.isoformat(),
+        "client_safe": client_safe,
+        "items": [
+            {
+                "item_type": item.item_type,
+                "title": item.title,
+                "summary": item.summary,
+                "created_at": item.created_at.isoformat(),
+                "source_id": item.source_id if not client_safe else None,
+                "confidence_label": item.confidence_label,
+                "links": item.links if not client_safe else [],
+                "metadata": item.metadata if not client_safe else {},
+            }
+            for item in items
+        ],
+        "markdown_export": "\n".join(markdown_lines).strip() + "\n",
+        "client_safe_markdown": "\n".join(client_lines).strip() + "\n",
+        "pdf_ready_markdown": "\n".join(markdown_lines).strip() + "\n",
+    }
+    return export_payload
+
+
 @router.get("/evidence", response_model=list[EvidenceRecordRead])
 def list_evidence(
     project_id: int,

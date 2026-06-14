@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Repo Understanding Center</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="graph-shell">
+      <section class="scanner-hero">
+        <p class="eyebrow">v5.2.0 repo understanding mode</p>
+        <h1>Repo Understanding Center</h1>
+        <p class="hero-copy">
+          Help an operator or AI agent understand the architecture, entrypoints,
+          and deployment logic without reading the whole repository first.
+        </p>
+      </section>
+
+      <section class="graph-grid">
+        <article class="card graph-controls">
+          <h2>Controls</h2>
+          <label class="field">
+            <span>API base</span>
+            <input id="api-base" type="text" value="http://localhost:8000/api/v1" />
+          </label>
+          <div class="scanner-actions">
+            <button id="load" type="button">Load center</button>
+            <a class="nav-link graph-back-link" href="./index.html">Back to app</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Machine-readable output</h2>
+          <pre id="payload" class="code-block"></pre>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      async function loadCenter() {
+        const base = document.getElementById("api-base").value.replace(/\/$/, "");
+        const response = await fetch(`${base}/settings/repo-understanding-center`);
+        const payload = await response.json();
+        document.getElementById("payload").textContent = JSON.stringify(
+          payload,
+          null,
+          2,
+        );
+      }
+
+      document.getElementById("load").addEventListener("click", () => {
+        loadCenter().catch((error) => {
+          document.getElementById("payload").textContent = error.message;
+        });
+      });
+
+      loadCenter().catch(() => {});
+    </script>
+  </body>
+</html>

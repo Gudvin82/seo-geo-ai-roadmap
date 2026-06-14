@@ -544,13 +544,17 @@ def test_workspace_project_and_audit_flow(
     )
     assert generation_contracts.status_code == 200
     assert generation_contracts.json()["schema_files"]
+    assert "scanner_saas" in generation_contracts.json()["project_types"]
+    assert (
+        generation_contracts.json()["project_generation_contract_version"] == "v5.2.0"
+    )
 
     generation_manifest = client.post(
         "/api/v1/generation/manifests/generate",
         json={
             "workspace_id": workspace_id,
             "project_id": project_id,
-            "project_type": "local_business",
+            "project_type": "scanner_saas",
             "domain_or_url": "https://example.com",
             "business_type": "legal services",
             "target_geography": "Moscow",
@@ -578,6 +582,10 @@ def test_workspace_project_and_audit_flow(
     )
     assert generation_scaffold.status_code == 200
     assert generation_scaffold.json()["generated_files"]
+    assert any(
+        item.endswith("deploy-wizard.json")
+        for item in generation_scaffold.json()["generated_files"]
+    )
 
     onboarding_center = client.get(
         "/api/v1/settings/onboarding-center", headers=auth_headers
@@ -600,6 +608,71 @@ def test_workspace_project_and_audit_flow(
     )
     assert social_distribution.status_code == 200
     assert social_distribution.json()["connected_surfaces"]
+
+    repo_understanding = client.get(
+        "/api/v1/settings/repo-understanding-center", headers=auth_headers
+    )
+    assert repo_understanding.status_code == 200
+    assert repo_understanding.json()["architecture_layers"]
+
+    deploy_wizard = client.get("/api/v1/settings/deploy-wizard", headers=auth_headers)
+    assert deploy_wizard.status_code == 200
+    assert deploy_wizard.json()["paths"]
+
+    prompt_packs = client.get("/api/v1/settings/prompt-packs", headers=auth_headers)
+    assert prompt_packs.status_code == 200
+    assert prompt_packs.json()["packs"]
+
+    demo_center = client.get("/api/v1/settings/demo-center", headers=auth_headers)
+    assert demo_center.status_code == 200
+    assert demo_center.json()["sample_projects"]
+
+    local_entity = client.get(
+        "/api/v1/settings/local-entity-center", headers=auth_headers
+    )
+    assert local_entity.status_code == 200
+    assert local_entity.json()["google_local_stack"]
+
+    productization_center = client.get(
+        "/api/v1/settings/productization-center", headers=auth_headers
+    )
+    assert productization_center.status_code == 200
+    assert productization_center.json()["billing_abstraction"]
+
+    portfolio_dashboard = client.get(
+        f"/api/v1/settings/portfolio-dashboard?workspace_id={workspace_id}",
+        headers=auth_headers,
+    )
+    assert portfolio_dashboard.status_code == 200
+    assert portfolio_dashboard.json()["projects"]
+
+    mention_reputation = client.get(
+        f"/api/v1/settings/mention-reputation-center?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert mention_reputation.status_code == 200
+    assert mention_reputation.json()["tracking_layers"]
+
+    operator_board = client.get(
+        f"/api/v1/settings/operator-board?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert operator_board.status_code == 200
+    assert operator_board.json()["board_columns"]
+
+    proof_export = client.get(
+        f"/api/v1/proof/export-pack?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert proof_export.status_code == 200
+    assert proof_export.json()["pdf_ready_markdown"]
+
+    integration_health = client.get(
+        f"/api/v1/integrations/health-center?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert integration_health.status_code == 200
+    assert integration_health.json()["summary"]["total_surfaces"] >= 1
 
     operator_center = client.get(
         "/api/v1/settings/operator-center", headers=auth_headers

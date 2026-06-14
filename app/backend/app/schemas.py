@@ -881,6 +881,11 @@ class ProjectGenerationRequest(BaseModel):
     workspace_id: Optional[int] = None
     project_id: Optional[int] = None
     project_type: Literal[
+        "landing_page",
+        "scanner_saas",
+        "agency_workspace",
+        "local_business_dashboard",
+        "ecommerce_ops",
         "local_business",
         "agency_client_workspace",
         "b2b_saas_company",

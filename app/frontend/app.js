@@ -17,13 +17,23 @@ const state = {
   executiveDashboard: null,
   saasCatalog: [],
   tenantOverview: null,
+  portfolioDashboard: {},
+  demoCenter: {},
+  productizationCenter: {},
   proofTimeline: [],
   proofKit: {},
+  proofExportPack: {},
+  mentionReputationCenter: {},
+  operatorBoard: {},
   generationContracts: {},
   generationManifests: [],
   generationOutput: null,
   oneLinkBuilder: {},
+  repoUnderstanding: {},
+  deployWizard: {},
+  promptPacks: {},
   socialDistributionCenter: {},
+  localEntityCenter: {},
   integrationContracts: [],
   cmsContracts: [],
   reportAssistant: null,
@@ -57,7 +67,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v5.1.0 managed-runtime maturity, proof timeline, and AI-to-App scaffold generation",
+      "v5.2.0 repo understanding, deploy wizard, integration health, and multi-template AI-to-App delivery",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -248,7 +258,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v5.1.0 managed-runtime maturity, proof timeline и AI-to-App scaffold generation",
+      "v5.2.0 repo understanding, deploy wizard, integration health и multi-template AI-to-App delivery",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -691,6 +701,17 @@ function renderSaasCenter() {
     null,
     2,
   );
+  $("#portfolio-dashboard").textContent = JSON.stringify(
+    state.portfolioDashboard || {},
+    null,
+    2,
+  );
+  $("#demo-center").textContent = JSON.stringify(state.demoCenter || {}, null, 2);
+  $("#productization-center").textContent = JSON.stringify(
+    state.productizationCenter || {},
+    null,
+    2,
+  );
 }
 
 function renderProofCenter() {
@@ -702,6 +723,21 @@ function renderProofCenter() {
     ].filter(Boolean)),
   );
   $("#proof-kit").textContent = JSON.stringify(state.proofKit || {}, null, 2);
+  $("#proof-export-pack").textContent = JSON.stringify(
+    state.proofExportPack || {},
+    null,
+    2,
+  );
+  $("#mention-reputation-center").textContent = JSON.stringify(
+    state.mentionReputationCenter || {},
+    null,
+    2,
+  );
+  $("#operator-board").textContent = JSON.stringify(
+    state.operatorBoard || {},
+    null,
+    2,
+  );
 }
 
 function renderBuildCenter() {
@@ -723,8 +759,28 @@ function renderBuildCenter() {
     null,
     2,
   );
+  $("#repo-understanding").textContent = JSON.stringify(
+    state.repoUnderstanding || {},
+    null,
+    2,
+  );
+  $("#deploy-wizard").textContent = JSON.stringify(
+    state.deployWizard || {},
+    null,
+    2,
+  );
+  $("#prompt-packs").textContent = JSON.stringify(
+    state.promptPacks || {},
+    null,
+    2,
+  );
   $("#social-distribution-center").textContent = JSON.stringify(
     state.socialDistributionCenter || {},
+    null,
+    2,
+  );
+  $("#local-entity-center").textContent = JSON.stringify(
+    state.localEntityCenter || {},
     null,
     2,
   );
@@ -1035,12 +1091,31 @@ async function refreshSaasCenter() {
   if (!state.token) {
     return;
   }
-  const [catalog, organizations] = await Promise.all([
+  const requests = [
     apiRequest("/saas/workspace-catalog"),
     apiRequest("/saas/organizations"),
-  ]);
+    apiRequest("/settings/demo-center", { headers: {} }),
+    apiRequest("/settings/productization-center", { headers: {} }),
+  ];
+  if (state.selectedWorkspaceId) {
+    requests.push(
+      apiRequest(
+        `/settings/portfolio-dashboard?workspace_id=${state.selectedWorkspaceId}`,
+      ),
+    );
+  }
+  const [
+    catalog,
+    organizations,
+    demoCenter,
+    productizationCenter,
+    portfolioDashboard,
+  ] = await Promise.all(requests);
   state.saasCatalog = catalog.items || [];
   state.organizations = organizations || [];
+  state.demoCenter = demoCenter || {};
+  state.productizationCenter = productizationCenter || {};
+  state.portfolioDashboard = portfolioDashboard || {};
   if (state.selectedWorkspaceId) {
     try {
       state.tenantOverview = await apiRequest(
@@ -1057,12 +1132,21 @@ async function refreshProofCenter() {
   if (!state.token || !state.selectedProjectId) {
     return;
   }
-  const [timeline, proofKit] = await Promise.all([
-    apiRequest(`/proof/timeline?project_id=${state.selectedProjectId}`),
-    apiRequest("/settings/proof-kit", { headers: {} }),
-  ]);
+  const [timeline, proofKit, exportPack, mentionReputationCenter, operatorBoard] =
+    await Promise.all([
+      apiRequest(`/proof/timeline?project_id=${state.selectedProjectId}`),
+      apiRequest("/settings/proof-kit", { headers: {} }),
+      apiRequest(`/proof/export-pack?project_id=${state.selectedProjectId}`),
+      apiRequest(
+        `/settings/mention-reputation-center?project_id=${state.selectedProjectId}`,
+      ),
+      apiRequest(`/settings/operator-board?project_id=${state.selectedProjectId}`),
+    ]);
   state.proofTimeline = timeline.items || [];
   state.proofKit = proofKit;
+  state.proofExportPack = exportPack || {};
+  state.mentionReputationCenter = mentionReputationCenter || {};
+  state.operatorBoard = operatorBoard || {};
   renderProofCenter();
 }
 
@@ -1070,17 +1154,33 @@ async function refreshBuildCenter() {
   if (!state.token) {
     return;
   }
-  const [contracts, manifests, oneLinkBuilder, socialDistributionCenter] =
-    await Promise.all([
+  const [
+    contracts,
+    manifests,
+    oneLinkBuilder,
+    socialDistributionCenter,
+    repoUnderstanding,
+    deployWizard,
+    promptPacks,
+    localEntityCenter,
+  ] = await Promise.all([
       apiRequest("/generation/contracts"),
       apiRequest("/generation/manifests"),
       apiRequest("/settings/one-link-builder", { headers: {} }),
       apiRequest("/settings/social-distribution-center", { headers: {} }),
+      apiRequest("/settings/repo-understanding-center", { headers: {} }),
+      apiRequest("/settings/deploy-wizard", { headers: {} }),
+      apiRequest("/settings/prompt-packs", { headers: {} }),
+      apiRequest("/settings/local-entity-center", { headers: {} }),
     ]);
   state.generationContracts = contracts;
   state.generationManifests = manifests;
   state.oneLinkBuilder = oneLinkBuilder;
   state.socialDistributionCenter = socialDistributionCenter;
+  state.repoUnderstanding = repoUnderstanding;
+  state.deployWizard = deployWizard;
+  state.promptPacks = promptPacks;
+  state.localEntityCenter = localEntityCenter;
   renderBuildCenter();
 }
 
@@ -1142,7 +1242,7 @@ async function handleOrganizationCreate(event) {
   await refreshSaasCenter();
 }
 
-async function handleTenantProfileCreateV51(event) {
+async function handleTenantProfileCreateV52(event) {
   event.preventDefault();
   const payload = formPayload(event.currentTarget);
   payload.workspace_id = Number(payload.workspace_id);
@@ -1271,7 +1371,7 @@ async function handleNotificationCreate(event) {
   await refreshNotifications();
 }
 
-async function handleGenerationCreateV51(event) {
+async function handleGenerationCreateV52(event) {
   event.preventDefault();
   const payload = formPayload(event.currentTarget);
   payload.workspace_id = payload.workspace_id ? Number(payload.workspace_id) : null;
@@ -1384,9 +1484,9 @@ function installEventListeners() {
   $("#workspace-form").addEventListener("submit", handleWorkspaceCreate);
   $("#project-form").addEventListener("submit", handleProjectCreate);
   $("#organization-form").addEventListener("submit", handleOrganizationCreate);
-  $("#tenant-profile-form-v51").addEventListener(
+  $("#tenant-profile-form-v52").addEventListener(
     "submit",
-    handleTenantProfileCreateV51,
+    handleTenantProfileCreateV52,
   );
   $("#facts-form").addEventListener("submit", handleFactsCreate);
   $("#provider-form").addEventListener("submit", handleProviderCreate);
@@ -1396,9 +1496,9 @@ function installEventListeners() {
   $("#audit-form").addEventListener("submit", handleAuditCreate);
   $("#sov-form").addEventListener("submit", handleSovCreate);
   $("#notification-form").addEventListener("submit", handleNotificationCreate);
-  $("#generation-form-v51").addEventListener(
+  $("#generation-form-v52").addEventListener(
     "submit",
-    handleGenerationCreateV51,
+    handleGenerationCreateV52,
   );
   $("#patch-pack-form").addEventListener("submit", handlePatchPackCreate);
   $("#client-pack-form").addEventListener("submit", handleClientPackCreate);

@@ -41,6 +41,8 @@
           <button class="nav-link" data-pane-target="build-pane">AI-to-App</button>
           <a class="nav-link" href="./scanner.html">Scanner Intake</a>
           <a class="nav-link" href="./graph.html">Graph Intelligence</a>
+          <a class="nav-link" href="./repo-understanding.html">Repo Understanding</a>
+          <a class="nav-link" href="./integration-health.html">Integration Health</a>
           <button class="nav-link" data-pane-target="auth-pane" data-i18n="navAuth">Auth</button>
           <button class="nav-link" data-pane-target="workspaces-pane" data-i18n="navWorkspaces">Workspaces</button>
           <button class="nav-link" data-pane-target="projects-pane" data-i18n="navProjects">Projects</button>
@@ -74,7 +76,7 @@
       <main class="main">
         <header class="hero">
           <div>
-            <p class="eyebrow" data-i18n="releaseBadge">v5.1.0 managed-runtime maturity, proof timeline, and AI-to-App scaffold generation</p>
+            <p class="eyebrow" data-i18n="releaseBadge">v5.2.0 repo understanding, deploy wizard, integration health, and multi-template AI-to-App delivery</p>
             <h2 data-i18n="heroTitle">Self-hosted daily operating system for SEO, GEO, and AI discoverability</h2>
             <p class="hero-copy" data-i18n="heroCopy">
               Give the repo to a human operator or an AI coding agent, deploy it,
@@ -277,7 +279,7 @@
               </label>
               <button type="submit">Create organization</button>
             </form>
-            <form id="tenant-profile-form-v51" class="card form-card">
+            <form id="tenant-profile-form-v52" class="card form-card">
               <h4>Create tenant profile</h4>
               <label class="field">
                 <span>Workspace ID</span>
@@ -308,6 +310,17 @@
               <pre id="saas-overview" class="code-block"></pre>
             </div>
           </div>
+          <div class="split">
+            <div class="card">
+              <h4>Portfolio dashboard</h4>
+              <pre id="portfolio-dashboard" class="code-block"></pre>
+            </div>
+            <div class="card">
+              <h4>Demo and productization center</h4>
+              <pre id="demo-center" class="code-block"></pre>
+              <pre id="productization-center" class="code-block"></pre>
+            </div>
+          </div>
         </section>
 
         <section class="pane" id="proof-pane">
@@ -325,6 +338,17 @@
               <pre id="proof-kit" class="code-block"></pre>
             </div>
           </div>
+          <div class="split">
+            <div class="card">
+              <h4>Proof export pack</h4>
+              <pre id="proof-export-pack" class="code-block"></pre>
+            </div>
+            <div class="card">
+              <h4>Mention, reputation, and operator board</h4>
+              <pre id="mention-reputation-center" class="code-block"></pre>
+              <pre id="operator-board" class="code-block"></pre>
+            </div>
+          </div>
         </section>
 
         <section class="pane" id="build-pane">
@@ -333,7 +357,7 @@
             <button id="refresh-build" class="ghost-button">Refresh</button>
           </div>
           <div class="split">
-            <form id="generation-form-v51" class="card form-card">
+            <form id="generation-form-v52" class="card form-card">
               <h4>Generate and scaffold</h4>
               <label class="field">
                 <span>Workspace ID</span>
@@ -346,6 +370,11 @@
               <label class="field">
                 <span>Project type</span>
                 <select name="project_type">
+                  <option value="landing_page">landing_page</option>
+                  <option value="scanner_saas">scanner_saas</option>
+                  <option value="agency_workspace">agency_workspace</option>
+                  <option value="local_business_dashboard">local_business_dashboard</option>
+                  <option value="ecommerce_ops">ecommerce_ops</option>
                   <option value="local_business">local_business</option>
                   <option value="agency_client_workspace">agency_client_workspace</option>
                   <option value="b2b_saas_company">b2b_saas_company</option>
@@ -404,8 +433,16 @@
             <div class="card">
               <h4>One-link builder</h4>
               <pre id="one-link-builder" class="code-block"></pre>
+              <h4>Repo understanding</h4>
+              <pre id="repo-understanding" class="code-block"></pre>
+              <h4>Deploy wizard</h4>
+              <pre id="deploy-wizard" class="code-block"></pre>
+              <h4>Prompt packs</h4>
+              <pre id="prompt-packs" class="code-block"></pre>
               <h4>Social and distribution center</h4>
               <pre id="social-distribution-center" class="code-block"></pre>
+              <h4>Local entity center</h4>
+              <pre id="local-entity-center" class="code-block"></pre>
             </div>
           </div>
           <div class="split">

@@ -5,10 +5,21 @@ import json
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from ..access import require_project_access
+from ..access import require_project_access, require_workspace_access
 from ..database import get_db
 from ..deps import get_current_user
-from ..models import AuditRun, CmsConnector, IntegrationConnection, ScanJob, User
+from ..models import (
+    AuditRun,
+    CmsConnector,
+    EvidenceRecord,
+    ExperimentRecord,
+    IntegrationConnection,
+    Project,
+    Report,
+    ScanJob,
+    SovRun,
+    User,
+)
 from ..schemas import (
     CIGatingRead,
     ExecutiveDashboardRead,
@@ -19,6 +30,7 @@ from ..schemas import (
 )
 from ..services.cms import cms_contract
 from ..services.integrations import integration_contract
+from ..services.task_center import build_task_bundle_from_audit_run
 
 router = APIRouter(prefix="/settings", tags=["settings"])
 
@@ -367,6 +379,348 @@ def social_distribution_center() -> dict:
     }
 
 
+@router.get("/repo-understanding-center")
+def repo_understanding_center() -> dict:
+    return {
+        "positioning": (
+            "This mode helps an AI or human operator understand the repository "
+            "fast enough to deploy, extend, and govern it without reading every file."
+        ),
+        "modes": [
+            {
+                "id": "methodology",
+                "question": "Where is the SEO/GEO/AI methodology?",
+                "entrypoints": [
+                    "README.md",
+                    "README_RU.md",
+                    "docs/en/",
+                    "docs/ru/",
+                    "WALKTHROUGH.md",
+                ],
+            },
+            {
+                "id": "app_runtime",
+                "question": "Where is the working product surface?",
+                "entrypoints": [
+                    "app/backend/app/main.py",
+                    "app/backend/app/api/",
+                    "app/frontend/index.html",
+                    "app/frontend/scanner.html",
+                ],
+            },
+            {
+                "id": "graph_intelligence",
+                "question": "How do graph and explainability surfaces work?",
+                "entrypoints": [
+                    "app/backend/app/api/graph_runtime.py",
+                    "app/backend/app/services/graph_runtime.py",
+                    "app/frontend/graph.html",
+                ],
+            },
+            {
+                "id": "ai_to_app",
+                "question": "How does AI-to-App generation work?",
+                "entrypoints": [
+                    "app/backend/app/api/generation.py",
+                    "contracts/project-blueprint.schema.json",
+                    "BUILD_WITH_THIS_PLATFORM.md",
+                    "GENERATE_PROJECT_FROM_URL.md",
+                ],
+            },
+        ],
+        "architecture_layers": [
+            {
+                "name": "control_plane",
+                "why_it_exists": "workspace, project, auth, governance, reporting",
+                "core_paths": [
+                    "app/backend/app/api/",
+                    "app/backend/app/models.py",
+                    "app/backend/app/schemas.py",
+                ],
+            },
+            {
+                "name": "scanner_and_audit_plane",
+                "why_it_exists": "scan jobs, audits, findings, exports, proof",
+                "core_paths": [
+                    "app/backend/app/services/scan_jobs.py",
+                    "app/backend/app/services/audits.py",
+                    "app/backend/app/api/proof.py",
+                    "app/backend/app/api/task_center.py",
+                ],
+            },
+            {
+                "name": "integration_plane",
+                "why_it_exists": "provider and external data sync contracts",
+                "core_paths": [
+                    "app/backend/app/api/integrations.py",
+                    "app/backend/app/services/integrations.py",
+                    "scripts/",
+                ],
+            },
+            {
+                "name": "operator_ui",
+                "why_it_exists": "daily operating system for teams and AI agents",
+                "core_paths": [
+                    "app/frontend/index.html",
+                    "app/frontend/app.js",
+                    "app/frontend/graph.html",
+                ],
+            },
+        ],
+        "fastest_questions_for_ai": [
+            "What are the main product modes?",
+            "Which endpoints create the first working audit loop?",
+            "Which files define contracts and machine-readable outputs?",
+            "Which UI pages are operator-first versus public-intake?",
+            "What can be deployed immediately and what is still starter-level?",
+        ],
+        "recommended_handoff_prompt": (
+            "Understand this repository as a self-hosted SEO/GEO/AI operating system. "
+            "Map the product modes, identify the shortest deploy path, explain the "
+            "architecture in plain English, then execute the requested deployment or audit."
+        ),
+    }
+
+
+@router.get("/deploy-wizard")
+def deploy_wizard() -> dict:
+    return {
+        "promise": "Choose one runtime path and get a concrete operator-grade deployment sequence.",
+        "paths": [
+            {
+                "id": "local",
+                "label": "Local",
+                "best_for": "15-minute demo, UI walkthrough, first AI handoff",
+                "steps": [
+                    "copy .env.example",
+                    "run make up",
+                    "run make migrate",
+                    "run make demo",
+                    "open app and scanner pages",
+                ],
+                "verification": [
+                    "login works",
+                    "demo tenant exists",
+                    "first audit can run",
+                ],
+            },
+            {
+                "id": "vps_docker",
+                "label": "VPS Docker",
+                "best_for": "serious self-hosted usage on your own server",
+                "steps": [
+                    "prepare DNS and reverse proxy",
+                    "copy production env",
+                    "run docker compose up -d",
+                    "run migrations",
+                    "configure backups and secrets",
+                ],
+                "verification": ["health endpoint ok", "auth ok", "background jobs ok"],
+            },
+            {
+                "id": "coolify",
+                "label": "Coolify",
+                "best_for": "self-hosted platform teams that want managed deployment UX",
+                "steps": [
+                    "import repository into Coolify",
+                    "set env vars and persistent services",
+                    "deploy web and worker surfaces",
+                    "run post-deploy migrations",
+                ],
+                "verification": [
+                    "web deploy ok",
+                    "worker connectivity ok",
+                    "storage paths ok",
+                ],
+            },
+            {
+                "id": "railway",
+                "label": "Railway",
+                "best_for": "fast hosted app setup with moderate ops friction",
+                "steps": [
+                    "connect repo",
+                    "provision Postgres",
+                    "set secrets",
+                    "deploy app",
+                    "verify scheduled and sync flows",
+                ],
+                "verification": [
+                    "database ok",
+                    "first login ok",
+                    "integration sync ok",
+                ],
+            },
+            {
+                "id": "render",
+                "label": "Render",
+                "best_for": "managed web service deployment with explicit services",
+                "steps": [
+                    "create web service and database",
+                    "set build and start commands",
+                    "apply env",
+                    "run migrations",
+                ],
+                "verification": [
+                    "service healthy",
+                    "scanner page reachable",
+                    "reports writable",
+                ],
+            },
+            {
+                "id": "kubernetes",
+                "label": "Kubernetes",
+                "best_for": "larger agency or platform teams",
+                "steps": [
+                    "use infra/k8s manifests as starter",
+                    "bind secrets and ingress",
+                    "deploy web plus worker surfaces",
+                    "configure horizontal scaling and storage",
+                ],
+                "verification": [
+                    "rollout healthy",
+                    "logs centralized",
+                    "queue and storage stable",
+                ],
+            },
+        ],
+        "operator_rule": "Start with the smallest path that proves value, then harden.",
+    }
+
+
+@router.get("/prompt-packs")
+def prompt_packs() -> dict:
+    return {
+        "packs": [
+            {
+                "id": "deploy-for-me",
+                "label": "Deploy for me",
+                "prompt": (
+                    "Use this repository as the deployment contract. Stand up the app, "
+                    "configure env, run migrations, prepare demo access, and verify the UI."
+                ),
+            },
+            {
+                "id": "audit-my-site",
+                "label": "Audit my site",
+                "prompt": (
+                    "Use this repository methodology and runtime. Audit my site, collect "
+                    "SEO/GEO/AI findings, generate proof, and return an executive summary."
+                ),
+            },
+            {
+                "id": "generate-client-scanner",
+                "label": "Generate client scanner",
+                "prompt": (
+                    "Generate a client-facing scanner service from this repository, keeping "
+                    "operator governance, public-intake boundaries, and export artifacts."
+                ),
+            },
+            {
+                "id": "fix-and-rerun",
+                "label": "Fix and rerun",
+                "prompt": (
+                    "Use the latest findings, prepare a safe fix plan, apply only approved "
+                    "changes, then rerun audits and compare proof deltas."
+                ),
+            },
+        ],
+        "usage_rule": "These are starter prompts. The repo contracts and UI still define the source of truth.",
+    }
+
+
+@router.get("/demo-center")
+def demo_center() -> dict:
+    return {
+        "public_demo_tenant": {
+            "name": "Discoverability OS Demo Tenant",
+            "access_mode": "local demo credentials or self-hosted sample fixture",
+            "recommended_entrypoints": [
+                "app/frontend/index.html",
+                "app/frontend/scanner.html",
+                "app/frontend/graph.html",
+            ],
+        },
+        "sample_projects": [
+            {
+                "name": "Local business sample",
+                "project_type": "local_business_dashboard",
+                "why_it_matters": "best for Google/Yandex local SEO and maps signals",
+            },
+            {
+                "name": "Agency scanner sample",
+                "project_type": "scanner_saas",
+                "why_it_matters": "best for public intake and white-label audit delivery",
+            },
+            {
+                "name": "E-commerce ops sample",
+                "project_type": "ecommerce_ops",
+                "why_it_matters": "best for Merchant Center, performance, and revenue overlays",
+            },
+        ],
+        "demo_fixtures": [
+            "sample tenant profile",
+            "sample executive dashboard",
+            "sample proof timeline",
+            "sample AI-to-App manifest",
+        ],
+    }
+
+
+@router.get("/local-entity-center")
+def local_entity_center() -> dict:
+    return {
+        "google_local_stack": [
+            "Google Business Profile completeness",
+            "review volume and rating trend",
+            "entity consistency across landing pages and profile",
+            "location-to-landing-page alignment",
+            "maps actions and local conversion overlays",
+        ],
+        "yandex_local_stack": [
+            "Yandex Business completeness",
+            "Yandex Webmaster regional readiness",
+            "YandexAdditional and RU AI bot discoverability",
+            "local trust and legal blocks for RU market",
+            "RU snippets and answer-ready content",
+        ],
+        "entity_requirements": [
+            "clear legal/business identity",
+            "address and contact consistency",
+            "service area or region clarity",
+            "structured data and trust blocks",
+            "FAQ and answer-ready content for local intent",
+        ],
+    }
+
+
+@router.get("/productization-center")
+def productization_center() -> dict:
+    return {
+        "billing_abstraction": [
+            "workspace plan code",
+            "usage and quota policy",
+            "manual invoice or Stripe-assisted path",
+        ],
+        "sso_starter": [
+            "reverse proxy auth header mode",
+            "OIDC gateway starter",
+            "hosted IdP planning layer",
+        ],
+        "tenant_admin_console": [
+            "organization catalog",
+            "tenant overview",
+            "workspace API keys",
+            "quota and usage visibility",
+        ],
+        "hosted_tier_boundary": [
+            "narrower public API than self-hosted",
+            "rate-limited public scanner",
+            "queue priority by plan",
+            "proof-safe exports only",
+        ],
+    }
+
+
 @router.get("/product-modes", response_model=ProductModesResponse)
 def product_modes() -> ProductModesResponse:
     return ProductModesResponse(
@@ -596,6 +950,214 @@ def _first_numeric(mapping: dict[str, object], key: str, default: float = 0.0) -
     if isinstance(value, (int, float)):
         return float(value)
     return default
+
+
+def _parse_ai_citation_score(mention_summary: str) -> float:
+    marker = "AI Citation Score:"
+    if marker not in mention_summary:
+        return 0.0
+    try:
+        tail = mention_summary.split(marker, 1)[1].strip().split()[0]
+        return float(tail)
+    except (ValueError, IndexError):
+        return 0.0
+
+
+def _project_rollup(db: Session, project: Project) -> dict[str, object]:
+    latest_audit = (
+        db.query(AuditRun)
+        .filter(AuditRun.project_id == project.id)
+        .order_by(AuditRun.id.desc())
+        .first()
+    )
+    latest_sov = (
+        db.query(SovRun)
+        .filter(SovRun.project_id == project.id)
+        .order_by(SovRun.id.desc())
+        .first()
+    )
+    reports_count = db.query(Report).filter(Report.project_id == project.id).count()
+    evidence_count = (
+        db.query(EvidenceRecord).filter(EvidenceRecord.project_id == project.id).count()
+    )
+    experiment_count = (
+        db.query(ExperimentRecord)
+        .filter(ExperimentRecord.project_id == project.id)
+        .count()
+    )
+    return {
+        "project_id": project.id,
+        "project_name": project.name,
+        "website_url": project.website_url,
+        "latest_audit_score": latest_audit.summary_score if latest_audit else None,
+        "latest_audit_status": latest_audit.status if latest_audit else "not_run",
+        "latest_ai_citation_score": _parse_ai_citation_score(latest_sov.mention_summary)
+        if latest_sov
+        else 0.0,
+        "share_estimate": latest_sov.share_estimate if latest_sov else None,
+        "reports_count": reports_count,
+        "evidence_count": evidence_count,
+        "experiment_count": experiment_count,
+    }
+
+
+@router.get("/portfolio-dashboard")
+def portfolio_dashboard(
+    workspace_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    require_workspace_access(db, workspace_id, current_user, minimum_role="viewer")
+    projects = (
+        db.query(Project)
+        .filter(Project.workspace_id == workspace_id)
+        .order_by(Project.id.asc())
+        .all()
+    )
+    rows = [_project_rollup(db, project) for project in projects]
+    audit_scores = [
+        row["latest_audit_score"]
+        for row in rows
+        if row["latest_audit_score"] is not None
+    ]
+    citation_scores = [
+        row["latest_ai_citation_score"]
+        for row in rows
+        if row["latest_ai_citation_score"]
+    ]
+    return {
+        "workspace_id": workspace_id,
+        "project_count": len(rows),
+        "portfolio_summary": {
+            "average_audit_score": round(sum(audit_scores) / len(audit_scores), 1)
+            if audit_scores
+            else None,
+            "average_ai_citation_score": round(
+                sum(citation_scores) / len(citation_scores), 1
+            )
+            if citation_scores
+            else None,
+            "projects_with_proof": sum(1 for row in rows if row["evidence_count"]),
+            "projects_with_experiments": sum(
+                1 for row in rows if row["experiment_count"]
+            ),
+        },
+        "projects": rows,
+    }
+
+
+@router.get("/mention-reputation-center")
+def mention_reputation_center(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    project, _ = require_project_access(
+        db, project_id, current_user, minimum_role="viewer"
+    )
+    sov_runs = (
+        db.query(SovRun)
+        .filter(SovRun.project_id == project_id)
+        .order_by(SovRun.id.desc())
+        .limit(10)
+        .all()
+    )
+    evidence_rows = (
+        db.query(EvidenceRecord)
+        .filter(EvidenceRecord.project_id == project_id)
+        .order_by(EvidenceRecord.id.desc())
+        .limit(10)
+        .all()
+    )
+    ai_scores = [
+        _parse_ai_citation_score(row.mention_summary)
+        for row in sov_runs
+        if row.mention_summary
+    ]
+    return {
+        "project_id": project.id,
+        "project_name": project.name,
+        "overview": {
+            "latest_ai_citation_score": ai_scores[0] if ai_scores else 0.0,
+            "average_recent_ai_citation_score": round(
+                sum(ai_scores) / len(ai_scores), 1
+            )
+            if ai_scores
+            else 0.0,
+            "evidence_records": len(evidence_rows),
+            "tracking_mode": "operator-proof + AI SoV history",
+        },
+        "tracking_layers": [
+            "AI mention and citation history",
+            "proof-linked reputation events",
+            "local-business trust overlays",
+            "social/distribution connectors",
+        ],
+        "latest_mentions": [
+            {
+                "id": row.id,
+                "brand": row.brand,
+                "share_estimate": row.share_estimate,
+                "mention_summary": row.mention_summary,
+                "created_at": row.created_at.isoformat(),
+            }
+            for row in sov_runs[:5]
+        ],
+        "reputation_events": [
+            {
+                "id": row.id,
+                "label_type": row.label_type,
+                "title": row.title,
+                "summary": row.summary,
+                "created_at": row.created_at.isoformat(),
+            }
+            for row in evidence_rows[:5]
+        ],
+    }
+
+
+@router.get("/operator-board")
+def operator_board(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    require_project_access(db, project_id, current_user, minimum_role="viewer")
+    latest_audit = (
+        db.query(AuditRun)
+        .filter(AuditRun.project_id == project_id)
+        .order_by(AuditRun.id.desc())
+        .first()
+    )
+    if not latest_audit:
+        return {
+            "project_id": project_id,
+            "tasks": [],
+            "board_columns": ["open", "in_review", "verify", "rollback_ready"],
+        }
+    findings = json.loads(latest_audit.finding_groups_json or "[]")
+    bundle = build_task_bundle_from_audit_run(latest_audit, findings)
+    tasks = []
+    for index, task in enumerate(bundle["tasks"], start=1):
+        tasks.append(
+            {
+                "task_id": task["id"],
+                "title": task["recommended_fix"],
+                "owner": task["suggested_owner"],
+                "status": "verify" if task["severity"] == "high" else "open",
+                "verify_step": "rerun audit and compare proof timeline",
+                "rollback_step": "revert CMS or code patch if regression appears",
+                "priority": task["severity"],
+                "source_ref": task["source_ref"],
+                "sort_order": index,
+            }
+        )
+    return {
+        "project_id": project_id,
+        "generated_from_audit_run": latest_audit.id,
+        "board_columns": ["open", "in_review", "verify", "rollback_ready"],
+        "tasks": tasks,
+    }
 
 
 @router.get("/executive-dashboard", response_model=ExecutiveDashboardRead)

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Integration Health Center</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="graph-shell">
+      <section class="scanner-hero">
+        <p class="eyebrow">v5.2.0 integration health center</p>
+        <h1>Integration Health Center</h1>
+        <p class="hero-copy">
+          Review sync freshness, credential status, retry signals, and next
+          diagnostics for integration and CMS surfaces.
+        </p>
+      </section>
+
+      <section class="graph-grid">
+        <article class="card graph-controls">
+          <h2>Controls</h2>
+          <label class="field">
+            <span>API base</span>
+            <input id="api-base" type="text" value="http://localhost:8000/api/v1" />
+          </label>
+          <label class="field">
+            <span>Bearer token</span>
+            <input id="token" type="text" placeholder="Paste JWT token" />
+          </label>
+          <label class="field">
+            <span>Project ID</span>
+            <input id="project-id" type="number" value="1" />
+          </label>
+          <div class="scanner-actions">
+            <button id="load" type="button">Load health center</button>
+            <a class="nav-link graph-back-link" href="./index.html">Back to app</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Machine-readable output</h2>
+          <pre id="payload" class="code-block"></pre>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      async function loadCenter() {
+        const base = document.getElementById("api-base").value.replace(/\/$/, "");
+        const projectId = document.getElementById("project-id").value;
+        const token = document.getElementById("token").value.trim();
+        const response = await fetch(
+          `${base}/integrations/health-center?project_id=${projectId}`,
+          {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          },
+        );
+        const payload = await response.json();
+        document.getElementById("payload").textContent = JSON.stringify(
+          payload,
+          null,
+          2,
+        );
+      }
+
+      document.getElementById("load").addEventListener("click", () => {
+        loadCenter().catch((error) => {
+          document.getElementById("payload").textContent = error.message;
+        });
+      });
+    </script>
+  </body>
+</html>

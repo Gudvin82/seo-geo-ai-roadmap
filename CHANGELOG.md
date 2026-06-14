@@ -1,5 +1,13 @@
 # Changelog
 
+## v5.2.0 — Repo Understanding, Deploy Wizard, and Productized Runtime Paths
+
+- Added repo-understanding mode so AI agents and operators can map architecture, product surfaces, and deployment entrypoints faster
+- Added deploy-wizard, prompt-packs, demo-center, local-entity-center, and productization-center machine-readable endpoints
+- Added integration health center plus stronger portfolio, mention or reputation, operator-board, and proof-export product surfaces
+- Expanded AI-to-App generation into more product templates including landing page, scanner SaaS, agency workspace, local business dashboard, and e-commerce ops
+- Bumped active runtime and contract markers to `v5.2.0`
+
 ## v5.1.0 — Managed-Runtime Maturity, Proof Timeline, and AI-to-App Scaffold
 
 - Expanded the executive dashboard into a more decision-grade operating center

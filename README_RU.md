@@ -121,6 +121,7 @@ discoverability. Ее можно развернуть на своем компь
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
 - Матрица production-flow интеграций: [docs/ru/integration-production-matrix-v450.md](./docs/ru/integration-production-matrix-v450.md)
 - Каталог провайдеров: [docs/ru/provider-catalog-v450.md](./docs/ru/provider-catalog-v450.md)
+- Сводка релиза v5.2.0: [docs/ru/v520-release.md](./docs/ru/v520-release.md)
 - Сводка релиза v5.1.0: [docs/ru/v510-release.md](./docs/ru/v510-release.md)
 - Сводка релиза v5.0.0: [docs/ru/v500-release.md](./docs/ru/v500-release.md)
 - Сводка релиза v4.6.0: [docs/ru/v460-release.md](./docs/ru/v460-release.md)
@@ -164,6 +165,14 @@ discoverability. Ее можно развернуть на своем компь
 - [Prompt: оценка репозитория и сайта](./prompts/ru/repo-site-audit-agent-prompt.md)
 - [Prompt: развернуть client scanner](./prompts/ru/deploy-client-scanner-agent-prompt.md)
 - [Prompt: улучшить существующий сайт](./prompts/ru/improve-existing-site-agent-prompt.md)
+
+## Что добавляет `v5.2.0`
+
+- режим понимания репозитория, чтобы AI-агент быстрее разбирался в архитектуре, entrypoints и продуктовых режимах
+- deploy wizard для local, VPS Docker, Coolify, Railway, Render и Kubernetes
+- integration health center с видимостью connection state, freshness, retry и diagnostics
+- portfolio dashboard, demo center, productization center и более явный multi-tenant SaaS слой
+- proof export pack, mention/reputation center, operator board и более сильный multi-template AI-to-App generator
 
 ## Что добавляет `v5.1.0`
 

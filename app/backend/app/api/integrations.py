@@ -313,6 +313,99 @@ def integration_readiness_plan(
     }
 
 
+@router.get("/health-center")
+def integration_health_center(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    require_project_access(db, project_id, current_user, minimum_role="viewer")
+    integration_rows = (
+        db.query(IntegrationConnection)
+        .filter(IntegrationConnection.project_id == project_id)
+        .order_by(IntegrationConnection.id.desc())
+        .all()
+    )
+    cms_rows = (
+        db.query(CmsConnector)
+        .filter(CmsConnector.project_id == project_id)
+        .order_by(CmsConnector.id.desc())
+        .all()
+    )
+
+    items: list[dict] = []
+    healthy_count = 0
+    degraded_count = 0
+
+    for row in integration_rows:
+        contract = integration_contract(row.source_type)
+        latest_event = (
+            db.query(IntegrationSyncEvent)
+            .filter(IntegrationSyncEvent.integration_connection_id == row.id)
+            .order_by(IntegrationSyncEvent.id.desc())
+            .first()
+        )
+        connection_state = row.last_sync_status or "created"
+        if connection_state == "completed":
+            healthy_count += 1
+        else:
+            degraded_count += 1
+        items.append(
+            {
+                "surface_type": "integration",
+                "id": row.id,
+                "label": row.label,
+                "source_type": row.source_type,
+                "readiness_tier": contract["readiness_tier"],
+                "connection_state": connection_state,
+                "credential_status": latest_event.credential_status
+                if latest_event
+                else ("configured" if row.credentials_env_var else "missing"),
+                "freshness": latest_event.freshness_label
+                if latest_event
+                else "never_synced",
+                "retry_count": latest_event.retry_count if latest_event else 0,
+                "last_error": latest_event.error_summary if latest_event else None,
+                "recommended_next_step": contract["next_step"],
+                "diagnostics": contract.get("production_flow", []),
+            }
+        )
+
+    for row in cms_rows:
+        contract = cms_contract(row.cms_type)
+        connection_state = row.last_sync_status or "created"
+        if connection_state == "completed":
+            healthy_count += 1
+        else:
+            degraded_count += 1
+        items.append(
+            {
+                "surface_type": "cms",
+                "id": row.id,
+                "label": row.label,
+                "source_type": row.cms_type,
+                "readiness_tier": contract["readiness_tier"],
+                "connection_state": connection_state,
+                "credential_status": "configured" if row.auth_env_var else "missing",
+                "freshness": "fresh" if connection_state == "completed" else "stale",
+                "retry_count": 0,
+                "last_error": None,
+                "recommended_next_step": contract["next_step"],
+                "diagnostics": contract.get("production_flow", []),
+            }
+        )
+
+    return {
+        "project_id": project_id,
+        "summary": {
+            "healthy_count": healthy_count,
+            "degraded_count": degraded_count,
+            "total_surfaces": len(items),
+        },
+        "items": items,
+    }
+
+
 @router.get("/verification-matrix", response_model=IntegrationVerificationMatrixRead)
 def integration_verification_matrix(
     project_id: int,

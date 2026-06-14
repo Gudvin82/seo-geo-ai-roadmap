@@ -35,6 +35,11 @@ BLUEPRINT_SCHEMA_FILES = [
 
 def _template_pack(payload: ProjectGenerationRequest) -> dict:
     mapping = {
+        "landing_page": "Deployable landing page",
+        "scanner_saas": "Scanner SaaS box",
+        "agency_workspace": "Agency workspace",
+        "local_business_dashboard": "Local business dashboard",
+        "ecommerce_ops": "E-commerce ops system",
         "local_business": "WordPress local business",
         "agency_client_workspace": "Agency multi-client workspace",
         "b2b_saas_company": "React SaaS",
@@ -173,15 +178,59 @@ def _scaffold_files(
             ensure_ascii=False,
             indent=2,
         ),
+        "deploy-wizard.json": json.dumps(
+            {
+                "preferred_path": payload.target_mode,
+                "available_paths": [
+                    "local",
+                    "vps_docker",
+                    "coolify",
+                    "railway",
+                    "render",
+                    "kubernetes",
+                ],
+                "verification": [
+                    "login",
+                    "first audit",
+                    "integration sync",
+                    "proof export",
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        "prompt-pack.md": "\n".join(
+            [
+                "# One-click prompt pack",
+                "",
+                "## Deploy for me",
+                "",
+                "Use this generated project and deploy it under the chosen runtime path.",
+                "",
+                "## Audit my site",
+                "",
+                "Run the scanner, the audit flow, proof export, and executive summary.",
+                "",
+                "## Generate client scanner",
+                "",
+                "Turn this project into a gated client scanner with operator review.",
+                "",
+            ]
+        ),
     }
 
 
 @router.get("/contracts")
 def generation_contracts() -> dict:
     return {
-        "project_generation_contract_version": "v5.1.0",
+        "project_generation_contract_version": "v5.2.0",
         "schema_files": BLUEPRINT_SCHEMA_FILES,
         "project_types": [
+            "landing_page",
+            "scanner_saas",
+            "agency_workspace",
+            "local_business_dashboard",
+            "ecommerce_ops",
             "local_business",
             "agency_client_workspace",
             "b2b_saas_company",
