@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.5.2 — Service Foundation, Yandex Direct, and Expanded Provider Matrix
+
+- Added 10 more hosted or online providers and 10 more local or self-hosted runtimes so the repo now supports a much wider deployment surface for hybrid, local-first, and cost-controlled AI operations
+- Added `yandex_direct` as a first-class production-guided integration contract together with a starter sync stub and API validation coverage
+- Added a machine-readable service-foundation endpoint for teams turning the repo into their own branded scanner or audit service, including SSO starter modes, billing starter modes, deployment targets, and public-service controls
+- Updated frontend settings and onboarding surfaces so service-builder mode, Yandex Direct, and the wider provider matrix are visible in the product layer instead of hidden in backend-only code
+- Bumped active runtime and contract markers to `v4.5.2` and extended backend tests for the new provider and integration coverage
+
 ## v4.5.0 — Clean Test Path, Stronger Runtime Controls, and Faster Entry
 
 - Reworked root script tests so the combined repository and backend pytest path now runs green together from the repository root

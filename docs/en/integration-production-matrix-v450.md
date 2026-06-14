@@ -1,4 +1,4 @@
-# Integration Production Matrix v4.5.0
+# Integration Production Matrix v4.5.x
 
 This is the shortest operational view of the integration layer.
 
@@ -10,13 +10,14 @@ This is the shortest operational view of the integration layer.
 | GA4 | outcome and engagement | `production_guided` | env-aware verification matrix | validate imported baseline and use it in executive mode |
 | Yandex Webmaster | RU search visibility | `production_guided` | env-aware verification matrix | connect token and keep it in the same compare loop as GSC |
 | Yandex Metrica | RU analytics | `production_guided` | env-aware verification matrix | pair with Webmaster for RU diagnostics plus conversion context |
+| Yandex Direct | RU paid demand and landing alignment | `production_guided` | env-aware verification matrix | connect token and compare spend plus demand shifts with organic and AI visibility |
 | CrUX | field data | `production_guided` | env-aware verification matrix | combine real-user CWV with synthetic checks and CI gating |
 | WordPress | governed CMS | `production_guided` | CMS contract plus inventory flow | move from inventory to reviewed patch bundles |
 | Webflow | governed CMS | `production_guided` | CMS contract plus export-first flow | keep publish behind review |
 | Bitrix | governed CMS | `production_guided` | CMS contract plus mapping validation | validate field mapping before automation |
 | Tilda | governed CMS | `production_guided` | CMS contract plus manual-apply flow | treat it as re-audit-backed delivery |
 
-## What changed in v4.5.0
+## What changed in v4.5.x
 
 - the integration verification layer now reports required, present, and missing
   environment variables
@@ -24,6 +25,8 @@ This is the shortest operational view of the integration layer.
   metadata
 - scanner, dashboard, and CI-oriented flows now align more clearly around the
   same proof surfaces
+- the RU stack now explicitly includes Yandex Direct in addition to Webmaster
+  and Metrica
 
 ## Production interpretation
 

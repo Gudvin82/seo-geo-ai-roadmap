@@ -48,7 +48,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v4.5.0 clean test path, stronger integrations, simpler onboarding",
+      "v4.5.2 service foundation, Yandex Direct, expanded provider matrix",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -239,7 +239,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v4.5.0 чистый test path, stronger integrations, simpler onboarding",
+      "v4.5.2 service foundation, Yandex Direct, expanded provider matrix",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:

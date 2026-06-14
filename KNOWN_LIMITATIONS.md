@@ -16,6 +16,7 @@
 - prompt library UI, project export package, and AI SoV history are practical but still lightweight
 - webhook notifications are starter-grade and expect your own endpoint operations
 - public scanner service works as a self-hosted foundation, not as a maintainer-operated hosted SaaS
+- service-builder mode is strong enough for branded delivery foundations, but still expects operator choices for SSO, billing, and infrastructure ownership
 
 ## Experimental
 
@@ -23,13 +24,14 @@
 - patch-mode output is still artifact-first, not direct CMS writeback
 - cloud manifests are starters, not a hosted support contract
 - heuristic benchmark scoring is a starter interpretation layer, not an industry benchmark API
-- Google Search Console and Yandex integrations are bootstrap stubs, not full OAuth automations
+- Google Search Console, Yandex Webmaster, Yandex Metrica, and Yandex Direct integrations are production-guided starter flows, not full OAuth automations
 - notification delivery does not yet include durable retry queues or guaranteed sequencing
 - the hosted validator page validates pasted content reliably, but public URL fetches can fail when remote sites block cross-origin browser requests
 - scheduled checks expose a real execution model, but self-hosted users still need cron, GitHub Actions, or another scheduler
 - CMS writeback is governed and safe-first; `v3.3.0` prepares packages and approval states, not uncontrolled live publishing
 - public multi-tenant rate-limit, billing, and abuse-isolation expectations still depend on the operator's own infrastructure decisions
 - managed deployments such as Railway, Render, or Coolify are realistic paths, but this repo does not claim a one-click vendor-owned hosted plan
+- SSO and billing now have service-foundation starter modes, but not full enterprise turnkey implementations
 
 ## Roadmap
 

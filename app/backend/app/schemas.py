@@ -267,6 +267,16 @@ class ProviderConfigCreate(BaseModel):
             "deepinfra",
             "azure_openai",
             "cloudflare",
+            "huggingface",
+            "novita",
+            "nebius",
+            "zhipu",
+            "moonshot",
+            "dashscope",
+            "qianfan",
+            "friendli",
+            "inference_net",
+            "openai_compatible_gateway",
             "ollama",
             "localai",
             "vllm",
@@ -280,6 +290,16 @@ class ProviderConfigCreate(BaseModel):
             "aphrodite",
             "jan",
             "openwebui",
+            "litellm",
+            "llamafile",
+            "gpt4all",
+            "anythingllm",
+            "xinference",
+            "llamaswap",
+            "exo",
+            "fastchat",
+            "h2ogpt",
+            "mlx_lm",
         }
         if provider not in allowed:
             raise ValueError(
@@ -321,7 +341,14 @@ class IntegrationConnectionCreate(BaseModel):
     @classmethod
     def validate_source_type(cls, value: str) -> str:
         source = value.strip().lower()
-        allowed = {"gsc", "ga4", "yandex_webmaster", "yandex_metrica", "crux"}
+        allowed = {
+            "gsc",
+            "ga4",
+            "yandex_webmaster",
+            "yandex_metrica",
+            "yandex_direct",
+            "crux",
+        }
         if source not in allowed:
             raise ValueError(
                 f"Unsupported source_type '{value}'. Allowed: {', '.join(sorted(allowed))}."
@@ -627,6 +654,18 @@ class ManagedApiBoundaryRead(BaseModel):
     rate_limit_boundary: list[str] = Field(default_factory=list)
     primary_resources: list[str] = Field(default_factory=list)
     self_hosted_vs_managed: dict[str, list[str]] = Field(default_factory=dict)
+
+
+class ServiceFoundationRead(BaseModel):
+    positioning: str
+    production_surfaces: list[str] = Field(default_factory=list)
+    onboarding_layers: list[str] = Field(default_factory=list)
+    sso_starter_modes: list[str] = Field(default_factory=list)
+    billing_starter_modes: list[str] = Field(default_factory=list)
+    public_service_controls: list[str] = Field(default_factory=list)
+    deployment_targets: list[str] = Field(default_factory=list)
+    not_yet_turnkey: list[str] = Field(default_factory=list)
+    best_next_steps: list[str] = Field(default_factory=list)
 
 
 class TaskItemRead(BaseModel):

@@ -366,7 +366,7 @@ def get_scan_job_result(
     ]
     return ScanJobResultRead(
         scan_job_id=row.id,
-        schema_version=summary.get("schema_version", "v4.5.0"),
+        schema_version=summary.get("schema_version", "v4.5.2"),
         target_url=summary.get("target_url", row.normalized_url),
         target_domain=summary.get("target_domain", row.target_domain),
         site_type=summary.get("site_type"),

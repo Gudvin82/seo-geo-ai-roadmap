@@ -15,6 +15,7 @@ from ..schemas import (
     ManagedApiBoundaryRead,
     ProductModeRead,
     ProductModesResponse,
+    ServiceFoundationRead,
 )
 from ..services.cms import cms_contract
 from ..services.integrations import integration_contract
@@ -112,6 +113,7 @@ def integration_starters() -> dict:
             "scripts/ga4_data_stub.py",
             "scripts/yandex_data_stub.py",
             "scripts/yandex_metrica_stub.py",
+            "scripts/yandex_direct_stub.py",
         ],
         "notifications": [
             "Slack webhook",
@@ -251,7 +253,87 @@ def product_modes() -> ProductModesResponse:
                     "unsafe active scanning by default",
                 ],
             ),
+            ProductModeRead(
+                id="service_builder",
+                title="Service builder mode",
+                primary_user="team turning the repo into a branded audit or scanner service",
+                purpose="White-label delivery, public intake, deployment routing, SSO starter planning, and billing starter planning.",
+                best_for=[
+                    "client-facing scanner",
+                    "white-label audit delivery",
+                    "self-hosted productization",
+                ],
+                first_class_paths=[
+                    "ONE_DAY_SERVICE_BLUEPRINT.md",
+                    "/api/v1/settings/service-foundation",
+                    "/api/v1/settings/product-modes",
+                ],
+                not_the_goal=[
+                    "maintainer-operated hosted SaaS",
+                    "instant enterprise SLA out of the box",
+                ],
+            ),
         ]
+    )
+
+
+@router.get("/service-foundation", response_model=ServiceFoundationRead)
+def service_foundation() -> ServiceFoundationRead:
+    return ServiceFoundationRead(
+        positioning=(
+            "Use this repository as a self-hosted product foundation for a branded "
+            "scanner, audit service, or operator platform."
+        ),
+        production_surfaces=[
+            "scanner intake page",
+            "workspace and project model",
+            "provider and integration layer",
+            "executive dashboard",
+            "notifications and export artifacts",
+            "governed CMS change flow",
+        ],
+        onboarding_layers=[
+            "15-minute local or VPS bootstrap",
+            "AI-agent-first deployment entrypoints",
+            "white-label operator console",
+            "public scan intake with queue boundaries",
+        ],
+        sso_starter_modes=[
+            "reverse-proxy auth header mode",
+            "OIDC gateway with Authentik or Keycloak",
+            "hosted IdP integration planning for Auth0 or Clerk",
+        ],
+        billing_starter_modes=[
+            "free self-hosted internal mode",
+            "manual invoice or contract mode",
+            "Stripe checkout-links or sales-assisted mode",
+            "workspace-plan gating as an operator policy layer",
+        ],
+        public_service_controls=[
+            "rate limits and queue ceilings",
+            "ownership verification for active scans",
+            "notification hooks and operator review",
+            "managed API boundary and product-mode separation",
+        ],
+        deployment_targets=[
+            "Docker on VPS",
+            "Coolify",
+            "Railway",
+            "Render",
+            "Kubernetes starter pack",
+        ],
+        not_yet_turnkey=[
+            "enterprise SLA",
+            "fully managed hosted service run by maintainers",
+            "complete live billing automation out of the box",
+            "complete enterprise SSO implementation out of the box",
+        ],
+        best_next_steps=[
+            "choose your deployment target",
+            "choose one SSO strategy or stay with native auth first",
+            "choose one billing strategy or stay free and internal first",
+            "enable integrations and scanner intake under your own domain",
+        ],
     )
 
 

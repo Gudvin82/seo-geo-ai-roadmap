@@ -117,6 +117,7 @@ Use these files before making public claims:
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
 - Integration production matrix: [docs/en/integration-production-matrix-v450.md](./docs/en/integration-production-matrix-v450.md)
 - Provider catalog: [docs/en/provider-catalog-v450.md](./docs/en/provider-catalog-v450.md)
+- v4.5.2 release summary: [docs/en/v452-release.md](./docs/en/v452-release.md)
 - v4.5.0 release summary: [docs/en/v450-release.md](./docs/en/v450-release.md)
 - Deployment: [DEPLOYMENT.md](./DEPLOYMENT.md)
 - Verification: [VERIFY_DEPLOYMENT.md](./VERIFY_DEPLOYMENT.md)
@@ -156,6 +157,13 @@ AI coding agent without inventing the prompt from scratch:
 - [Repo + site audit prompt](./prompts/en/repo-site-audit-agent-prompt.md)
 - [Deploy client scanner prompt](./prompts/en/deploy-client-scanner-agent-prompt.md)
 - [Improve existing site prompt](./prompts/en/improve-existing-site-agent-prompt.md)
+
+## What `v4.5.2` adds
+
+- 10 more hosted or online providers and 10 more local or self-hosted runtimes
+- first-class `yandex_direct` integration contract and starter sync path
+- a machine-readable service-foundation endpoint for branded scanner or audit services
+- stronger product-foundation packaging for teams that want to self-host and turn the repo into their own client-facing service
 
 ## What `v4.5.0` adds
 
@@ -434,7 +442,8 @@ This project is not claiming:
 
 - full autonomous remediation with no human review
 - guaranteed AI citations across volatile AI answer surfaces
-- enterprise SLA, SSO, or billing in the current release
+- enterprise SLA in the current release
+- fully turnkey enterprise SSO or live billing automation in the current release
 - replacement of technical SEO with GEO alone
 
 See [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md).

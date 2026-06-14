@@ -1,4 +1,4 @@
-# Provider Catalog v4.5.0
+# Provider Catalog v4.5.x
 
 `v4.5.0` expands the provider surface so self-hosted, hybrid, and multi-vendor
 operation is easier.
@@ -23,6 +23,16 @@ operation is easier.
 - DeepInfra
 - Azure OpenAI
 - Cloudflare AI
+- Hugging Face
+- Novita
+- Nebius
+- Zhipu
+- Moonshot
+- DashScope
+- Qianfan
+- Friendli
+- Inference.net
+- OpenAI-compatible gateway
 
 ## Local and self-hosted runtimes
 
@@ -39,6 +49,16 @@ operation is easier.
 - Aphrodite
 - Jan
 - OpenWebUI
+- LiteLLM
+- Llamafile
+- GPT4All
+- AnythingLLM
+- Xinference
+- LlamaSwap
+- Exo
+- FastChat
+- h2oGPT
+- MLX-LM
 
 ## Why this matters
 

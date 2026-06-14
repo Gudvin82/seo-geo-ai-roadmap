@@ -1,4 +1,4 @@
-# Матрица production-flow интеграций v4.5.0
+# Матрица production-flow интеграций v4.5.x
 
 Это самый короткий операционный вид на integration layer.
 
@@ -10,13 +10,14 @@
 | GA4 | outcomes и engagement | `production_guided` | env-aware verification matrix | провалидировать baseline и использовать его в executive mode |
 | Yandex Webmaster | RU search visibility | `production_guided` | env-aware verification matrix | подключить token и держать его в одном compare loop с GSC |
 | Yandex Metrica | RU analytics | `production_guided` | env-aware verification matrix | связать с Webmaster для RU diagnostics и conversion context |
+| Yandex Direct | RU paid demand и landing alignment | `production_guided` | env-aware verification matrix | подключить token и сравнивать spend и demand shifts с organic и AI visibility |
 | CrUX | field data | `production_guided` | env-aware verification matrix | совместить real-user CWV с synthetic checks и CI gating |
 | WordPress | governed CMS | `production_guided` | CMS contract плюс inventory flow | перейти от inventory к reviewed patch bundles |
 | Webflow | governed CMS | `production_guided` | CMS contract плюс export-first flow | держать publish за review |
 | Bitrix | governed CMS | `production_guided` | CMS contract плюс mapping validation | валидировать field mapping до automation |
 | Tilda | governed CMS | `production_guided` | CMS contract плюс manual-apply flow | воспринимать как delivery path с re-audit |
 
-## Что изменилось в v4.5.0
+## Что изменилось в v4.5.x
 
 - integration verification layer теперь показывает required, present и missing
   environment variables
@@ -24,6 +25,7 @@
   статическому row metadata
 - scanner, dashboard и CI-oriented flows теперь заметно лучше выровнены вокруг
   единых proof surfaces
+- RU-стек теперь явно включает Yandex Direct вместе с Webmaster и Metrica
 
 ## Как это трактовать в production
 

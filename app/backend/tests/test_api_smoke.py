@@ -156,6 +156,10 @@ def test_workspace_project_and_audit_flow(
         item["source_type"] == "crux"
         for item in integration_contracts.json()["contracts"]
     )
+    assert any(
+        item["source_type"] == "yandex_direct"
+        for item in integration_contracts.json()["contracts"]
+    )
     integration_plan = client.get(
         f"/api/v1/integrations/{integration_id}/readiness-plan",
         headers=auth_headers,
@@ -172,6 +176,27 @@ def test_workspace_project_and_audit_flow(
         item["surface_type"] == "integration"
         for item in integration_matrix.json()["rows"]
     )
+
+    direct_integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "yandex_direct",
+            "label": "Yandex Direct Paid Demand",
+            "property_identifier": "direct-account-1",
+            "credentials_env_var": "YANDEX_DIRECT_TOKEN",
+            "config": {},
+        },
+        headers=auth_headers,
+    )
+    assert direct_integration.status_code == 200
+    direct_sync = client.post(
+        f"/api/v1/integrations/{direct_integration.json()['id']}/sync",
+        headers=auth_headers,
+    )
+    assert direct_sync.status_code == 200
+    assert direct_sync.json()["last_sync_status"] == "completed"
 
     cms = client.post(
         "/api/v1/cms",
@@ -346,7 +371,14 @@ def test_workspace_project_and_audit_flow(
 
     product_modes = client.get("/api/v1/settings/product-modes", headers=auth_headers)
     assert product_modes.status_code == 200
-    assert len(product_modes.json()["modes"]) >= 3
+    assert len(product_modes.json()["modes"]) >= 4
+
+    service_foundation = client.get(
+        "/api/v1/settings/service-foundation", headers=auth_headers
+    )
+    assert service_foundation.status_code == 200
+    assert service_foundation.json()["sso_starter_modes"]
+    assert service_foundation.json()["billing_starter_modes"]
 
     imported = client.post(
         "/api/v1/exports/project-package/import",

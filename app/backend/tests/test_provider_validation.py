@@ -64,3 +64,29 @@ def test_provider_config_validation(
         headers=auth_headers,
     )
     assert expanded_provider.status_code == 200
+
+    local_gateway = client.post(
+        "/api/v1/providers",
+        json={
+            "workspace_id": workspace_id,
+            "provider_name": "litellm",
+            "label": "LiteLLM local gateway",
+            "model": "gpt-4.1-mini",
+            "base_url": "http://litellm:4000/v1/chat/completions",
+        },
+        headers=auth_headers,
+    )
+    assert local_gateway.status_code == 200
+
+    additional_online = client.post(
+        "/api/v1/providers",
+        json={
+            "workspace_id": workspace_id,
+            "provider_name": "huggingface",
+            "label": "HF Router",
+            "model": "openai/gpt-oss-20b",
+            "api_key_env_var": "HUGGINGFACE_API_KEY",
+        },
+        headers=auth_headers,
+    )
+    assert additional_online.status_code == 200

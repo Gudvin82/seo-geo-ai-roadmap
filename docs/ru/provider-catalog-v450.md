@@ -1,4 +1,4 @@
-# Каталог провайдеров v4.5.0
+# Каталог провайдеров v4.5.x
 
 `v4.5.0` расширяет provider surface так, чтобы было проще работать в
 self-hosted, hybrid и multi-vendor сценариях.
@@ -23,6 +23,16 @@ self-hosted, hybrid и multi-vendor сценариях.
 - DeepInfra
 - Azure OpenAI
 - Cloudflare AI
+- Hugging Face
+- Novita
+- Nebius
+- Zhipu
+- Moonshot
+- DashScope
+- Qianfan
+- Friendli
+- Inference.net
+- OpenAI-compatible gateway
 
 ## Local и self-hosted runtime-поверхности
 
@@ -39,6 +49,16 @@ self-hosted, hybrid и multi-vendor сценариях.
 - Aphrodite
 - Jan
 - OpenWebUI
+- LiteLLM
+- Llamafile
+- GPT4All
+- AnythingLLM
+- Xinference
+- LlamaSwap
+- Exo
+- FastChat
+- h2oGPT
+- MLX-LM
 
 ## Почему это важно
 

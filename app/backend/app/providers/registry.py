@@ -245,6 +245,56 @@ class CloudflareProvider(OpenAIProvider):
     )
 
 
+class HuggingFaceProvider(OpenAIProvider):
+    provider_name = "huggingface"
+    endpoint = "https://router.huggingface.co/v1/chat/completions"
+
+
+class NovitaProvider(OpenAIProvider):
+    provider_name = "novita"
+    endpoint = "https://api.novita.ai/v3/openai/chat/completions"
+
+
+class NebiusProvider(OpenAIProvider):
+    provider_name = "nebius"
+    endpoint = "https://api.studio.nebius.com/v1/chat/completions"
+
+
+class ZhipuProvider(OpenAIProvider):
+    provider_name = "zhipu"
+    endpoint = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
+
+
+class MoonshotProvider(OpenAIProvider):
+    provider_name = "moonshot"
+    endpoint = "https://api.moonshot.ai/v1/chat/completions"
+
+
+class DashScopeProvider(OpenAIProvider):
+    provider_name = "dashscope"
+    endpoint = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions"
+
+
+class QianfanProvider(OpenAIProvider):
+    provider_name = "qianfan"
+    endpoint = "https://qianfan.baidubce.com/v2/chat/completions"
+
+
+class FriendliProvider(OpenAIProvider):
+    provider_name = "friendli"
+    endpoint = "https://api.friendli.ai/serverless/v1/chat/completions"
+
+
+class InferenceNetProvider(OpenAIProvider):
+    provider_name = "inference_net"
+    endpoint = "https://api.inference.net/v1/chat/completions"
+
+
+class OpenAICompatibleGatewayProvider(OpenAIProvider):
+    provider_name = "openai_compatible_gateway"
+    endpoint = "https://gateway.example.com/v1/chat/completions"
+
+
 class OllamaProvider(OpenAIProvider):
     provider_name = "ollama"
     requires_api_key = False
@@ -374,6 +424,102 @@ class OpenWebUIProvider(OpenAIProvider):
         return headers
 
 
+class LiteLLMProvider(OpenAIProvider):
+    provider_name = "litellm"
+    requires_api_key = False
+    endpoint = "http://localhost:4000/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        headers = {"Content-Type": "application/json"}
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
+        return headers
+
+
+class LlamafileProvider(OpenAIProvider):
+    provider_name = "llamafile"
+    requires_api_key = False
+    endpoint = "http://localhost:8082/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class GPT4AllProvider(OpenAIProvider):
+    provider_name = "gpt4all"
+    requires_api_key = False
+    endpoint = "http://localhost:4891/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class AnythingLLMProvider(OpenAIProvider):
+    provider_name = "anythingllm"
+    requires_api_key = False
+    endpoint = "http://localhost:3001/api/v1/openai/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        headers = {"Content-Type": "application/json"}
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
+        return headers
+
+
+class XinferenceProvider(OpenAIProvider):
+    provider_name = "xinference"
+    requires_api_key = False
+    endpoint = "http://localhost:9997/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class LlamaSwapProvider(OpenAIProvider):
+    provider_name = "llamaswap"
+    requires_api_key = False
+    endpoint = "http://localhost:8800/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class ExoProvider(OpenAIProvider):
+    provider_name = "exo"
+    requires_api_key = False
+    endpoint = "http://localhost:52415/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class FastChatProvider(OpenAIProvider):
+    provider_name = "fastchat"
+    requires_api_key = False
+    endpoint = "http://localhost:8000/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class H2OGPTProvider(OpenAIProvider):
+    provider_name = "h2ogpt"
+    requires_api_key = False
+    endpoint = "http://localhost:7860/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
+class MLXLMProvider(OpenAIProvider):
+    provider_name = "mlx_lm"
+    requires_api_key = False
+    endpoint = "http://localhost:8083/v1/chat/completions"
+
+    def build_headers(self) -> dict[str, str]:
+        return {"Content-Type": "application/json"}
+
+
 PROVIDERS: dict[str, type[BaseProvider]] = {
     "openai": OpenAIProvider,
     "anthropic": AnthropicProvider,
@@ -395,6 +541,16 @@ PROVIDERS: dict[str, type[BaseProvider]] = {
     "deepinfra": DeepInfraProvider,
     "azure_openai": AzureOpenAIProvider,
     "cloudflare": CloudflareProvider,
+    "huggingface": HuggingFaceProvider,
+    "novita": NovitaProvider,
+    "nebius": NebiusProvider,
+    "zhipu": ZhipuProvider,
+    "moonshot": MoonshotProvider,
+    "dashscope": DashScopeProvider,
+    "qianfan": QianfanProvider,
+    "friendli": FriendliProvider,
+    "inference_net": InferenceNetProvider,
+    "openai_compatible_gateway": OpenAICompatibleGatewayProvider,
     "ollama": OllamaProvider,
     "localai": LocalAIProvider,
     "vllm": VLLMProvider,
@@ -408,6 +564,16 @@ PROVIDERS: dict[str, type[BaseProvider]] = {
     "aphrodite": AphroditeProvider,
     "jan": JanProvider,
     "openwebui": OpenWebUIProvider,
+    "litellm": LiteLLMProvider,
+    "llamafile": LlamafileProvider,
+    "gpt4all": GPT4AllProvider,
+    "anythingllm": AnythingLLMProvider,
+    "xinference": XinferenceProvider,
+    "llamaswap": LlamaSwapProvider,
+    "exo": ExoProvider,
+    "fastchat": FastChatProvider,
+    "h2ogpt": H2OGPTProvider,
+    "mlx_lm": MLXLMProvider,
 }
 
 

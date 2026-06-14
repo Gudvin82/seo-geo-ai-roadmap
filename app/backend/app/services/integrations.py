@@ -7,7 +7,7 @@ from typing import Any
 
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v4.5.0"
+CONTRACT_VERSION = "v4.5.2"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {
@@ -115,6 +115,33 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
             "RU executive dashboard support",
         ],
         "next_step": "Use Metrica as the RU engagement and conversion layer paired with Yandex Webmaster for indexation and diagnostics.",
+    },
+    "yandex_direct": {
+        "source_type": "yandex_direct",
+        "label": "Yandex Direct",
+        "readiness_tier": "production_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["YANDEX_DIRECT_TOKEN"],
+        "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
+        "ci_gates": [
+            "campaign baseline refresh",
+            "brand-demand drift review",
+            "landing-page alignment check",
+            "cost-to-discoverability comparison",
+        ],
+        "production_flow": [
+            "connect Yandex Direct token",
+            "pull campaign and ad-group baseline",
+            "compare paid demand with organic and AI discoverability shifts",
+            "use spend and conversion context in executive and delivery packs",
+        ],
+        "capabilities": [
+            "campaign baseline import",
+            "brand-demand context",
+            "paid-vs-organic comparison",
+            "landing-page alignment support",
+        ],
+        "next_step": "Use Yandex Direct as the paid-demand companion to Yandex Webmaster and Metrica when RU acquisition quality matters.",
     },
     "crux": {
         "source_type": "crux",
@@ -227,6 +254,11 @@ def sync_integration_source(
         payload = json.loads(stdout)
     elif source == "yandex_metrica":
         payload = _yandex_metrica_stub()
+    elif source == "yandex_direct":
+        code, stdout, stderr = run_script("yandex_direct_stub.py", [])
+        if code != 0:
+            raise RuntimeError(stderr or "Yandex Direct starter import failed.")
+        payload = json.loads(stdout)
     elif source == "crux":
         target_url = (
             (config or {}).get("url") or property_identifier or "https://example.com/"

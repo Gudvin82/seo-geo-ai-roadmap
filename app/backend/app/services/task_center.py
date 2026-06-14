@@ -8,7 +8,7 @@ from typing import Any
 
 from ..models import AuditRun, ScanJob
 
-TASK_CONTRACT_VERSION = "v4.5.0"
+TASK_CONTRACT_VERSION = "v4.5.2"
 
 
 def build_task_bundle_from_scan_job(

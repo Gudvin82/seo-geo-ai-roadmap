@@ -119,6 +119,7 @@ discoverability. Ее можно развернуть на своем компь
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
 - Матрица production-flow интеграций: [docs/ru/integration-production-matrix-v450.md](./docs/ru/integration-production-matrix-v450.md)
 - Каталог провайдеров: [docs/ru/provider-catalog-v450.md](./docs/ru/provider-catalog-v450.md)
+- Сводка релиза v4.5.2: [docs/ru/v452-release.md](./docs/ru/v452-release.md)
 - Сводка релиза v4.5.0: [docs/ru/v450-release.md](./docs/ru/v450-release.md)
 - Deployment: [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
 - Verification: [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
@@ -158,6 +159,13 @@ discoverability. Ее можно развернуть на своем компь
 - [Prompt: оценка репозитория и сайта](./prompts/ru/repo-site-audit-agent-prompt.md)
 - [Prompt: развернуть client scanner](./prompts/ru/deploy-client-scanner-agent-prompt.md)
 - [Prompt: улучшить существующий сайт](./prompts/ru/improve-existing-site-agent-prompt.md)
+
+## Что добавляет `v4.5.2`
+
+- еще 10 hosted или online providers и еще 10 local или self-hosted runtimes
+- first-class контракт интеграции `yandex_direct` и starter sync path
+- machine-readable service-foundation endpoint для branded scanner или audit service
+- более сильную упаковку product foundation для команд, которые хотят self-hosted развернуть репозиторий и превратить его в свой клиентский сервис
 
 ## Что добавляет `v4.5.0`
 
@@ -436,7 +444,8 @@ snapshot-оценками для:
 
 - полностью автономное исправление без human review
 - гарантированные AI citations на волатильных AI surfaces
-- enterprise SLA, SSO или billing в текущем релизе
+- enterprise SLA в текущем релизе
+- полностью turnkey enterprise SSO или live billing automation в текущем релизе
 - замену technical SEO одним только GEO
 
 См. [KNOWN_LIMITATIONS_RU.md](./KNOWN_LIMITATIONS_RU.md).
