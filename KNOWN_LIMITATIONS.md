@@ -15,6 +15,7 @@
 - static frontend operator console
 - prompt library UI, project export package, and AI SoV history are practical but still lightweight
 - webhook notifications are starter-grade and expect your own endpoint operations
+- public scanner service works as a self-hosted foundation, not as a maintainer-operated hosted SaaS
 
 ## Experimental
 
@@ -27,6 +28,8 @@
 - the hosted validator page validates pasted content reliably, but public URL fetches can fail when remote sites block cross-origin browser requests
 - scheduled checks expose a real execution model, but self-hosted users still need cron, GitHub Actions, or another scheduler
 - CMS writeback is governed and safe-first; `v3.3.0` prepares packages and approval states, not uncontrolled live publishing
+- public multi-tenant rate-limit, billing, and abuse-isolation expectations still depend on the operator's own infrastructure decisions
+- managed deployments such as Railway, Render, or Coolify are realistic paths, but this repo does not claim a one-click vendor-owned hosted plan
 
 ## Roadmap
 
@@ -38,3 +41,4 @@
 - stronger benchmark baselines per niche, region, and device mix
 - deeper WordPress and CMS writeback with safer review gates
 - more precise fact-drift detection across live AI outputs and structured source systems
+- clearer public-service packaging for teams turning the repo into a scanner or audit business

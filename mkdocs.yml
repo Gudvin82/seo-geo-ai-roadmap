@@ -16,6 +16,8 @@ nav:
   - English: english.md
   - Russian: russian.md
   - SaaS App: saas-app.md
+  - Public Readiness: readiness.md
+  - Service Blueprint: service-blueprint.md
   - App Architecture: architecture.md
   - Architecture Note: architecture-note.md
   - Deployment: deployment.md

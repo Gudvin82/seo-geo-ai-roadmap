@@ -54,6 +54,26 @@ discoverability. Ее можно развернуть на своем компь
 - Тем, кто ищет GEO-хайп вместо технической SEO-дисциплины
 - Тем, кто хочет обещаний без доказательств, evidence и governance
 
+## Публичное обещание, точно
+
+Репозиторий уже поддерживает три реальных публично безопасных режима:
+
+1. ручное использование как framework
+1. AI-agent-assisted аудит и delivery
+1. self-hosted product foundation для своего scanner или audit-сервиса
+
+Чем он не является:
+
+- hosted SaaS, который поддерживает автор репозитория
+- enterprise SLA продукт из коробки
+- тихий autopilot, который меняет production-сайты без review
+
+Перед публичными формулировками используйте:
+
+- [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
+- [ONE_DAY_SERVICE_BLUEPRINT_RU.md](./ONE_DAY_SERVICE_BLUEPRINT_RU.md)
+- [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
+
 ## Что происходит за 15 минут, 30 дней и 90 дней
 
 ### За 15 минут
@@ -91,6 +111,9 @@ discoverability. Ее можно развернуть на своем компь
 
 - Быстрый вход для человека: [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
 - Быстрый вход для ИИ: [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
+- Публичная readiness-рамка: [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
+- One-day blueprint сервиса: [ONE_DAY_SERVICE_BLUEPRINT_RU.md](./ONE_DAY_SERVICE_BLUEPRINT_RU.md)
+- One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
 - Deployment: [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
 - Verification: [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
 - API reference: [docs/ru/api-reference.md](./docs/ru/api-reference.md)
@@ -120,6 +143,23 @@ discoverability. Ее можно развернуть на своем компь
 - Evaluation kit: [EVALUATE_THIS_REPO_RU.md](./EVALUATE_THIS_REPO_RU.md)
 - Evaluate first prompt: [EVALUATE_THIS_REPO_FIRST_RU.md](./EVALUATE_THIS_REPO_FIRST_RU.md)
 - Commercial boundary: [COMMERCIAL_ROADMAP_RU.md](./COMMERCIAL_ROADMAP_RU.md)
+
+## AI-agent scenario prompts
+
+Для команд, которые хотят просто дать репозиторий Cursor, Claude Code, Codex
+или другому AI coding agent без ручного сочинения prompt:
+
+- [Prompt: оценка репозитория и сайта](./prompts/ru/repo-site-audit-agent-prompt.md)
+- [Prompt: развернуть client scanner](./prompts/ru/deploy-client-scanner-agent-prompt.md)
+- [Prompt: улучшить существующий сайт](./prompts/ru/improve-existing-site-agent-prompt.md)
+
+## Что добавляет `v4.4.0`
+
+- явную public-product readiness-рамку, чтобы репозиторий можно было точно описывать в публичных постах и внешних оценках
+- one-day blueprint для превращения репозитория в свой scanner или audit-сервис
+- более ясные one-click deploy options для local demo, Docker VPS, Coolify, Railway, Render и Kubernetes starter paths
+- AI-agent scenario prompts для оценки репозитория и сайта, разворачивания client scanner и улучшения существующего сайта
+- более сильный routing через README, AI handoff, deployment docs, docs-site и proof-layer для истории про self-hosted product foundation
 
 ## Что добавляет `v4.1.0`
 

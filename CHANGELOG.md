@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.4.0 — Public Readiness, One-Day Service Blueprint, and AI-Agent Scenarios
+
+- Added explicit EN/RU public-product readiness docs so the repository can be described accurately as a self-hosted platform and product foundation
+- Added EN/RU one-day service blueprint docs for teams who want to turn the repo into their own scanner or audit service
+- Added EN/RU one-click deploy option docs covering local demo, Docker VPS, Coolify, Railway, Render, and Kubernetes starter paths
+- Added AI-agent scenario prompt packs for repo plus site audit, client-scanner deployment, and existing-site improvement
+- Updated README, README_RU, AGENTS, START_HERE_FOR_AI, deployment docs, docs-site routing, and limitations framing to align the public promise with what the repo really supports
+
 ## v4.3.0 — Public Case Studies, Review Response, and 10/10 Upgrade Path
 
 - Added bilingual public case studies for `anmalishev.ru`, `auditguard.ru`, and `sitepravo.ru` with explicit fact vs inference boundaries

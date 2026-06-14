@@ -52,6 +52,26 @@ operator or an AI coding agent can use end to end:
 - People looking for GEO hype as a replacement for technical SEO
 - Buyers who want rankings promised without proof, evidence, or governance
 
+## Public promise, precisely
+
+The repository already supports three real public-safe use modes:
+
+1. manual framework use
+1. AI-agent-assisted audit and delivery
+1. self-hosted product foundation for your own scanner or audit service
+
+What it is not:
+
+- a maintainer-operated hosted SaaS
+- an enterprise SLA product out of the box
+- a silent autopilot that edits production sites without review
+
+Use these files before making public claims:
+
+- [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
+- [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
+- [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
+
 ## What happens in 15 minutes, 30 days, and 90 days
 
 ### In 15 minutes
@@ -89,6 +109,9 @@ operator or an AI coding agent can use end to end:
 
 - Human quickstart: [WALKTHROUGH.md](./WALKTHROUGH.md)
 - AI quickstart: [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
+- Public readiness: [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
+- One-day service blueprint: [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
+- One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
 - Deployment: [DEPLOYMENT.md](./DEPLOYMENT.md)
 - Verification: [VERIFY_DEPLOYMENT.md](./VERIFY_DEPLOYMENT.md)
 - API reference: [docs/en/api-reference.md](./docs/en/api-reference.md)
@@ -118,6 +141,23 @@ operator or an AI coding agent can use end to end:
 - Evaluation kit: [EVALUATE_THIS_REPO.md](./EVALUATE_THIS_REPO.md)
 - Evaluate first prompt: [EVALUATE_THIS_REPO_FIRST.md](./EVALUATE_THIS_REPO_FIRST.md)
 - Commercial boundary: [COMMERCIAL_ROADMAP.md](./COMMERCIAL_ROADMAP.md)
+
+## AI-agent scenario prompts
+
+For teams that want to hand the repo to Cursor, Claude Code, Codex, or another
+AI coding agent without inventing the prompt from scratch:
+
+- [Repo + site audit prompt](./prompts/en/repo-site-audit-agent-prompt.md)
+- [Deploy client scanner prompt](./prompts/en/deploy-client-scanner-agent-prompt.md)
+- [Improve existing site prompt](./prompts/en/improve-existing-site-agent-prompt.md)
+
+## What `v4.4.0` adds
+
+- explicit public-product readiness framing so the repo can be described precisely in public posts and evaluations
+- a one-day blueprint for turning the repo into your own scanner or audit service
+- clearer one-click deploy options across local demo, Docker VPS, Coolify, Railway, Render, and Kubernetes starter paths
+- AI-agent scenario prompts for repo-plus-site audit, client-scanner deployment, and existing-site improvement
+- stronger README, AI handoff, deployment, docs-site, and proof routing for the self-hosted product-foundation story
 
 ## What `v4.0.0` introduced
 

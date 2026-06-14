@@ -15,6 +15,10 @@ Start here if you are an AI coding agent working inside the repository:
 - [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
 - [WALKTHROUGH.md](./WALKTHROUGH.md)
 - [REAL_CASES.md](./REAL_CASES.md)
+- [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
+- [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
+- [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
+- [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
 
 ## For AI Agents: Deploy this project from scratch
 
@@ -58,6 +62,15 @@ If the user wants a ready task prompt instead of inventing one:
 - run `python scripts/agent_handoff_pack.py --task audit-site --language ru --target-url https://example.com`
 - run `python scripts/agent_handoff_pack.py --task deploy-scanner --language en`
 
+If the user wants ready public scenario prompts:
+
+- open [prompts/en/repo-site-audit-agent-prompt.md](./prompts/en/repo-site-audit-agent-prompt.md)
+- open [prompts/en/deploy-client-scanner-agent-prompt.md](./prompts/en/deploy-client-scanner-agent-prompt.md)
+- open [prompts/en/improve-existing-site-agent-prompt.md](./prompts/en/improve-existing-site-agent-prompt.md)
+- open [prompts/ru/repo-site-audit-agent-prompt.md](./prompts/ru/repo-site-audit-agent-prompt.md)
+- open [prompts/ru/deploy-client-scanner-agent-prompt.md](./prompts/ru/deploy-client-scanner-agent-prompt.md)
+- open [prompts/ru/improve-existing-site-agent-prompt.md](./prompts/ru/improve-existing-site-agent-prompt.md)
+
 If the user wants a public or semi-public scanner intake flow:
 
 - open `app/frontend/scanner.html`
@@ -83,6 +96,7 @@ The agent must then self-report:
 - whether the result is safe for demo only or production-like self-hosting
 - whether EN and RU layers were both updated when user-facing scope changed
 - whether `START_HERE_FOR_AI*.md`, handoff prompts, and client playbooks still match reality
+- whether public-positioning docs still match what the repo actually does
 
 ## Roles and typical tasks for agents
 

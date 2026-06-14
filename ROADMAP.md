@@ -1,5 +1,12 @@
 # Repository Roadmap
 
+## v4.4.x stabilization
+
+- keep public-positioning docs synchronized with the implemented product foundation
+- keep one-day service blueprint and one-click deploy guidance honest as deployment surfaces evolve
+- strengthen the proof path from post to repo to demo to real audit
+- keep AI-agent prompt packs synchronized with `AGENTS.md`, `START_HERE_FOR_AI*.md`, and actual command paths
+
 ## v4.3.x stabilization
 
 - turn external criticism into concrete proof work instead of defensive marketing

@@ -19,6 +19,12 @@ for:
 - brand facts and factual consistency management
 - bilingual reporting and artifact delivery
 
+Before making public product claims, read:
+
+- [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
+- [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
+- [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
+
 ## For AI agents: deploy this project from scratch
 
 If a user asks you to deploy this project:
@@ -38,6 +44,12 @@ Use the built-in task pack generator:
 - `python scripts/agent_handoff_pack.py --task deploy-demo --language en`
 - `python scripts/agent_handoff_pack.py --task audit-site --language en --target-url https://example.com`
 - `python scripts/agent_handoff_pack.py --task deploy-scanner --language en`
+
+For ready-to-paste public scenario prompts, use:
+
+- [prompts/en/repo-site-audit-agent-prompt.md](./prompts/en/repo-site-audit-agent-prompt.md)
+- [prompts/en/deploy-client-scanner-agent-prompt.md](./prompts/en/deploy-client-scanner-agent-prompt.md)
+- [prompts/en/improve-existing-site-agent-prompt.md](./prompts/en/improve-existing-site-agent-prompt.md)
 
 ## Canonical command path in v4.0.0
 
@@ -59,14 +71,17 @@ If you are about to explain what this repository does, read
 
 1. Read [README.md](./README.md)
 2. Read [AGENTS.md](./AGENTS.md)
-3. Run `make turnkey-demo`
-4. Run `make verify-demo`
-5. Run `make agent-self-check`
-6. Create a workspace
-7. Create a project
-8. Fill brand facts
-9. Connect providers
-10. Run one audit and one AI SoV check
+3. Read [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
+4. Read [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
+5. Read [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
+6. Run `make turnkey-demo`
+7. Run `make verify-demo`
+8. Run `make agent-self-check`
+9. Create a workspace
+10. Create a project
+11. Fill brand facts
+12. Connect providers
+13. Run one audit and one AI SoV check
 
 ## Expected outputs
 

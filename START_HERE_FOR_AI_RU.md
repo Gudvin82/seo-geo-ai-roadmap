@@ -19,6 +19,12 @@
 - управления brand facts и factual consistency
 - двуязычной отчетности и выдачи artifacts
 
+Перед публичными product claims сначала прочитайте:
+
+- [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
+- [ONE_DAY_SERVICE_BLUEPRINT_RU.md](./ONE_DAY_SERVICE_BLUEPRINT_RU.md)
+- [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
+
 ## Для AI-агентов: разверни проект с нуля
 
 Если пользователь просит развернуть этот проект:
@@ -38,6 +44,12 @@
 - `python scripts/agent_handoff_pack.py --task deploy-demo --language ru`
 - `python scripts/agent_handoff_pack.py --task audit-site --language ru --target-url https://example.com`
 - `python scripts/agent_handoff_pack.py --task deploy-scanner --language ru`
+
+Для готовых public scenario prompts используй:
+
+- [prompts/ru/repo-site-audit-agent-prompt.md](./prompts/ru/repo-site-audit-agent-prompt.md)
+- [prompts/ru/deploy-client-scanner-agent-prompt.md](./prompts/ru/deploy-client-scanner-agent-prompt.md)
+- [prompts/ru/improve-existing-site-agent-prompt.md](./prompts/ru/improve-existing-site-agent-prompt.md)
 
 ## Канонический command path в v4.0.0
 
@@ -59,14 +71,17 @@
 
 1. Прочитай [README_RU.md](./README_RU.md)
 2. Прочитай [AGENTS.md](./AGENTS.md)
-3. Выполни `make turnkey-demo`
-4. Выполни `make verify-demo`
-5. Выполни `make agent-self-check`
-6. Создай workspace
-7. Создай project
-8. Заполни brand facts
-9. Подключи providers
-10. Запусти один audit и одну AI SoV-проверку
+3. Прочитай [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
+4. Прочитай [ONE_DAY_SERVICE_BLUEPRINT_RU.md](./ONE_DAY_SERVICE_BLUEPRINT_RU.md)
+5. Прочитай [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
+6. Выполни `make turnkey-demo`
+7. Выполни `make verify-demo`
+8. Выполни `make agent-self-check`
+9. Создай workspace
+10. Создай project
+11. Заполни brand facts
+12. Подключи providers
+13. Запусти один audit и одну AI SoV-проверку
 
 ## Ожидаемые результаты
 

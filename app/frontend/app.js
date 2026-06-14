@@ -48,7 +48,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v4.1.0 secure scanner runtime and governed delivery flows",
+      "v4.4.0 public-readiness, service blueprint, and AI-agent delivery",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -238,7 +238,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v4.1.0 secure scanner runtime and governed delivery flows",
+      "v4.4.0 public-readiness, service blueprint, and AI-agent delivery",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:

@@ -11,6 +11,8 @@ validation, and release discipline.
 - [AGENTS.md](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/AGENTS.md)
 - [WALKTHROUGH.md](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/WALKTHROUGH.md)
 - [Hosted Validator](validator.md)
+- [Public Readiness](readiness.md)
+- [Service Blueprint](service-blueprint.md)
 - [Command Surface](commands.md)
 - [Graph Intelligence](graph.md)
 
@@ -33,3 +35,5 @@ validation, and release discipline.
 - [Entity hierarchy and brand focus](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/entity-hierarchy-and-brand-focus.md)
 - [Public Evaluation Kit](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/PUBLIC_EVALUATION_KIT.md)
 - [How it works](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/how-it-works-v340.md)
+- [Public Product Readiness](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/PUBLIC_PRODUCT_READINESS.md)
+- [One-Day Service Blueprint](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/ONE_DAY_SERVICE_BLUEPRINT.md)
