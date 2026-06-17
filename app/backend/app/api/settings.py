@@ -625,9 +625,13 @@ def social_idea_parser(
     if objections:
         actions.append("add objection-handling copy to the landing or service page")
     if proof_points:
-        actions.append("turn proof points into case-study or testimonial evidence blocks")
+        actions.append(
+            "turn proof points into case-study or testimonial evidence blocks"
+        )
     if pain_points:
-        actions.append("map pain points into audit offer messaging and answer-ready pages")
+        actions.append(
+            "map pain points into audit offer messaging and answer-ready pages"
+        )
     if not actions:
         actions.append(
             "summarize the social thread into a short operator brief and test one new content angle"
@@ -734,9 +738,7 @@ def saas_readiness_center(
         .first()
     )
     tenant_keys = (
-        db.query(TenantApiKey)
-        .filter(TenantApiKey.workspace_id == workspace_id)
-        .count()
+        db.query(TenantApiKey).filter(TenantApiKey.workspace_id == workspace_id).count()
     )
     notification_count = (
         db.query(NotificationEndpoint)
