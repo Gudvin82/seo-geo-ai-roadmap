@@ -5,3 +5,4 @@ __pycache__/
 site/
 app/backend/data/
 app/backend/artifacts/
+generated_projects/

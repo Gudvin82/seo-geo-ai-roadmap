@@ -123,6 +123,7 @@ discoverability. Ее можно развернуть на своем компь
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
 - Матрица production-flow интеграций: [docs/ru/integration-production-matrix-v450.md](./docs/ru/integration-production-matrix-v450.md)
 - Каталог провайдеров: [docs/ru/provider-catalog-v450.md](./docs/ru/provider-catalog-v450.md)
+- Сводка релиза v5.5.0: [docs/ru/v550-release.md](./docs/ru/v550-release.md)
 - Сводка релиза v5.3.0: [docs/ru/v530-release.md](./docs/ru/v530-release.md)
 - Сводка релиза v5.2.0: [docs/ru/v520-release.md](./docs/ru/v520-release.md)
 - Сводка релиза v5.1.0: [docs/ru/v510-release.md](./docs/ru/v510-release.md)
@@ -168,6 +169,13 @@ discoverability. Ее можно развернуть на своем компь
 - [Prompt: оценка репозитория и сайта](./prompts/ru/repo-site-audit-agent-prompt.md)
 - [Prompt: развернуть client scanner](./prompts/ru/deploy-client-scanner-agent-prompt.md)
 - [Prompt: улучшить существующий сайт](./prompts/ru/improve-existing-site-agent-prompt.md)
+
+## Что добавляет `v5.5.0`
+
+- provider operating center с catalog, model registry, health и routing surfaces
+- SaaS readiness center, который показывает, что уже сильно для self-hosted SaaS, а что остается вне рамок managed hosting
+- social command center и parser, который превращает raw social text в FAQ, objection-handling, proof и content actions
+- более чистая generated-project hygiene, чтобы AI-to-App scaffolding не засорял git tree в реальной операторской работе
 
 ## Что добавляет `v5.3.0`
 

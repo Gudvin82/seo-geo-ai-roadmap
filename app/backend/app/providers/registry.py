@@ -587,3 +587,227 @@ def build_provider(
     if not provider_cls:
         raise ProviderError(f"Unsupported provider: {provider_name}")
     return provider_cls(api_key=api_key, model=model, base_url=base_url)
+
+
+HOSTED_PROVIDERS = {
+    "openai",
+    "anthropic",
+    "claude",
+    "gemini",
+    "perplexity",
+    "mistral",
+    "cohere",
+    "deepseek",
+    "xai",
+    "grok",
+    "openrouter",
+    "groq",
+    "together",
+    "fireworks",
+    "sambanova",
+    "cerebras",
+    "nvidia_nim",
+    "deepinfra",
+    "azure_openai",
+    "cloudflare",
+    "huggingface",
+    "novita",
+    "nebius",
+    "zhipu",
+    "moonshot",
+    "dashscope",
+    "qianfan",
+    "friendli",
+    "inference_net",
+    "openai_compatible_gateway",
+}
+
+PROVIDER_FAMILIES = {
+    "openai": "frontier_cloud",
+    "anthropic": "frontier_cloud",
+    "claude": "frontier_cloud",
+    "gemini": "frontier_cloud",
+    "perplexity": "research_cloud",
+    "mistral": "eu_cloud",
+    "cohere": "enterprise_cloud",
+    "deepseek": "cost_reasoning_cloud",
+    "xai": "frontier_cloud",
+    "grok": "frontier_cloud",
+    "openrouter": "gateway_cloud",
+    "groq": "high_speed_cloud",
+    "together": "open_model_cloud",
+    "fireworks": "open_model_cloud",
+    "sambanova": "high_speed_cloud",
+    "cerebras": "high_speed_cloud",
+    "nvidia_nim": "infra_cloud",
+    "deepinfra": "open_model_cloud",
+    "azure_openai": "enterprise_cloud",
+    "cloudflare": "edge_cloud",
+    "huggingface": "open_model_cloud",
+    "novita": "open_model_cloud",
+    "nebius": "open_model_cloud",
+    "zhipu": "cn_cloud",
+    "moonshot": "cn_cloud",
+    "dashscope": "cn_cloud",
+    "qianfan": "cn_cloud",
+    "friendli": "gpu_cloud",
+    "inference_net": "gateway_cloud",
+    "openai_compatible_gateway": "gateway_cloud",
+    "ollama": "local_runtime",
+    "localai": "local_runtime",
+    "vllm": "local_runtime",
+    "lmstudio": "local_runtime",
+    "llamacpp": "local_runtime",
+    "koboldcpp": "local_runtime",
+    "textgenwebui": "local_runtime",
+    "tabbyapi": "local_runtime",
+    "sglang": "local_runtime",
+    "mistralrs": "local_runtime",
+    "aphrodite": "local_runtime",
+    "jan": "local_runtime",
+    "openwebui": "local_runtime",
+    "litellm": "gateway_runtime",
+    "llamafile": "local_runtime",
+    "gpt4all": "local_runtime",
+    "anythingllm": "gateway_runtime",
+    "xinference": "local_runtime",
+    "llamaswap": "gateway_runtime",
+    "exo": "local_runtime",
+    "fastchat": "local_runtime",
+    "h2ogpt": "local_runtime",
+    "mlx_lm": "local_runtime",
+}
+
+PROVIDER_SAMPLE_MODELS = {
+    "openai": ["gpt-4.1", "gpt-4.1-mini", "o4-mini"],
+    "anthropic": ["claude-sonnet-4", "claude-opus-4"],
+    "claude": ["claude-sonnet-4", "claude-opus-4"],
+    "gemini": ["gemini-2.5-pro", "gemini-2.5-flash"],
+    "perplexity": ["sonar-pro", "sonar-reasoning-pro"],
+    "mistral": ["mistral-large", "ministral-8b"],
+    "cohere": ["command-r-plus", "command-r7b"],
+    "deepseek": ["deepseek-chat", "deepseek-reasoner"],
+    "xai": ["grok-3", "grok-3-mini"],
+    "grok": ["grok-3", "grok-3-mini"],
+    "openrouter": ["openai/gpt-4.1-mini", "anthropic/claude-sonnet-4"],
+    "groq": ["llama-3.3-70b-versatile", "mixtral-8x7b-32768"],
+    "together": ["meta-llama/Llama-3.3-70B-Instruct-Turbo"],
+    "fireworks": ["accounts/fireworks/models/llama-v3p1-70b-instruct"],
+    "sambanova": ["Meta-Llama-3.3-70B-Instruct"],
+    "cerebras": ["llama-3.3-70b", "qwen-3-32b"],
+    "nvidia_nim": ["meta/llama-3.3-70b-instruct"],
+    "deepinfra": ["meta-llama/Meta-Llama-3.3-70B-Instruct"],
+    "azure_openai": ["gpt-4.1", "gpt-4.1-mini"],
+    "cloudflare": ["@cf/meta/llama-3.3-70b-instruct-fp8-fast"],
+    "huggingface": ["openai/gpt-oss-120b", "Qwen/Qwen3-32B"],
+    "novita": ["deepseek/deepseek-r1", "qwen/qwen3-32b"],
+    "nebius": ["meta-llama/Meta-Llama-3.3-70B-Instruct"],
+    "ollama": ["qwen3:8b", "llama3.1:8b", "deepseek-r1:8b"],
+    "localai": ["llama-3.1-8b-instruct", "mistral-7b-instruct"],
+    "vllm": ["Qwen/Qwen3-32B", "meta-llama/Llama-3.3-70B-Instruct"],
+    "lmstudio": ["qwen3-8b", "gemma-3-12b"],
+    "llamacpp": ["llama-3.1-8b-instruct-q4", "qwen3-8b-q4"],
+    "litellm": ["router/openai", "router/claude", "router/local"],
+}
+
+
+def provider_runtime_kind(provider_name: str) -> str:
+    return "cloud" if provider_name.lower() in HOSTED_PROVIDERS else "local"
+
+
+def provider_catalog_entry(provider_name: str) -> dict:
+    normalized = provider_name.lower()
+    provider_cls = PROVIDERS[normalized]
+    runtime = provider_runtime_kind(normalized)
+    supports_openai_style = issubclass(provider_cls, OpenAIProvider)
+    return {
+        "provider_name": normalized,
+        "runtime_kind": runtime,
+        "family": PROVIDER_FAMILIES.get(normalized, "general"),
+        "auth_mode": "api_key" if provider_cls.requires_api_key else "optional_or_none",
+        "default_endpoint": getattr(provider_cls, "endpoint", ""),
+        "supports_openai_style": supports_openai_style,
+        "sample_models": PROVIDER_SAMPLE_MODELS.get(normalized, []),
+        "routing_role": "primary_cloud" if runtime == "cloud" else "local_fallback",
+        "capabilities": [
+            "structured_prompting",
+            "audit_commentary",
+            "report_assistance",
+            *(
+                ["hybrid_cost_control", "local_privacy_lane"]
+                if runtime == "local"
+                else ["external_redundancy", "managed_latency_lane"]
+            ),
+        ],
+    }
+
+
+def list_provider_catalog() -> list[dict]:
+    return [provider_catalog_entry(name) for name in sorted(PROVIDERS)]
+
+
+def provider_catalog_summary() -> dict:
+    catalog = list_provider_catalog()
+    hosted = [item for item in catalog if item["runtime_kind"] == "cloud"]
+    local = [item for item in catalog if item["runtime_kind"] == "local"]
+    return {
+        "total_supported": len(catalog),
+        "hosted_supported": len(hosted),
+        "local_supported": len(local),
+        "suggested_default_stack": [
+            "one frontier cloud provider",
+            "one lower-cost or high-speed cloud provider",
+            "one local fallback runtime",
+        ],
+    }
+
+
+def model_registry_profiles() -> dict:
+    return {
+        "profiles": [
+            {
+                "id": "lowest_friction",
+                "label": "Lowest-friction starter",
+                "recommended_providers": ["openai", "gemini", "ollama"],
+                "why": "Fastest setup for demos, audits, and multilingual operator flows.",
+            },
+            {
+                "id": "agency_hybrid",
+                "label": "Agency hybrid stack",
+                "recommended_providers": [
+                    "anthropic",
+                    "openai",
+                    "groq",
+                    "ollama",
+                ],
+                "why": "Strong writing plus fast fallback plus controlled local backup.",
+            },
+            {
+                "id": "cost_controlled",
+                "label": "Cost-controlled production",
+                "recommended_providers": [
+                    "deepseek",
+                    "mistral",
+                    "groq",
+                    "vllm",
+                ],
+                "why": "Lower spend with better redundancy and local override paths.",
+            },
+            {
+                "id": "ru_hybrid",
+                "label": "RU-focused hybrid stack",
+                "recommended_providers": [
+                    "gemini",
+                    "deepseek",
+                    "ollama",
+                    "litellm",
+                ],
+                "why": "Pairs RU search-data integrations with a mixed cloud plus local stack.",
+            },
+        ],
+        "routing_policies": [
+            "Use one primary frontier provider for strategic generation.",
+            "Use one fast or lower-cost provider for repeated audit commentary.",
+            "Keep one local runtime for fallback, private work, and cost resilience.",
+        ],
+    }

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from ..access import require_project_access, require_workspace_access
@@ -14,10 +14,13 @@ from ..models import (
     EvidenceRecord,
     ExperimentRecord,
     IntegrationConnection,
+    NotificationEndpoint,
     Project,
     Report,
     ScanJob,
     SovRun,
+    TenantApiKey,
+    TenantProfile,
     User,
 )
 from ..schemas import (
@@ -479,6 +482,178 @@ def social_intelligence_center(
     }
 
 
+@router.get("/social-command-center")
+def social_command_center(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    project, _ = require_project_access(
+        db, project_id, current_user, minimum_role="viewer"
+    )
+    integration_rows = (
+        db.query(IntegrationConnection)
+        .filter(IntegrationConnection.project_id == project_id)
+        .order_by(IntegrationConnection.id.desc())
+        .all()
+    )
+    snapshots = {
+        row.source_type: json.loads(row.latest_snapshot_json or "{}")
+        for row in integration_rows
+    }
+    social_sources = [
+        "meta_ads",
+        "x_ads",
+        "x_organic",
+        "threads",
+        "reddit_mentions",
+        "tiktok_organic",
+        "vk_ads",
+        "telegram_ads",
+        "youtube",
+        "linkedin_ads",
+        "instagram_facebook_organic",
+    ]
+    connected = [item for item in social_sources if item in snapshots]
+    backlog: list[dict[str, str]] = []
+    for source in connected:
+        snapshot = snapshots.get(source) or {}
+        for item in snapshot.get("opportunities", [])[:3]:
+            backlog.append(
+                {
+                    "source": source,
+                    "item_type": "content_opportunity",
+                    "action": item,
+                }
+            )
+    return {
+        "project_id": project.id,
+        "project_name": project.name,
+        "connected_surfaces": connected,
+        "parsing_lanes": [
+            "comments to FAQ",
+            "mentions to proof blocks",
+            "threads to landing-page objections",
+            "short-form hooks to title and CTA tests",
+        ],
+        "operator_loops": [
+            "capture social demand",
+            "convert recurring questions into answer-ready content",
+            "route proof into executive and client-safe exports",
+            "compare supporting social demand with branded search and AI visibility",
+        ],
+        "backlog": backlog,
+        "ready_assets": [
+            "faq_page",
+            "landing_objection_block",
+            "proof_strip",
+            "founder_thought_leadership_page",
+        ],
+    }
+
+
+@router.post("/social-idea-parser")
+def social_idea_parser(
+    payload: dict = Body(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    project_id = payload.get("project_id")
+    if project_id is not None:
+        require_project_access(db, int(project_id), current_user, minimum_role="viewer")
+    source = str(payload.get("source") or "social").strip().lower()
+    raw_text = str(payload.get("raw_text") or "").strip()
+    if not raw_text:
+        raise HTTPException(status_code=400, detail="raw_text is required.")
+    lines = [line.strip("- ").strip() for line in raw_text.splitlines() if line.strip()]
+    lowered = [line.lower() for line in lines]
+    questions = [line for line in lines if "?" in line]
+    objections = [
+        line
+        for line, lower in zip(lines, lowered)
+        if any(
+            token in lower
+            for token in [
+                "дорого",
+                "expensive",
+                "сложно",
+                "hard",
+                "непонят",
+                "unclear",
+                "долго",
+                "slow",
+            ]
+        )
+    ]
+    proof_points = [
+        line
+        for line, lower in zip(lines, lowered)
+        if any(
+            token in lower
+            for token in [
+                "result",
+                "growth",
+                "lift",
+                "case",
+                "кейс",
+                "рост",
+                "%",
+                "leads",
+                "traffic",
+            ]
+        )
+    ]
+    pain_points = [
+        line
+        for line, lower in zip(lines, lowered)
+        if any(
+            token in lower
+            for token in [
+                "problem",
+                "issue",
+                "pain",
+                "ошиб",
+                "проблем",
+                "не работает",
+                "does not work",
+            ]
+        )
+    ]
+    actions = []
+    if questions:
+        actions.append("create or expand a visible FAQ block from repeated questions")
+    if objections:
+        actions.append("add objection-handling copy to the landing or service page")
+    if proof_points:
+        actions.append("turn proof points into case-study or testimonial evidence blocks")
+    if pain_points:
+        actions.append("map pain points into audit offer messaging and answer-ready pages")
+    if not actions:
+        actions.append(
+            "summarize the social thread into a short operator brief and test one new content angle"
+        )
+    return {
+        "source": source,
+        "raw_line_count": len(lines),
+        "questions": questions,
+        "objections": objections,
+        "proof_points": proof_points,
+        "pain_points": pain_points,
+        "recommended_assets": [
+            "faq_page",
+            "landing_objection_block",
+            "proof_strip",
+            "executive_summary_note",
+        ],
+        "recommended_actions": actions,
+        "client_safe_summary": (
+            f"Parsed {len(lines)} social signal lines from {source}. "
+            f"Found {len(questions)} questions, {len(objections)} objections, "
+            f"{len(proof_points)} proof points, and {len(pain_points)} pain points."
+        ),
+    }
+
+
 @router.get("/saas-growth-center")
 def saas_growth_center(
     workspace_id: int,
@@ -539,6 +714,77 @@ def saas_growth_center(
             "AI-agent deployable",
             "client-report ready",
             "search + GEO + social intelligence in one operating layer",
+        ],
+    }
+
+
+@router.get("/saas-readiness-center")
+def saas_readiness_center(
+    workspace_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    workspace, membership = require_workspace_access(
+        db, workspace_id, current_user, minimum_role="viewer"
+    )
+    tenant = (
+        db.query(TenantProfile)
+        .filter(TenantProfile.workspace_id == workspace_id)
+        .order_by(TenantProfile.id.desc())
+        .first()
+    )
+    tenant_keys = (
+        db.query(TenantApiKey)
+        .filter(TenantApiKey.workspace_id == workspace_id)
+        .count()
+    )
+    notification_count = (
+        db.query(NotificationEndpoint)
+        .filter(NotificationEndpoint.workspace_id == workspace_id)
+        .count()
+    )
+    layer_status = {
+        "auth_and_rbac": "ready",
+        "tenant_profile": "ready" if tenant else "missing",
+        "quota_and_usage": "ready"
+        if tenant and json.loads(tenant.quota_json or "{}")
+        else "needs_operator_policy",
+        "tenant_api_keys": "ready" if tenant_keys else "missing",
+        "notification_ops": "ready" if notification_count else "needs_setup",
+        "public_scanner_guardrails": "operator_ready",
+        "durable_queue": "foundation_ready_but_not_managed",
+        "billing": "intentionally_out_of_scope_for_this_release",
+        "hosted_domain": "intentionally_out_of_scope_for_this_release",
+    }
+    readiness_score = 0
+    for value in layer_status.values():
+        if value == "ready":
+            readiness_score += 14
+        elif value == "operator_ready":
+            readiness_score += 10
+        elif value == "foundation_ready_but_not_managed":
+            readiness_score += 8
+    return {
+        "workspace_id": workspace.id,
+        "workspace_slug": workspace.slug,
+        "role": membership.role,
+        "readiness_score": readiness_score,
+        "layer_status": layer_status,
+        "safe_announcement": (
+            "self-hosted SaaS-ready platform"
+            if readiness_score >= 60
+            else "strong SaaS foundation"
+        ),
+        "still_needed_for_full_managed_saas": [
+            "maintainer-hosted runtime",
+            "live billing automation",
+            "enterprise SSO or SCIM",
+        ],
+        "operator_next_steps": [
+            "connect at least two providers with one local fallback",
+            "create one tenant profile and one tenant API key",
+            "configure at least one notification endpoint",
+            "run scanner, audit, proof export, and executive refresh on one project",
         ],
     }
 

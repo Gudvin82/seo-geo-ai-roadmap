@@ -131,6 +131,10 @@ OpenAPI доступен по `/docs`, ReDoc по `/redoc`.
 ## Providers
 
 - `GET /api/v1/providers?workspace_id={workspace_id}`
+- `GET /api/v1/providers/catalog`
+- `GET /api/v1/providers/model-registry`
+- `GET /api/v1/providers/health?workspace_id={workspace_id}`
+- `GET /api/v1/providers/operating-center?workspace_id={workspace_id}`
 - `POST /api/v1/providers`
 - `PUT /api/v1/providers/{provider_id}`
 
@@ -250,7 +254,10 @@ summaries.
 - `GET /api/v1/settings/review-mode`
 - `GET /api/v1/settings/social-distribution-center`
 - `GET /api/v1/settings/social-intelligence-center?project_id={project_id}`
+- `GET /api/v1/settings/social-command-center?project_id={project_id}`
+- `POST /api/v1/settings/social-idea-parser`
 - `GET /api/v1/settings/saas-growth-center?workspace_id={workspace_id}`
+- `GET /api/v1/settings/saas-readiness-center?workspace_id={workspace_id}`
 - `GET /api/v1/settings/repo-understanding-center`
 - `GET /api/v1/settings/deploy-wizard`
 

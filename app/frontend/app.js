@@ -21,6 +21,7 @@ const state = {
   demoCenter: {},
   productizationCenter: {},
   saasGrowthCenter: {},
+  saasReadinessCenter: {},
   proofTimeline: [],
   proofKit: {},
   proofExportPack: {},
@@ -35,7 +36,12 @@ const state = {
   promptPacks: {},
   socialDistributionCenter: {},
   socialIntelligenceCenter: {},
+  socialCommandCenter: {},
+  socialParserOutput: {},
   localEntityCenter: {},
+  providerHealthCenter: {},
+  providerModelRegistry: {},
+  providerOperatingCenter: {},
   integrationContracts: [],
   cmsContracts: [],
   reportAssistant: null,
@@ -69,7 +75,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v5.3.0 social intelligence, SaaS growth, and multi-channel AI-to-App delivery",
+      "v5.5.0 SaaS readiness, social command, and multi-model operating platform",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -260,7 +266,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v5.3.0 social intelligence, SaaS growth и multi-channel AI-to-App delivery",
+      "v5.5.0 SaaS readiness, social command и multi-model operating platform",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -719,6 +725,11 @@ function renderSaasCenter() {
     null,
     2,
   );
+  $("#saas-readiness-center").textContent = JSON.stringify(
+    state.saasReadinessCenter || {},
+    null,
+    2,
+  );
 }
 
 function renderProofCenter() {
@@ -788,6 +799,16 @@ function renderBuildCenter() {
   );
   $("#social-intelligence-center").textContent = JSON.stringify(
     state.socialIntelligenceCenter || {},
+    null,
+    2,
+  );
+  $("#social-command-center").textContent = JSON.stringify(
+    state.socialCommandCenter || {},
+    null,
+    2,
+  );
+  $("#social-parser-output").textContent = JSON.stringify(
+    state.socialParserOutput || {},
     null,
     2,
   );
@@ -899,9 +920,33 @@ async function refreshProviders() {
   if (!state.token || !state.selectedWorkspaceId) {
     return;
   }
-  state.providerConfigs = await apiRequest(`/providers?workspace_id=${state.selectedWorkspaceId}`);
+  const [configs, healthCenter, modelRegistry, operatingCenter] = await Promise.all([
+    apiRequest(`/providers?workspace_id=${state.selectedWorkspaceId}`),
+    apiRequest(`/providers/health?workspace_id=${state.selectedWorkspaceId}`),
+    apiRequest("/providers/model-registry"),
+    apiRequest(`/providers/operating-center?workspace_id=${state.selectedWorkspaceId}`),
+  ]);
+  state.providerConfigs = configs;
+  state.providerHealthCenter = healthCenter || {};
+  state.providerModelRegistry = modelRegistry || {};
+  state.providerOperatingCenter = operatingCenter || {};
   renderCards("#provider-list", state.providerConfigs, (row) =>
     simpleCard(row.label, [`#${row.id}`, `${row.provider_name} · ${row.model}`, row.api_key_env_var || "default env routing"]),
+  );
+  $("#provider-health-center").textContent = JSON.stringify(
+    state.providerHealthCenter || {},
+    null,
+    2,
+  );
+  $("#provider-model-registry").textContent = JSON.stringify(
+    state.providerModelRegistry || {},
+    null,
+    2,
+  );
+  $("#provider-operating-center").textContent = JSON.stringify(
+    state.providerOperatingCenter || {},
+    null,
+    2,
   );
   renderOverview();
 }
@@ -1117,6 +1162,9 @@ async function refreshSaasCenter() {
       apiRequest(
         `/settings/saas-growth-center?workspace_id=${state.selectedWorkspaceId}`,
       ),
+      apiRequest(
+        `/settings/saas-readiness-center?workspace_id=${state.selectedWorkspaceId}`,
+      ),
     );
   }
   const [
@@ -1126,6 +1174,7 @@ async function refreshSaasCenter() {
     productizationCenter,
     portfolioDashboard,
     saasGrowthCenter,
+    saasReadinessCenter,
   ] = await Promise.all(requests);
   state.saasCatalog = catalog.items || [];
   state.organizations = organizations || [];
@@ -1133,6 +1182,7 @@ async function refreshSaasCenter() {
   state.productizationCenter = productizationCenter || {};
   state.portfolioDashboard = portfolioDashboard || {};
   state.saasGrowthCenter = saasGrowthCenter || {};
+  state.saasReadinessCenter = saasReadinessCenter || {};
   if (state.selectedWorkspaceId) {
     try {
       state.tenantOverview = await apiRequest(
@@ -1176,12 +1226,16 @@ async function refreshBuildCenter() {
         `/settings/social-intelligence-center?project_id=${state.selectedProjectId}`,
       )
     : Promise.resolve({});
+  const socialCommandRequest = state.selectedProjectId
+    ? apiRequest(`/settings/social-command-center?project_id=${state.selectedProjectId}`)
+    : Promise.resolve({});
   const [
     contracts,
     manifests,
     oneLinkBuilder,
     socialDistributionCenter,
     socialIntelligenceCenter,
+    socialCommandCenter,
     repoUnderstanding,
     deployWizard,
     promptPacks,
@@ -1192,16 +1246,18 @@ async function refreshBuildCenter() {
     apiRequest("/settings/one-link-builder", { headers: {} }),
     apiRequest("/settings/social-distribution-center", { headers: {} }),
     socialIntelligenceRequest,
+    socialCommandRequest,
     apiRequest("/settings/repo-understanding-center", { headers: {} }),
     apiRequest("/settings/deploy-wizard", { headers: {} }),
     apiRequest("/settings/prompt-packs", { headers: {} }),
-      apiRequest("/settings/local-entity-center", { headers: {} }),
-    ]);
+    apiRequest("/settings/local-entity-center", { headers: {} }),
+  ]);
   state.generationContracts = contracts;
   state.generationManifests = manifests;
   state.oneLinkBuilder = oneLinkBuilder;
   state.socialDistributionCenter = socialDistributionCenter;
   state.socialIntelligenceCenter = socialIntelligenceCenter;
+  state.socialCommandCenter = socialCommandCenter;
   state.repoUnderstanding = repoUnderstanding;
   state.deployWizard = deployWizard;
   state.promptPacks = promptPacks;
@@ -1420,6 +1476,22 @@ async function handleGenerationCreateV52(event) {
   await refreshBuildCenter();
 }
 
+async function handleSocialParser(event) {
+  event.preventDefault();
+  const payload = formPayload(event.currentTarget);
+  payload.project_id = payload.project_id ? Number(payload.project_id) : null;
+  state.socialParserOutput = await apiRequest("/settings/social-idea-parser", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  $("#social-parser-output").textContent = JSON.stringify(
+    state.socialParserOutput || {},
+    null,
+    2,
+  );
+  log(`Parsed social signals from ${payload.source || "social"}.`);
+}
+
 async function handleProjectExport() {
   if (!state.token || !state.selectedProjectId) {
     log("Select a project first.", "warning");
@@ -1525,6 +1597,7 @@ function installEventListeners() {
     "submit",
     handleGenerationCreateV52,
   );
+  $("#social-parser-form").addEventListener("submit", handleSocialParser);
   $("#patch-pack-form").addEventListener("submit", handlePatchPackCreate);
   $("#client-pack-form").addEventListener("submit", handleClientPackCreate);
   $("#refresh-workspaces").addEventListener("click", () => refreshWorkspaces().catch((error) => log(error.message, "warning")));

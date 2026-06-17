@@ -311,6 +311,46 @@ def test_workspace_project_and_audit_flow(
     )
     assert x_ads_sync.status_code == 200
 
+    provider_config = client.post(
+        "/api/v1/providers",
+        json={
+            "workspace_id": workspace_id,
+            "provider_name": "openai",
+            "label": "Primary OpenAI",
+            "model": "gpt-4.1-mini",
+            "api_key_env_var": "OPENAI_API_KEY",
+            "base_url": None,
+            "is_enabled": True,
+        },
+        headers=auth_headers,
+    )
+    assert provider_config.status_code == 200
+
+    provider_catalog = client.get("/api/v1/providers/catalog", headers=auth_headers)
+    assert provider_catalog.status_code == 200
+    assert provider_catalog.json()["summary"]["total_supported"] >= 20
+
+    provider_model_registry = client.get(
+        "/api/v1/providers/model-registry",
+        headers=auth_headers,
+    )
+    assert provider_model_registry.status_code == 200
+    assert provider_model_registry.json()["registry_profiles"]["profiles"]
+
+    provider_health = client.get(
+        f"/api/v1/providers/health?workspace_id={workspace_id}",
+        headers=auth_headers,
+    )
+    assert provider_health.status_code == 200
+    assert provider_health.json()["summary"]["configured"] >= 1
+
+    provider_operating_center = client.get(
+        f"/api/v1/providers/operating-center?workspace_id={workspace_id}",
+        headers=auth_headers,
+    )
+    assert provider_operating_center.status_code == 200
+    assert provider_operating_center.json()["routing_policies"]
+
     cms = client.post(
         "/api/v1/cms",
         json={
@@ -586,7 +626,7 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v5.3.0"
+        generation_contracts.json()["project_generation_contract_version"] == "v5.5.0"
     )
 
     generation_manifest = client.post(
@@ -658,6 +698,25 @@ def test_workspace_project_and_audit_flow(
     assert social_intelligence.json()["social_modes"]
     assert social_intelligence.json()["executive_use_cases"]
 
+    social_command = client.get(
+        f"/api/v1/settings/social-command-center?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert social_command.status_code == 200
+    assert social_command.json()["parsing_lanes"]
+
+    social_parser = client.post(
+        "/api/v1/settings/social-idea-parser",
+        json={
+            "project_id": project_id,
+            "source": "threads",
+            "raw_text": "- Why is this so expensive?\n- We saw 28% lead growth after FAQ updates.\n- Setup was slow at first.",
+        },
+        headers=auth_headers,
+    )
+    assert social_parser.status_code == 200
+    assert social_parser.json()["recommended_actions"]
+
     repo_understanding = client.get(
         "/api/v1/settings/repo-understanding-center", headers=auth_headers
     )
@@ -694,6 +753,13 @@ def test_workspace_project_and_audit_flow(
     )
     assert saas_growth_center.status_code == 200
     assert saas_growth_center.json()["default_service_tiers"]
+
+    saas_readiness_center = client.get(
+        f"/api/v1/settings/saas-readiness-center?workspace_id={workspace_id}",
+        headers=auth_headers,
+    )
+    assert saas_readiness_center.status_code == 200
+    assert saas_readiness_center.json()["layer_status"]
 
     portfolio_dashboard = client.get(
         f"/api/v1/settings/portfolio-dashboard?workspace_id={workspace_id}",

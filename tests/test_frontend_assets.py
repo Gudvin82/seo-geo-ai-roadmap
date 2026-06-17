@@ -66,6 +66,9 @@ def test_frontend_mentions_required_workflows() -> None:
         "Structured audit runs",
         "Reports and artifacts",
         "Graph Intelligence",
+        "provider-health-center",
+        "social-command-center",
+        "saas-readiness-center",
     ]
     for section in required_sections:
         assert section in html

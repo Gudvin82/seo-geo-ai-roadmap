@@ -76,7 +76,7 @@
       <main class="main">
         <header class="hero">
           <div>
-            <p class="eyebrow" data-i18n="releaseBadge">v5.3.0 social intelligence, SaaS growth, and multi-channel AI-to-App delivery</p>
+            <p class="eyebrow" data-i18n="releaseBadge">v5.5.0 SaaS readiness, social command, and multi-model operating platform</p>
             <h2 data-i18n="heroTitle">Self-hosted daily operating system for SEO, GEO, and AI discoverability</h2>
             <p class="hero-copy" data-i18n="heroCopy">
               Give the repo to a human operator or an AI coding agent, deploy it,
@@ -321,6 +321,8 @@
               <pre id="productization-center" class="code-block"></pre>
               <h4>SaaS growth center</h4>
               <pre id="saas-growth-center" class="code-block"></pre>
+              <h4>SaaS readiness center</h4>
+              <pre id="saas-readiness-center" class="code-block"></pre>
             </div>
           </div>
         </section>
@@ -457,6 +459,36 @@
             <div class="card">
               <h4>Generated scaffold</h4>
               <pre id="generation-output" class="code-block"></pre>
+            </div>
+          </div>
+          <div class="split">
+            <form id="social-parser-form" class="card form-card">
+              <h4>Social idea parser</h4>
+              <label class="field">
+                <span>Project ID</span>
+                <input name="project_id" type="number" />
+              </label>
+              <label class="field">
+                <span>Source</span>
+                <input name="source" type="text" value="threads" />
+              </label>
+              <label class="field">
+                <span>Raw social text</span>
+                <textarea
+                  name="raw_text"
+                  rows="8"
+                  placeholder="- Why is this service so expensive?
+- We saw 32% lead growth after better GEO pages.
+- How long does setup take?"
+                ></textarea>
+              </label>
+              <button type="submit">Parse social signals</button>
+            </form>
+            <div class="card">
+              <h4>Social command center</h4>
+              <pre id="social-command-center" class="code-block"></pre>
+              <h4>Social parser output</h4>
+              <pre id="social-parser-output" class="code-block"></pre>
             </div>
           </div>
         </section>
@@ -659,6 +691,27 @@
                   <option value="anthropic">Anthropic / Claude</option>
                   <option value="gemini">Gemini</option>
                   <option value="perplexity">Perplexity</option>
+                  <option value="mistral">Mistral</option>
+                  <option value="cohere">Cohere</option>
+                  <option value="deepseek">DeepSeek</option>
+                  <option value="xai">xAI / Grok</option>
+                  <option value="openrouter">OpenRouter</option>
+                  <option value="groq">Groq</option>
+                  <option value="together">Together</option>
+                  <option value="fireworks">Fireworks</option>
+                  <option value="sambanova">SambaNova</option>
+                  <option value="cerebras">Cerebras</option>
+                  <option value="nvidia_nim">NVIDIA NIM</option>
+                  <option value="deepinfra">DeepInfra</option>
+                  <option value="azure_openai">Azure OpenAI</option>
+                  <option value="cloudflare">Cloudflare AI</option>
+                  <option value="huggingface">Hugging Face</option>
+                  <option value="ollama">Ollama</option>
+                  <option value="localai">LocalAI</option>
+                  <option value="vllm">vLLM</option>
+                  <option value="lmstudio">LM Studio</option>
+                  <option value="litellm">LiteLLM</option>
+                  <option value="llamacpp">llama.cpp</option>
                 </select>
               </label>
               <label class="field">
@@ -673,12 +726,27 @@
                 <span data-i18n="apiEnv">API key env var</span>
                 <input name="api_key_env_var" placeholder="OPENAI_API_KEY" />
               </label>
+              <label class="field">
+                <span>Base URL override</span>
+                <input name="base_url" placeholder="http://localhost:11434/v1/chat/completions" />
+              </label>
               <button type="submit" data-i18n="saveProvider">Save provider config</button>
             </form>
 
             <div class="card">
               <h4 data-i18n="providerList">Provider list</h4>
               <div id="provider-list" class="stack"></div>
+            </div>
+          </div>
+          <div class="split">
+            <div class="card">
+              <h4>Provider health center</h4>
+              <pre id="provider-health-center" class="code-block"></pre>
+            </div>
+            <div class="card">
+              <h4>Model registry and routing</h4>
+              <pre id="provider-model-registry" class="code-block"></pre>
+              <pre id="provider-operating-center" class="code-block"></pre>
             </div>
           </div>
         </section>

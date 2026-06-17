@@ -1,5 +1,13 @@
 # Changelog
 
+## v5.5.0 — SaaS Readiness, Social Command, and Multi-Model Operating Center
+
+- Added provider catalog, model-registry, health, and operating-center API surfaces so the multi-model layer is visible and reviewable
+- Added saas-readiness-center so teams can see the current gap between strong self-hosted SaaS foundation and fully managed SaaS
+- Added social-command-center and social-idea-parser so social signals can be turned into FAQ, proof, objection-handling, and content actions
+- Expanded the frontend to expose provider health, model routing, SaaS readiness, and social parsing directly in the app
+- Ignored generated scaffold output in git so operator workflows do not dirty the repository
+
 ## v5.3.0 — Social Intelligence, SaaS Growth, and Public Project Packaging
 
 - Added starter integrations for X Ads, X Organic, Threads, Reddit mentions, and TikTok organic
