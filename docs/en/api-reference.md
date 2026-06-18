@@ -185,6 +185,11 @@ AI SoV notes:
 - `GET /api/v1/integrations?project_id={project_id}`
 - `POST /api/v1/integrations`
 - `POST /api/v1/integrations/{integration_id}/sync`
+- `GET /api/v1/integrations/{integration_id}/detail`
+- `GET /api/v1/integrations/{integration_id}/readiness-plan`
+- `GET /api/v1/integrations/health-center?project_id={project_id}`
+- `GET /api/v1/integrations/runtime-center?project_id={project_id}`
+- `GET /api/v1/integrations/verification-matrix?project_id={project_id}`
 
 Starter source values:
 
@@ -206,7 +211,12 @@ Starter source values:
 - `reddit_mentions`
 - `tiktok_organic`
 - `vk_ads`
+- `vk_organic`
 - `telegram_ads`
+- `telegram_channels`
+- `yandex_neuro`
+- `dzen`
+- `rutube`
 - `youtube`
 - `linkedin_ads`
 - `instagram_facebook_organic`
@@ -258,6 +268,7 @@ summaries.
 - `POST /api/v1/settings/social-idea-parser`
 - `GET /api/v1/settings/saas-growth-center?workspace_id={workspace_id}`
 - `GET /api/v1/settings/saas-readiness-center?workspace_id={workspace_id}`
+- `GET /api/v1/settings/ru-market-command-center?project_id={project_id}`
 - `GET /api/v1/settings/repo-understanding-center`
 - `GET /api/v1/settings/deploy-wizard`
 

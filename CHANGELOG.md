@@ -1,5 +1,13 @@
 # Changelog
 
+## v5.6.0 — Production Integration Runtime, RU Market Command, and Social Commerce Layer
+
+- Added integration runtime profiles and sync diagnostics so operators can see refresh cadence, retry policy, token-rotation expectations, runtime level, and next actions per integration
+- Added new RU and social intelligence starter sources: VK Organic, Telegram Channels, Yandex Neuro readiness, Dzen, and RuTube
+- Added `ru-market-command-center` and `integration runtime center` surfaces so Yandex, local trust, RU community demand, and social distribution can be reviewed together
+- Upgraded the frontend and smoke coverage to expose the new runtime and RU market command layers directly in the app
+- Clarified the SaaS-ready messaging for a free self-hosted product where billing is optional and not part of the core promise
+
 ## v5.5.0 — SaaS Readiness, Social Command, and Multi-Model Operating Center
 
 - Added provider catalog, model-registry, health, and operating-center API surfaces so the multi-model layer is visible and reviewable

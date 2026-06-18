@@ -32,7 +32,7 @@ from ..schemas import (
     ServiceFoundationRead,
 )
 from ..services.cms import cms_contract
-from ..services.integrations import integration_contract
+from ..services.integrations import integration_contract, integration_runtime_profile
 from ..services.task_center import build_task_bundle_from_audit_run
 
 router = APIRouter(prefix="/settings", tags=["settings"])
@@ -372,7 +372,11 @@ def social_distribution_center() -> dict:
             "reddit_mentions",
             "tiktok_organic",
             "vk_ads",
+            "vk_organic",
             "telegram_ads",
+            "telegram_channels",
+            "dzen",
+            "rutube",
             "youtube",
             "linkedin_ads",
             "instagram_facebook_organic",
@@ -387,6 +391,8 @@ def social_distribution_center() -> dict:
             "social content opportunity queue",
             "founder-led thought leadership parsing",
             "comment-to-faq extraction",
+            "RU-native social demand overlays",
+            "community-to-sales narrative packs",
         ],
         "mention_tracking_model": {
             "starter_mode": "track mentions through evidence records and operator notes",
@@ -397,6 +403,8 @@ def social_distribution_center() -> dict:
             "turn repeated social questions into landing-page objections",
             "map community mentions to executive narrative and proof packs",
             "compare social amplification with branded search and AI citations",
+            "compare RU community demand with Yandex search and local trust signals",
+            "turn Telegram and VK conversations into operator-ready sales angles",
         ],
     }
 
@@ -428,14 +436,26 @@ def social_intelligence_center(
         "reddit_mentions",
         "tiktok_organic",
         "vk_ads",
+        "vk_organic",
         "telegram_ads",
+        "telegram_channels",
+        "dzen",
+        "rutube",
         "youtube",
         "linkedin_ads",
         "instagram_facebook_organic",
     ]
     connected = [surface for surface in supported_surfaces if surface in snapshots]
     opportunity_queue: list[dict[str, str]] = []
-    for surface in ["x_organic", "threads", "reddit_mentions", "tiktok_organic"]:
+    for surface in [
+        "x_organic",
+        "threads",
+        "reddit_mentions",
+        "tiktok_organic",
+        "vk_organic",
+        "telegram_channels",
+        "dzen",
+    ]:
         snapshot = snapshots.get(surface) or {}
         for idea in snapshot.get("opportunities", [])[:2]:
             opportunity_queue.append(
@@ -471,12 +491,15 @@ def social_intelligence_center(
             "community demand",
             "reputation sensing",
             "content opportunity parsing",
+            "RU community mining",
+            "local-business proof extraction",
         ],
         "opportunity_queue": opportunity_queue,
         "executive_use_cases": [
             "feed social questions into GEO content planning",
             "link amplification data to brand demand and AI visibility",
             "turn positive community proof into client-safe deliverables",
+            "compare RU social demand against Yandex demand and local actions",
         ],
         "comparison": comparison,
     }
@@ -509,7 +532,11 @@ def social_command_center(
         "reddit_mentions",
         "tiktok_organic",
         "vk_ads",
+        "vk_organic",
         "telegram_ads",
+        "telegram_channels",
+        "dzen",
+        "rutube",
         "youtube",
         "linkedin_ads",
         "instagram_facebook_organic",
@@ -535,12 +562,15 @@ def social_command_center(
             "mentions to proof blocks",
             "threads to landing-page objections",
             "short-form hooks to title and CTA tests",
+            "VK and Telegram community language to RU sales copy",
+            "local-business review signals to trust blocks",
         ],
         "operator_loops": [
             "capture social demand",
             "convert recurring questions into answer-ready content",
             "route proof into executive and client-safe exports",
             "compare supporting social demand with branded search and AI visibility",
+            "tie RU community demand to Yandex demand and local-business entities",
         ],
         "backlog": backlog,
         "ready_assets": [
@@ -548,6 +578,8 @@ def social_command_center(
             "landing_objection_block",
             "proof_strip",
             "founder_thought_leadership_page",
+            "ru_market_trust_block",
+            "community-proof carousel",
         ],
     }
 
@@ -755,7 +787,7 @@ def saas_readiness_center(
         "notification_ops": "ready" if notification_count else "needs_setup",
         "public_scanner_guardrails": "operator_ready",
         "durable_queue": "foundation_ready_but_not_managed",
-        "billing": "intentionally_out_of_scope_for_this_release",
+        "billing": "intentionally_not_required_free_project",
         "hosted_domain": "intentionally_out_of_scope_for_this_release",
     }
     readiness_score = 0
@@ -779,7 +811,6 @@ def saas_readiness_center(
         ),
         "still_needed_for_full_managed_saas": [
             "maintainer-hosted runtime",
-            "live billing automation",
             "enterprise SSO or SCIM",
         ],
         "operator_next_steps": [
@@ -787,6 +818,7 @@ def saas_readiness_center(
             "create one tenant profile and one tenant API key",
             "configure at least one notification endpoint",
             "run scanner, audit, proof export, and executive refresh on one project",
+            "treat billing as optional because the project is intentionally free and self-hosted",
         ],
     }
 
@@ -1092,6 +1124,7 @@ def local_entity_center() -> dict:
             "Yandex Business completeness",
             "Yandex Webmaster regional readiness",
             "YandexAdditional and RU AI bot discoverability",
+            "Yandex Neuro readiness and trust overlays",
             "local trust and legal blocks for RU market",
             "RU snippets and answer-ready content",
         ],
@@ -1102,6 +1135,105 @@ def local_entity_center() -> dict:
             "structured data and trust blocks",
             "FAQ and answer-ready content for local intent",
         ],
+        "ru_growth_extensions": [
+            "VK community proof loops",
+            "Telegram channel demand overlays",
+            "Yandex Direct + Metrica + Business local attribution",
+            "2GIS-style local trust packaging in deliverables",
+        ],
+    }
+
+
+@router.get("/ru-market-command-center")
+def ru_market_command_center(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    project, _ = require_project_access(
+        db, project_id, current_user, minimum_role="viewer"
+    )
+    integration_rows = (
+        db.query(IntegrationConnection)
+        .filter(IntegrationConnection.project_id == project_id)
+        .order_by(IntegrationConnection.id.desc())
+        .all()
+    )
+    snapshots = {
+        row.source_type: json.loads(row.latest_snapshot_json or "{}")
+        for row in integration_rows
+    }
+    ru_stack = [
+        "yandex_webmaster",
+        "yandex_metrica",
+        "yandex_direct",
+        "yandex_business",
+        "yandex_neuro",
+        "vk_ads",
+        "vk_organic",
+        "telegram_ads",
+        "telegram_channels",
+        "dzen",
+        "rutube",
+    ]
+    connected = [surface for surface in ru_stack if surface in snapshots]
+    source_rows = []
+    for row in integration_rows:
+        if row.source_type not in ru_stack:
+            continue
+        snapshot = json.loads(row.latest_snapshot_json or "{}")
+        source_rows.append(
+            {
+                "source_type": row.source_type,
+                "label": row.label,
+                "runtime_profile": integration_runtime_profile(
+                    row.source_type,
+                    config=json.loads(row.config_json or "{}"),
+                    credentials_env_var=row.credentials_env_var,
+                    latest_snapshot=snapshot,
+                ),
+                "latest_snapshot_source": snapshot.get("source"),
+                "metrics": snapshot.get("metrics", {}),
+            }
+        )
+    return {
+        "project_id": project.id,
+        "project_name": project.name,
+        "connected_surfaces": connected,
+        "ru_search_stack": [
+            "Yandex Webmaster",
+            "Yandex Metrica",
+            "Yandex Direct",
+            "Yandex Business",
+            "YandexAdditional / Neuro readiness",
+        ],
+        "ru_distribution_stack": [
+            "VK Ads",
+            "VK Organic",
+            "Telegram Ads",
+            "Telegram Channels",
+            "Dzen",
+            "RuTube",
+        ],
+        "ru_local_stack": [
+            "Yandex Business trust and action metrics",
+            "regional landing-page alignment",
+            "legal and trust blocks for service pages",
+            "review and reputation overlays",
+        ],
+        "operator_plays": [
+            "compare Yandex demand with VK and Telegram community demand",
+            "turn RU objections into trust and FAQ blocks",
+            "pair Yandex Business proof with local landing-page conversions",
+            "treat YandexAdditional access and answer-ready content as a first-class GEO signal",
+        ],
+        "channel_comparison": {
+            "paid_sources": ["yandex_direct", "vk_ads", "telegram_ads"],
+            "community_sources": ["vk_organic", "telegram_channels", "dzen"],
+            "video_sources": ["rutube", "youtube"],
+            "local_sources": ["yandex_business", "google_business_profile"],
+        },
+        "source_rows": source_rows,
     }
 
 
@@ -1504,6 +1636,12 @@ def mention_reputation_center(
             "proof-linked reputation events",
             "local-business trust overlays",
             "social/distribution connectors",
+            "RU community and Yandex trust overlays",
+        ],
+        "commercial_use_cases": [
+            "show how community demand supports search demand",
+            "prove trust growth with local-business and review signals",
+            "tie AI visibility to social proof and repeated objections",
         ],
         "latest_mentions": [
             {

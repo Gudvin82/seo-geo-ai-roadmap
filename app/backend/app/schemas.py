@@ -441,7 +441,12 @@ class IntegrationConnectionCreate(BaseModel):
             "reddit_mentions",
             "tiktok_organic",
             "vk_ads",
+            "vk_organic",
             "telegram_ads",
+            "telegram_channels",
+            "yandex_neuro",
+            "dzen",
+            "rutube",
             "youtube",
             "linkedin_ads",
             "instagram_facebook_organic",
@@ -474,6 +479,7 @@ class IntegrationConnectionRead(BaseModel):
     contract_version: str
     sync_capabilities: list[str] = Field(default_factory=list)
     production_flow: list[str] = Field(default_factory=list)
+    runtime_profile: dict[str, Any] = Field(default_factory=dict)
     sync_freshness: str
     next_step: str
     created_at: datetime
@@ -701,6 +707,8 @@ class IntegrationVerificationRowRead(BaseModel):
     verification_checks: list[str] = Field(default_factory=list)
     latest_snapshot_source: Optional[str] = None
     latest_snapshot_summary: dict[str, Any] = Field(default_factory=dict)
+    runtime_profile: dict[str, Any] = Field(default_factory=dict)
+    sync_diagnostics: dict[str, Any] = Field(default_factory=dict)
     env_status: dict[str, Any] = Field(default_factory=dict)
     next_step: str
 
@@ -723,6 +731,8 @@ class IntegrationSyncEventRead(BaseModel):
     freshness_label: str
     error_summary: Optional[str]
     metadata: dict[str, Any] = Field(default_factory=dict)
+    sync_policy: dict[str, Any] = Field(default_factory=dict)
+    diagnostics: dict[str, Any] = Field(default_factory=dict)
     started_at: datetime
     finished_at: Optional[datetime]
 
@@ -743,6 +753,8 @@ class IntegrationDetailRead(BaseModel):
     last_successful_pull: Optional[datetime]
     last_error: Optional[str]
     recommended_next_steps: list[str] = Field(default_factory=list)
+    runtime_profile: dict[str, Any] = Field(default_factory=dict)
+    sync_diagnostics: dict[str, Any] = Field(default_factory=dict)
     sync_logs: list[IntegrationSyncEventRead] = Field(default_factory=list)
     latest_snapshot_summary: dict[str, Any] = Field(default_factory=dict)
 

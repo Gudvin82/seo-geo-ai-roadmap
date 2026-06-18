@@ -27,6 +27,8 @@ from ..services.integrations import (
     compact_integration_summary,
     integration_contract,
     integration_env_status,
+    integration_runtime_profile,
+    integration_sync_diagnostics,
     sync_integration_source,
 )
 
@@ -62,6 +64,12 @@ def _serialize(row: IntegrationConnection) -> IntegrationConnectionRead:
         contract_version=contract["contract_version"],
         sync_capabilities=contract["capabilities"],
         production_flow=contract.get("production_flow", []),
+        runtime_profile=integration_runtime_profile(
+            row.source_type,
+            config=json.loads(row.config_json or "{}"),
+            credentials_env_var=row.credentials_env_var,
+            latest_snapshot=json.loads(row.latest_snapshot_json or "{}"),
+        ),
         sync_freshness=freshness,
         next_step=contract["next_step"],
         created_at=row.created_at,
@@ -69,6 +77,7 @@ def _serialize(row: IntegrationConnection) -> IntegrationConnectionRead:
 
 
 def _serialize_sync_event(row: IntegrationSyncEvent) -> IntegrationSyncEventRead:
+    metadata = json.loads(row.metadata_json or "{}")
     return IntegrationSyncEventRead(
         id=row.id,
         status=row.status,
@@ -80,7 +89,9 @@ def _serialize_sync_event(row: IntegrationSyncEvent) -> IntegrationSyncEventRead
         provenance_level=row.provenance_level,
         freshness_label=row.freshness_label,
         error_summary=row.error_summary,
-        metadata=json.loads(row.metadata_json or "{}"),
+        metadata=metadata,
+        sync_policy=metadata.get("sync_policy", {}),
+        diagnostics=metadata.get("diagnostics", {}),
         started_at=row.started_at,
         finished_at=row.finished_at,
     )
@@ -172,7 +183,17 @@ def sync_integration(
         dataset_status="sync_started",
         provenance_level="starter_sync",
         freshness_label="sync_in_progress",
-        metadata_json=json.dumps({"source_type": row.source_type}, ensure_ascii=False),
+        metadata_json=json.dumps(
+            {
+                "source_type": row.source_type,
+                "sync_policy": integration_runtime_profile(
+                    row.source_type,
+                    config=json.loads(row.config_json or "{}"),
+                    credentials_env_var=row.credentials_env_var,
+                ),
+            },
+            ensure_ascii=False,
+        ),
     )
     db.add(event)
     db.flush()
@@ -205,6 +226,18 @@ def sync_integration(
             {
                 "source_type": row.source_type,
                 "recommended_ci_workflow": contract["recommended_ci_workflow"],
+                "sync_policy": integration_runtime_profile(
+                    row.source_type,
+                    config=json.loads(row.config_json or "{}"),
+                    credentials_env_var=row.credentials_env_var,
+                    latest_snapshot=snapshot,
+                ),
+                "diagnostics": integration_sync_diagnostics(
+                    row.source_type,
+                    config=json.loads(row.config_json or "{}"),
+                    credentials_env_var=row.credentials_env_var,
+                    latest_snapshot=snapshot,
+                ),
             },
             ensure_ascii=False,
         )
@@ -277,6 +310,18 @@ def integration_detail(
         last_error=latest_event.error_summary if latest_event else None,
         recommended_next_steps=contract.get("production_flow", [])
         + [contract["next_step"]],
+        runtime_profile=integration_runtime_profile(
+            row.source_type,
+            config=json.loads(row.config_json or "{}"),
+            credentials_env_var=row.credentials_env_var,
+            latest_snapshot=latest_snapshot,
+        ),
+        sync_diagnostics=integration_sync_diagnostics(
+            row.source_type,
+            config=json.loads(row.config_json or "{}"),
+            credentials_env_var=row.credentials_env_var,
+            latest_snapshot=latest_snapshot,
+        ),
         sync_logs=[_serialize_sync_event(event) for event in events[:10]],
         latest_snapshot_summary=compact_integration_summary(latest_snapshot)
         if latest_snapshot
@@ -367,6 +412,18 @@ def integration_health_center(
                 "retry_count": latest_event.retry_count if latest_event else 0,
                 "last_error": latest_event.error_summary if latest_event else None,
                 "recommended_next_step": contract["next_step"],
+                "runtime_profile": integration_runtime_profile(
+                    row.source_type,
+                    config=json.loads(row.config_json or "{}"),
+                    credentials_env_var=row.credentials_env_var,
+                    latest_snapshot=json.loads(row.latest_snapshot_json or "{}"),
+                ),
+                "sync_diagnostics": integration_sync_diagnostics(
+                    row.source_type,
+                    config=json.loads(row.config_json or "{}"),
+                    credentials_env_var=row.credentials_env_var,
+                    latest_snapshot=json.loads(row.latest_snapshot_json or "{}"),
+                ),
                 "diagnostics": contract.get("production_flow", []),
             }
         )
@@ -403,6 +460,77 @@ def integration_health_center(
             "total_surfaces": len(items),
         },
         "items": items,
+    }
+
+
+@router.get("/runtime-center")
+def integration_runtime_center(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    require_project_access(db, project_id, current_user, minimum_role="viewer")
+    integration_rows = (
+        db.query(IntegrationConnection)
+        .filter(IntegrationConnection.project_id == project_id)
+        .order_by(IntegrationConnection.id.desc())
+        .all()
+    )
+    rows: list[dict] = []
+    managed_ready = 0
+    ru_surfaces = 0
+    for row in integration_rows:
+        snapshot = json.loads(row.latest_snapshot_json or "{}")
+        runtime_profile = integration_runtime_profile(
+            row.source_type,
+            config=json.loads(row.config_json or "{}"),
+            credentials_env_var=row.credentials_env_var,
+            latest_snapshot=snapshot,
+        )
+        diagnostics = integration_sync_diagnostics(
+            row.source_type,
+            config=json.loads(row.config_json or "{}"),
+            credentials_env_var=row.credentials_env_var,
+            latest_snapshot=snapshot,
+        )
+        if runtime_profile["runtime_level"] == "managed_runtime":
+            managed_ready += 1
+        if row.source_type.startswith("yandex") or row.source_type in {
+            "vk_ads",
+            "vk_organic",
+            "telegram_ads",
+            "telegram_channels",
+            "dzen",
+            "rutube",
+        }:
+            ru_surfaces += 1
+        rows.append(
+            {
+                "id": row.id,
+                "label": row.label,
+                "source_type": row.source_type,
+                "runtime_profile": runtime_profile,
+                "diagnostics": diagnostics,
+                "latest_snapshot_source": snapshot.get("source"),
+                "recommended_ci_workflow": integration_contract(row.source_type)[
+                    "recommended_ci_workflow"
+                ],
+            }
+        )
+    return {
+        "project_id": project_id,
+        "summary": {
+            "total_integrations": len(rows),
+            "managed_runtime_ready": managed_ready,
+            "ru_market_surfaces": ru_surfaces,
+        },
+        "operator_policies": [
+            "refresh high-signal demand sources at least daily",
+            "rotate tokens on a fixed schedule and keep a fallback owner",
+            "treat RU search, local, and social surfaces as one operating layer",
+            "attach sync diagnostics to executive and delivery workflows",
+        ],
+        "rows": rows,
     }
 
 

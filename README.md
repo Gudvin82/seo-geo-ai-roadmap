@@ -121,6 +121,7 @@ Use these files before making public claims:
 - One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
 - Integration production matrix: [docs/en/integration-production-matrix-v450.md](./docs/en/integration-production-matrix-v450.md)
 - Provider catalog: [docs/en/provider-catalog-v450.md](./docs/en/provider-catalog-v450.md)
+- v5.6.0 release summary: [docs/en/v560-release.md](./docs/en/v560-release.md)
 - v5.5.0 release summary: [docs/en/v550-release.md](./docs/en/v550-release.md)
 - v5.3.0 release summary: [docs/en/v530-release.md](./docs/en/v530-release.md)
 - v5.2.0 release summary: [docs/en/v520-release.md](./docs/en/v520-release.md)
@@ -167,6 +168,13 @@ AI coding agent without inventing the prompt from scratch:
 - [Repo + site audit prompt](./prompts/en/repo-site-audit-agent-prompt.md)
 - [Deploy client scanner prompt](./prompts/en/deploy-client-scanner-agent-prompt.md)
 - [Improve existing site prompt](./prompts/en/improve-existing-site-agent-prompt.md)
+
+## What `v5.6.0` adds
+
+- a stronger production-integration layer with runtime profiles, sync diagnostics, retry and token-rotation guidance, and an integration runtime center
+- a much deeper RU market command layer with Yandex Neuro readiness, VK organic, Telegram channels, Dzen, and RuTube surfaces
+- richer social and commercial operator flows that connect RU communities, local trust, Yandex demand, and client-safe delivery narratives
+- a clearer free-project SaaS readiness position: self-hosted and SaaS-ready without requiring billing to be part of the promise
 
 ## What `v5.5.0` adds
 

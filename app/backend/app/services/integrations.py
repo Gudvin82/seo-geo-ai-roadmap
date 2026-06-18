@@ -7,13 +7,13 @@ from typing import Any
 
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v5.5.0"
+CONTRACT_VERSION = "v5.6.0"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {
         "source_type": "gsc",
         "label": "Google Search Console",
-        "readiness_tier": "production_guided",
+        "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_pull",
         "required_env_vars": ["GSC_SERVICE_ACCOUNT_JSON"],
         "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
@@ -41,7 +41,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "ga4": {
         "source_type": "ga4",
         "label": "Google Analytics 4",
-        "readiness_tier": "production_guided",
+        "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_pull",
         "required_env_vars": ["GA4_SERVICE_ACCOUNT_JSON"],
         "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
@@ -67,7 +67,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "google_ads": {
         "source_type": "google_ads",
         "label": "Google Ads",
-        "readiness_tier": "production_guided",
+        "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_pull",
         "required_env_vars": ["GOOGLE_ADS_DEVELOPER_TOKEN"],
         "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
@@ -95,7 +95,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "yandex_webmaster": {
         "source_type": "yandex_webmaster",
         "label": "Yandex Webmaster",
-        "readiness_tier": "production_guided",
+        "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_pull",
         "required_env_vars": ["YANDEX_WEBMASTER_TOKEN"],
         "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
@@ -121,7 +121,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "yandex_metrica": {
         "source_type": "yandex_metrica",
         "label": "Yandex Metrica",
-        "readiness_tier": "production_guided",
+        "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_pull",
         "required_env_vars": ["YANDEX_METRICA_TOKEN"],
         "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
@@ -147,7 +147,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "yandex_direct": {
         "source_type": "yandex_direct",
         "label": "Yandex Direct",
-        "readiness_tier": "production_guided",
+        "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_pull",
         "required_env_vars": ["YANDEX_DIRECT_TOKEN"],
         "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
@@ -174,7 +174,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "indexnow": {
         "source_type": "indexnow",
         "label": "IndexNow",
-        "readiness_tier": "production_guided",
+        "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_push",
         "required_env_vars": ["INDEXNOW_KEY"],
         "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
@@ -199,7 +199,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "google_business_profile": {
         "source_type": "google_business_profile",
         "label": "Google Business Profile",
-        "readiness_tier": "production_guided",
+        "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_pull",
         "required_env_vars": ["GBP_SERVICE_ACCOUNT_JSON"],
         "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
@@ -224,7 +224,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "yandex_business": {
         "source_type": "yandex_business",
         "label": "Yandex Business",
-        "readiness_tier": "production_guided",
+        "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_pull",
         "required_env_vars": ["YANDEX_BUSINESS_TOKEN"],
         "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
@@ -249,7 +249,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "merchant_center": {
         "source_type": "merchant_center",
         "label": "Google Merchant Center",
-        "readiness_tier": "production_guided",
+        "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_pull",
         "required_env_vars": ["MERCHANT_CENTER_SERVICE_ACCOUNT_JSON"],
         "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
@@ -274,7 +274,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "crux": {
         "source_type": "crux",
         "label": "Chrome UX Report",
-        "readiness_tier": "production_guided",
+        "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_pull",
         "required_env_vars": ["CRUX_API_KEY"],
         "recommended_ci_workflow": ".github/workflows/lighthouse-ci.yml",
@@ -451,7 +451,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "vk_ads": {
         "source_type": "vk_ads",
         "label": "VK Ads",
-        "readiness_tier": "distribution_guided",
+        "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_pull",
         "required_env_vars": ["VK_ADS_TOKEN"],
         "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
@@ -476,7 +476,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "telegram_ads": {
         "source_type": "telegram_ads",
         "label": "Telegram Ads or Channel Analytics",
-        "readiness_tier": "distribution_guided",
+        "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_pull",
         "required_env_vars": ["TELEGRAM_ADS_TOKEN"],
         "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
@@ -497,6 +497,134 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
             "community demand context",
         ],
         "next_step": "Use Telegram when your distribution model depends on channels, communities, or post-driven demand.",
+    },
+    "vk_organic": {
+        "source_type": "vk_organic",
+        "label": "VK Organic Community Intelligence",
+        "readiness_tier": "social_intelligence_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["VK_ORGANIC_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "community post refresh",
+            "comment and mention review",
+            "site-click validation",
+        ],
+        "production_flow": [
+            "connect VK community analytics token or approved export",
+            "sync reach, engagement, comments, and site clicks",
+            "mine repeated objections and market language",
+            "feed winning posts into RU GEO content and local proof packs",
+        ],
+        "capabilities": [
+            "community post performance",
+            "comment-derived FAQ mining",
+            "RU market messaging context",
+            "site-click tracking",
+        ],
+        "next_step": "Use VK organic as a RU-native community signal layer for messaging, trust, and FAQ discovery.",
+    },
+    "telegram_channels": {
+        "source_type": "telegram_channels",
+        "label": "Telegram Channel Intelligence",
+        "readiness_tier": "social_intelligence_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["TELEGRAM_CHANNEL_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "channel post refresh",
+            "reply trend review",
+            "click and lead validation",
+        ],
+        "production_flow": [
+            "connect Telegram channel analytics token or approved export",
+            "sync reach, post clicks, forwards, and replies",
+            "turn high-signal posts into landing-page hooks and answer-ready sections",
+            "use channel demand alongside branded search and Yandex demand",
+        ],
+        "capabilities": [
+            "channel reach import",
+            "reply and forward tracking",
+            "content opportunity mining",
+            "site-click and lead context",
+        ],
+        "next_step": "Use Telegram channel intelligence when founder-led demand, communities, and post-driven acquisition matter.",
+    },
+    "yandex_neuro": {
+        "source_type": "yandex_neuro",
+        "label": "Yandex Neuro and AI Readiness",
+        "readiness_tier": "ru_ai_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["YANDEX_NEURO_TOKEN"],
+        "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
+        "ci_gates": [
+            "YandexAdditional readiness refresh",
+            "RU answer-ready content review",
+            "entity and trust block validation",
+        ],
+        "production_flow": [
+            "connect approved RU AI monitoring token or maintain operator-reviewed exports",
+            "validate YandexAdditional access, RU trust signals, and answer-ready content",
+            "compare Neuro readiness with Webmaster, Metrica, and Business signals",
+            "feed RU AI findings into legal, trust, and FAQ upgrades",
+        ],
+        "capabilities": [
+            "YandexAdditional readiness tracking",
+            "RU entity readiness review",
+            "trust and answer-block diagnostics",
+            "AI discoverability narrative support",
+        ],
+        "next_step": "Use Yandex Neuro readiness as the RU AI layer that complements Webmaster, Metrica, and Business data.",
+    },
+    "dzen": {
+        "source_type": "dzen",
+        "label": "Dzen Distribution Intelligence",
+        "readiness_tier": "distribution_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["DZEN_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "content reach refresh",
+            "click-through review",
+            "RU content angle export",
+        ],
+        "production_flow": [
+            "connect Dzen analytics token or approved export",
+            "sync reach, clicks, and topic demand",
+            "route strong content angles into site content and GEO planning",
+            "compare Dzen distribution with RU search and AI demand",
+        ],
+        "capabilities": [
+            "reach and click tracking",
+            "topic-demand discovery",
+            "RU distribution context",
+        ],
+        "next_step": "Use Dzen when Russian-language editorial distribution shapes awareness and demand capture.",
+    },
+    "rutube": {
+        "source_type": "rutube",
+        "label": "RuTube Analytics",
+        "readiness_tier": "distribution_guided",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["RUTUBE_TOKEN"],
+        "recommended_ci_workflow": "examples/github-actions/ai-visibility-check.yml",
+        "ci_gates": [
+            "video performance refresh",
+            "site-click review",
+            "channel demand validation",
+        ],
+        "production_flow": [
+            "connect RuTube analytics token or approved export",
+            "sync video reach, watch metrics, and site clicks",
+            "compare video-led RU demand with branded search and Yandex demand",
+            "turn strong video topics into FAQ, comparison, and trust assets",
+        ],
+        "capabilities": [
+            "video metrics import",
+            "watch-time context",
+            "RU audience demand signals",
+        ],
+        "next_step": "Use RuTube when Russian-speaking audiences discover the brand through local video distribution.",
     },
     "youtube": {
         "source_type": "youtube",
@@ -602,38 +730,117 @@ def all_integration_contracts() -> list[dict[str, Any]]:
     return [integration_contract(key) for key in sorted(INTEGRATION_CONTRACTS)]
 
 
-def _ga4_stub() -> dict[str, Any]:
+def integration_runtime_profile(
+    source_type: str,
+    *,
+    config: dict[str, Any] | None = None,
+    credentials_env_var: str | None = None,
+    latest_snapshot: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    contract = integration_contract(source_type)
+    env_status = integration_env_status(contract)
+    runtime_config = config or {}
+    snapshot = latest_snapshot or {}
+    snapshot_source = str(snapshot.get("source") or "").lower()
+    managed_runtime_enabled = bool(runtime_config.get("managed_runtime_enabled"))
+    runtime_owner = str(runtime_config.get("runtime_owner") or "operator")
+    refresh_minutes = int(runtime_config.get("refresh_minutes") or 1440)
+    retry_backoff_minutes = runtime_config.get("retry_backoff_minutes") or [5, 15, 60]
+    token_rotation_days = int(runtime_config.get("token_rotation_days") or 90)
+    failure_recovery_mode = str(
+        runtime_config.get("failure_recovery_mode") or "retry_then_operator_review"
+    )
+
+    runtime_level = "starter_sync"
+    if managed_runtime_enabled and (
+        credentials_env_var or env_status["live_credentials_ready"]
+    ):
+        runtime_level = "managed_runtime"
+    elif credentials_env_var or env_status["live_credentials_ready"]:
+        runtime_level = "live_runtime"
+    if snapshot_source and not any(
+        token in snapshot_source for token in ["stub", "starter", "fallback"]
+    ):
+        runtime_level = (
+            "managed_runtime" if runtime_level == "managed_runtime" else "live_runtime"
+        )
+
     return {
-        "source": "ga4-stub",
-        "note": "Starter analytics payload. Replace with a real GA4 API connector.",
-        "metrics": {
-            "sessions": 1240,
-            "engaged_sessions": 841,
-            "engagement_rate": 0.678,
-            "avg_session_duration_seconds": 132,
-        },
-        "top_pages": [
-            {"page": "/ai-visibility", "sessions": 320, "engagement_rate": 0.71},
-            {"page": "/seo-audit", "sessions": 240, "engagement_rate": 0.66},
-        ],
+        "runtime_level": runtime_level,
+        "runtime_owner": runtime_owner,
+        "managed_runtime_enabled": managed_runtime_enabled,
+        "refresh_minutes": refresh_minutes,
+        "retry_backoff_minutes": retry_backoff_minutes,
+        "token_rotation_days": token_rotation_days,
+        "failure_recovery_mode": failure_recovery_mode,
+        "credential_ready": bool(
+            credentials_env_var or env_status["live_credentials_ready"]
+        ),
+        "required_env_vars": contract.get("required_env_vars", []),
     }
+
+
+def integration_sync_diagnostics(
+    source_type: str,
+    *,
+    config: dict[str, Any] | None = None,
+    credentials_env_var: str | None = None,
+    latest_snapshot: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    contract = integration_contract(source_type)
+    snapshot = latest_snapshot or {}
+    runtime_profile = integration_runtime_profile(
+        source_type,
+        config=config,
+        credentials_env_var=credentials_env_var,
+        latest_snapshot=snapshot,
+    )
+    snapshot_source = str(snapshot.get("source") or "")
+    sample_tokens = ("stub", "starter", "fallback")
+    snapshot_mode = (
+        "starter_or_stub"
+        if any(token in snapshot_source.lower() for token in sample_tokens)
+        else "live_or_runtime"
+        if snapshot_source
+        else "not_synced"
+    )
+    checks = {
+        "credentials": "ready" if runtime_profile["credential_ready"] else "missing",
+        "runtime": runtime_profile["runtime_level"],
+        "snapshot_mode": snapshot_mode,
+        "scheduled_refresh": "configured"
+        if runtime_profile["refresh_minutes"] <= 1440
+        else "manual_or_daily",
+        "token_rotation": f"every {runtime_profile['token_rotation_days']} days",
+        "failure_recovery": runtime_profile["failure_recovery_mode"],
+    }
+    actions = [
+        f"set refresh cadence to {runtime_profile['refresh_minutes']} minutes",
+        f"rotate secrets every {runtime_profile['token_rotation_days']} days",
+        f"keep retry backoff at {runtime_profile['retry_backoff_minutes']}",
+        contract["next_step"],
+    ]
+    if snapshot_mode == "starter_or_stub":
+        actions.insert(
+            0,
+            "replace starter payload with a live API token or approved export feed",
+        )
+    if not runtime_profile["credential_ready"]:
+        actions.insert(0, "configure the required env vars and rerun the first sync")
+    return {
+        "checks": checks,
+        "recommended_actions": actions,
+    }
+
+
+def _ga4_stub() -> dict[str, Any]:
+    return _run_json_script("ga4_data_stub.py", "GA4 starter import failed.")
 
 
 def _yandex_metrica_stub() -> dict[str, Any]:
-    return {
-        "source": "yandex-metrica-stub",
-        "note": "Starter analytics payload. Replace with a real Yandex Metrica connector.",
-        "metrics": {
-            "visits": 910,
-            "users": 704,
-            "bounce_rate": 0.28,
-            "goal_completion_rate": 0.063,
-        },
-        "top_pages": [
-            {"page": "/geo-audit", "visits": 190, "bounce_rate": 0.23},
-            {"page": "/pricing", "visits": 130, "bounce_rate": 0.31},
-        ],
-    }
+    return _run_json_script(
+        "yandex_metrica_stub.py", "Yandex Metrica starter import failed."
+    )
 
 
 def _run_json_script(script_name: str, error_message: str) -> dict[str, Any]:
@@ -738,6 +945,23 @@ def sync_integration_source(
         payload = _run_json_script(
             "telegram_ads_stub.py", "Telegram ads starter failed."
         )
+    elif source == "vk_organic":
+        payload = _run_json_script(
+            "vk_organic_stub.py", "VK organic intelligence starter failed."
+        )
+    elif source == "telegram_channels":
+        payload = _run_json_script(
+            "telegram_channels_stub.py",
+            "Telegram channel intelligence starter failed.",
+        )
+    elif source == "yandex_neuro":
+        payload = _run_json_script(
+            "yandex_neuro_stub.py", "Yandex Neuro starter failed."
+        )
+    elif source == "dzen":
+        payload = _run_json_script("dzen_stub.py", "Dzen starter failed.")
+    elif source == "rutube":
+        payload = _run_json_script("rutube_stub.py", "RuTube starter failed.")
     elif source == "youtube":
         payload = _run_json_script(
             "youtube_analytics_stub.py", "YouTube analytics starter failed."
@@ -756,6 +980,11 @@ def sync_integration_source(
 
     payload["contract"] = contract
     payload["sync_mode"] = contract["sync_mode"]
+    payload["runtime_profile"] = integration_runtime_profile(
+        source,
+        config=config,
+        latest_snapshot=payload,
+    )
     payload["imported_at"] = datetime.utcnow().isoformat() + "Z"
     return payload
 
@@ -775,6 +1004,7 @@ def compact_integration_summary(snapshot: dict[str, Any]) -> dict[str, Any]:
         "row_count": len(top_pages),
         "top_pages": [row.get("page") for row in top_pages[:3]],
         "metrics": metrics,
+        "runtime_level": (snapshot.get("runtime_profile") or {}).get("runtime_level"),
         "imported_at": datetime.utcnow().isoformat() + "Z",
     }
 
@@ -828,6 +1058,16 @@ def build_integration_verification_row(
         "latest_snapshot_summary": compact_integration_summary(snapshot)
         if snapshot
         else {},
+        "runtime_profile": integration_runtime_profile(
+            source_type,
+            credentials_env_var=credentials_env_var,
+            latest_snapshot=snapshot,
+        ),
+        "sync_diagnostics": integration_sync_diagnostics(
+            source_type,
+            credentials_env_var=credentials_env_var,
+            latest_snapshot=snapshot,
+        ),
         "env_status": env_status,
         "next_step": contract["next_step"],
     }

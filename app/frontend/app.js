@@ -39,9 +39,11 @@ const state = {
   socialCommandCenter: {},
   socialParserOutput: {},
   localEntityCenter: {},
+  ruMarketCommandCenter: {},
   providerHealthCenter: {},
   providerModelRegistry: {},
   providerOperatingCenter: {},
+  integrationRuntimeCenter: {},
   integrationContracts: [],
   cmsContracts: [],
   reportAssistant: null,
@@ -75,7 +77,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v5.5.0 SaaS readiness, social command, and multi-model operating platform",
+      "v5.6.0 production integrations, RU market command, and social operating platform",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -266,7 +268,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v5.5.0 SaaS readiness, social command и multi-model operating platform",
+      "v5.6.0 production integrations, RU market command и social operating platform",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -817,6 +819,11 @@ function renderBuildCenter() {
     null,
     2,
   );
+  $("#ru-market-command-center").textContent = JSON.stringify(
+    state.ruMarketCommandCenter || {},
+    null,
+    2,
+  );
 }
 
 function workspaceCard(workspace) {
@@ -955,12 +962,14 @@ async function refreshIntegrations() {
   if (!state.token || !state.selectedProjectId) {
     return;
   }
-  const [rows, contracts] = await Promise.all([
+  const [rows, contracts, runtimeCenter] = await Promise.all([
     apiRequest(`/integrations?project_id=${state.selectedProjectId}`),
     apiRequest("/integrations/contracts"),
+    apiRequest(`/integrations/runtime-center?project_id=${state.selectedProjectId}`),
   ]);
   state.integrationConnections = rows;
   state.integrationContracts = contracts.contracts || [];
+  state.integrationRuntimeCenter = runtimeCenter || {};
   renderCards("#integration-list", state.integrationConnections, (row) =>
     simpleCard(row.label, [
       `${row.source_type} · #${row.id}`,
@@ -971,6 +980,11 @@ async function refreshIntegrations() {
   );
   $("#integration-contracts").textContent = JSON.stringify(
     state.integrationContracts,
+    null,
+    2,
+  );
+  $("#integration-runtime-center").textContent = JSON.stringify(
+    state.integrationRuntimeCenter || {},
     null,
     2,
   );
@@ -1229,6 +1243,9 @@ async function refreshBuildCenter() {
   const socialCommandRequest = state.selectedProjectId
     ? apiRequest(`/settings/social-command-center?project_id=${state.selectedProjectId}`)
     : Promise.resolve({});
+  const ruMarketCommandRequest = state.selectedProjectId
+    ? apiRequest(`/settings/ru-market-command-center?project_id=${state.selectedProjectId}`)
+    : Promise.resolve({});
   const [
     contracts,
     manifests,
@@ -1240,6 +1257,7 @@ async function refreshBuildCenter() {
     deployWizard,
     promptPacks,
     localEntityCenter,
+    ruMarketCommandCenter,
   ] = await Promise.all([
     apiRequest("/generation/contracts"),
     apiRequest("/generation/manifests"),
@@ -1251,6 +1269,7 @@ async function refreshBuildCenter() {
     apiRequest("/settings/deploy-wizard", { headers: {} }),
     apiRequest("/settings/prompt-packs", { headers: {} }),
     apiRequest("/settings/local-entity-center", { headers: {} }),
+    ruMarketCommandRequest,
   ]);
   state.generationContracts = contracts;
   state.generationManifests = manifests;
@@ -1262,6 +1281,7 @@ async function refreshBuildCenter() {
   state.deployWizard = deployWizard;
   state.promptPacks = promptPacks;
   state.localEntityCenter = localEntityCenter;
+  state.ruMarketCommandCenter = ruMarketCommandCenter;
   renderBuildCenter();
 }
 

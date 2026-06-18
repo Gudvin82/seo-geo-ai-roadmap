@@ -143,9 +143,10 @@ def test_workspace_project_and_audit_flow(
     )
     assert integration_sync.status_code == 200
     assert integration_sync.json()["last_sync_status"] == "completed"
-    assert integration_sync.json()["readiness_tier"] == "production_guided"
+    assert integration_sync.json()["readiness_tier"] == "managed_runtime_ready"
     assert integration_sync.json()["ci_gates"]
     assert integration_sync.json()["production_flow"]
+    assert integration_sync.json()["runtime_profile"]["runtime_level"]
 
     integration_contracts = client.get(
         "/api/v1/integrations/contracts", headers=auth_headers
@@ -190,6 +191,18 @@ def test_workspace_project_and_audit_flow(
     )
     assert any(
         item["source_type"] == "tiktok_organic"
+        for item in integration_contracts.json()["contracts"]
+    )
+    assert any(
+        item["source_type"] == "vk_organic"
+        for item in integration_contracts.json()["contracts"]
+    )
+    assert any(
+        item["source_type"] == "telegram_channels"
+        for item in integration_contracts.json()["contracts"]
+    )
+    assert any(
+        item["source_type"] == "yandex_neuro"
         for item in integration_contracts.json()["contracts"]
     )
     integration_plan = client.get(
@@ -311,6 +324,66 @@ def test_workspace_project_and_audit_flow(
     )
     assert x_ads_sync.status_code == 200
 
+    vk_organic_integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "vk_organic",
+            "label": "VK Community Signals",
+            "property_identifier": "vk-community-1",
+            "credentials_env_var": "VK_ORGANIC_TOKEN",
+            "config": {"refresh_minutes": 720, "managed_runtime_enabled": True},
+        },
+        headers=auth_headers,
+    )
+    assert vk_organic_integration.status_code == 200
+    vk_organic_sync = client.post(
+        f"/api/v1/integrations/{vk_organic_integration.json()['id']}/sync",
+        headers=auth_headers,
+    )
+    assert vk_organic_sync.status_code == 200
+
+    telegram_channel_integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "telegram_channels",
+            "label": "Telegram Channel Demand",
+            "property_identifier": "telegram-channel-1",
+            "credentials_env_var": "TELEGRAM_CHANNEL_TOKEN",
+            "config": {"refresh_minutes": 360, "managed_runtime_enabled": True},
+        },
+        headers=auth_headers,
+    )
+    assert telegram_channel_integration.status_code == 200
+    telegram_channel_sync = client.post(
+        f"/api/v1/integrations/{telegram_channel_integration.json()['id']}/sync",
+        headers=auth_headers,
+    )
+    assert telegram_channel_sync.status_code == 200
+
+    yandex_neuro_integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "yandex_neuro",
+            "label": "Yandex Neuro Readiness",
+            "property_identifier": "neuro-surface-1",
+            "credentials_env_var": "YANDEX_NEURO_TOKEN",
+            "config": {"refresh_minutes": 1440},
+        },
+        headers=auth_headers,
+    )
+    assert yandex_neuro_integration.status_code == 200
+    yandex_neuro_sync = client.post(
+        f"/api/v1/integrations/{yandex_neuro_integration.json()['id']}/sync",
+        headers=auth_headers,
+    )
+    assert yandex_neuro_sync.status_code == 200
+
     provider_config = client.post(
         "/api/v1/providers",
         json={
@@ -350,6 +423,13 @@ def test_workspace_project_and_audit_flow(
     )
     assert provider_operating_center.status_code == 200
     assert provider_operating_center.json()["routing_policies"]
+
+    integration_runtime_center = client.get(
+        f"/api/v1/integrations/runtime-center?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert integration_runtime_center.status_code == 200
+    assert integration_runtime_center.json()["summary"]["ru_market_surfaces"] >= 3
 
     cms = client.post(
         "/api/v1/cms",
@@ -626,7 +706,7 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v5.5.0"
+        generation_contracts.json()["project_generation_contract_version"] == "v5.6.0"
     )
 
     generation_manifest = client.post(
@@ -740,6 +820,14 @@ def test_workspace_project_and_audit_flow(
     )
     assert local_entity.status_code == 200
     assert local_entity.json()["google_local_stack"]
+
+    ru_market_center = client.get(
+        f"/api/v1/settings/ru-market-command-center?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert ru_market_center.status_code == 200
+    assert "yandex_neuro" in ru_market_center.json()["connected_surfaces"]
+    assert ru_market_center.json()["ru_distribution_stack"]
 
     productization_center = client.get(
         "/api/v1/settings/productization-center", headers=auth_headers

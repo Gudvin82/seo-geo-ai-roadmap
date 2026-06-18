@@ -69,6 +69,8 @@ def test_frontend_mentions_required_workflows() -> None:
         "provider-health-center",
         "social-command-center",
         "saas-readiness-center",
+        "integration-runtime-center",
+        "ru-market-command-center",
     ]
     for section in required_sections:
         assert section in html
