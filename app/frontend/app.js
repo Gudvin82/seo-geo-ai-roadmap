@@ -22,6 +22,7 @@ const state = {
   productizationCenter: {},
   saasGrowthCenter: {},
   saasReadinessCenter: {},
+  deploymentPosture: {},
   proofTimeline: [],
   proofKit: {},
   proofExportPack: {},
@@ -732,6 +733,11 @@ function renderSaasCenter() {
     null,
     2,
   );
+  $("#deployment-posture").textContent = JSON.stringify(
+    state.deploymentPosture || {},
+    null,
+    2,
+  );
 }
 
 function renderProofCenter() {
@@ -1179,6 +1185,7 @@ async function refreshSaasCenter() {
       apiRequest(
         `/settings/saas-readiness-center?workspace_id=${state.selectedWorkspaceId}`,
       ),
+      apiRequest("/settings/deployment-posture"),
     );
   }
   const [
@@ -1189,6 +1196,7 @@ async function refreshSaasCenter() {
     portfolioDashboard,
     saasGrowthCenter,
     saasReadinessCenter,
+    deploymentPosture,
   ] = await Promise.all(requests);
   state.saasCatalog = catalog.items || [];
   state.organizations = organizations || [];
@@ -1197,6 +1205,7 @@ async function refreshSaasCenter() {
   state.portfolioDashboard = portfolioDashboard || {};
   state.saasGrowthCenter = saasGrowthCenter || {};
   state.saasReadinessCenter = saasReadinessCenter || {};
+  state.deploymentPosture = deploymentPosture || {};
   if (state.selectedWorkspaceId) {
     try {
       state.tenantOverview = await apiRequest(

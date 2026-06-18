@@ -8,11 +8,18 @@ import sys
 from pathlib import Path
 from urllib.error import URLError
 
-try:
-    from app.services.llms_validator import load_llms_text_from_url, validate_llms_text
-except ModuleNotFoundError:  # pragma: no cover - standalone script fallback
-    sys.path.append(str(Path(__file__).resolve().parents[1] / "app" / "backend"))
-    from app.services.llms_validator import load_llms_text_from_url, validate_llms_text
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts._runtime_bootstrap import bootstrap_backend_imports  # noqa: E402
+
+bootstrap_backend_imports()
+
+from app.services.llms_validator import (  # noqa: E402
+    load_llms_text_from_url,
+    validate_llms_text,
+)
 
 
 def load_from_file(path: str) -> str:

@@ -6,6 +6,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from ..access import require_project_access, require_workspace_access
+from ..config import load_settings
 from ..database import get_db
 from ..deps import get_current_user
 from ..models import (
@@ -36,6 +37,42 @@ from ..services.integrations import integration_contract, integration_runtime_pr
 from ..services.task_center import build_task_bundle_from_audit_run
 
 router = APIRouter(prefix="/settings", tags=["settings"])
+
+
+@router.get("/deployment-posture")
+def deployment_posture() -> dict:
+    settings_obj = load_settings()
+    cors_list = settings_obj.cors_origin_list()
+    uses_wildcard_cors = "*" in cors_list
+    return {
+        "security_posture": {
+            "secret_key_mode": (
+                "ephemeral_generated"
+                if settings_obj.secret_key_is_ephemeral
+                else "explicit"
+            ),
+            "cors_mode": "wildcard" if uses_wildcard_cors else "restricted_list",
+            "auto_create_schema": settings_obj.auto_create_schema,
+            "auto_create_schema_mode": settings_obj.auto_create_schema_mode,
+            "database_url_kind": (
+                "sqlite"
+                if settings_obj.database_url.startswith("sqlite:///")
+                else "external"
+            ),
+        },
+        "recommended_production_actions": [
+            "set APP_SECRET_KEY explicitly in production",
+            "set APP_CORS_ORIGINS to explicit trusted domains only",
+            "set APP_AUTO_CREATE_SCHEMA=false once migrations are established",
+            "keep public scanner flags disabled unless governance and rate limits are intentional",
+        ],
+        "current_flags": {
+            "allow_public_intake": settings_obj.allow_public_intake,
+            "allow_active_scan": settings_obj.allow_active_scan,
+            "allow_anonymous_submission": settings_obj.allow_anonymous_submission,
+            "allow_full_scan": settings_obj.allow_full_scan,
+        },
+    }
 
 
 @router.get("/repo-assets")

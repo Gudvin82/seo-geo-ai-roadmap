@@ -8,11 +8,18 @@ import json
 import sys
 from pathlib import Path
 
-try:
-    from app.services.command_router import command_catalog, resolve_command_route
-except ModuleNotFoundError:  # pragma: no cover - standalone script fallback
-    sys.path.append(str(Path(__file__).resolve().parents[1] / "app" / "backend"))
-    from app.services.command_router import command_catalog, resolve_command_route
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts._runtime_bootstrap import bootstrap_backend_imports  # noqa: E402
+
+bootstrap_backend_imports()
+
+from app.services.command_router import (  # noqa: E402
+    command_catalog,
+    resolve_command_route,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:

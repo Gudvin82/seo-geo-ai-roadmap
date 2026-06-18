@@ -848,6 +848,11 @@ def test_workspace_project_and_audit_flow(
     )
     assert saas_readiness_center.status_code == 200
     assert saas_readiness_center.json()["layer_status"]
+    deployment_posture = client.get(
+        "/api/v1/settings/deployment-posture", headers=auth_headers
+    )
+    assert deployment_posture.status_code == 200
+    assert deployment_posture.json()["security_posture"]
 
     portfolio_dashboard = client.get(
         f"/api/v1/settings/portfolio-dashboard?workspace_id={workspace_id}",

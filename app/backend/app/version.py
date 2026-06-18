@@ -1,0 +1,1 @@
+APP_VERSION = "5.6.0"

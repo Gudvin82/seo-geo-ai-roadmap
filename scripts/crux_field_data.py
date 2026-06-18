@@ -12,7 +12,12 @@ import urllib.request
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(REPO_ROOT / "app" / "backend"))
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts._runtime_bootstrap import bootstrap_backend_imports  # noqa: E402
+
+bootstrap_backend_imports()
 
 from app.services.discoverability_checks import crux_field_data_report  # noqa: E402
 

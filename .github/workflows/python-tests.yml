@@ -8,7 +8,6 @@ jobs:
   pytest:
     runs-on: ubuntu-latest
     env:
-      PYTHONPATH: app/backend
       APP_DATABASE_URL: sqlite:////tmp/discoverability-ci.db
     steps:
       - name: Checkout
@@ -32,12 +31,12 @@ jobs:
           yamllint .github/workflows docker-compose.yml mkdocs.yml
 
       - name: Run migrations
-        run: python -m alembic upgrade head
+        run: PYTHONPATH=app/backend python -m alembic upgrade head
 
       - name: Run repository and app tests
         run: |
           python -m pytest tests
-          python -m pytest --cov=app/backend/app --cov-report=term-missing --cov-report=xml:coverage.xml app/backend/tests
+          PYTHONPATH=app/backend python -m pytest --cov=app/backend/app --cov-report=term-missing --cov-report=xml:coverage.xml app/backend/tests
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4

@@ -27,6 +27,7 @@ from ..models import (
     VerificationToken,
     now_utc,
 )
+from ..version import APP_VERSION
 from .discoverability_checks import (
     ai_readability_report,
     ai_txt_report,
@@ -1317,7 +1318,7 @@ def _fetch_text(url: str) -> str:
         url,
         _scanner_runtime_settings(),
         timeout=10,
-        headers={"User-Agent": "Discoverability-Scanner/5.5.0"},
+        headers={"User-Agent": f"Discoverability-Scanner/{APP_VERSION}"},
     )
     return content
 
@@ -1335,7 +1336,7 @@ def _try_fetch_scanner_text(
         content, _final_url, _redirect_chain = safe_fetch_url_text(
             url,
             settings,
-            headers={"User-Agent": "Discoverability-Scanner/5.5.0"},
+            headers={"User-Agent": f"Discoverability-Scanner/{APP_VERSION}"},
         )
         return content, None
     except Exception as exc:

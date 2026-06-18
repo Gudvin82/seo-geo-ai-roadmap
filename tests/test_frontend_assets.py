@@ -71,6 +71,7 @@ def test_frontend_mentions_required_workflows() -> None:
         "saas-readiness-center",
         "integration-runtime-center",
         "ru-market-command-center",
+        "deployment-posture",
     ]
     for section in required_sections:
         assert section in html

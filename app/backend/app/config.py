@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import secrets
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -10,10 +11,13 @@ class Settings:
     app_name: str = "Discoverability OS App"
     api_prefix: str = "/api/v1"
     database_url: str = ""
-    secret_key: str = "dev-secret-key"
+    secret_key: str = ""
     artifact_root: str = ""
     default_report_language: str = "en"
-    cors_origins: str = "*"
+    cors_origins: str = (
+        "http://localhost:3000,http://127.0.0.1:3000,"
+        "http://localhost:8000,http://127.0.0.1:8000"
+    )
     openai_api_key: str = ""
     anthropic_api_key: str = ""
     gemini_api_key: str = ""
@@ -44,6 +48,8 @@ class Settings:
     scanner_smtp_from_email: str = ""
     scanner_telegram_bot_token: str = ""
     scanner_telegram_webhook_secret: str = ""
+    secret_key_is_ephemeral: bool = False
+    auto_create_schema_mode: str = "explicit"
 
     def cors_origin_list(self) -> list[str]:
         if self.cors_origins.strip() == "*":
@@ -68,14 +74,36 @@ def load_settings() -> Settings:
     data_dir.mkdir(parents=True, exist_ok=True)
     artifact_root = repo_root / "app" / "backend" / "artifacts"
     artifact_root.mkdir(parents=True, exist_ok=True)
+    database_url = os.getenv(
+        "APP_DATABASE_URL", f"sqlite:///{data_dir / 'discoverability.db'}"
+    )
+    secret_key = os.getenv("APP_SECRET_KEY", "").strip()
+    secret_key_is_ephemeral = False
+    if not secret_key:
+        secret_key = secrets.token_urlsafe(32)
+        secret_key_is_ephemeral = True
+    cors_origins = os.getenv(
+        "APP_CORS_ORIGINS",
+        "http://localhost:3000,http://127.0.0.1:3000,"
+        "http://localhost:8000,http://127.0.0.1:8000",
+    )
+    auto_create_raw = os.getenv("APP_AUTO_CREATE_SCHEMA", "auto").strip().lower()
+    if auto_create_raw in {"true", "1", "yes"}:
+        auto_create_schema = True
+        auto_create_schema_mode = "explicit_true"
+    elif auto_create_raw in {"false", "0", "no"}:
+        auto_create_schema = False
+        auto_create_schema_mode = "explicit_false"
+    else:
+        auto_create_schema = database_url.startswith("sqlite:///")
+        auto_create_schema_mode = "auto_sqlite_only"
+
     return Settings(
-        database_url=os.getenv(
-            "APP_DATABASE_URL", f"sqlite:///{data_dir / 'discoverability.db'}"
-        ),
-        secret_key=os.getenv("APP_SECRET_KEY", "dev-secret-key"),
+        database_url=database_url,
+        secret_key=secret_key,
         artifact_root=os.getenv("APP_ARTIFACT_ROOT", str(artifact_root)),
         default_report_language=os.getenv("APP_DEFAULT_REPORT_LANGUAGE", "en"),
-        cors_origins=os.getenv("APP_CORS_ORIGINS", "*"),
+        cors_origins=cors_origins,
         openai_api_key=os.getenv("OPENAI_API_KEY", ""),
         anthropic_api_key=os.getenv("ANTHROPIC_API_KEY", ""),
         gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
@@ -85,8 +113,7 @@ def load_settings() -> Settings:
             os.getenv("APP_LOGIN_ATTEMPT_WINDOW_SECONDS", "900")
         ),
         login_attempt_limit=int(os.getenv("APP_LOGIN_ATTEMPT_LIMIT", "5")),
-        auto_create_schema=os.getenv("APP_AUTO_CREATE_SCHEMA", "true").lower()
-        == "true",
+        auto_create_schema=auto_create_schema,
         allow_active_scan=os.getenv("ALLOW_ACTIVE_SCAN", "false").lower() == "true",
         allow_public_intake=os.getenv("ALLOW_PUBLIC_INTAKE", "false").lower() == "true",
         allow_anonymous_submission=os.getenv(
@@ -132,4 +159,6 @@ def load_settings() -> Settings:
         scanner_telegram_webhook_secret=os.getenv(
             "SCANNER_TELEGRAM_WEBHOOK_SECRET", ""
         ),
+        secret_key_is_ephemeral=secret_key_is_ephemeral,
+        auto_create_schema_mode=auto_create_schema_mode,
     )

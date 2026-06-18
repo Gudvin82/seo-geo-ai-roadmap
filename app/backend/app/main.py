@@ -42,6 +42,7 @@ from .config import Settings, load_settings
 from .database import Base, init_database
 from .metrics import APP_ERRORS, REQUEST_LATENCY_SECONDS, metrics_payload
 from .services.logging import log_event
+from .version import APP_VERSION
 
 
 def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
@@ -51,7 +52,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
 
     if settings_obj.auto_create_schema:
         Base.metadata.create_all(bind=initialized_engine)
-    app = FastAPI(title=settings_obj.app_name, version="5.5.0")
+    app = FastAPI(title=settings_obj.app_name, version=APP_VERSION)
     app.state.settings = settings_obj
     app.add_middleware(
         CORSMiddleware,
@@ -98,7 +99,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
 
     @app.get("/healthz")
     def healthz() -> dict:
-        return {"status": "ok", "version": "5.3.0"}
+        return {"status": "ok", "version": APP_VERSION}
 
     @app.get("/readyz")
     def readyz() -> dict:
