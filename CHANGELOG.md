@@ -1,5 +1,14 @@
 # Changelog
 
+## v6.0.0 — Core Methodology, Transparent Scoring, and Evidence-Dense Repackaging
+
+- Added new root entrypoints for current readers and AI agents: `METHODOLOGY*`, `SCORING_EXPLAINED*`, `AI_TASK_PACKS*`, and `DOCS_ARCHIVE*`
+- Reworked README, README_RU, DOCS_INDEX, START_HERE_FOR_AI, and AGENTS so the repository routes newcomers into the current core path instead of historical slices first
+- Added deeper practical playbooks for technical SEO, semantic intent, competitor or authority gaps, and GEO or AI operations
+- Upgraded the most important execution checklists so they are explicitly quick execution cards with links to deeper playbooks
+- Added a new bounded public audit case for `anmalishev.ru` to strengthen the proof and interpretation layer
+- Bumped runtime and contract markers to `v6.0.0`
+
 ## v5.6.0 — Production Integration Runtime, RU Market Command, and Social Commerce Layer
 
 - Added integration runtime profiles and sync diagnostics so operators can see refresh cadence, retry policy, token-rotation expectations, runtime level, and next actions per integration

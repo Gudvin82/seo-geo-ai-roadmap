@@ -8,548 +8,191 @@
 [![Python Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/.github/workflows/python-tests.yml)
 [![Docs Build](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/.github/workflows/docs-site.yml)
 [![Security Scans](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/security-scans.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/.github/workflows/security-scans.yml)
-[![Coverage](https://img.shields.io/badge/coverage-pytest--cov%20artifact-2ea44f)](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/.github/workflows/python-tests.yml)
 [![Docker](https://img.shields.io/badge/docker-self--hosted-2496ED?logo=docker&logoColor=white)](./docker-compose.yml)
 [![FastAPI](https://img.shields.io/badge/FastAPI-app-009688?logo=fastapi&logoColor=white)](./app/backend/app/main.py)
-![Self-Hosted Ready](https://img.shields.io/badge/self--hosted-ready-1f6f50)
 
 ![SEO GEO AI Project Badge](./docs_site/assets/screenshots/project-badge-v530.png)
 
 Бесплатная, прозрачная, self-hosted платформа для SEO, GEO и AI
-discoverability. Ее можно развернуть на своем компьютере или сервере,
-подключить свои AI providers, запускать аудиты, отслеживать AI Share of Voice,
-вести brand facts и выдавать двуязычные отчеты без обязательного paid cloud.
+discoverability. Она объединяет:
+
+- слой методологии
+- реальный app layer
+- scripts и validation helpers
+- AI-agent task packs
+- двуязычные operator и client-delivery flows
 
 [English version](./README.md)
 [Карта документации](./DOCS_INDEX_RU.md)
 
-## Что это такое
+## Что это за репозиторий на самом деле
 
-У репозитория три связанных слоя:
+Этот repo нужно понимать как систему из трех слоев:
 
-- Framework: методология, промпты, шаблоны, чеклисты и скрипты
-- Platform: self-hosted приложение для операторов, команд и клиентской выдачи
-- Service system: повторяемый способ аудита, приоритизации, исправлений и
-  повторных прогонов
+1. Framework
+   Методология, playbooks, prompts, checklists, templates и scripts.
+2. Platform
+   Self-hosted FastAPI app с auth, workspaces, projects, audits, reports,
+   scanner flows, exports и integrations.
+3. Service system
+   Повторяемый способ проводить аудит, приоритизировать, исправлять, проверять и
+   повторно прогонять.
 
-Наша главная разница не в том, что здесь "много документации". Разница в том,
-что это одна практическая система, которую человек или AI coding agent может
-использовать под ключ:
+Смысл не в том, что здесь “много документации”.
 
-1. развернуть
-2. подключить provider(s)
-3. запустить реальный аудит
-4. получить reports и artifacts
-5. расставить приоритеты
-6. повторно прогнать и показать дельты
+Смысл в одной end-to-end operating system, которой реально может пользоваться
+человек или AI coding agent.
 
-## Для кого
+## Честное публичное обещание
 
-- Агентства с регулярными аудитами и клиентской отчетностью
-- In-house SEO, growth, content и AI operations команды
-- Фаундеры и экспертные операторы, ведущие свои мультиязычные сайты
-- Команды, работающие одновременно с английскими и русскоязычными рынками
+Безопасные формулировки:
 
-## Для кого это не подходит
+- ручное использование как framework
+- AI-agent-assisted аудит и delivery
+- self-hosted foundation для своего scanner или audit service
 
-- Командам, которым нужен black-box crawler без human review
-- Пользователям, которым нужен только hosted SaaS без self-hosted сценария
-- Тем, кто ищет GEO-хайп вместо технической SEO-дисциплины
-- Тем, кто хочет обещаний без доказательств, evidence и governance
+Небезопасные формулировки:
 
-## Публичное обещание, точно
+- готовый hosted SaaS с uptime от автора
+- enterprise-продукт без настройки
+- ИИ, который тихо чинит production-сайты сам
 
-Репозиторий уже поддерживает три реальных публично безопасных режима:
-
-1. ручное использование как framework
-1. AI-agent-assisted аудит и delivery
-1. self-hosted product foundation для своего scanner или audit-сервиса
-
-Чем он не является:
-
-- hosted SaaS, который поддерживает автор репозитория
-- enterprise SLA продукт из коробки
-- тихий autopilot, который меняет production-сайты без review
-
-Перед публичными формулировками используйте:
+Перед публичными формулировками прочитайте:
 
 - [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
-- [ONE_DAY_SERVICE_BLUEPRINT_RU.md](./ONE_DAY_SERVICE_BLUEPRINT_RU.md)
+- [METHODOLOGY_RU.md](./METHODOLOGY_RU.md)
+- [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
+
+## Чем репозиторий отличается
+
+Большинство repo в этой нише останавливаются на чем-то одном:
+
+- методология без runtime
+- scanner без честной методологии
+- набор prompts без product layer
+- оболочка продукта со скрытым scoring и неясным proof
+
+Этот репозиторий пытается связать:
+
+- technical SEO
+- GEO и AI visibility
+- RU и Yandex reality
+- factual consistency
+- operator evidence
+- task export и repeatable delivery
+
+## Core path
+
+Если вы открыли repo впервые, идите так:
+
+1. [README_RU.md](./README_RU.md)
+2. [METHODOLOGY_RU.md](./METHODOLOGY_RU.md)
+3. [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
+4. [REAL_CASES_RU.md](./REAL_CASES_RU.md)
+5. [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md) или [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
+6. [AI_TASK_PACKS_RU.md](./AI_TASK_PACKS_RU.md)
+7. [DOCS_ARCHIVE_RU.md](./DOCS_ARCHIVE_RU.md)
+
+## Глубокие практические playbooks
+
+Это ключевые “substance-first” документы v6:
+
+- [Technical SEO Deep Playbook](./docs/ru/technical-seo-deep-playbook.md)
+- [Semantic Core and Intent Playbook](./docs/ru/semantic-core-and-intent-playbook.md)
+- [Competitor Gap and Authority Playbook](./docs/ru/competitor-gap-and-authority-playbook.md)
+- [GEO and AI Operations Playbook](./docs/ru/geo-ai-operations-playbook.md)
+
+## Доказательства и кейсы
+
+- [REAL_CASES_RU.md](./REAL_CASES_RU.md)
+- [публичный аудит anmalishev.ru](./docs/ru/v600-case-anmalishev-audit.md)
+- [anmalishev.ru before/after case](./docs/ru/v430-case-anmalishev.md)
+- [auditguard.ru + sitepravo.ru case](./docs/ru/v430-case-auditguard-sitepravo.md)
+
+## Путь для AI-агента
+
+Для Cursor, Claude Code, Codex, VS Code и подобных агентов:
+
+- [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
+- [AGENTS.md](./AGENTS.md)
+- [AI_TASK_PACKS_RU.md](./AI_TASK_PACKS_RU.md)
+- [prompts/ru/repo-site-audit-agent-prompt.md](./prompts/ru/repo-site-audit-agent-prompt.md)
+- [prompts/ru/deploy-client-scanner-agent-prompt.md](./prompts/ru/deploy-client-scanner-agent-prompt.md)
+- [prompts/ru/improve-existing-site-agent-prompt.md](./prompts/ru/improve-existing-site-agent-prompt.md)
+
+## Self-hosted path
+
+- [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
+- [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
 - [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
+- [ONE_DAY_SERVICE_BLUEPRINT_RU.md](./ONE_DAY_SERVICE_BLUEPRINT_RU.md)
+- `make turnkey-demo`
 
-## Что происходит за 15 минут, 30 дней и 90 дней
+## Что такое чеклисты и чем они не являются
 
-### За 15 минут
+Папка `checklists/` специально компактная.
 
-- клонируете репозиторий
-- поднимаете стек
-- входите в систему
-- создаете один workspace и один project
-- подключаете одного провайдера или остаетесь в прозрачном starter-режиме
-- запускаете один audit и одну AI SoV-проверку
-- открываете report и export package
+Эти файлы — это:
 
-### За 30 дней
+- quick execution cards
+- QA reminders
+- handoff summaries
 
-- вы уходите от разовых аудитов к повторяемому операционному циклу
-- факты, промпты и доказательства живут в одной системе
-- можно показывать дельты по score и visibility себе или клиентам
+Сами по себе они не являются всей методологией.
 
-### За 90 дней
+Для серьезной работы сочетайте:
 
-- у вас появляется переиспользуемая операторская система вместо ad hoc SEO
-- AI SoV, factual consistency и отчетность становятся регулярной практикой
-- agency, in-house и founder режимы могут жить в одном контуре
+- один deep playbook
+- один checklist
+- один prompt или task pack
+- один script или app flow
+- один case или proof reference
 
-## Сценарии по результату
+## Прозрачный scoring
 
-- Agency mode: отдельный workspace на клиента, отдельный project на сайт,
-  двуязычная отчетность, AI-assisted приоритизация, экспортируемые artifacts
-- In-house mode: единый truth center, регулярные аудиты, provider-backed AI
-  SoV и evidence-driven backlog для продукта, контента и разработки
-- Founder mode: один self-hosted стек для аудитов сайта, AI visibility checks,
-  fact governance и повторных прогонов без vendor lock-in
+Репозиторий не заявляет universal SEO truth score.
 
-## С чего начать
+Он явно раскрывает:
 
-- Карта docs: [DOCS_INDEX_RU.md](./DOCS_INDEX_RU.md)
-- Быстрый вход для человека: [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
-- Быстрый вход для ИИ: [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
-- Онбординг за 15 минут: [docs/ru/15-minute-onboarding-v450.md](./docs/ru/15-minute-onboarding-v450.md)
-- Build with this platform: [BUILD_WITH_THIS_PLATFORM_RU.md](./BUILD_WITH_THIS_PLATFORM_RU.md)
-- Generate project from URL: [GENERATE_PROJECT_FROM_URL_RU.md](./GENERATE_PROJECT_FROM_URL_RU.md)
-- Публичная readiness-рамка: [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
-- One-day blueprint сервиса: [ONE_DAY_SERVICE_BLUEPRINT_RU.md](./ONE_DAY_SERVICE_BLUEPRINT_RU.md)
-- One-click deploy options: [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
-- Матрица production-flow интеграций: [docs/ru/integration-production-matrix-v450.md](./docs/ru/integration-production-matrix-v450.md)
-- Каталог провайдеров: [docs/ru/provider-catalog-v450.md](./docs/ru/provider-catalog-v450.md)
-- Сводка релиза v5.6.0: [docs/ru/v560-release.md](./docs/ru/v560-release.md)
-- Сводка релиза v5.5.0: [docs/ru/v550-release.md](./docs/ru/v550-release.md)
-- Сводка релиза v5.3.0: [docs/ru/v530-release.md](./docs/ru/v530-release.md)
-- Сводка релиза v5.2.0: [docs/ru/v520-release.md](./docs/ru/v520-release.md)
-- Сводка релиза v5.1.0: [docs/ru/v510-release.md](./docs/ru/v510-release.md)
-- Сводка релиза v5.0.0: [docs/ru/v500-release.md](./docs/ru/v500-release.md)
-- Сводка релиза v4.6.0: [docs/ru/v460-release.md](./docs/ru/v460-release.md)
-- Сводка релиза v4.5.2: [docs/ru/v452-release.md](./docs/ru/v452-release.md)
-- Сводка релиза v4.5.0: [docs/ru/v450-release.md](./docs/ru/v450-release.md)
-- Deployment: [DEPLOYMENT_RU.md](./DEPLOYMENT_RU.md)
-- Verification: [VERIFY_DEPLOYMENT_RU.md](./VERIFY_DEPLOYMENT_RU.md)
-- API reference: [docs/ru/api-reference.md](./docs/ru/api-reference.md)
-- Hosted validator: [docs site validator](./docs_site/validator.md)
-- Scanner foundation: [docs/ru/public-scanner-v360.md](./docs/ru/public-scanner-v360.md)
-- Discoverability coverage: [docs/ru/discoverability-coverage-v370.md](./docs/ru/discoverability-coverage-v370.md)
-- AI guidance file: [docs/ru/ai-txt.md](./docs/ru/ai-txt.md)
-- Command surface: [docs/ru/command-catalog-v340.md](./docs/ru/command-catalog-v340.md)
-- v3.8 command UX: [docs/ru/command-catalog-v380.md](./docs/ru/command-catalog-v380.md)
-- Graph intelligence: [docs/ru/graph-intelligence-v380.md](./docs/ru/graph-intelligence-v380.md)
-- GTM and distribution: [docs/ru/distribution-and-gtm-v380.md](./docs/ru/distribution-and-gtm-v380.md)
-- Research loop: [docs/ru/research-build-improve-repeat-v380.md](./docs/ru/research-build-improve-repeat-v380.md)
-- Framework integrations: [docs/ru/framework-integrations-v380.md](./docs/ru/framework-integrations-v380.md)
-- Integration production flows: [docs/ru/integration-production-flows-v380.md](./docs/ru/integration-production-flows-v380.md)
-- v4.2 production proof: [docs/ru/v420-production-proof.md](./docs/ru/v420-production-proof.md)
-- v4.3 response на внешний review и upgrade path: [docs/ru/v430-review-response-and-upgrade-path.md](./docs/ru/v430-review-response-and-upgrade-path.md)
-- v4.3 public case studies: [docs/ru/v430-case-anmalishev.md](./docs/ru/v430-case-anmalishev.md), [docs/ru/v430-case-auditguard-sitepravo.md](./docs/ru/v430-case-auditguard-sitepravo.md)
-- Product modes: [docs/ru/product-modes-v380.md](./docs/ru/product-modes-v380.md)
-- CI gating: [docs/ru/ci-gating-v380.md](./docs/ru/ci-gating-v380.md)
-- Executive dashboard: [docs/ru/executive-dashboard-v380.md](./docs/ru/executive-dashboard-v380.md)
-- AI Agent Mode: [docs/ru/ai-agent-mode-v400.md](./docs/ru/ai-agent-mode-v400.md)
-- Product surfaces: [docs/ru/product-surfaces-v400.md](./docs/ru/product-surfaces-v400.md)
-- Managed API boundary: [docs/ru/managed-api-v400.md](./docs/ru/managed-api-v400.md)
-- Extensions and automation: [docs/ru/extensions-and-automation-v400.md](./docs/ru/extensions-and-automation-v400.md)
-- Bootstrap guide: [docs/ru/bootstrap-guide-v340.md](./docs/ru/bootstrap-guide-v340.md)
-- Architecture note: [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
-- Evaluation kit: [EVALUATE_THIS_REPO_RU.md](./EVALUATE_THIS_REPO_RU.md)
-- Evaluate first prompt: [EVALUATE_THIS_REPO_FIRST_RU.md](./EVALUATE_THIS_REPO_FIRST_RU.md)
-- Commercial boundary: [COMMERCIAL_ROADMAP_RU.md](./COMMERCIAL_ROADMAP_RU.md)
+- overall audit scoring
+- priority scoring через impact / effort / confidence
+- формулу AI Citation Score
+- логику benchmark status
+- ограничения heuristic scripts
 
-## AI-agent scenario prompts
+Читайте:
 
-Для команд, которые хотят просто дать репозиторий Cursor, Claude Code, Codex
-или другому AI coding agent без ручного сочинения prompt:
-
-- [Prompt: оценка репозитория и сайта](./prompts/ru/repo-site-audit-agent-prompt.md)
-- [Prompt: развернуть client scanner](./prompts/ru/deploy-client-scanner-agent-prompt.md)
-- [Prompt: улучшить существующий сайт](./prompts/ru/improve-existing-site-agent-prompt.md)
-
-## Что добавляет `v5.6.0`
-
-- более сильный production-интеграционный слой с runtime profile, sync diagnostics, retry и token-rotation guidance, а также integration runtime center
-- намного более глубокий RU market command слой с Yandex Neuro readiness, VK organic, Telegram channels, Dzen и RuTube surfaces
-- более практичные social и commercial operator loops, которые связывают RU communities, local trust, Yandex demand и client-safe delivery
-- более ясную SaaS-ready позицию для бесплатного self-hosted проекта, где billing не является частью обязательного обещания
-
-## Что добавляет `v5.5.0`
-
-- provider operating center с catalog, model registry, health и routing surfaces
-- SaaS readiness center, который показывает, что уже сильно для self-hosted SaaS, а что остается вне рамок managed hosting
-- social command center и parser, который превращает raw social text в FAQ, objection-handling, proof и content actions
-- более чистая generated-project hygiene, чтобы AI-to-App scaffolding не засорял git tree в реальной операторской работе
-
-## Что добавляет `v5.3.0`
-
-- более сильный social intelligence слой с X Ads, X Organic, Threads, Reddit mentions и TikTok organic starter integrations
-- новый social-intelligence center, который превращает посты, mentions, replies и comments в content opportunities и executive signals
-- более сильный SaaS growth слой с service tiers, client surfaces, growth loops и более понятной упаковкой для agencies и operators
-- публичный image asset проекта, добавленный в репозиторий и docs site для более сильной публичной упаковки
-
-## Что добавляет `v5.2.0`
-
-- режим понимания репозитория, чтобы AI-агент быстрее разбирался в архитектуре, entrypoints и продуктовых режимах
-- deploy wizard для local, VPS Docker, Coolify, Railway, Render и Kubernetes
-- integration health center с видимостью connection state, freshness, retry и diagnostics
-- portfolio dashboard, demo center, productization center и более явный multi-tenant SaaS слой
-- proof export pack, mention/reputation center, operator board и более сильный multi-template AI-to-App generator
-
-## Что добавляет `v5.1.0`
-
-- более сильный operating center с weekly narrative, anomaly detection, owner suggestions, benchmark overlays и portfolio summaries
-- proof timeline views, которые связывают evidence, experiments, audit runs, reports и artifacts
-- SaaS-box UI и API surfaces для workspace catalog и tenant overview routing
-- AI-to-App scaffold generation, который реально пишет starter project files, а не останавливается на manifest-only
-- более сильный one-link AI handoff через builder, proof-kit и social-distribution center
-
-## Что добавляет `v5.0.0`
-
-- более сильную SaaS box foundation с organizations, tenant profiles, tenant API keys, onboarding state, usage и role-ready isolation
-- detail views по интеграциям: sync history, freshness, readiness tier, provenance labels, retry state, diagnostics и recommended next actions
-- proof и attribution records для evidence labels, experiment history, before/after snapshots и confidence labels
-- AI-to-App generation contracts и manifest generation, чтобы внешний AI мог собрать site, admin, scanner, dashboard и operator handoff pack по явному machine-readable contract
-- onboarding-center и operator-center surfaces, чтобы setup, troubleshooting и recurring operations были ближе к реальному product layer
-
-## Что добавляет `v4.6.0`
-
-- first-class starter integrations для Google Ads, IndexNow, Google Business Profile, Yandex Business, Merchant Center, Meta Ads, VK Ads, Telegram, YouTube, LinkedIn и Instagram или Facebook organic
-- executive dashboard, который разделяет Google, RU, local-business и distribution layers
-- более сильную сравнительную рамку для organic demand, paid demand, AI visibility и landing-page conversion
-
-## Что добавляет `v4.5.2`
-
-- еще 10 hosted или online providers и еще 10 local или self-hosted runtimes
-- first-class контракт интеграции `yandex_direct` и starter sync path
-- machine-readable service-foundation endpoint для branded scanner или audit service
-- более сильную упаковку product foundation для команд, которые хотят self-hosted развернуть репозиторий и превратить его в свой клиентский сервис
-
-## Что добавляет `v4.5.0`
-
-- полностью зеленый root-plus-backend pytest path без оговорок
-- более сильные scanner abuse controls, queue visibility и notification retries
-- environment-aware integration verification для GSC, GA4, Yandex и CrUX
-- заметно более широкий каталог hosted и local providers
-- более ясная docs consolidation через явные актуальные entrypoints и onboarding за 15 минут
-- более четкая маршрутизация по RU market depth через Yandex и RU GEO entrypoints
-
-## Что добавляет `v4.4.0`
-
-- явную public-product readiness-рамку, чтобы репозиторий можно было точно описывать в публичных постах и внешних оценках
-- one-day blueprint для превращения репозитория в свой scanner или audit-сервис
-- более ясные one-click deploy options для local demo, Docker VPS, Coolify, Railway, Render и Kubernetes starter paths
-- AI-agent scenario prompts для оценки репозитория и сайта, разворачивания client scanner и улучшения существующего сайта
-- более сильный routing через README, AI handoff, deployment docs, docs-site и proof-layer для истории про self-hosted product foundation
-
-## Что добавляет `v4.1.0`
-
-- более жесткий scan-job access control для tasks и graph runtime, чтобы scanner sessions оставались приватными по умолчанию
-- redirect-aware защита scanner fetch и webhook с ограничением public ports и response size
-- recoverable DB-backed scan worker semantics вместо thread-only fire-and-forget выполнения
-- governed CMS change requests с lifecycle preview → approve → apply → verify → rollback
-- report assistant endpoint и app-surface для operator Q&A по сохраненным отчетам
-- более сильные production-flow и CI-readiness paths для GSC, GA4, Yandex и CMS integrations
-- еще более четкое разделение scanner / product-app / repo-operator surfaces плюс расширенные machine-readable contracts
-- trusted delivery targets и генерация PR proposal с auto-merge eligibility flags для trusted repositories
-- реальный Telegram webhook runtime, более зрелые Chrome и VS Code operator packages и managed-cloud Kubernetes pack
-
-## Что добавляет `v4.2.0`
-
-- аудит AI readability для видимой структуры, machine-readable guidance layers и answer-ready блоков
-- heuristic citability scoring с machine-readable breakdown и quick wins
-- проверка CDN или edge-блокировок для GPTBot, ClaudeBot и PerplexityBot
-- проверка RAG chunk readiness для длинных секций, heading depth и definition-style контента
-- путь для CrUX field data и новый integration verification matrix endpoint
-- расширенное покрытие провайдеров: OpenAI, Anthropic, Gemini, Perplexity, Mistral, Cohere, DeepSeek, xAI или Grok, Ollama, LocalAI и vLLM
-- stack packs для WordPress, React и Angular
-- optional Lighthouse CI path для PR-level synthetic gating
-
-## Что добавляет `v4.3.0`
-
-- двуязычные public case studies по `anmalishev.ru`, `auditguard.ru` и `sitepravo.ru`
-- структурированный ответ на внешнюю критику репозитория с вердиктами: `true`, `partial`, `outdated` или `not yet proven`
-- конкретный план “как дойти до 10/10” по proof loops, integration maturity, docs consolidation, cost governance и monitoring
-- более сильный real-case слой внутри `REAL_CASES.md`, а не только абстрактные bounded models
-
-## Что добавляет `v4.0.0`
-
-- реальный AI Agent Mode contract, overview и run surfaces с безопасной action boundary
-- one-click URL audit result flow с прямыми входами в task generation и graph runtime
-- нормализованные task bundles и export adapters, включая реальный GitHub Issues path
-- динамический graph intelligence из live scan или audit data, а не только из статичных demo-режимов
-- явная managed/public API boundary и более сильные machine-readable contracts в `contracts/*.schema.json`
-- first-class GitHub Action path плюс честные scaffolds для VS Code, Chrome и Telegram
-- более четкое разделение scanner / product-app / repo-operator surfaces в docs, app и API
-
-## Что добавляет `v3.8.0`
-
-- канонический `/geo ...` command UX с алиасами, примерами, outputs и use-case packaging
-- interactive graph intelligence layer для структуры сайта, discoverability surfaces, issue dependencies и trust mapping
-- более сильную distribution и GTM-упаковку для agencies, founders, consultants и in-house команд
-- более ясный operating loop research → build → improve → re-measure
-- reporting packs для executive summaries, fix packs и graph snapshots
-- более понятные framework integration guidance для self-hosted scanner и delivery flows
-- production-guided GSC, Yandex и CMS contracts с CI-aware next steps
-- более полноценный executive dashboard и более четкое разделение repo, app и scanner modes
-
-## Что добавляет `v3.3.0`
-
-- hosted или deploy-ready поверхность для `llms.txt` validator
-- явная retry-модель и terminal failure semantics
-- рабочие scheduling modes для регулярных проверок
-- более безопасная CMS writeback boundary с review-first execution
-- security scanning и coverage generation в CI
-- docs по fact drift, trust surfaces, ROI и executive reporting
-- public evaluation и proof-review assets
-
-## Что добавляет `v3.4.0`
-
-- GEO command surface для AI agents и операторов
-- command-router API и CLI routing script
-- self-hosted bootstrap planner для demo и production-like setup
-- более ясные modular docs "how it works" и scoring model
-- более сильная adoption-поверхность без отказа от self-hosted-first honesty
-
-## Что добавляет `v3.5.0`
-
-- встроенные AI handoff task packs, чтобы пользователю не приходилось писать prompt самому
-- scanner-oriented bootstrap mode для команд, которые строят client-facing intake surface
-- публичная архитектурная справка на EN и RU с описанием deployment, audit flow и развития scanner-контура
-- расширение command-catalog под `deploy` и `scanner` сценарии
-
-## Что добавляет `v3.7.0`
-
-- реальное RU/Yandex AI hardening с отдельной политикой для `YandexAdditional`
-- практическая валидация `ai.txt` и проверка противоречий с `robots.txt` и `llms.txt`
-- аудит покрытия structured data с поддержкой `WebSite` schema
-- эвристический detector FAQ / answer-ready блоков
-- проверка полноты Open Graph и Twitter Card
-- интегрированная проверка связки `robots.txt` ↔ sitemap
-- RU guidance по маркировке AI-контента как practical compliance, а не legal advice
-
-## Что добавляет `v3.6.0`
-
-- dedicated scanner intake page для passive, active и feature-flagged full scan modes
-- ownership verification и consent flow для active scanning
-- async scan jobs со статусом, событиями, cancellation и artifact visibility
-- versioned JSON, markdown, CSV и HTML exports плюс completion hooks
-- public-service limitations прямо в UI и docs до запуска скана
-
-## Блок для передачи AI
-
-Передайте этот репозиторий своему AI coding agent и скажите ему:
-
-1. прочитать [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
-2. следовать [AGENTS.md](./AGENTS.md)
-3. выполнить `python scripts/geo_command_surface.py catalog`
-4. выполнить `python scripts/agent_handoff_pack.py --task deploy-demo --language ru`
-5. выполнить `python scripts/bootstrap_self_hosted.py --mode demo --format markdown`
-6. выполнить `make turnkey-demo`
-7. выполнить `make agent-self-check`
-8. если нужен scanner intake, открыть `app/frontend/scanner.html` и пройти встроенный verification/status flow
-9. если нужно объяснение или приоритизация, открыть `app/frontend/graph.html` и использовать `/geo graph`
-10. отдельно отчитаться, что реально проверено, что смоделировано и где нужен
-   human review
-
-Репозиторий специально собран так, чтобы AI-агент мог развернуть его с нуля и
-сохранить синхронность EN/RU-операционного слоя.
-
-## Product proof
-
-Ниже скриншоты из реального локального app-flow, а не placeholder-схемы. Если
-вам нужен live demo, используйте локальный demo-flow ниже. Постоянный публичный
-SaaS demo в этом репозитории не обещается.
-
-![Login and dashboard proof](./docs_site/assets/screenshots/app-login-dashboard-proof.png)
-![Provider configuration proof](./docs_site/assets/screenshots/app-provider-proof.png)
-![Audit run proof](./docs_site/assets/screenshots/app-audit-proof.png)
-![Report and artifact proof](./docs_site/assets/screenshots/app-report-proof.png)
-
-## Зачем нужен этот репозиторий
-
-Большинство SEO-репозиториев заканчиваются на советах. Большинство GEO-дискуссий
-заканчиваются на теории. Большинство AI-инструментов скрывают scoring,
-привязывают к облаку или игнорируют русскоязычные рынки. Этот проект строится в
-обратную сторону:
-
-- self-hosted first
-- прозрачные метрики
-- двуязычность с первого дня
-- human-usable и AI-agent-usable
-- proof before claims
-- technical SEO плюс GEO/AI, а не GEO вместо SEO
-
-## Что внутри
-
-- App layer: [`app`](./app)
-- Документация: [`docs/en`](./docs/en) и [`docs/ru`](./docs/ru)
-- Чеклисты: [`checklists`](./checklists)
-- Prompt library: [`prompts`](./prompts)
-- Шаблоны: [`templates`](./templates)
-- Примеры: [`examples`](./examples)
-- Скрипты: [`scripts`](./scripts)
-- Архитектура: [ARCHITECTURE_RU.md](./ARCHITECTURE_RU.md)
-- Публичная архитектурная справка: [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
-- Positioning: [POSITIONING.md](./POSITIONING.md)
-- Реальные кейсы: [REAL_CASES_RU.md](./REAL_CASES_RU.md)
-- Operations runbook: [OPERATIONS_RUNBOOK_RU.md](./OPERATIONS_RUNBOOK_RU.md)
-- Ограничения: [KNOWN_LIMITATIONS_RU.md](./KNOWN_LIMITATIONS_RU.md)
-
-## App quickstart
-
-- Frontend: `http://localhost:3000`
-- API docs: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
-- Health: `http://localhost:8000/healthz`
-- Readiness: `http://localhost:8000/readyz`
-- Metrics: `http://localhost:8000/metrics`
-
-### Turnkey local demo
-
-```bash
-make turnkey-demo
-make verify-demo
-make agent-self-check
-```
-
-Ожидаемые demo credentials:
-
-- Email: `demo@example.com`
-- Password: `DemoPlatform123`
-
-## Канонический operator flow
-
-1. Создать workspace
-2. Создать project
-3. Заполнить brand facts
-4. Настроить providers
-5. Запустить audit
-6. Открыть report и artifacts
-7. Запустить AI SoV
-8. Расставить приоритеты fixes
-9. Повторно прогнать после изменений
-10. Экспортировать client или internal delivery pack
-
-## Прозрачный scoring и implementation output
-
-`v3.2.0` делает GEO/AI-слой более decision-grade:
-
-- три явных outcome-слоя: rankings, AI visibility и conversion trust
-- measurement maturity framing, чтобы proxy-метрики не продавались как абсолютная правда
-- priority maps, AI-surface playbooks, RU LLM context и anti-hype guardrails
-- linkable operator tool: standalone `llms.txt` validator с public API
-
-`v3.3.0` добавляет operational proof слой:
-
-- hosted/deploy-ready validator page через docs site
-- retry semantics для provider calls, notifications и governed CMS preparation
-- documented recurring execution model для scheduled checks
-- fact drift detection, trust-surface mapping, executive summaries и ROI framing
-- более ясный commercial boundary и public evaluation flow
-
-В `v3.0.0` были зафиксированы два proof-first слоя:
-
-- AI Citation Score: прозрачный сигнал 0-100, показывающий, упоминается ли
-  бренд, цитируется ли он и насколько качественно описан в структурированных AI
-  SoV-проверках
-- Prioritization engine: impact, effort, confidence и benchmark status для
-  findings по LCP, CLS, INP, schema coverage, factual consistency и AI
-  readiness
-
-Подробнее:
-
+- [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
 - [docs/ru/ai-citation-score.md](./docs/ru/ai-citation-score.md)
-- [docs/ru/api-reference.md](./docs/ru/api-reference.md)
-- [docs/ru/patch-mode.md](./docs/ru/patch-mode.md)
-- [docs/ru/client-delivery.md](./docs/ru/client-delivery.md)
-- [docs/ru/search-data-connectors.md](./docs/ru/search-data-connectors.md)
-- [docs/ru/cms-connectors.md](./docs/ru/cms-connectors.md)
-- [docs/ru/geo-measurement-maturity.md](./docs/ru/geo-measurement-maturity.md)
-- [docs/ru/geo-priority-maps.md](./docs/ru/geo-priority-maps.md)
-- [docs/ru/geo-ai-surfaces.md](./docs/ru/geo-ai-surfaces.md)
-- [docs/ru/answer-ready-patterns.md](./docs/ru/answer-ready-patterns.md)
-- [docs/ru/entity-seo-and-kg.md](./docs/ru/entity-seo-and-kg.md)
-- [docs/ru/geo-red-team-and-risks.md](./docs/ru/geo-red-team-and-risks.md)
-- [docs/ru/llms-validator.md](./docs/ru/llms-validator.md)
-- [docs/ru/ai-visibility-check-action.md](./docs/ru/ai-visibility-check-action.md)
-- [docs/ru/telegram-sov-alerts.md](./docs/ru/telegram-sov-alerts.md)
-- [app/frontend/llms-validator.html](./app/frontend/llms-validator.html)
 
-## Реальные кейсы
+## На чем сфокусирован v6.0.0
 
-`v3.0.0` расширяет слой real cases честными и ограниченными public-site
-snapshot-оценками для:
+`v6.0.0` — это не “еще больше surface area”, а рост trust density.
 
-- `sitepravo.ru`
-- `auditguard.ru`
-- `anmalishev.ru`
+Он добавляет:
 
-См. [REAL_CASES_RU.md](./REAL_CASES_RU.md).
+- более ясный core path
+- более глубокое объяснение методологии
+- прозрачную документацию по scoring
+- более сильные AI task packs
+- более практические playbooks по SEO, semantics, competitors и GEO operations
+- более явную archive policy
+- новый public audit case для `anmalishev.ru`
 
-## Дисциплина верификации
+## Текущие границы
 
-Перед тем как считать релиз завершенным, используйте:
+Сильные стороны уже сейчас:
 
-- `make verify-demo`
-- `make agent-self-check`
-- `PYTHONPATH=app/backend ./.venv/bin/python -m pytest app/backend/tests`
-- `./.venv/bin/python -m mkdocs build`
+- self-hosted app
+- AI-agent-ready workflow
+- RU GEO и Yandex framing
+- evidence-first reporting
+- bounded scoring и repeatable audit flow
 
-## Честные границы
+Что все еще на уровне foundation:
 
-Проект не заявляет:
+- часть integrations пока guided или starter-first
+- hosted SaaS maturity не входит в текущее обещание
+- не каждая SEO-поддисциплина описана на уровне “финальной агентской библии”
 
-- полностью автономное исправление без human review
-- гарантированные AI citations на волатильных AI surfaces
-- enterprise SLA в текущем релизе
-- полностью turnkey enterprise SSO или live billing automation в текущем релизе
-- замену technical SEO одним только GEO
-
-См. [KNOWN_LIMITATIONS_RU.md](./KNOWN_LIMITATIONS_RU.md).
-
-## Latest changes
-
-- `v4.1.0`: security hardening, recoverable scanner execution, governed CMS lifecycle,
-  report assistant, trusted delivery targets, Telegram webhook runtime,
-  repo-ready Chrome/VS Code packages и managed cloud deployment assets
-- `v4.0.0`: AI Agent Mode, one-click URL audit result flow, task generation and export,
-  dynamic graph runtime, managed API boundary, contracts catalog, GitHub Action path,
-  and VS Code / Chrome / Telegram scaffolds
-- `v3.6.0`: dedicated scanner intake page, ownership verification и consent flow,
-  async scan jobs, versioned export artifacts, notification hooks и public
-  limitations в UI и docs
-- `v3.5.0`: встроенные AI handoff task packs, scanner-oriented bootstrap mode,
-  публичные EN/RU архитектурные справки и расширение command surface для
-  deploy/scanner сценариев
-- `v3.4.0`: GEO command surface, command-router API, bootstrap planner,
-  modular how-it-works docs, scoring-model clarification и более сильный
-  AI/operator onboarding
-- `v3.3.0`: hosted/deploy-ready validator page, docs по retry и scheduling,
-  первая practical fact-drift implementation, более безопасная CMS writeback
-  boundary, security scans, coverage artifacts, governance docs, executive
-  reporting assets и public evaluation surfaces
-- `v3.2.0`: GEO/AI deep-dive docs, measurement maturity, priority maps,
-  AI-surface playbooks, answer-ready и entity/KG layers, anti-hype docs,
-  RU LLM guidance, `llms.txt` validator, AI Visibility Check example и
-  расширенные JSON-LD templates
-- `v3.1.0`: starter-интеграции с search/analytics, CMS connector flows,
-  patch packs, client delivery packs, import project package, более сильный
-  white-label слой, review-mode guidance и расширенный EN/RU operator layer
-- `v3.0.0`: proof-first positioning rewrite, stronger onboarding, реальные
-  app-скриншоты, документация по AI Citation Score, prioritization engine,
-  provider-backed AI SoV, structured observability, role/invite hardening и
-  более сильный EN/RU operator layer
-- `v2.3.0`: сохранение AI SoV в приложении, metadata-rich prompt library,
-  webhook notifications, project export package, top-20 local LLM matrix и
-  benchmark/search-data documentation
-- `v2.2.0`: operator-ready platform upgrade с permissions, invites и
-  verify-demo discipline
-
-## Лицензия
-
-Репозиторий распространяется по лицензии из [LICENSE](./LICENSE).
+Эта граница намеренно обозначена публично.

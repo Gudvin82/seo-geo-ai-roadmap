@@ -16,6 +16,7 @@ Scoring model used in this file:
 
 Detailed case studies:
 
+- [anmalishev.ru public v6 audit case](./docs/en/v600-case-anmalishev-audit.md)
 - [anmalishev.ru — public before / after case](./docs/en/v430-case-anmalishev.md)
 - [auditguard.ru + sitepravo.ru — AI crawler access and public before / after case](./docs/en/v430-case-auditguard-sitepravo.md)
 
@@ -114,6 +115,7 @@ Publicly visible sources of gain:
 - AI visibility works best when it reinforces technical SEO instead of trying to replace it
 - explicit AI crawler policy can create a real public delta even when a product score does not fully reflect it yet
 - good case studies should separate current public facts from bounded rollout records and from unproven private outcomes
+- bounded heuristics are useful, but a JS-heavy site can still under-read in raw detectors even when the real surface is stronger
 
 See also:
 

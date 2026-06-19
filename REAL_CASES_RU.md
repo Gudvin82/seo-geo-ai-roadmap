@@ -16,6 +16,7 @@
 
 Подробные кейсы:
 
+- [anmalishev.ru — public audit case v6](./docs/ru/v600-case-anmalishev-audit.md)
 - [anmalishev.ru — public before / after case](./docs/ru/v430-case-anmalishev.md)
 - [auditguard.ru + sitepravo.ru — AI crawler access и public before / after case](./docs/ru/v430-case-auditguard-sitepravo.md)
 
@@ -114,6 +115,7 @@
 - AI visibility дает лучший результат, когда усиливает technical SEO, а не пытается ее заменить
 - явная AI crawler policy может давать реальный public delta, даже если продуктовый score это пока отражает слабо
 - сильный кейс должен отделять current public facts от bounded rollout records и от непроверенных private outcomes
+- bounded heuristics полезны, но JS-heavy site может считываться детектором слабее, чем выглядит для реального пользователя
 
 См. также:
 

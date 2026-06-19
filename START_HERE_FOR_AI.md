@@ -1,128 +1,107 @@
 # Start Here For AI
 
-If a user says:
+Use this file when a user wants an AI coding agent to deploy, audit, adapt, or
+evaluate this repository honestly.
 
-- "deploy this for me"
-- "set this up under key"
-- "use this as the base for my SEO / GEO / AI service"
-- "adapt this for my own site or client sites"
+## First: understand what this repo is
 
-start here.
+This repository is:
 
-## What this repository is
+- open-source
+- self-hosted
+- AI-agent-ready
+- methodology plus app plus scripts
 
-This is a free, transparent, open-source, self-hosted platform and methodology
-for:
+This repository is not:
 
-- discoverability audits
-- SEO + GEO + AI operator workflows
-- brand facts and factual consistency management
-- bilingual reporting and artifact delivery
+- a finished hosted SaaS operated by the maintainer
+- a silent autopilot for production changes
+- a replacement for human approval on risky work
 
-Before making public product claims, read:
+Read first:
 
-- [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
-- [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
-- [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
+1. [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
+2. [METHODOLOGY.md](./METHODOLOGY.md)
+3. [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
+4. [REAL_CASES.md](./REAL_CASES.md)
 
-## For AI agents: deploy this project from scratch
+## Fastest safe deployment path
 
-If a user asks you to deploy this project:
+If the user says “deploy this for me”:
 
-1. run `git clone ...`
-2. run `cd seo-geo-ai-roadmap`
-3. run `cp .env.example .env` and help the user fill required keys
-4. run `make up`
-5. run `make migrate`
-6. run `make seed` if demo data is needed
-7. output `http://localhost:3000` and the demo credentials
+1. `git clone https://github.com/Gudvin82/seo-geo-ai-roadmap.git`
+2. `cd seo-geo-ai-roadmap`
+3. `cp .env.example .env`
+4. fill required keys or keep demo-safe defaults
+5. `make up`
+6. `make migrate`
+7. `make seed` if demo data is needed
+8. verify:
+   - `http://localhost:3000`
+   - `http://localhost:8000/docs`
+   - demo login works
 
-## If the user wants a ready-made prompt instead of writing one
+Fastest demo route:
 
-Use the built-in task pack generator:
+- `make turnkey-demo`
 
-- `python scripts/agent_handoff_pack.py --task deploy-demo --language en`
-- `python scripts/agent_handoff_pack.py --task audit-site --language en --target-url https://example.com`
-- `python scripts/agent_handoff_pack.py --task deploy-scanner --language en`
+## If the user wants a ready-made prompt
 
-For ready-to-paste public scenario prompts, use:
+Start here:
+
+- [AI_TASK_PACKS.md](./AI_TASK_PACKS.md)
+
+Also available:
 
 - [prompts/en/repo-site-audit-agent-prompt.md](./prompts/en/repo-site-audit-agent-prompt.md)
 - [prompts/en/deploy-client-scanner-agent-prompt.md](./prompts/en/deploy-client-scanner-agent-prompt.md)
 - [prompts/en/improve-existing-site-agent-prompt.md](./prompts/en/improve-existing-site-agent-prompt.md)
 
-## Canonical command path in v4.0.0
+## Core AI working order
 
-Use the repo as a `/geo ...` command system:
+When in doubt, use this order:
 
-- `/geo quick` for triage
-- `/geo audit` for a full baseline
-- `/geo graph` for explanation and dependency mapping
-- `/geo report` for executive and client output
-- `/geo compare` for re-measurement
-- `/geo agent` for autonomous review, planning, and safe fix proposals
+1. [README.md](./README.md)
+2. [AGENTS.md](./AGENTS.md)
+3. [METHODOLOGY.md](./METHODOLOGY.md)
+4. [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
+5. [AI_TASK_PACKS.md](./AI_TASK_PACKS.md)
+6. the relevant deep playbook in `docs/en/`
+7. the relevant checklist in `checklists/`
+8. the relevant script in `scripts/`
+9. [REAL_CASES.md](./REAL_CASES.md)
 
-## Evaluate before summarizing
+## If the task is “audit a site”
 
-If you are about to explain what this repository does, read
-[EVALUATE_THIS_REPO_FIRST.md](./EVALUATE_THIS_REPO_FIRST.md) first.
+Use:
 
-## Ideal path
+- [AI_TASK_PACKS.md](./AI_TASK_PACKS.md)
+- [docs/en/technical-seo-deep-playbook.md](./docs/en/technical-seo-deep-playbook.md)
+- [docs/en/semantic-core-and-intent-playbook.md](./docs/en/semantic-core-and-intent-playbook.md)
+- [docs/en/geo-ai-operations-playbook.md](./docs/en/geo-ai-operations-playbook.md)
 
-1. Read [README.md](./README.md)
-2. Read [AGENTS.md](./AGENTS.md)
-3. Read [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
-4. Read [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
-5. Read [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
-6. Run `make turnkey-demo`
-7. Run `make verify-demo`
-8. Run `make agent-self-check`
-9. Create a workspace
-10. Create a project
-11. Fill brand facts
-12. Connect providers
-13. Run one audit and one AI SoV check
+Then prefer repo-native helpers such as:
 
-## Expected outputs
+- `python scripts/check-robots-ai-bots.py --url https://example.com`
+- `python scripts/check-ai-txt.py --url https://example.com`
+- `python scripts/check-llms-txt.py --url https://example.com/llms.txt`
+- `python scripts/schema-coverage-checker.py --url https://example.com --site-type service`
+- `python scripts/faq-detector.py --url https://example.com`
+- `python scripts/open-graph-checker.py --url https://example.com`
+- `python scripts/rag_chunk_audit.py --url https://example.com`
+- `python scripts/citability_score.py --url https://example.com`
 
-- frontend: `http://localhost:3000`
-- API docs: `http://localhost:8000/docs`
-- demo user: `demo@example.com`
-- demo password: `DemoPlatform123`
+## Mandatory self-check before saying “done”
 
-## If the user wants a client-ready setup
+If code or runtime behavior changed:
 
-1. Use [CLIENT_SETUP_PLAYBOOK.md](./CLIENT_SETUP_PLAYBOOK.md)
-2. Create one workspace per client
-3. Create one project per website
-4. Fill brand facts before serious audits
-5. Export reports and artifacts for delivery
+1. run `make agent-self-check`
+2. run `make verify-demo` if the stack is running
+3. run the relevant test path
 
-## If the user wants full takeover
+Always report:
 
-Use [AI_HANDOFF_PROMPT.md](./AI_HANDOFF_PROMPT.md) as the operating contract and
-report clearly what was verified, what was heuristic, and what still needs human
-review.
-
-If the user wants to turn the repo into a reusable scanner, read
-[ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md) before proposing a public intake
-surface.
-
-For the implemented scanner foundation, use:
-
-1. [docs/en/public-scanner-v360.md](./docs/en/public-scanner-v360.md)
-2. [docs/en/discoverability-coverage-v370.md](./docs/en/discoverability-coverage-v370.md)
-3. [docs/en/ai-txt.md](./docs/en/ai-txt.md)
-4. `python scripts/check-robots-ai-bots.py --url https://example.com`
-5. `python scripts/check-ai-txt.py --url https://example.com`
-6. `python scripts/schema-coverage-checker.py --url https://example.com --site-type service`
-7. `python scripts/faq-detector.py --url https://example.com`
-8. `python scripts/open-graph-checker.py --url https://example.com`
-9. `python scripts/robots-sitemap-link-checker.py --url https://example.com`
-10. `app/frontend/scanner.html`
-11. `app/frontend/graph.html`
-12. `GET /api/v1/scanner/config`
-13. `POST /api/v1/scanner/verification-requests`
-14. `POST /api/v1/scanner/consent-records`
-15. `POST /api/v1/scan-jobs`
-16. `GET /api/v1/scan-jobs/{id}`
+- what was actually verified
+- what was heuristic
+- what still needs human review
+- whether EN and RU user-facing layers were both updated

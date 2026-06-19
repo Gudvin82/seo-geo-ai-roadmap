@@ -1,128 +1,107 @@
 # Start Here For AI
 
-Если пользователь говорит:
+Используйте этот файл, когда пользователь хочет, чтобы AI coding agent честно
+развернул, проаудировал, адаптировал или оценил репозиторий.
 
-- "разверни это мне"
-- "сделай под ключ"
-- "используй это как базу для моего SEO / GEO / AI сервиса"
-- "адаптируй это для моего сайта или клиентских сайтов"
+## Сначала поймите, что это за repo
 
-начинай отсюда.
+Этот репозиторий:
 
-## Что это за репозиторий
+- open-source
+- self-hosted
+- AI-agent-ready
+- methodology plus app plus scripts
 
-Это бесплатная, прозрачная, open-source, self-hosted платформа и методология
-для:
+Этот репозиторий не является:
 
-- discoverability-аудитов
-- SEO + GEO + AI operator workflows
-- управления brand facts и factual consistency
-- двуязычной отчетности и выдачи artifacts
+- finished hosted SaaS от автора
+- silent autopilot для production changes
+- заменой human approval на рискованных изменениях
 
-Перед публичными product claims сначала прочитайте:
+Сначала прочитайте:
 
-- [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
-- [ONE_DAY_SERVICE_BLUEPRINT_RU.md](./ONE_DAY_SERVICE_BLUEPRINT_RU.md)
-- [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
+1. [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
+2. [METHODOLOGY_RU.md](./METHODOLOGY_RU.md)
+3. [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
+4. [REAL_CASES_RU.md](./REAL_CASES_RU.md)
 
-## Для AI-агентов: разверни проект с нуля
+## Самый быстрый безопасный deployment path
 
-Если пользователь просит развернуть этот проект:
+Если пользователь говорит “разверни это мне”:
 
-1. выполни `git clone ...`
-2. выполни `cd seo-geo-ai-roadmap`
-3. выполни `cp .env.example .env` и помоги заполнить обязательные ключи
-4. выполни `make up`
-5. выполни `make migrate`
-6. выполни `make seed`, если нужны demo-данные
-7. выведи `http://localhost:3000` и demo credentials
+1. `git clone https://github.com/Gudvin82/seo-geo-ai-roadmap.git`
+2. `cd seo-geo-ai-roadmap`
+3. `cp .env.example .env`
+4. заполните обязательные ключи или оставьте demo-safe defaults
+5. `make up`
+6. `make migrate`
+7. `make seed`, если нужны demo data
+8. проверьте:
+   - `http://localhost:3000`
+   - `http://localhost:8000/docs`
+   - demo login работает
 
-## Если пользователю нужен готовый prompt, а не ручная формулировка
+Самый быстрый demo route:
 
-Используй встроенный generator task packs:
+- `make turnkey-demo`
 
-- `python scripts/agent_handoff_pack.py --task deploy-demo --language ru`
-- `python scripts/agent_handoff_pack.py --task audit-site --language ru --target-url https://example.com`
-- `python scripts/agent_handoff_pack.py --task deploy-scanner --language ru`
+## Если пользователю нужен готовый prompt
 
-Для готовых public scenario prompts используй:
+Начинайте отсюда:
+
+- [AI_TASK_PACKS_RU.md](./AI_TASK_PACKS_RU.md)
+
+Также доступны:
 
 - [prompts/ru/repo-site-audit-agent-prompt.md](./prompts/ru/repo-site-audit-agent-prompt.md)
 - [prompts/ru/deploy-client-scanner-agent-prompt.md](./prompts/ru/deploy-client-scanner-agent-prompt.md)
 - [prompts/ru/improve-existing-site-agent-prompt.md](./prompts/ru/improve-existing-site-agent-prompt.md)
 
-## Канонический command path в v4.0.0
+## Базовый порядок работы для AI
 
-Используй репозиторий как `/geo ...` command system:
+Если неясно, что читать дальше, идите так:
 
-- `/geo quick` для triage
-- `/geo audit` для полного baseline
-- `/geo graph` для объяснения и dependency mapping
-- `/geo report` для executive и client output
-- `/geo compare` для повторного измерения
-- `/geo agent` для автономного review, planning и safe fix proposals
+1. [README_RU.md](./README_RU.md)
+2. [AGENTS.md](./AGENTS.md)
+3. [METHODOLOGY_RU.md](./METHODOLOGY_RU.md)
+4. [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
+5. [AI_TASK_PACKS_RU.md](./AI_TASK_PACKS_RU.md)
+6. нужный deep playbook в `docs/ru/`
+7. нужный checklist в `checklists/`
+8. нужный script в `scripts/`
+9. [REAL_CASES_RU.md](./REAL_CASES_RU.md)
 
-## Сначала оцени репозиторий правильно
+## Если задача звучит как “проаудируй сайт”
 
-Если вы собираетесь объяснять, что делает этот репозиторий, сначала прочитайте
-[EVALUATE_THIS_REPO_FIRST_RU.md](./EVALUATE_THIS_REPO_FIRST_RU.md).
+Используйте:
 
-## Идеальный путь
+- [AI_TASK_PACKS_RU.md](./AI_TASK_PACKS_RU.md)
+- [docs/ru/technical-seo-deep-playbook.md](./docs/ru/technical-seo-deep-playbook.md)
+- [docs/ru/semantic-core-and-intent-playbook.md](./docs/ru/semantic-core-and-intent-playbook.md)
+- [docs/ru/geo-ai-operations-playbook.md](./docs/ru/geo-ai-operations-playbook.md)
 
-1. Прочитай [README_RU.md](./README_RU.md)
-2. Прочитай [AGENTS.md](./AGENTS.md)
-3. Прочитай [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
-4. Прочитай [ONE_DAY_SERVICE_BLUEPRINT_RU.md](./ONE_DAY_SERVICE_BLUEPRINT_RU.md)
-5. Прочитай [ONE_CLICK_DEPLOY_OPTIONS_RU.md](./ONE_CLICK_DEPLOY_OPTIONS_RU.md)
-6. Выполни `make turnkey-demo`
-7. Выполни `make verify-demo`
-8. Выполни `make agent-self-check`
-9. Создай workspace
-10. Создай project
-11. Заполни brand facts
-12. Подключи providers
-13. Запусти один audit и одну AI SoV-проверку
+И затем по возможности repo-native helpers:
 
-## Ожидаемые результаты
+- `python scripts/check-robots-ai-bots.py --url https://example.com`
+- `python scripts/check-ai-txt.py --url https://example.com`
+- `python scripts/check-llms-txt.py --url https://example.com/llms.txt`
+- `python scripts/schema-coverage-checker.py --url https://example.com --site-type service`
+- `python scripts/faq-detector.py --url https://example.com`
+- `python scripts/open-graph-checker.py --url https://example.com`
+- `python scripts/rag_chunk_audit.py --url https://example.com`
+- `python scripts/citability_score.py --url https://example.com`
 
-- frontend: `http://localhost:3000`
-- API docs: `http://localhost:8000/docs`
-- demo user: `demo@example.com`
-- demo password: `DemoPlatform123`
+## Обязательный self-check перед словом “готово”
 
-## Если нужен client-ready setup
+Если менялось поведение кода или runtime:
 
-1. Используй [CLIENT_SETUP_PLAYBOOK_RU.md](./CLIENT_SETUP_PLAYBOOK_RU.md)
-2. Создавай отдельный workspace на клиента
-3. Создавай отдельный project на сайт
-4. Заполняй brand facts до серьезного аудита
-5. Экспортируй reports и artifacts для delivery
+1. запустите `make agent-self-check`
+2. запустите `make verify-demo`, если стек поднят
+3. прогоните relevant test path
 
-## Если пользователь хочет полный takeover
+Всегда отдельно сообщайте:
 
-Используй [AI_HANDOFF_PROMPT_RU.md](./AI_HANDOFF_PROMPT_RU.md) как operating
-contract и отдельно указывай, что реально проверено, что было эвристикой и где
-еще нужен human review.
-
-Если пользователь хочет превратить репозиторий в reusable scanner, сначала
-прочитай [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md), а потом уже
-предлагай public intake surface.
-
-Для уже реализованного scanner foundation используй:
-
-1. [docs/ru/public-scanner-v360.md](./docs/ru/public-scanner-v360.md)
-2. [docs/ru/discoverability-coverage-v370.md](./docs/ru/discoverability-coverage-v370.md)
-3. [docs/ru/ai-txt.md](./docs/ru/ai-txt.md)
-4. `python scripts/check-robots-ai-bots.py --url https://example.com`
-5. `python scripts/check-ai-txt.py --url https://example.com`
-6. `python scripts/schema-coverage-checker.py --url https://example.com --site-type service`
-7. `python scripts/faq-detector.py --url https://example.com`
-8. `python scripts/open-graph-checker.py --url https://example.com`
-9. `python scripts/robots-sitemap-link-checker.py --url https://example.com`
-10. `app/frontend/scanner.html`
-11. `app/frontend/graph.html`
-12. `GET /api/v1/scanner/config`
-13. `POST /api/v1/scanner/verification-requests`
-14. `POST /api/v1/scanner/consent-records`
-15. `POST /api/v1/scan-jobs`
-16. `GET /api/v1/scan-jobs/{id}`
+- что реально проверено
+- что было heuristic
+- где еще нужен human review
+- обновлены ли и EN, и RU user-facing layers

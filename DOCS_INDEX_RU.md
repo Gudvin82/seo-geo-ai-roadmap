@@ -1,43 +1,46 @@
 # Карта документации
 
-Это самый короткий путь по репозиторию, если вы открыли его впервые.
+Это самый короткий путь по репозиторию после `v6.0.0`.
 
 ## Идите в таком порядке
 
 1. [README_RU.md](./README_RU.md)
-2. [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
-3. [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
-4. [BUILD_WITH_THIS_PLATFORM_RU.md](./BUILD_WITH_THIS_PLATFORM_RU.md)
-5. [GENERATE_PROJECT_FROM_URL_RU.md](./GENERATE_PROJECT_FROM_URL_RU.md)
-6. [docs/ru/15-minute-onboarding-v450.md](./docs/ru/15-minute-onboarding-v450.md)
-7. [docs/ru/v500-release.md](./docs/ru/v500-release.md)
+2. [METHODOLOGY_RU.md](./METHODOLOGY_RU.md)
+3. [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
+4. [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
+5. [REAL_CASES_RU.md](./REAL_CASES_RU.md)
+6. [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md) или [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
+7. [AI_TASK_PACKS_RU.md](./AI_TASK_PACKS_RU.md)
 
 ## Выберите свой режим
 
 - Человек-оператор: [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
 - AI coding agent: [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md)
 - Построить свой self-hosted сервис: [ONE_DAY_SERVICE_BLUEPRINT_RU.md](./ONE_DAY_SERVICE_BLUEPRINT_RU.md)
-- Оператор публичного scanner: [docs/ru/public-scanner-v360.md](./docs/ru/public-scanner-v360.md)
-- AI-to-App builder: [BUILD_WITH_THIS_PLATFORM_RU.md](./BUILD_WITH_THIS_PLATFORM_RU.md)
+- Оператор public scanner: [docs/ru/public-scanner-v360.md](./docs/ru/public-scanner-v360.md)
+- Оценка продукта и границ: [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
+
+## Глубокие практические материалы
+
+- [Technical SEO Deep Playbook](./docs/ru/technical-seo-deep-playbook.md)
+- [Semantic Core and Intent Playbook](./docs/ru/semantic-core-and-intent-playbook.md)
+- [Competitor Gap and Authority Playbook](./docs/ru/competitor-gap-and-authority-playbook.md)
+- [GEO and AI Operations Playbook](./docs/ru/geo-ai-operations-playbook.md)
 
 ## Основа доказательств и границ
 
-- Публичная формулировка: [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
-- Ограничения: [KNOWN_LIMITATIONS_RU.md](./KNOWN_LIMITATIONS_RU.md)
+- Публичное обещание: [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
+- Прозрачность scoring: [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
 - Реальные кейсы: [REAL_CASES_RU.md](./REAL_CASES_RU.md)
+- Политика архива: [DOCS_ARCHIVE_RU.md](./DOCS_ARCHIVE_RU.md)
 - Архитектурная справка: [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
 
-## Глубокие материалы
+## Исторические и versioned материалы
 
-- SEO и методология: [docs/ru](./docs/ru)
-- Российский рынок и Яндекс: [docs/ru/13-russia-yandex.md](./docs/ru/13-russia-yandex.md)
-- RU и LLM-поверхности: [docs/ru/ru-llm-and-geo.md](./docs/ru/ru-llm-and-geo.md)
-- API reference: [docs/ru/api-reference.md](./docs/ru/api-reference.md)
+- каноническая история релизов: [CHANGELOG.md](./CHANGELOG.md)
+- историческая логика и release notes: [DOCS_ARCHIVE_RU.md](./DOCS_ARCHIVE_RU.md)
 
-## Политика версий
+Правило:
 
-- `README*`, `DOCS_INDEX*`, `WALKTHROUGH*` и `START_HERE_FOR_AI*` — это
-  актуальные entrypoints.
-- `CHANGELOG.md` — каноническая история релизов.
-- `docs/en/*-vXYZ.md` и `docs/ru/*-vXYZ.md` остаются полезными историческими
-  срезами, но новичкам лучше начинать с актуальных entrypoints выше.
+- сначала читайте current root entrypoints
+- `docs/en/*-vXYZ.md` и `docs/ru/*-vXYZ.md` используйте как архив и evidence, а не как первую точку объяснения проекта

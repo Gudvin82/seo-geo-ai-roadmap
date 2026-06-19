@@ -1317,7 +1317,15 @@ def product_modes() -> ProductModesResponse:
                     "training operators",
                     "CI-gated delivery",
                 ],
-                first_class_paths=["README.md", "AGENTS.md", "/geo ...", "docs_site"],
+                first_class_paths=[
+                    "README.md",
+                    "METHODOLOGY.md",
+                    "SCORING_EXPLAINED.md",
+                    "AI_TASK_PACKS.md",
+                    "AGENTS.md",
+                    "/geo ...",
+                    "docs_site",
+                ],
                 not_the_goal=["public scanner SaaS", "hidden black-box automation"],
             ),
             ProductModeRead(

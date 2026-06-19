@@ -1,16 +1,16 @@
 # Documentation Index
 
-This file is the shortest path through the repository if you are new here.
+This is the shortest path through the repository after `v6.0.0`.
 
 ## Start in this order
 
 1. [README.md](./README.md)
-2. [WALKTHROUGH.md](./WALKTHROUGH.md)
-3. [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
-4. [BUILD_WITH_THIS_PLATFORM.md](./BUILD_WITH_THIS_PLATFORM.md)
-5. [GENERATE_PROJECT_FROM_URL.md](./GENERATE_PROJECT_FROM_URL.md)
-6. [docs/en/15-minute-onboarding-v450.md](./docs/en/15-minute-onboarding-v450.md)
-7. [docs/en/v500-release.md](./docs/en/v500-release.md)
+2. [METHODOLOGY.md](./METHODOLOGY.md)
+3. [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
+4. [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
+5. [REAL_CASES.md](./REAL_CASES.md)
+6. [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md) or [WALKTHROUGH.md](./WALKTHROUGH.md)
+7. [AI_TASK_PACKS.md](./AI_TASK_PACKS.md)
 
 ## Pick your mode
 
@@ -18,26 +18,29 @@ This file is the shortest path through the repository if you are new here.
 - AI coding agent: [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
 - Self-hosted service builder: [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
 - Public scanner operator: [docs/en/public-scanner-v360.md](./docs/en/public-scanner-v360.md)
-- AI-to-App builder: [BUILD_WITH_THIS_PLATFORM.md](./BUILD_WITH_THIS_PLATFORM.md)
+- Product evaluator: [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
+
+## Deep practical docs
+
+- [Technical SEO Deep Playbook](./docs/en/technical-seo-deep-playbook.md)
+- [Semantic Core and Intent Playbook](./docs/en/semantic-core-and-intent-playbook.md)
+- [Competitor Gap and Authority Playbook](./docs/en/competitor-gap-and-authority-playbook.md)
+- [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
 
 ## Core proof and boundaries
 
 - Public promise: [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
-- Limits: [KNOWN_LIMITATIONS.md](./KNOWN_LIMITATIONS.md)
+- Scoring transparency: [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
 - Real cases: [REAL_CASES.md](./REAL_CASES.md)
+- Archive policy: [DOCS_ARCHIVE.md](./DOCS_ARCHIVE.md)
 - Architecture note: [ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md)
 
-## Deep-dive reference
+## Historical and versioned materials
 
-- SEO and methodology: [docs/en](./docs/en)
-- Russian market and Yandex: [docs/en/13-russia-yandex.md](./docs/en/13-russia-yandex.md)
-- RU and LLM surfaces: [docs/en/ru-llm-and-geo.md](./docs/en/ru-llm-and-geo.md)
-- API reference: [docs/en/api-reference.md](./docs/en/api-reference.md)
+- canonical release history: [CHANGELOG.md](./CHANGELOG.md)
+- historical reasoning and release notes: [DOCS_ARCHIVE.md](./DOCS_ARCHIVE.md)
 
-## Version policy
+Rule:
 
-- `README*`, `DOCS_INDEX*`, `WALKTHROUGH*`, and `START_HERE_FOR_AI*` are the
-  current entrypoints.
-- `CHANGELOG.md` is the canonical release history.
-- `docs/en/*-vXYZ.md` and `docs/ru/*-vXYZ.md` remain useful historical slices,
-  but newcomers should start from the current entrypoints above.
+- start from current root entrypoints first
+- use `docs/en/*-vXYZ.md` and `docs/ru/*-vXYZ.md` as archive and evidence, not as the first explanation of the project
