@@ -165,9 +165,10 @@ discoverability. Она объединяет:
 - [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
 - [docs/ru/ai-citation-score.md](./docs/ru/ai-citation-score.md)
 
-## На чем сфокусирован v6.0.0
+## На чем сфокусирован v6.1.0
 
-`v6.0.0` — это не “еще больше surface area”, а рост trust density.
+`v6.1.0` сохраняет направление `v6.0.0` на trust density и расширяет его в
+более ясный RU/Yandex operating layer.
 
 Он добавляет:
 
@@ -178,6 +179,9 @@ discoverability. Она объединяет:
 - более практические playbooks по SEO, semantics, competitors и GEO operations
 - более явную archive policy
 - новый public audit case для `anmalishev.ru`
+- first-class слой `Видимость сайта в Алисе AI`
+- `ru_geo_score` для оценки RU/Yandex execution
+- более сильный RU executive layer вокруг Яндекса, Нейро и Алисы AI
 
 ## Текущие границы
 

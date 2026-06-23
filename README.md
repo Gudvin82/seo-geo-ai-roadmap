@@ -164,9 +164,10 @@ Read:
 - [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
 - [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
 
-## v6.0.0 focus
+## v6.1.0 focus
 
-`v6.0.0` is about trust density, not just more surface area.
+`v6.1.0` keeps the trust-density direction from `v6.0.0` and extends it into a
+clearer RU/Yandex operating layer.
 
 It adds:
 
@@ -177,6 +178,9 @@ It adds:
 - deeper practical playbooks for SEO, semantics, competitors, and GEO operations
 - a cleaner archive policy
 - a fresh public audit case for `anmalishev.ru`
+- first-class `Alice AI visibility` framing
+- `ru_geo_score` for RU/Yandex execution review
+- a stronger RU executive layer around Yandex, Neuro, and Alice AI
 
 ## Current boundaries
 
