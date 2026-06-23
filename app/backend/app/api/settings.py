@@ -1954,7 +1954,7 @@ def executive_dashboard(
                 "RU entity readiness",
                 "RU answer-ready content",
                 "RU snippets and trust blocks",
-            ]
+            ],
         },
     }
     comparison_metrics = {
@@ -2169,7 +2169,9 @@ def executive_dashboard(
             "local_surface_connected": len(
                 executive_layers["local_business_layer"]["connected"]
             ),
-            "alice_ai_surface_connected": int("alice_ai_visibility" in integration_metrics),
+            "alice_ai_surface_connected": int(
+                "alice_ai_visibility" in integration_metrics
+            ),
             "ru_geo_score": ru_geo_score_value,
             "ru_geo_status": benchmark_status("ru_geo_score", ru_geo_score_value),
             "alice_ai_sov": alice_ai_sov,

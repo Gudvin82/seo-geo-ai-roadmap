@@ -407,7 +407,9 @@ def test_workspace_project_and_audit_flow(
         headers=auth_headers,
     )
     assert alice_visibility_sync.status_code == 200
-    assert "share_of_voice" in alice_visibility_sync.json()["latest_snapshot"]["metrics"]
+    assert (
+        "share_of_voice" in alice_visibility_sync.json()["latest_snapshot"]["metrics"]
+    )
 
     provider_config = client.post(
         "/api/v1/providers",
@@ -621,12 +623,17 @@ def test_workspace_project_and_audit_flow(
     assert executive_dashboard.json()["executive_score"] >= 0
     assert executive_dashboard.json()["executive_layers"]["google_executive_layer"]
     assert executive_dashboard.json()["executive_layers"]["ru_executive_layer"]
-    assert executive_dashboard.json()["executive_layers"]["ru_geo_ai_layer"]["connected"]
+    assert executive_dashboard.json()["executive_layers"]["ru_geo_ai_layer"][
+        "connected"
+    ]
     assert executive_dashboard.json()["comparison_metrics"]["organic_demand"]
     assert executive_dashboard.json()["comparison_metrics"]["paid_demand"]
-    assert executive_dashboard.json()["comparison_metrics"]["ai_visibility"][
-        "alice_ai_share_of_voice"
-    ] >= 0
+    assert (
+        executive_dashboard.json()["comparison_metrics"]["ai_visibility"][
+            "alice_ai_share_of_voice"
+        ]
+        >= 0
+    )
     assert executive_dashboard.json()["weekly_narrative"]
     assert executive_dashboard.json()["benchmark_overlays"]
     assert executive_dashboard.json()["metrics"]["ru_geo_score"] >= 0
