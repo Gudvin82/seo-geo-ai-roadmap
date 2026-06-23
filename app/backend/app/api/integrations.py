@@ -496,6 +496,7 @@ def integration_runtime_center(
         if runtime_profile["runtime_level"] == "managed_runtime":
             managed_ready += 1
         if row.source_type.startswith("yandex") or row.source_type in {
+            "alice_ai_visibility",
             "vk_ads",
             "vk_organic",
             "telegram_ads",

@@ -7,7 +7,7 @@ from typing import Any
 
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v6.0.0"
+CONTRACT_VERSION = "v6.1.0"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {
@@ -576,6 +576,32 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
         ],
         "next_step": "Use Yandex Neuro readiness as the RU AI layer that complements Webmaster, Metrica, and Business data.",
     },
+    "alice_ai_visibility": {
+        "source_type": "alice_ai_visibility",
+        "label": "Alice AI Visibility in Yandex Search",
+        "readiness_tier": "ru_ai_guided",
+        "sync_mode": "manual_or_weekly_pull",
+        "required_env_vars": ["ALICE_AI_VISIBILITY_TOKEN"],
+        "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
+        "ci_gates": [
+            "weekly share-of-voice refresh",
+            "query and page example review",
+            "competitor-source overlap review",
+        ],
+        "production_flow": [
+            "connect approved Alice AI visibility export or operator token",
+            "import weekly SoV, query examples, and competitor examples from Yandex Webmaster",
+            "compare Alice AI visibility with Webmaster, Metrica, Direct, and Yandex Neuro signals",
+            "convert weak or missing Alice answer coverage into RU answer-ready content tasks",
+        ],
+        "capabilities": [
+            "weekly share-of-voice tracking",
+            "query and page example review",
+            "competitor/source overlap review",
+            "RU executive dashboard support",
+        ],
+        "next_step": "Use Alice AI visibility as the official RU AI answer-surface metric and review it weekly next to classic Yandex search signals.",
+    },
     "dzen": {
         "source_type": "dzen",
         "label": "Dzen Distribution Intelligence",
@@ -957,6 +983,10 @@ def sync_integration_source(
     elif source == "yandex_neuro":
         payload = _run_json_script(
             "yandex_neuro_stub.py", "Yandex Neuro starter failed."
+        )
+    elif source == "alice_ai_visibility":
+        payload = _run_json_script(
+            "alice_ai_visibility_stub.py", "Alice AI visibility starter failed."
         )
     elif source == "dzen":
         payload = _run_json_script("dzen_stub.py", "Dzen starter failed.")

@@ -6,7 +6,7 @@
 
 ## Why It Matters
 
-This section matters because discoverability grows only when Yandex Webmaster, Metrica, 2GIS, commercial factors, region signals are handled as an execution system rather than isolated tasks.
+This section matters because discoverability grows only when Yandex Webmaster, Metrica, 2GIS, commercial factors, region signals, and Alice AI visibility are handled as an execution system rather than isolated tasks.
 
 ## When to Use
 
@@ -28,10 +28,12 @@ Use it for Russian-speaking markets and CIS localization. Prioritize it early if
 
 1. Document the current state and desired business outcome.
 2. Capture both search-engine and AI-surface implications before deciding what to ship.
-3. Break the work into actions around Yandex Webmaster, Metrica, 2GIS, commercial factors, region signals.
-4. Assign one owner, one QA gate, and one reporting metric for each action.
-5. Ship changes in small batches with validation notes.
-6. Review impact monthly and feed learnings back into the roadmap.
+3. Break the work into actions around Yandex Webmaster, Metrica, Alice AI visibility, 2GIS, commercial factors, and region signals.
+4. Treat Alice AI as a separate answer surface, not just a side-effect of classic SEO.
+5. If Alice AI shows insufficient data, treat it as a diagnostic status rather than proof the AI layer is irrelevant.
+6. Assign one owner, one QA gate, and one reporting metric for each action.
+7. Ship changes in small batches with validation notes.
+8. Review impact monthly and feed learnings back into the roadmap.
 
 ## Validation / QA
 
@@ -53,6 +55,7 @@ Use it for Russian-speaking markets and CIS localization. Prioritize it early if
 - If the section affects crawling, fix technical blockers before content expansion.
 - If the section affects trust or conversion, ship to money pages before secondary pages.
 - If AI outputs are unstable, add proof assets and stricter answer-ready formatting.
+- If Alice AI has insufficient data, strengthen Yandex visibility and money-page usefulness before dismissing the answer layer.
 
 ## Prompts for AI / Codex
 
@@ -95,6 +98,7 @@ Example AI Agency applies Russia, Yandex, and CIS first to audit, GEO service pa
 | Bing Webmaster Tools | Global | Yes | Bing visibility and crawl diagnostics |
 | Yandex Webmaster | RU/CIS | Yes | indexation and diagnostics for Yandex |
 | Yandex Metrica | RU/CIS | Yes | behavioral analytics and goals |
+| Alice AI Visibility in Yandex Webmaster | RU/CIS | Yes | weekly SoV, query examples, pages, and source-site examples |
 | Screaming Frog | Global | Partly | crawl audits and extraction |
 | ChatGPT / Claude / Gemini / Codex | Global | Partly | analysis, drafting, QA, prompt testing |
 

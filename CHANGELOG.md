@@ -1,5 +1,12 @@
 # Changelog
 
+## v6.1.0 — Alice AI Visibility and RU GEO Executive Layer
+
+- Added a first-class `alice_ai_visibility` integration surface with weekly SoV, query examples, and competitor overlap starter payloads
+- Added `ru_geo_score` and Alice AI answer-surface overlays to the executive dashboard
+- Expanded the RU executive layer so Yandex Webmaster, Metrica, Direct, Neuro, and Alice AI can be reviewed together
+- Updated RU/EN methodology framing to treat official Alice AI visibility as a first-class Yandex GEO signal
+
 ## v6.0.0 — Core Methodology, Transparent Scoring, and Evidence-Dense Repackaging
 
 - Added new root entrypoints for current readers and AI agents: `METHODOLOGY*`, `SCORING_EXPLAINED*`, `AI_TASK_PACKS*`, and `DOCS_ARCHIVE*`

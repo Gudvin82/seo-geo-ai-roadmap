@@ -43,6 +43,7 @@
 - контент, E-E-A-T и entity clarity
 - local SEO и Яндекс-специфика
 - GEO и answer-surface readiness
+- RU GEO и Видимость сайта в Алисе AI
 - factual consistency и drift control
 - отчетность, proof и export задач
 

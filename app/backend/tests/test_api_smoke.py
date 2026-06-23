@@ -205,6 +205,10 @@ def test_workspace_project_and_audit_flow(
         item["source_type"] == "yandex_neuro"
         for item in integration_contracts.json()["contracts"]
     )
+    assert any(
+        item["source_type"] == "alice_ai_visibility"
+        for item in integration_contracts.json()["contracts"]
+    )
     integration_plan = client.get(
         f"/api/v1/integrations/{integration_id}/readiness-plan",
         headers=auth_headers,
@@ -384,6 +388,27 @@ def test_workspace_project_and_audit_flow(
     )
     assert yandex_neuro_sync.status_code == 200
 
+    alice_visibility_integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "alice_ai_visibility",
+            "label": "Alice AI Visibility",
+            "property_identifier": "alice-visibility-export-1",
+            "credentials_env_var": "ALICE_AI_VISIBILITY_TOKEN",
+            "config": {"refresh_minutes": 10080},
+        },
+        headers=auth_headers,
+    )
+    assert alice_visibility_integration.status_code == 200
+    alice_visibility_sync = client.post(
+        f"/api/v1/integrations/{alice_visibility_integration.json()['id']}/sync",
+        headers=auth_headers,
+    )
+    assert alice_visibility_sync.status_code == 200
+    assert "share_of_voice" in alice_visibility_sync.json()["latest_snapshot"]["metrics"]
+
     provider_config = client.post(
         "/api/v1/providers",
         json={
@@ -429,7 +454,7 @@ def test_workspace_project_and_audit_flow(
         headers=auth_headers,
     )
     assert integration_runtime_center.status_code == 200
-    assert integration_runtime_center.json()["summary"]["ru_market_surfaces"] >= 3
+    assert integration_runtime_center.json()["summary"]["ru_market_surfaces"] >= 4
 
     cms = client.post(
         "/api/v1/cms",
@@ -596,10 +621,15 @@ def test_workspace_project_and_audit_flow(
     assert executive_dashboard.json()["executive_score"] >= 0
     assert executive_dashboard.json()["executive_layers"]["google_executive_layer"]
     assert executive_dashboard.json()["executive_layers"]["ru_executive_layer"]
+    assert executive_dashboard.json()["executive_layers"]["ru_geo_ai_layer"]["connected"]
     assert executive_dashboard.json()["comparison_metrics"]["organic_demand"]
     assert executive_dashboard.json()["comparison_metrics"]["paid_demand"]
+    assert executive_dashboard.json()["comparison_metrics"]["ai_visibility"][
+        "alice_ai_share_of_voice"
+    ] >= 0
     assert executive_dashboard.json()["weekly_narrative"]
     assert executive_dashboard.json()["benchmark_overlays"]
+    assert executive_dashboard.json()["metrics"]["ru_geo_score"] >= 0
 
     integration_detail = client.get(
         f"/api/v1/integrations/{google_ads_integration.json()['id']}/detail",
@@ -706,7 +736,7 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v6.0.0"
+        generation_contracts.json()["project_generation_contract_version"] == "v6.1.0"
     )
 
     generation_manifest = client.post(

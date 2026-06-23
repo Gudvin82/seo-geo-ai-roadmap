@@ -34,6 +34,7 @@ from ..schemas import (
 )
 from ..services.cms import cms_contract
 from ..services.integrations import integration_contract, integration_runtime_profile
+from ..services.scoring import benchmark_status, ru_geo_score
 from ..services.task_center import build_task_bundle_from_audit_run
 
 router = APIRouter(prefix="/settings", tags=["settings"])
@@ -179,6 +180,7 @@ def integration_starters() -> dict:
             "scripts/tiktok_organic_stub.py",
             "scripts/vk_ads_stub.py",
             "scripts/telegram_ads_stub.py",
+            "scripts/alice_ai_visibility_stub.py",
             "scripts/youtube_analytics_stub.py",
             "scripts/linkedin_ads_stub.py",
             "scripts/instagram_facebook_organic_stub.py",
@@ -1530,6 +1532,8 @@ def _integration_metrics_by_source(
             "videos": snapshot.get("videos") or [],
             "channels": snapshot.get("channels") or [],
             "top_pages": snapshot.get("top_pages") or [],
+            "competitors": snapshot.get("competitors") or [],
+            "opportunities": snapshot.get("opportunities") or [],
         }
     return rows
 
@@ -1826,6 +1830,13 @@ def executive_dashboard(
     merchant_metrics = (
         integration_metrics.get("merchant_center", {}).get("metrics") or {}
     )
+    alice_metrics = (
+        integration_metrics.get("alice_ai_visibility", {}).get("metrics") or {}
+    )
+    alice_rows = integration_metrics.get("alice_ai_visibility", {}).get("rows") or []
+    alice_competitors = (
+        integration_metrics.get("alice_ai_visibility", {}).get("competitors") or []
+    )
     meta_metrics = integration_metrics.get("meta_ads", {}).get("metrics") or {}
     x_ads_metrics = integration_metrics.get("x_ads", {}).get("metrics") or {}
     x_organic_metrics = integration_metrics.get("x_organic", {}).get("metrics") or {}
@@ -1839,6 +1850,13 @@ def executive_dashboard(
     instagram_metrics = (
         integration_metrics.get("instagram_facebook_organic", {}).get("metrics") or {}
     )
+    ru_geo_score_value, ru_geo_components = ru_geo_score(
+        integration_metrics=integration_metrics
+    )
+    alice_ai_sov = _first_numeric(alice_metrics, "share_of_voice")
+    alice_ai_weekly_delta = _first_numeric(alice_metrics, "weekly_delta")
+    alice_ai_query_coverage = _first_numeric(alice_metrics, "query_coverage")
+    alice_ai_status = benchmark_status("alice_ai_sov", alice_ai_sov)
     executive_layers = {
         "google_executive_layer": {
             "sources": ["gsc", "ga4", "google_ads", "crux"],
@@ -1854,6 +1872,7 @@ def executive_dashboard(
                 "yandex_webmaster",
                 "yandex_metrica",
                 "yandex_direct",
+                "alice_ai_visibility",
             ],
             "connected": [
                 source
@@ -1861,10 +1880,11 @@ def executive_dashboard(
                     "yandex_webmaster",
                     "yandex_metrica",
                     "yandex_direct",
+                    "alice_ai_visibility",
                 ]
                 if source in integration_metrics
             ],
-            "focus": "RU visibility, RU analytics, RU paid demand",
+            "focus": "RU visibility, RU analytics, Alice AI visibility, and RU paid demand",
         },
         "local_business_layer": {
             "sources": [
@@ -1917,9 +1937,20 @@ def executive_dashboard(
             "focus": "distribution, audience demand, and supporting paid or social context",
         },
         "ru_geo_ai_layer": {
+            "connected": [
+                source
+                for source in [
+                    "yandex_neuro",
+                    "alice_ai_visibility",
+                    "yandex_business",
+                ]
+                if source in integration_metrics
+            ],
+            "focus": "YandexAdditional access, Alice AI SoV, and RU answer-ready trust signals",
             "signals": [
                 "YandexBot",
                 "YandexAdditional",
+                "Alice AI share of voice",
                 "RU entity readiness",
                 "RU answer-ready content",
                 "RU snippets and trust blocks",
@@ -1947,6 +1978,11 @@ def executive_dashboard(
                 _first_numeric(google_ads_metrics, "brand_share_of_demand"),
                 _first_numeric(direct_metrics, "brand_share_of_demand"),
             ),
+            "alice_ai_share_of_voice": alice_ai_sov,
+            "alice_ai_weekly_delta": alice_ai_weekly_delta,
+            "alice_ai_query_coverage": alice_ai_query_coverage,
+            "alice_ai_status": alice_ai_status,
+            "alice_ai_insufficient_data": bool(alice_metrics.get("insufficient_data")),
         },
         "landing_page_conversion": {
             "ga4_engagement_rate": _first_numeric(ga4_metrics, "engagement_rate"),
@@ -2001,6 +2037,12 @@ def executive_dashboard(
             ),
             "ru_connected": len(executive_layers["ru_executive_layer"]["connected"]),
         },
+        "ru_ai_answer_visibility": {
+            "alice_ai_sov": alice_ai_sov,
+            "alice_ai_weekly_delta": alice_ai_weekly_delta,
+            "ru_geo_score": ru_geo_score_value,
+            "tracked_competitors": len(alice_competitors),
+        },
     }
     anomalies: list[dict[str, object]] = []
     if _first_numeric(crux_metrics.get("largest_contentful_paint", {}), "p75") > 2500:
@@ -2024,6 +2066,24 @@ def executive_dashboard(
                 "likely_cause": "keyword drift or landing-page mismatch",
             }
         )
+    if bool(alice_metrics.get("insufficient_data")):
+        anomalies.append(
+            {
+                "severity": "medium",
+                "surface": "alice_ai_visibility",
+                "message": "Alice AI visibility still has insufficient data for a stable weekly share-of-voice view.",
+                "likely_cause": "the site has too few eligible Yandex impressions or too little citation presence",
+            }
+        )
+    elif alice_ai_status == "urgent_fix":
+        anomalies.append(
+            {
+                "severity": "high",
+                "surface": "alice_ai_visibility",
+                "message": "Alice AI share of voice is weak for the current RU search footprint.",
+                "likely_cause": "answer-ready content, trust blocks, or cited source pages are not strong enough",
+            }
+        )
     owner_suggestions = [
         {
             "owner": "SEO lead",
@@ -2038,6 +2098,11 @@ def executive_dashboard(
         {
             "owner": "Content or GEO lead",
             "focus": "AI visibility, brand-fact consistency, and citation share",
+            "priority": "high",
+        },
+        {
+            "owner": "RU market lead",
+            "focus": "Alice AI visibility, YandexAdditional readiness, and Yandex commercial proof",
             "priority": "high",
         },
     ]
@@ -2066,6 +2131,7 @@ def executive_dashboard(
             [item for item in priorities if item["priority_score"] >= 70]
         ),
         "anomaly_count": len(anomalies),
+        "ru_geo_score": ru_geo_score_value,
     }
     return ExecutiveDashboardRead(
         project_id=project.id,
@@ -2078,7 +2144,8 @@ def executive_dashboard(
         ),
         weekly_narrative=(
             f"This week {project.name} should focus on {len(priorities)} priority lanes, "
-            f"{len(anomalies)} anomaly checks, and {len(integrations)} connected integrations."
+            f"{len(anomalies)} anomaly checks, {len(integrations)} connected integrations, "
+            f"and Alice AI SoV at {alice_ai_sov:.2f}."
         ),
         metrics={
             "latest_audit_status": latest_audit.status,
@@ -2102,6 +2169,13 @@ def executive_dashboard(
             "local_surface_connected": len(
                 executive_layers["local_business_layer"]["connected"]
             ),
+            "alice_ai_surface_connected": int("alice_ai_visibility" in integration_metrics),
+            "ru_geo_score": ru_geo_score_value,
+            "ru_geo_status": benchmark_status("ru_geo_score", ru_geo_score_value),
+            "alice_ai_sov": alice_ai_sov,
+            "alice_ai_query_examples": len(alice_rows),
+            "alice_ai_competitors_tracked": len(alice_competitors),
+            "ru_geo_components": ru_geo_components,
             "product_modes": [
                 "repo_methodology",
                 "app_control_panel",

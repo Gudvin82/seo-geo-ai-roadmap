@@ -445,6 +445,7 @@ class IntegrationConnectionCreate(BaseModel):
             "telegram_ads",
             "telegram_channels",
             "yandex_neuro",
+            "alice_ai_visibility",
             "dzen",
             "rutube",
             "youtube",

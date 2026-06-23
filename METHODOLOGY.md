@@ -43,6 +43,7 @@ The repository is strongest when these three layers are handled together.
 - content, E-E-A-T, and entity clarity
 - local and Yandex-specific discoverability
 - GEO and answer-surface readiness
+- RU GEO and Alice AI visibility
 - factual consistency and drift control
 - reporting, proof, and task export
 
