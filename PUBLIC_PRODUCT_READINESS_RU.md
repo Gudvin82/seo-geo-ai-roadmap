@@ -26,6 +26,8 @@ enterprise SSO и SLA от автора репозитория.
 - человекочитаемые docs и machine-readable contracts
 - self-hosted FastAPI app с frontend, auth, workspaces, projects, reports,
   artifacts и exports
+- first-class SEO intelligence слой для keyword, competitor, backlink и rank
+  данных
 - scanner intake flow с passive, ownership-gated active и full scan modes
 - governed CMS workflow с preview, approval, apply, verify и rollback
 - provider-backed AI layer для cloud и local runtimes
@@ -39,6 +41,7 @@ enterprise SSO и SLA от автора репозитория.
 - queue и retry maturity для более тяжелых production workloads
 - managed cloud rollout packs
 - GSC, GA4, Yandex и CMS integrations как повторяемые operator flows
+- внешние keyword и authority providers как повторяемые operator-owned flows
 - extension и automation entrypoints
 
 Эти направления уже лежат внутри репозитория и могут быть развернуты под вашим
@@ -124,10 +127,9 @@ production-решений от команды, которая используе
 
 ## Связь с релизом
 
-`v4.4.0` делает это публичное обещание более явным за счет:
+`v6.2.0` делает это публичное обещание более полным за счет:
 
-- явного readiness framing
-- one-day blueprint для scanner или audit-сервиса
-- one-click deploy options
-- AI-agent scenario prompts
-- более сильного routing через docs-site и README для публичной оценки
+- более сильного readiness framing
+- появления first-class SEO intelligence слоя в той же operating system
+- version-consistency checks для release hygiene
+- более явных docs "что это за проект / чем он не является"

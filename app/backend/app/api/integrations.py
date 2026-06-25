@@ -479,6 +479,7 @@ def integration_runtime_center(
     rows: list[dict] = []
     managed_ready = 0
     ru_surfaces = 0
+    seo_surfaces = 0
     for row in integration_rows:
         snapshot = json.loads(row.latest_snapshot_json or "{}")
         runtime_profile = integration_runtime_profile(
@@ -505,6 +506,13 @@ def integration_runtime_center(
             "rutube",
         }:
             ru_surfaces += 1
+        if row.source_type in {
+            "keyword_research",
+            "competitor_intelligence",
+            "backlink_intelligence",
+            "rank_tracking",
+        }:
+            seo_surfaces += 1
         rows.append(
             {
                 "id": row.id,
@@ -524,11 +532,13 @@ def integration_runtime_center(
             "total_integrations": len(rows),
             "managed_runtime_ready": managed_ready,
             "ru_market_surfaces": ru_surfaces,
+            "seo_intelligence_surfaces": seo_surfaces,
         },
         "operator_policies": [
             "refresh high-signal demand sources at least daily",
             "rotate tokens on a fixed schedule and keep a fallback owner",
             "treat RU search, local, and social surfaces as one operating layer",
+            "treat keyword, competitor, authority, and rank data as one SEO intelligence layer",
             "attach sync diagnostics to executive and delivery workflows",
         ],
         "rows": rows,

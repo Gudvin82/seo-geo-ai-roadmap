@@ -59,6 +59,8 @@ Not safe claims:
 Read this before making public claims:
 
 - [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
+- [WHAT_THIS_PROJECT_IS.md](./WHAT_THIS_PROJECT_IS.md)
+- [WHAT_THIS_PROJECT_IS_NOT.md](./WHAT_THIS_PROJECT_IS_NOT.md)
 - [METHODOLOGY.md](./METHODOLOGY.md)
 - [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
 
@@ -100,6 +102,14 @@ These are the v6 “substance first” docs:
 - [Semantic Core and Intent Playbook](./docs/en/semantic-core-and-intent-playbook.md)
 - [Competitor Gap and Authority Playbook](./docs/en/competitor-gap-and-authority-playbook.md)
 - [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
+
+## SEO intelligence path
+
+- `/api/v1/settings/seo-intelligence-center`
+- `scripts/keyword_research_stub.py`
+- `scripts/competitor_intelligence_stub.py`
+- `scripts/backlink_intelligence_stub.py`
+- `scripts/rank_tracking_stub.py`
 
 ## Evidence and cases
 
@@ -164,23 +174,19 @@ Read:
 - [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
 - [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
 
-## v6.1.0 focus
+## v6.2.0 focus
 
-`v6.1.0` keeps the trust-density direction from `v6.0.0` and extends it into a
-clearer RU/Yandex operating layer.
+`v6.2.0` keeps the trust-density and RU/Yandex direction from `v6.1.0` and
+adds a first-class SEO intelligence layer plus stronger release hygiene.
 
 It adds:
 
-- a clearer core path
-- a deeper methodology explanation
-- transparent scoring documentation
-- stronger AI task packs
-- deeper practical playbooks for SEO, semantics, competitors, and GEO operations
-- a cleaner archive policy
-- a fresh public audit case for `anmalishev.ru`
-- first-class `Alice AI visibility` framing
-- `ru_geo_score` for RU/Yandex execution review
-- a stronger RU executive layer around Yandex, Neuro, and Alice AI
+- native SEO intelligence surfaces for keyword, competitor, backlink, and rank work
+- `/api/v1/settings/seo-intelligence-center`
+- stronger executive overlays for search demand and authority posture
+- version-consistency checks in the repo and CI path
+- clearer "what this project is / is not" positioning
+- a more complete AI-agent and self-hosted product narrative
 
 ## Current boundaries
 

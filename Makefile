@@ -1,7 +1,7 @@
 PYTHONPATH_APP=PYTHONPATH=app/backend
 VENV_PY=.venv/bin/python
 
-.PHONY: install-backend test lint docs migrate seed up demo turnkey-demo verify-demo agent-self-check
+.PHONY: install-backend test lint docs migrate seed up demo turnkey-demo verify-demo agent-self-check verify-repo-surface
 
 install-backend:
 	python3 -m venv .venv
@@ -9,7 +9,7 @@ install-backend:
 	$(VENV_PY) -m pip install -r app/backend/requirements.txt
 
 test:
-	$(PYTHONPATH_APP) $(VENV_PY) -m pytest tests
+	$(VENV_PY) -m pytest tests
 	$(PYTHONPATH_APP) $(VENV_PY) -m pytest app/backend/tests
 
 lint:
@@ -45,3 +45,8 @@ verify-demo:
 
 agent-self-check:
 	$(VENV_PY) scripts/agent_self_check.py
+
+verify-repo-surface:
+	$(VENV_PY) scripts/version_consistency_check.py
+	$(VENV_PY) -m pytest tests
+	$(PYTHONPATH_APP) $(VENV_PY) -m pytest app/backend/tests

@@ -1,6 +1,6 @@
 # Documentation Index
 
-This is the shortest path through the repository after `v6.0.0`.
+This is the shortest path through the repository after `v6.2.0`.
 
 ## Start in this order
 
@@ -8,9 +8,10 @@ This is the shortest path through the repository after `v6.0.0`.
 2. [METHODOLOGY.md](./METHODOLOGY.md)
 3. [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
 4. [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
-5. [REAL_CASES.md](./REAL_CASES.md)
-6. [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md) or [WALKTHROUGH.md](./WALKTHROUGH.md)
-7. [AI_TASK_PACKS.md](./AI_TASK_PACKS.md)
+5. [WHAT_THIS_PROJECT_IS.md](./WHAT_THIS_PROJECT_IS.md)
+6. [REAL_CASES.md](./REAL_CASES.md)
+7. [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md) or [WALKTHROUGH.md](./WALKTHROUGH.md)
+8. [AI_TASK_PACKS.md](./AI_TASK_PACKS.md)
 
 ## Pick your mode
 
@@ -19,6 +20,8 @@ This is the shortest path through the repository after `v6.0.0`.
 - Self-hosted service builder: [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
 - Public scanner operator: [docs/en/public-scanner-v360.md](./docs/en/public-scanner-v360.md)
 - Product evaluator: [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
+- Product positioning: [WHAT_THIS_PROJECT_IS.md](./WHAT_THIS_PROJECT_IS.md)
+- Product boundary: [WHAT_THIS_PROJECT_IS_NOT.md](./WHAT_THIS_PROJECT_IS_NOT.md)
 
 ## Deep practical docs
 
@@ -26,6 +29,7 @@ This is the shortest path through the repository after `v6.0.0`.
 - [Semantic Core and Intent Playbook](./docs/en/semantic-core-and-intent-playbook.md)
 - [Competitor Gap and Authority Playbook](./docs/en/competitor-gap-and-authority-playbook.md)
 - [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
+- [v6.2.0 Release Summary](./docs/en/v620-release.md)
 
 ## Core proof and boundaries
 

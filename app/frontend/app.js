@@ -78,7 +78,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.1.0 Alice AI visibility, RU GEO score, and Yandex executive layer",
+      "v6.2.0 SEO intelligence, Alice AI visibility, and release hygiene",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -269,7 +269,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.1.0 Alice AI visibility, RU GEO score и Yandex executive layer",
+      "v6.2.0 SEO intelligence, Alice AI visibility и release hygiene",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:

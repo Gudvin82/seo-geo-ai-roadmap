@@ -170,6 +170,22 @@ def test_workspace_project_and_audit_flow(
         for item in integration_contracts.json()["contracts"]
     )
     assert any(
+        item["source_type"] == "keyword_research"
+        for item in integration_contracts.json()["contracts"]
+    )
+    assert any(
+        item["source_type"] == "competitor_intelligence"
+        for item in integration_contracts.json()["contracts"]
+    )
+    assert any(
+        item["source_type"] == "backlink_intelligence"
+        for item in integration_contracts.json()["contracts"]
+    )
+    assert any(
+        item["source_type"] == "rank_tracking"
+        for item in integration_contracts.json()["contracts"]
+    )
+    assert any(
         item["source_type"] == "meta_ads"
         for item in integration_contracts.json()["contracts"]
     )
@@ -287,6 +303,94 @@ def test_workspace_project_and_audit_flow(
         headers=auth_headers,
     )
     assert local_business_sync.status_code == 200
+
+    keyword_integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "keyword_research",
+            "label": "Keyword Intelligence",
+            "property_identifier": "keyword-set-1",
+            "credentials_env_var": "KEYWORD_RESEARCH_TOKEN",
+            "config": {},
+        },
+        headers=auth_headers,
+    )
+    assert keyword_integration.status_code == 200
+    assert (
+        client.post(
+            f"/api/v1/integrations/{keyword_integration.json()['id']}/sync",
+            headers=auth_headers,
+        ).status_code
+        == 200
+    )
+
+    competitor_integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "competitor_intelligence",
+            "label": "Competitor Intelligence",
+            "property_identifier": "competitor-set-1",
+            "credentials_env_var": "COMPETITOR_INTELLIGENCE_TOKEN",
+            "config": {},
+        },
+        headers=auth_headers,
+    )
+    assert competitor_integration.status_code == 200
+    assert (
+        client.post(
+            f"/api/v1/integrations/{competitor_integration.json()['id']}/sync",
+            headers=auth_headers,
+        ).status_code
+        == 200
+    )
+
+    backlink_integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "backlink_intelligence",
+            "label": "Backlink Intelligence",
+            "property_identifier": "authority-set-1",
+            "credentials_env_var": "BACKLINK_INTELLIGENCE_TOKEN",
+            "config": {},
+        },
+        headers=auth_headers,
+    )
+    assert backlink_integration.status_code == 200
+    assert (
+        client.post(
+            f"/api/v1/integrations/{backlink_integration.json()['id']}/sync",
+            headers=auth_headers,
+        ).status_code
+        == 200
+    )
+
+    rank_integration = client.post(
+        "/api/v1/integrations",
+        json={
+            "workspace_id": workspace_id,
+            "project_id": project_id,
+            "source_type": "rank_tracking",
+            "label": "Rank Tracking",
+            "property_identifier": "rank-set-1",
+            "credentials_env_var": "RANK_TRACKING_TOKEN",
+            "config": {},
+        },
+        headers=auth_headers,
+    )
+    assert rank_integration.status_code == 200
+    assert (
+        client.post(
+            f"/api/v1/integrations/{rank_integration.json()['id']}/sync",
+            headers=auth_headers,
+        ).status_code
+        == 200
+    )
 
     social_integration = client.post(
         "/api/v1/integrations",
@@ -622,6 +726,9 @@ def test_workspace_project_and_audit_flow(
     assert executive_dashboard.status_code == 200
     assert executive_dashboard.json()["executive_score"] >= 0
     assert executive_dashboard.json()["executive_layers"]["google_executive_layer"]
+    assert executive_dashboard.json()["executive_layers"]["seo_intelligence_layer"][
+        "connected"
+    ]
     assert executive_dashboard.json()["executive_layers"]["ru_executive_layer"]
     assert executive_dashboard.json()["executive_layers"]["ru_geo_ai_layer"][
         "connected"
@@ -637,6 +744,13 @@ def test_workspace_project_and_audit_flow(
     assert executive_dashboard.json()["weekly_narrative"]
     assert executive_dashboard.json()["benchmark_overlays"]
     assert executive_dashboard.json()["metrics"]["ru_geo_score"] >= 0
+    assert executive_dashboard.json()["metrics"]["tracked_keywords"] > 0
+    assert (
+        executive_dashboard.json()["comparison_metrics"]["seo_intelligence"][
+            "tracked_competitors"
+        ]
+        > 0
+    )
 
     integration_detail = client.get(
         f"/api/v1/integrations/{google_ads_integration.json()['id']}/detail",
@@ -743,8 +857,16 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v6.1.0"
+        generation_contracts.json()["project_generation_contract_version"] == "v6.2.0"
     )
+
+    seo_intelligence = client.get(
+        f"/api/v1/settings/seo-intelligence-center?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert seo_intelligence.status_code == 200
+    assert seo_intelligence.json()["connected_surfaces"]
+    assert seo_intelligence.json()["scorecard"]["tracked_keywords"] > 0
 
     generation_manifest = client.post(
         "/api/v1/generation/manifests/generate",

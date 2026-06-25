@@ -1,5 +1,14 @@
 # Changelog
 
+## v6.2.0 — SEO Intelligence Layer and Release Hygiene Upgrade
+
+- Added first-class SEO intelligence starter surfaces for keyword research,
+  competitor intelligence, backlink intelligence, and rank tracking
+- Added `/api/v1/settings/seo-intelligence-center` plus executive-dashboard
+  overlays for SEO intelligence posture
+- Added version-consistency verification to the repo and CI path
+- Added clearer `WHAT_THIS_PROJECT_IS*` positioning docs in RU and EN
+
 ## v6.1.0 — Alice AI Visibility and RU GEO Executive Layer
 
 - Added a first-class `alice_ai_visibility` integration surface with weekly SoV, query examples, and competitor overlap starter payloads

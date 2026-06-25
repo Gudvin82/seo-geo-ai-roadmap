@@ -101,6 +101,12 @@ def repo_assets() -> dict:
         ],
         "glossary": ["GLOSSARY.md", "GLOSSARY_RU.md"],
         "agents": ["AGENTS.md"],
+        "positioning": [
+            "WHAT_THIS_PROJECT_IS.md",
+            "WHAT_THIS_PROJECT_IS_NOT.md",
+            "WHAT_THIS_PROJECT_IS_RU.md",
+            "WHAT_THIS_PROJECT_IS_NOT_RU.md",
+        ],
         "extensions": [
             "extensions/vscode/",
             "extensions/chrome/",
@@ -184,6 +190,12 @@ def integration_starters() -> dict:
             "scripts/youtube_analytics_stub.py",
             "scripts/linkedin_ads_stub.py",
             "scripts/instagram_facebook_organic_stub.py",
+        ],
+        "seo_intelligence": [
+            "scripts/keyword_research_stub.py",
+            "scripts/competitor_intelligence_stub.py",
+            "scripts/backlink_intelligence_stub.py",
+            "scripts/rank_tracking_stub.py",
         ],
         "notifications": [
             "Slack webhook",
@@ -1331,6 +1343,27 @@ def product_modes() -> ProductModesResponse:
                 not_the_goal=["public scanner SaaS", "hidden black-box automation"],
             ),
             ProductModeRead(
+                id="seo_intelligence_lab",
+                title="SEO intelligence lab mode",
+                primary_user="growth, SEO, or content strategy operator",
+                purpose="Keyword demand, competitor gaps, authority shifts, and rank visibility in one operator loop.",
+                best_for=[
+                    "keyword strategy",
+                    "competitor benchmarking",
+                    "authority recovery",
+                    "rank visibility review",
+                ],
+                first_class_paths=[
+                    "/api/v1/settings/seo-intelligence-center",
+                    "/api/v1/integrations/health-center",
+                    "scripts/keyword_research_stub.py",
+                ],
+                not_the_goal=[
+                    "hidden third-party data dependency",
+                    "black-box SEO score with no evidence",
+                ],
+            ),
+            ProductModeRead(
                 id="app_control_panel",
                 title="App control panel mode",
                 primary_user="team, agency, founder, or in-house operator",
@@ -1409,6 +1442,7 @@ def service_foundation() -> ServiceFoundationRead:
             "AI-agent-first deployment entrypoints",
             "white-label operator console",
             "public scan intake with queue boundaries",
+            "SEO intelligence and RU/Yandex operating loops",
         ],
         sso_starter_modes=[
             "reverse-proxy auth header mode",
@@ -1446,6 +1480,7 @@ def service_foundation() -> ServiceFoundationRead:
             "choose one billing strategy or stay free and internal first",
             "connect Google search, analytics, and paid stack",
             "connect Yandex search, analytics, and paid stack",
+            "connect keyword, competitor, authority, and rank intelligence sources",
             "add local-business and distribution layers only after core search truth is in place",
             "enable integrations and scanner intake under your own domain",
         ],
@@ -1554,6 +1589,84 @@ def _parse_ai_citation_score(mention_summary: str) -> float:
         return float(tail)
     except (ValueError, IndexError):
         return 0.0
+
+
+@router.get("/seo-intelligence-center")
+def seo_intelligence_center(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    require_project_access(db, project_id, current_user, minimum_role="viewer")
+    integrations = (
+        db.query(IntegrationConnection)
+        .filter(IntegrationConnection.project_id == project_id)
+        .order_by(IntegrationConnection.id.desc())
+        .all()
+    )
+    integration_metrics = _integration_metrics_by_source(integrations)
+    keyword_metrics = (
+        integration_metrics.get("keyword_research", {}).get("metrics") or {}
+    )
+    competitor_metrics = (
+        integration_metrics.get("competitor_intelligence", {}).get("metrics") or {}
+    )
+    backlink_metrics = (
+        integration_metrics.get("backlink_intelligence", {}).get("metrics") or {}
+    )
+    rank_metrics = integration_metrics.get("rank_tracking", {}).get("metrics") or {}
+
+    connected_surfaces = [
+        source
+        for source in [
+            "keyword_research",
+            "competitor_intelligence",
+            "backlink_intelligence",
+            "rank_tracking",
+        ]
+        if source in integration_metrics
+    ]
+    opportunities = []
+    for source in connected_surfaces:
+        opportunities.extend(integration_metrics[source].get("opportunities") or [])
+
+    return {
+        "project_id": project_id,
+        "connected_surfaces": connected_surfaces,
+        "surface_contracts": [
+            integration_contract(source) for source in connected_surfaces
+        ],
+        "scorecard": {
+            "tracked_keywords": _first_numeric(keyword_metrics, "tracked_keywords"),
+            "query_cluster_coverage": _first_numeric(
+                keyword_metrics, "query_cluster_coverage"
+            ),
+            "tracked_competitors": _first_numeric(
+                competitor_metrics, "tracked_competitors"
+            ),
+            "content_gap_count": _first_numeric(
+                competitor_metrics, "content_gap_count"
+            ),
+            "referring_domains": _first_numeric(backlink_metrics, "referring_domains"),
+            "authority_trend": _first_numeric(backlink_metrics, "authority_trend"),
+            "top_10_share": _first_numeric(rank_metrics, "top_10_share"),
+            "visibility_delta_30d": _first_numeric(
+                rank_metrics, "visibility_delta_30d"
+            ),
+        },
+        "operator_loops": [
+            "map keyword demand to landing and content coverage",
+            "compare competitors by content, proof, and GEO gaps",
+            "separate authority recovery from content production work",
+            "treat positions 4-12 as the first rank-ops lane",
+        ],
+        "provider_strategy": {
+            "native_repo_mode": "starter stubs, exports, and provider-agnostic contracts",
+            "external_provider_mode": "connect any approved keyword, competitor, backlink, or rank provider through the same contract surface",
+            "ai_agent_mode": "give an AI coding agent the repo plus these surfaces to generate briefs, priorities, and change packs",
+        },
+        "opportunities": opportunities[:8],
+    }
 
 
 def _project_rollup(db: Session, project: Project) -> dict[str, object]:
@@ -1822,6 +1935,16 @@ def executive_dashboard(
     )
     metrica_metrics = integration_metrics.get("yandex_metrica", {}).get("metrics") or {}
     direct_metrics = integration_metrics.get("yandex_direct", {}).get("metrics") or {}
+    keyword_metrics = (
+        integration_metrics.get("keyword_research", {}).get("metrics") or {}
+    )
+    competitor_metrics = (
+        integration_metrics.get("competitor_intelligence", {}).get("metrics") or {}
+    )
+    backlink_metrics = (
+        integration_metrics.get("backlink_intelligence", {}).get("metrics") or {}
+    )
+    rank_metrics = integration_metrics.get("rank_tracking", {}).get("metrics") or {}
     crux_metrics = integration_metrics.get("crux", {}).get("metrics") or {}
     gbp_metrics = (
         integration_metrics.get("google_business_profile", {}).get("metrics") or {}
@@ -1866,6 +1989,25 @@ def executive_dashboard(
                 if source in integration_metrics
             ],
             "focus": "organic demand, paid demand, user behavior, and field data",
+        },
+        "seo_intelligence_layer": {
+            "sources": [
+                "keyword_research",
+                "competitor_intelligence",
+                "backlink_intelligence",
+                "rank_tracking",
+            ],
+            "connected": [
+                source
+                for source in [
+                    "keyword_research",
+                    "competitor_intelligence",
+                    "backlink_intelligence",
+                    "rank_tracking",
+                ]
+                if source in integration_metrics
+            ],
+            "focus": "market demand, competitor gaps, authority, and tracked visibility",
         },
         "ru_executive_layer": {
             "sources": [
@@ -2016,6 +2158,24 @@ def executive_dashboard(
             "youtube_site_clicks": _first_numeric(youtube_metrics, "site_clicks"),
             "instagram_site_clicks": _first_numeric(instagram_metrics, "site_clicks"),
         },
+        "seo_intelligence": {
+            "tracked_keywords": _first_numeric(keyword_metrics, "tracked_keywords"),
+            "query_cluster_coverage": _first_numeric(
+                keyword_metrics, "query_cluster_coverage"
+            ),
+            "tracked_competitors": _first_numeric(
+                competitor_metrics, "tracked_competitors"
+            ),
+            "content_gap_count": _first_numeric(
+                competitor_metrics, "content_gap_count"
+            ),
+            "referring_domains": _first_numeric(backlink_metrics, "referring_domains"),
+            "authority_trend": _first_numeric(backlink_metrics, "authority_trend"),
+            "top_10_share": _first_numeric(rank_metrics, "top_10_share"),
+            "visibility_delta_30d": _first_numeric(
+                rank_metrics, "visibility_delta_30d"
+            ),
+        },
     }
     benchmark_overlays = {
         "seo_vs_geo_vs_paid": {
@@ -2042,6 +2202,14 @@ def executive_dashboard(
             "alice_ai_weekly_delta": alice_ai_weekly_delta,
             "ru_geo_score": ru_geo_score_value,
             "tracked_competitors": len(alice_competitors),
+        },
+        "seo_intelligence_posture": {
+            "tracked_keywords": _first_numeric(keyword_metrics, "tracked_keywords"),
+            "tracked_competitors": _first_numeric(
+                competitor_metrics, "tracked_competitors"
+            ),
+            "authority_trend": _first_numeric(backlink_metrics, "authority_trend"),
+            "top_10_share": _first_numeric(rank_metrics, "top_10_share"),
         },
     }
     anomalies: list[dict[str, object]] = []
@@ -2084,7 +2252,36 @@ def executive_dashboard(
                 "likely_cause": "answer-ready content, trust blocks, or cited source pages are not strong enough",
             }
         )
+    if (
+        "keyword_research" in integration_metrics
+        and _first_numeric(keyword_metrics, "query_cluster_coverage") < 0.5
+    ):
+        anomalies.append(
+            {
+                "severity": "medium",
+                "surface": "keyword_research",
+                "message": "Query-cluster coverage is still thin for the tracked demand map.",
+                "likely_cause": "too few dedicated landing or FAQ assets for major demand clusters",
+            }
+        )
+    if (
+        "rank_tracking" in integration_metrics
+        and _first_numeric(rank_metrics, "top_10_share") < 0.4
+    ):
+        anomalies.append(
+            {
+                "severity": "medium",
+                "surface": "rank_tracking",
+                "message": "Tracked-query visibility is still weak across top-10 positions.",
+                "likely_cause": "mid-SERP pages need stronger intent matching, proof density, or internal linking",
+            }
+        )
     owner_suggestions = [
+        {
+            "owner": "SEO strategist",
+            "focus": "keyword demand, competitor gaps, authority recovery, and rank operations",
+            "priority": "high",
+        },
         {
             "owner": "SEO lead",
             "focus": "organic demand, indexation health, and answer-ready content",
@@ -2127,6 +2324,9 @@ def executive_dashboard(
         "workspace_id": project.workspace_id,
         "project_name": project.name,
         "connected_surfaces_total": len(integrations) + len(cms_connectors),
+        "seo_intelligence_surfaces": len(
+            executive_layers["seo_intelligence_layer"]["connected"]
+        ),
         "high_priority_items": len(
             [item for item in priorities if item["priority_score"] >= 70]
         ),
@@ -2160,6 +2360,9 @@ def executive_dashboard(
             "google_surface_connected": len(
                 executive_layers["google_executive_layer"]["connected"]
             ),
+            "seo_surface_connected": len(
+                executive_layers["seo_intelligence_layer"]["connected"]
+            ),
             "ru_surface_connected": len(
                 executive_layers["ru_executive_layer"]["connected"]
             ),
@@ -2178,8 +2381,15 @@ def executive_dashboard(
             "alice_ai_query_examples": len(alice_rows),
             "alice_ai_competitors_tracked": len(alice_competitors),
             "ru_geo_components": ru_geo_components,
+            "tracked_keywords": _first_numeric(keyword_metrics, "tracked_keywords"),
+            "tracked_competitors": _first_numeric(
+                competitor_metrics, "tracked_competitors"
+            ),
+            "referring_domains": _first_numeric(backlink_metrics, "referring_domains"),
+            "top_10_share": _first_numeric(rank_metrics, "top_10_share"),
             "product_modes": [
                 "repo_methodology",
+                "seo_intelligence_lab",
                 "app_control_panel",
                 "scanner_intake",
                 "service_builder",

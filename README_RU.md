@@ -60,6 +60,8 @@ discoverability. Она объединяет:
 Перед публичными формулировками прочитайте:
 
 - [PUBLIC_PRODUCT_READINESS_RU.md](./PUBLIC_PRODUCT_READINESS_RU.md)
+- [WHAT_THIS_PROJECT_IS_RU.md](./WHAT_THIS_PROJECT_IS_RU.md)
+- [WHAT_THIS_PROJECT_IS_NOT_RU.md](./WHAT_THIS_PROJECT_IS_NOT_RU.md)
 - [METHODOLOGY_RU.md](./METHODOLOGY_RU.md)
 - [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
 
@@ -101,6 +103,14 @@ discoverability. Она объединяет:
 - [Semantic Core and Intent Playbook](./docs/ru/semantic-core-and-intent-playbook.md)
 - [Competitor Gap and Authority Playbook](./docs/ru/competitor-gap-and-authority-playbook.md)
 - [GEO and AI Operations Playbook](./docs/ru/geo-ai-operations-playbook.md)
+
+## Путь SEO intelligence
+
+- `/api/v1/settings/seo-intelligence-center`
+- `scripts/keyword_research_stub.py`
+- `scripts/competitor_intelligence_stub.py`
+- `scripts/backlink_intelligence_stub.py`
+- `scripts/rank_tracking_stub.py`
 
 ## Доказательства и кейсы
 
@@ -165,23 +175,19 @@ discoverability. Она объединяет:
 - [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
 - [docs/ru/ai-citation-score.md](./docs/ru/ai-citation-score.md)
 
-## На чем сфокусирован v6.1.0
+## На чем сфокусирован v6.2.0
 
-`v6.1.0` сохраняет направление `v6.0.0` на trust density и расширяет его в
-более ясный RU/Yandex operating layer.
+`v6.2.0` сохраняет направление `v6.1.0` на trust density и RU/Yandex layer и
+добавляет first-class SEO intelligence слой плюс более сильную release hygiene.
 
 Он добавляет:
 
-- более ясный core path
-- более глубокое объяснение методологии
-- прозрачную документацию по scoring
-- более сильные AI task packs
-- более практические playbooks по SEO, semantics, competitors и GEO operations
-- более явную archive policy
-- новый public audit case для `anmalishev.ru`
-- first-class слой `Видимость сайта в Алисе AI`
-- `ru_geo_score` для оценки RU/Yandex execution
-- более сильный RU executive layer вокруг Яндекса, Нейро и Алисы AI
+- native SEO intelligence surfaces для keyword, competitor, backlink и rank work
+- `/api/v1/settings/seo-intelligence-center`
+- более сильные executive overlays для search demand и authority posture
+- version-consistency checks в repo и CI
+- более явное позиционирование "что это за проект / чем он не является"
+- более полную связку для AI-agent и self-hosted narrative
 
 ## Текущие границы
 

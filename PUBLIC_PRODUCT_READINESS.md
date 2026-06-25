@@ -26,6 +26,8 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 - human-readable docs plus machine-readable contracts
 - self-hosted FastAPI app with frontend, auth, workspaces, projects, reports,
   artifacts, and exports
+- first-class SEO intelligence surface for keyword, competitor, backlink, and
+  rank data
 - scanner intake flow with passive, ownership-gated active, and full-scan modes
 - governed CMS workflow with preview, approval, apply, verify, and rollback
 - provider-backed AI layer for cloud and local runtimes
@@ -39,6 +41,7 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 - queue and retry maturity for higher-volume production workloads
 - managed cloud rollout packs
 - GSC, GA4, Yandex, and CMS integrations as repeatable operator flows
+- external keyword and authority providers as repeatable operator-owned flows
 - extension and automation entrypoints
 
 These paths are already inside the repo and can be deployed under your own
@@ -123,10 +126,9 @@ If you want to prove the repo matches the public post, use this path:
 
 ## Release alignment
 
-`v4.4.0` is the release that makes this public promise more explicit by adding:
+`v6.2.0` is the release that makes this public promise more complete by adding:
 
-- public readiness framing
-- one-day scanner or audit-service blueprint
-- one-click deploy options
-- AI-agent scenario prompts
-- stronger docs-site and README routing for public evaluation
+- stronger public readiness framing
+- a first-class SEO intelligence layer inside the same operating system
+- version-consistency checks for release hygiene
+- clearer "what this project is / is not" positioning docs

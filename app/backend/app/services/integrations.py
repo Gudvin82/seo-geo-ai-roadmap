@@ -7,7 +7,7 @@ from typing import Any
 
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v6.1.0"
+CONTRACT_VERSION = "v6.2.0"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {
@@ -270,6 +270,110 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
             "e-commerce issue visibility",
         ],
         "next_step": "Use Merchant Center for e-commerce properties where feed health affects discoverability and conversions.",
+    },
+    "keyword_research": {
+        "source_type": "keyword_research",
+        "label": "Keyword Research Intelligence",
+        "readiness_tier": "seo_intelligence_ready",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["KEYWORD_RESEARCH_TOKEN"],
+        "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
+        "ci_gates": [
+            "demand snapshot refresh",
+            "brand vs non-brand split review",
+            "query-cluster coverage review",
+        ],
+        "production_flow": [
+            "connect keyword research export or provider token",
+            "group demand by brand, non-brand, and high-intent clusters",
+            "compare market demand with content and landing coverage",
+            "feed gaps into roadmap, generation, and executive reporting",
+        ],
+        "capabilities": [
+            "keyword snapshot import",
+            "intent cluster coverage",
+            "brand vs non-brand demand baseline",
+            "opportunity keyword review",
+        ],
+        "next_step": "Use keyword research as the demand map that drives landing priorities, content briefs, and executive opportunity framing.",
+    },
+    "competitor_intelligence": {
+        "source_type": "competitor_intelligence",
+        "label": "Competitor Intelligence",
+        "readiness_tier": "seo_intelligence_ready",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["COMPETITOR_INTELLIGENCE_TOKEN"],
+        "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
+        "ci_gates": [
+            "competitor gap refresh",
+            "trust and proof gap review",
+            "GEO content gap review",
+        ],
+        "production_flow": [
+            "connect competitor export or provider token",
+            "map content, trust, and GEO gaps by competitor",
+            "separate gaps that affect rankings from gaps that affect citations and conversion trust",
+            "attach top competitor gaps to the operating queue",
+        ],
+        "capabilities": [
+            "content gap import",
+            "trust and proof gap detection",
+            "GEO surface gap detection",
+            "authority overlap support",
+        ],
+        "next_step": "Use competitor intelligence to decide where to build proof, answer-ready pages, and comparison assets first.",
+    },
+    "backlink_intelligence": {
+        "source_type": "backlink_intelligence",
+        "label": "Backlink and Authority Intelligence",
+        "readiness_tier": "seo_intelligence_ready",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["BACKLINK_INTELLIGENCE_TOKEN"],
+        "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
+        "ci_gates": [
+            "referring-domain refresh",
+            "lost-link recovery review",
+            "authority trend review",
+        ],
+        "production_flow": [
+            "connect backlink export or provider token",
+            "review new, lost, and high-trust referring domains",
+            "separate entity citations, editorial mentions, and partner proof",
+            "route recoverable authority losses into weekly ops",
+        ],
+        "capabilities": [
+            "referring domain baseline",
+            "authority trend tracking",
+            "lost-link review",
+            "entity citation support",
+        ],
+        "next_step": "Use backlink intelligence to recover trust, authority, and entity signals that support both SEO and GEO performance.",
+    },
+    "rank_tracking": {
+        "source_type": "rank_tracking",
+        "label": "Rank Tracking and SERP Visibility",
+        "readiness_tier": "seo_intelligence_ready",
+        "sync_mode": "manual_or_scheduled_pull",
+        "required_env_vars": ["RANK_TRACKING_TOKEN"],
+        "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
+        "ci_gates": [
+            "tracked-query refresh",
+            "movement review",
+            "SERP feature capture review",
+        ],
+        "production_flow": [
+            "connect rank export or provider token",
+            "sync tracked queries and SERP feature coverage",
+            "prioritize positions 4 through 12 first",
+            "separate rank gains from answer-surface gains in the weekly narrative",
+        ],
+        "capabilities": [
+            "tracked-query import",
+            "rank movement review",
+            "SERP feature coverage",
+            "weekly visibility trend support",
+        ],
+        "next_step": "Use rank tracking to validate whether content, technical, and proof changes are moving important queries into stronger positions.",
     },
     "crux": {
         "source_type": "crux",
@@ -916,6 +1020,24 @@ def sync_integration_source(
     elif source == "merchant_center":
         payload = _run_json_script(
             "merchant_center_stub.py", "Merchant Center starter import failed."
+        )
+    elif source == "keyword_research":
+        payload = _run_json_script(
+            "keyword_research_stub.py", "Keyword research starter import failed."
+        )
+    elif source == "competitor_intelligence":
+        payload = _run_json_script(
+            "competitor_intelligence_stub.py",
+            "Competitor intelligence starter import failed.",
+        )
+    elif source == "backlink_intelligence":
+        payload = _run_json_script(
+            "backlink_intelligence_stub.py",
+            "Backlink intelligence starter import failed.",
+        )
+    elif source == "rank_tracking":
+        payload = _run_json_script(
+            "rank_tracking_stub.py", "Rank tracking starter import failed."
         )
     elif source == "crux":
         target_url = (

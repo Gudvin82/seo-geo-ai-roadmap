@@ -35,6 +35,7 @@ jobs:
 
       - name: Run repository and app tests
         run: |
+          python scripts/version_consistency_check.py
           python -m pytest tests
           PYTHONPATH=app/backend python -m pytest --cov=app/backend/app --cov-report=term-missing --cov-report=xml:coverage.xml app/backend/tests
 
