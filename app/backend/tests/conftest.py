@@ -9,7 +9,7 @@ from app.main import create_app
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-TEST_PASSWORD = "StrongPass123"
+TEST_PASSWORD = "Demo-password-123A"
 
 
 @pytest.fixture()

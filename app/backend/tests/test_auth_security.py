@@ -32,7 +32,7 @@ def test_login_rate_limiting() -> None:
     with TestClient(app) as client:
         client.post(
             "/api/v1/auth/register",
-            json={"email": "rate@example.com", "password": "StrongPass123"},
+            json={"email": "rate@example.com", "password": "Demo-password-123A"},
         )
         bad_login = {"email": "rate@example.com", "password": "WrongPass123"}
         assert client.post("/api/v1/auth/login", json=bad_login).status_code == 401

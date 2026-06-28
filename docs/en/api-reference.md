@@ -13,7 +13,7 @@ Use `Authorization: Bearer <token>`.
 ```json
 {
   "email": "operator@example.com",
-  "password": "StrongPass123"
+  "password": "Demo-password-123A"
 }
 ```
 

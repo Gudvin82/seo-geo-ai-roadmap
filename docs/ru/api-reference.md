@@ -13,7 +13,7 @@ OpenAPI доступен по `/docs`, ReDoc по `/redoc`.
 ```json
 {
   "email": "operator@example.com",
-  "password": "StrongPass123"
+  "password": "Demo-password-123A"
 }
 ```
 

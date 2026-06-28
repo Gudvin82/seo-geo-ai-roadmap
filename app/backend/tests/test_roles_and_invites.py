@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from fastapi.testclient import TestClient
 
-TEST_PASSWORD = "StrongPass123"
+TEST_PASSWORD = "Demo-password-123A"
 
 
 def _headers_for(client: TestClient, email: str) -> dict[str, str]:
