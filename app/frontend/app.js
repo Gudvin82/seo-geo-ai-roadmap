@@ -43,6 +43,8 @@ const state = {
   productModes: [],
   ciGating: {},
   executiveDashboard: null,
+  organizations: [],
+  organizationSwitcher: {},
   saasCatalog: [],
   tenantOverview: null,
   portfolioDashboard: {},
@@ -52,6 +54,9 @@ const state = {
   saasReadinessCenter: {},
   deploymentPosture: {},
   proofTimeline: [],
+  proofEvidence: [],
+  proofExperiments: [],
+  proofOpsCenter: {},
   proofKit: {},
   proofExportPack: {},
   mentionReputationCenter: {},
@@ -73,6 +78,7 @@ const state = {
   providerModelRegistry: {},
   providerOperatingCenter: {},
   integrationRuntimeCenter: {},
+  integrationHealthCenter: {},
   integrationContracts: [],
   cmsContracts: [],
   reportAssistant: null,
@@ -106,7 +112,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.3.0 standards-calibrated GEO, safer runtime defaults, and script-first DX",
+      "v6.4.0 managed runtime, portfolio command, and proof-ops delivery",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -297,7 +303,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.3.0 standards-calibrated GEO, более безопасные runtime defaults и script-first DX",
+      "v6.4.0 managed runtime, portfolio command и proof-ops delivery",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -741,6 +747,35 @@ function renderExecutiveDashboard() {
 }
 
 function renderSaasCenter() {
+  renderCards(
+    "#organization-switcher-list",
+    state.organizationSwitcher.organizations || [],
+    (row) =>
+      simpleCard(row.name || row.slug || "organization", [
+        `Org #${row.organization_id} · ${row.slug || "n/a"}`,
+        `Workspaces: ${row.workspace_count ?? 0}`,
+        `IDs: ${(row.active_workspace_ids || []).join(", ") || "n/a"}`,
+      ]),
+  );
+  renderCards(
+    "#workspace-catalog-cards",
+    state.saasCatalog || [],
+    (row) =>
+      simpleCard(row.workspace_name || row.workspace_slug || "workspace", [
+        `Org: ${row.organization_name || "unassigned"}`,
+        `Tenant: ${row.tenant_name || "none"}`,
+        `Plan: ${row.plan_code || "n/a"} · ${row.plan_status || "n/a"}`,
+      ]),
+  );
+  renderCards(
+    "#tenant-usage-alerts",
+    (state.tenantOverview && state.tenantOverview.quota_alerts) || [],
+    (row) =>
+      simpleCard(row.metric || "quota", [
+        `Used: ${row.used ?? 0} / ${row.limit ?? 0}`,
+        `Status: ${row.status || "unknown"} · ratio ${row.ratio ?? "n/a"}`,
+      ]),
+  );
   $("#saas-catalog").textContent = JSON.stringify(
     state.saasCatalog || [],
     null,
@@ -787,7 +822,24 @@ function renderProofCenter() {
       row.confidence_label ? `Confidence: ${row.confidence_label}` : "",
     ].filter(Boolean)),
   );
+  renderCards("#evidence-list", state.proofEvidence || [], (row) =>
+    simpleCard(row.title || "evidence", [
+      `${row.label_type || "evidence"} · #${row.id}`,
+      row.summary || "No summary",
+    ]),
+  );
+  renderCards("#experiment-list", state.proofExperiments || [], (row) =>
+    simpleCard(row.source_type || "experiment", [
+      `#${row.id} · ${row.confidence_label || "partial"}`,
+      row.change_summary || "No change summary",
+    ]),
+  );
   $("#proof-kit").textContent = JSON.stringify(state.proofKit || {}, null, 2);
+  $("#proof-ops-center").textContent = JSON.stringify(
+    state.proofOpsCenter || {},
+    null,
+    2,
+  );
   $("#proof-export-pack").textContent = JSON.stringify(
     state.proofExportPack || {},
     null,
@@ -1025,14 +1077,16 @@ async function refreshIntegrations() {
   if (!state.token || !state.selectedProjectId) {
     return;
   }
-  const [rows, contracts, runtimeCenter] = await Promise.all([
+  const [rows, contracts, runtimeCenter, healthCenter] = await Promise.all([
     apiRequest(`/integrations?project_id=${state.selectedProjectId}`),
     apiRequest("/integrations/contracts"),
     apiRequest(`/integrations/runtime-center?project_id=${state.selectedProjectId}`),
+    apiRequest(`/integrations/health-center?project_id=${state.selectedProjectId}`),
   ]);
   state.integrationConnections = rows;
   state.integrationContracts = contracts.contracts || [];
   state.integrationRuntimeCenter = runtimeCenter || {};
+  state.integrationHealthCenter = healthCenter || {};
   renderCards("#integration-list", state.integrationConnections, (row) =>
     simpleCard(row.label, [
       `${row.source_type} · #${row.id}`,
@@ -1047,7 +1101,10 @@ async function refreshIntegrations() {
     2,
   );
   $("#integration-runtime-center").textContent = JSON.stringify(
-    state.integrationRuntimeCenter || {},
+    {
+      runtime_center: state.integrationRuntimeCenter || {},
+      health_center: state.integrationHealthCenter || {},
+    },
     null,
     2,
   );
@@ -1228,6 +1285,7 @@ async function refreshSaasCenter() {
   const requests = [
     apiRequest("/saas/workspace-catalog"),
     apiRequest("/saas/organizations"),
+    apiRequest("/saas/organization-switcher"),
     apiRequest("/settings/demo-center", { headers: {} }),
     apiRequest("/settings/productization-center", { headers: {} }),
   ];
@@ -1248,6 +1306,7 @@ async function refreshSaasCenter() {
   const [
     catalog,
     organizations,
+    organizationSwitcher,
     demoCenter,
     productizationCenter,
     portfolioDashboard,
@@ -1257,6 +1316,7 @@ async function refreshSaasCenter() {
   ] = await Promise.all(requests);
   state.saasCatalog = catalog.items || [];
   state.organizations = organizations || [];
+  state.organizationSwitcher = organizationSwitcher || {};
   state.demoCenter = demoCenter || {};
   state.productizationCenter = productizationCenter || {};
   state.portfolioDashboard = portfolioDashboard || {};
@@ -1279,9 +1339,21 @@ async function refreshProofCenter() {
   if (!state.token || !state.selectedProjectId) {
     return;
   }
-  const [timeline, proofKit, exportPack, mentionReputationCenter, operatorBoard] =
+  const [
+    timeline,
+    evidence,
+    experiments,
+    proofOpsCenter,
+    proofKit,
+    exportPack,
+    mentionReputationCenter,
+    operatorBoard,
+  ] =
     await Promise.all([
       apiRequest(`/proof/timeline?project_id=${state.selectedProjectId}`),
+      apiRequest(`/proof/evidence?project_id=${state.selectedProjectId}`),
+      apiRequest(`/proof/experiments?project_id=${state.selectedProjectId}`),
+      apiRequest(`/settings/proof-ops-center?project_id=${state.selectedProjectId}`),
       apiRequest("/settings/proof-kit", { headers: {} }),
       apiRequest(`/proof/export-pack?project_id=${state.selectedProjectId}`),
       apiRequest(
@@ -1290,6 +1362,9 @@ async function refreshProofCenter() {
       apiRequest(`/settings/operator-board?project_id=${state.selectedProjectId}`),
     ]);
   state.proofTimeline = timeline.items || [];
+  state.proofEvidence = evidence || [];
+  state.proofExperiments = experiments || [];
+  state.proofOpsCenter = proofOpsCenter || {};
   state.proofKit = proofKit;
   state.proofExportPack = exportPack || {};
   state.mentionReputationCenter = mentionReputationCenter || {};

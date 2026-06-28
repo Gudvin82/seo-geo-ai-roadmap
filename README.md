@@ -174,19 +174,24 @@ Read:
 - [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
 - [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
 
-## v6.3.0 focus
+## v6.4.0 focus
 
-`v6.3.0` turns the repo into a more trustworthy operating system by tightening
-the gap between public claims, runtime behavior, and script-first execution.
+`v6.4.0` turns the repo into a more operator-complete system by tightening the
+gap between strong self-hosted foundations and day-to-day managed runtime,
+tenant, portfolio, and proof operations.
 
 It adds:
 
-- calibrated GEO/AI guidance that distinguishes Google guidance, provider-specific AI signals, and experimental extras
-- OAI-SearchBot coverage plus stronger multi-agent `robots.txt` evaluation
-- safer frontend token handling and lower-XSS UI rendering paths
-- fuller frontend Docker packaging for scanner, graph, validator, and operator surfaces
-- stricter release and security hygiene for scans, docs, and version alignment
-- stronger standalone script DX so repo-level tooling matches the AI-agent-ready promise
+- managed-runtime policy editing so integration refresh, retry, token-rotation,
+  and recovery expectations can be governed from the product layer
+- organization-switcher, tenant usage health, onboarding checklist, and
+  stronger tenant overview surfaces for service-building teams
+- portfolio rollups across multiple workspaces plus a proof-ops center that
+  combines evidence, experiments, confidence distribution, and next steps
+- a stronger operator board summary so task lanes, ownership pressure, and
+  follow-through are visible instead of hidden in raw JSON alone
+- fuller release alignment across runtime contracts, frontend surfaces, docs,
+  and current version markers
 
 ## Current boundaries
 

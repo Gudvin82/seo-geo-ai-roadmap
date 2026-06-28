@@ -235,6 +235,16 @@ class TenantProfileRead(BaseModel):
     created_at: datetime
 
 
+class TenantProfileUpdate(BaseModel):
+    tenant_name: Optional[str] = None
+    plan_code: Optional[str] = None
+    plan_status: Optional[str] = None
+    quota: Optional[dict[str, Any]] = None
+    usage: Optional[dict[str, Any]] = None
+    onboarding_state: Optional[dict[str, Any]] = None
+    tenant_settings: Optional[dict[str, Any]] = None
+
+
 class TenantApiKeyCreate(BaseModel):
     workspace_id: int
     label: str
@@ -461,6 +471,15 @@ class IntegrationConnectionCreate(BaseModel):
                 f"Unsupported source_type '{value}'. Allowed: {', '.join(sorted(allowed))}."
             )
         return source
+
+
+class IntegrationRuntimePolicyUpdate(BaseModel):
+    managed_runtime_enabled: Optional[bool] = None
+    runtime_owner: Optional[str] = None
+    refresh_minutes: Optional[int] = None
+    retry_backoff_minutes: Optional[list[int]] = None
+    token_rotation_days: Optional[int] = None
+    failure_recovery_mode: Optional[str] = None
 
 
 class IntegrationConnectionRead(BaseModel):

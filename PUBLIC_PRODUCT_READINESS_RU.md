@@ -127,9 +127,9 @@ production-решений от команды, которая используе
 
 ## Связь с релизом
 
-`v6.3.0` делает это публичное обещание более точным за счет:
+`v6.4.0` делает это публичное обещание более пригодным к исполнению за счет:
 
-- более сильной standards calibration для Google, AI-provider и experimental GEO signals
-- более безопасного runtime handling во frontend auth и packaged UI surfaces
-- более сильного standalone script DX, чтобы repo-level tooling работал без скрытых допущений
-- более строгой release hygiene для security, version alignment и container packaging
+- более сильной видимости managed-runtime policy для integrations и operator recovery
+- более явных tenant, organization, usage и onboarding поверхностей в продукте
+- proof-ops и portfolio rollup, которые делают follow-through после аудитов более заметным
+- более строгой release hygiene для version alignment между runtime, docs и frontend surfaces

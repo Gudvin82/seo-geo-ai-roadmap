@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from typing import Optional
 
 from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -23,6 +24,8 @@ from ..models import (
     TenantApiKey,
     TenantProfile,
     User,
+    Workspace,
+    WorkspaceMembership,
 )
 from ..schemas import (
     CIGatingRead,
@@ -1709,14 +1712,39 @@ def _project_rollup(db: Session, project: Project) -> dict[str, object]:
 
 @router.get("/portfolio-dashboard")
 def portfolio_dashboard(
-    workspace_id: int,
+    workspace_id: Optional[int] = None,
+    organization_id: Optional[int] = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> dict:
-    require_workspace_access(db, workspace_id, current_user, minimum_role="viewer")
+    accessible_workspace_ids = {
+        row.id
+        for row in db.query(Workspace)
+        .filter(Workspace.owner_user_id == current_user.id)
+        .all()
+    }
+    accessible_workspace_ids.update(
+        row.workspace_id
+        for row in db.query(WorkspaceMembership)
+        .filter(WorkspaceMembership.user_id == current_user.id)
+        .all()
+    )
+    if workspace_id is not None:
+        require_workspace_access(db, workspace_id, current_user, minimum_role="viewer")
+        workspace_ids = [workspace_id]
+    elif organization_id is not None:
+        workspace_ids = [
+            row.workspace_id
+            for row in db.query(TenantProfile)
+            .filter(TenantProfile.organization_id == organization_id)
+            .all()
+            if row.workspace_id in accessible_workspace_ids
+        ]
+    else:
+        workspace_ids = sorted(accessible_workspace_ids)
     projects = (
         db.query(Project)
-        .filter(Project.workspace_id == workspace_id)
+        .filter(Project.workspace_id.in_(workspace_ids or [0]))
         .order_by(Project.id.asc())
         .all()
     )
@@ -1731,8 +1759,47 @@ def portfolio_dashboard(
         for row in rows
         if row["latest_ai_citation_score"]
     ]
+    workspace_breakdown = []
+    for target_workspace_id in workspace_ids:
+        workspace_rows = [
+            row
+            for row, project in zip(rows, projects)
+            if project.workspace_id == target_workspace_id
+        ]
+        workspace = db.get(Workspace, target_workspace_id)
+        workspace_breakdown.append(
+            {
+                "workspace_id": target_workspace_id,
+                "workspace_name": workspace.name if workspace else f"Workspace {target_workspace_id}",
+                "project_count": len(workspace_rows),
+                "average_audit_score": round(
+                    sum(
+                        item["latest_audit_score"]
+                        for item in workspace_rows
+                        if item["latest_audit_score"] is not None
+                    )
+                    / max(
+                        1,
+                        len(
+                            [
+                                item
+                                for item in workspace_rows
+                                if item["latest_audit_score"] is not None
+                            ]
+                        ),
+                    ),
+                    1,
+                )
+                if any(
+                    item["latest_audit_score"] is not None for item in workspace_rows
+                )
+                else None,
+            }
+        )
     return {
         "workspace_id": workspace_id,
+        "organization_id": organization_id,
+        "workspace_ids": workspace_ids,
         "project_count": len(rows),
         "portfolio_summary": {
             "average_audit_score": round(sum(audit_scores) / len(audit_scores), 1)
@@ -1747,7 +1814,13 @@ def portfolio_dashboard(
             "projects_with_experiments": sum(
                 1 for row in rows if row["experiment_count"]
             ),
+            "projects_needing_attention": sum(
+                1
+                for row in rows
+                if row["latest_audit_score"] is not None and row["latest_audit_score"] < 70
+            ),
         },
+        "workspace_breakdown": workspace_breakdown,
         "projects": rows,
     }
 
@@ -1846,6 +1919,7 @@ def operator_board(
             "project_id": project_id,
             "tasks": [],
             "board_columns": ["open", "in_review", "verify", "rollback_ready"],
+            "summary": {"total_tasks": 0, "verify_ready": 0, "rollback_ready": 0},
         }
     findings = json.loads(latest_audit.finding_groups_json or "[]")
     bundle = build_task_bundle_from_audit_run(latest_audit, findings)
@@ -1868,7 +1942,85 @@ def operator_board(
         "project_id": project_id,
         "generated_from_audit_run": latest_audit.id,
         "board_columns": ["open", "in_review", "verify", "rollback_ready"],
+        "summary": {
+            "total_tasks": len(tasks),
+            "verify_ready": len([task for task in tasks if task["status"] == "verify"]),
+            "rollback_ready": len(
+                [task for task in tasks if task["status"] == "rollback_ready"]
+            ),
+        },
+        "lane_counts": {
+            lane: len([task for task in tasks if task["status"] == lane])
+            for lane in ["open", "in_review", "verify", "rollback_ready"]
+        },
         "tasks": tasks,
+    }
+
+
+@router.get("/proof-ops-center")
+def proof_ops_center(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    project, _ = require_project_access(
+        db, project_id, current_user, minimum_role="viewer"
+    )
+    evidence_rows = (
+        db.query(EvidenceRecord)
+        .filter(EvidenceRecord.project_id == project_id)
+        .order_by(EvidenceRecord.id.desc())
+        .all()
+    )
+    experiment_rows = (
+        db.query(ExperimentRecord)
+        .filter(ExperimentRecord.project_id == project_id)
+        .order_by(ExperimentRecord.id.desc())
+        .all()
+    )
+    confidence_counts = {"weak": 0, "partial": 0, "strong": 0}
+    for row in experiment_rows:
+        confidence_counts[row.confidence_label] = (
+            confidence_counts.get(row.confidence_label, 0) + 1
+        )
+    return {
+        "project_id": project.id,
+        "project_name": project.name,
+        "summary": {
+            "evidence_count": len(evidence_rows),
+            "experiment_count": len(experiment_rows),
+            "strong_experiments": confidence_counts.get("strong", 0),
+            "public_fact_records": len(
+                [row for row in evidence_rows if row.label_type == "public_fact"]
+            ),
+        },
+        "confidence_distribution": confidence_counts,
+        "recent_evidence": [
+            {
+                "id": row.id,
+                "title": row.title,
+                "label_type": row.label_type,
+                "summary": row.summary,
+                "created_at": row.created_at.isoformat(),
+            }
+            for row in evidence_rows[:5]
+        ],
+        "recent_experiments": [
+            {
+                "id": row.id,
+                "source_type": row.source_type,
+                "source_id": row.source_id,
+                "confidence_label": row.confidence_label,
+                "change_summary": row.change_summary,
+                "created_at": row.created_at.isoformat(),
+            }
+            for row in experiment_rows[:5]
+        ],
+        "recommended_next_steps": [
+            "capture at least one public before/after proof item per major fix lane",
+            "promote strong experiments into client-safe exports and case libraries",
+            "attach evidence links to rollback or verify steps in the operator board",
+        ],
     }
 
 

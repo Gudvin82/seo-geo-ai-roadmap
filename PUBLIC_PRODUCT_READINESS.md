@@ -126,9 +126,9 @@ If you want to prove the repo matches the public post, use this path:
 
 ## Release alignment
 
-`v6.3.0` is the release that makes this public promise more precise by adding:
+`v6.4.0` is the release that makes this public promise more execution-ready by adding:
 
-- stronger standards calibration for Google, AI-provider, and experimental GEO signals
-- safer runtime handling across frontend auth and packaged UI surfaces
-- stronger standalone script DX so repo-level tooling works without hidden assumptions
-- stricter release hygiene for security, version alignment, and container packaging
+- stronger managed-runtime policy visibility for integrations and operator recovery
+- clearer tenant, organization, usage, and onboarding product surfaces
+- proof-ops and portfolio rollups that make follow-through more visible after audits
+- stricter release hygiene for version alignment across runtime, docs, and frontend surfaces

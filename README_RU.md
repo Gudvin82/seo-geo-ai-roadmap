@@ -175,19 +175,24 @@ discoverability. Она объединяет:
 - [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
 - [docs/ru/ai-citation-score.md](./docs/ru/ai-citation-score.md)
 
-## На чем сфокусирован v6.3.0
+## На чем сфокусирован v6.4.0
 
-`v6.3.0` делает repo более trustworthy operating system за счет того, что
-сближает публичные обещания, runtime behavior и script-first execution.
+`v6.4.0` делает repo более цельной операторской системой за счет того, что
+сближает сильный self-hosted foundation с ежедневной managed runtime,
+tenant, portfolio и proof-operations работой.
 
 Он добавляет:
 
-- более калиброванную GEO/AI guidance с разделением Google guidance, provider-specific AI signals и experimental extras
-- покрытие OAI-SearchBot и более сильную оценку multi-agent `robots.txt`
-- более безопасную обработку токенов во frontend и менее рискованные UI rendering paths
-- более полный frontend Docker package для scanner, graph, validator и operator surfaces
-- более строгую release и security hygiene для scans, docs и version alignment
-- более сильный standalone script DX, чтобы repo-level tooling соответствовал обещанию AI-agent-ready
+- управление managed-runtime policy, чтобы refresh, retry, token rotation и
+  recovery expectations можно было задавать из продуктового слоя
+- organization switcher, tenant usage health, onboarding checklist и более
+  сильный tenant overview для команд, которые строят свой сервис
+- portfolio rollup по нескольким workspace и proof-ops center, который
+  объединяет evidence, experiments, confidence distribution и next steps
+- более сильный operator board summary, чтобы lane pressure, ownership и
+  follow-through были видны не только в raw JSON
+- более аккуратное выравнивание runtime contracts, frontend surfaces, docs и
+  текущих version markers
 
 ## Текущие границы
 

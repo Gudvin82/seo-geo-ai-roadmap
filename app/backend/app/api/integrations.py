@@ -15,6 +15,7 @@ from ..schemas import (
     IntegrationConnectionRead,
     IntegrationContractsResponse,
     IntegrationDetailRead,
+    IntegrationRuntimePolicyUpdate,
     IntegrationSourceContractRead,
     IntegrationSyncEventRead,
     IntegrationVerificationMatrixRead,
@@ -159,6 +160,35 @@ def create_integration(
         metadata={"source_type": row.source_type, "label": row.label},
     )
     db.commit()
+    return _serialize(row)
+
+
+@router.patch("/{integration_id}/runtime-policy", response_model=IntegrationConnectionRead)
+def update_integration_runtime_policy(
+    integration_id: int,
+    payload: IntegrationRuntimePolicyUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> IntegrationConnectionRead:
+    row = db.get(IntegrationConnection, integration_id)
+    if not row:
+        raise HTTPException(status_code=404, detail="Integration not found.")
+    require_project_access(db, row.project_id, current_user, minimum_role="editor")
+    config = json.loads(row.config_json or "{}")
+    updates = payload.model_dump(exclude_unset=True)
+    config.update(updates)
+    row.config_json = json.dumps(config, ensure_ascii=False)
+    db.add(row)
+    record_audit_log(
+        db,
+        "integration.runtime_policy_updated",
+        user_id=current_user.id,
+        workspace_id=row.workspace_id,
+        project_id=row.project_id,
+        metadata={"integration_id": row.id, "updated_fields": sorted(updates.keys())},
+    )
+    db.commit()
+    db.refresh(row)
     return _serialize(row)
 
 
@@ -478,8 +508,12 @@ def integration_runtime_center(
     )
     rows: list[dict] = []
     managed_ready = 0
+    live_ready = 0
     ru_surfaces = 0
     seo_surfaces = 0
+    auth_gaps = 0
+    recovery_backlog: list[dict] = []
+    owner_queue: list[dict] = []
     for row in integration_rows:
         snapshot = json.loads(row.latest_snapshot_json or "{}")
         runtime_profile = integration_runtime_profile(
@@ -496,6 +530,10 @@ def integration_runtime_center(
         )
         if runtime_profile["runtime_level"] == "managed_runtime":
             managed_ready += 1
+        if runtime_profile["runtime_level"] in {"managed_runtime", "live_runtime"}:
+            live_ready += 1
+        if not runtime_profile["credential_ready"]:
+            auth_gaps += 1
         if row.source_type.startswith("yandex") or row.source_type in {
             "alice_ai_visibility",
             "vk_ads",
@@ -526,11 +564,42 @@ def integration_runtime_center(
                 ],
             }
         )
+        if diagnostics["checks"]["credentials"] == "missing":
+            owner_queue.append(
+                {
+                    "source_type": row.source_type,
+                    "label": row.label,
+                    "owner": runtime_profile["runtime_owner"],
+                    "action": "configure credentials and rerun first sync",
+                    "priority": "high",
+                }
+            )
+        elif diagnostics["checks"]["snapshot_mode"] == "starter_or_stub":
+            owner_queue.append(
+                {
+                    "source_type": row.source_type,
+                    "label": row.label,
+                    "owner": runtime_profile["runtime_owner"],
+                    "action": "replace starter snapshot with live feed or reviewed export",
+                    "priority": "medium",
+                }
+            )
+        if runtime_profile["failure_recovery_mode"] != "retry_then_operator_review":
+            recovery_backlog.append(
+                {
+                    "source_type": row.source_type,
+                    "label": row.label,
+                    "recovery_mode": runtime_profile["failure_recovery_mode"],
+                    "retry_backoff_minutes": runtime_profile["retry_backoff_minutes"],
+                }
+            )
     return {
         "project_id": project_id,
         "summary": {
             "total_integrations": len(rows),
             "managed_runtime_ready": managed_ready,
+            "live_runtime_ready": live_ready,
+            "auth_gaps": auth_gaps,
             "ru_market_surfaces": ru_surfaces,
             "seo_intelligence_surfaces": seo_surfaces,
         },
@@ -541,6 +610,17 @@ def integration_runtime_center(
             "treat keyword, competitor, authority, and rank data as one SEO intelligence layer",
             "attach sync diagnostics to executive and delivery workflows",
         ],
+        "managed_runtime_gaps": [
+            "credentials missing" if auth_gaps else None,
+            "some integrations still run on starter snapshots"
+            if any(
+                row["diagnostics"]["checks"]["snapshot_mode"] == "starter_or_stub"
+                for row in rows
+            )
+            else None,
+        ],
+        "owner_queue": owner_queue,
+        "recovery_backlog": recovery_backlog,
         "rows": rows,
     }
 

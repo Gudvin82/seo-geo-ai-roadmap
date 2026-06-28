@@ -767,6 +767,13 @@ def test_workspace_project_and_audit_flow(
     )
     assert organization.status_code == 200
 
+    organization_switcher = client.get(
+        "/api/v1/saas/organization-switcher",
+        headers=auth_headers,
+    )
+    assert organization_switcher.status_code == 200
+    assert organization_switcher.json()["workspaces"]
+
     tenant_profile = client.post(
         "/api/v1/saas/tenant-profiles",
         json={
@@ -790,6 +797,19 @@ def test_workspace_project_and_audit_flow(
     )
     assert tenant_overview.status_code == 200
     assert tenant_overview.json()["roles_supported"]
+    assert "usage_health" in tenant_overview.json()
+    assert "quota_alerts" in tenant_overview.json()
+
+    tenant_profile_updated = client.patch(
+        f"/api/v1/saas/tenant-profiles/{tenant_profile.json()['id']}",
+        json={
+            "usage": {"monthly_syncs_used": 160},
+            "tenant_settings": {"managed_mode": True, "executive_rollups": True},
+        },
+        headers=auth_headers,
+    )
+    assert tenant_profile_updated.status_code == 200
+    assert tenant_profile_updated.json()["usage"]["monthly_syncs_used"] == 160
 
     workspace_catalog = client.get(
         "/api/v1/saas/workspace-catalog",
@@ -809,6 +829,24 @@ def test_workspace_project_and_audit_flow(
     )
     assert api_key.status_code == 200
     assert api_key.json()["plain_text_token"].startswith("sgai_")
+
+    integration_runtime_policy = client.patch(
+        f"/api/v1/integrations/{integration_id}/runtime-policy",
+        json={
+            "managed_runtime_enabled": True,
+            "runtime_owner": "growth-ops",
+            "refresh_minutes": 240,
+            "retry_backoff_minutes": [5, 30, 120],
+            "token_rotation_days": 45,
+            "failure_recovery_mode": "retry_then_fallback_owner",
+        },
+        headers=auth_headers,
+    )
+    assert integration_runtime_policy.status_code == 200
+    assert (
+        integration_runtime_policy.json()["runtime_profile"]["managed_runtime_enabled"]
+        is True
+    )
 
     evidence = client.post(
         "/api/v1/proof/evidence",
@@ -850,6 +888,13 @@ def test_workspace_project_and_audit_flow(
     assert proof_timeline.status_code == 200
     assert proof_timeline.json()["items"]
 
+    proof_ops_center = client.get(
+        f"/api/v1/settings/proof-ops-center?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert proof_ops_center.status_code == 200
+    assert proof_ops_center.json()["summary"]["evidence_count"] >= 1
+
     generation_contracts = client.get(
         "/api/v1/generation/contracts", headers=auth_headers
     )
@@ -857,7 +902,7 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v6.3.0"
+        generation_contracts.json()["project_generation_contract_version"] == "v6.4.0"
     )
 
     seo_intelligence = client.get(
@@ -1019,6 +1064,14 @@ def test_workspace_project_and_audit_flow(
     )
     assert portfolio_dashboard.status_code == 200
     assert portfolio_dashboard.json()["projects"]
+    assert portfolio_dashboard.json()["workspace_breakdown"]
+
+    org_portfolio_dashboard = client.get(
+        f"/api/v1/settings/portfolio-dashboard?organization_id={organization.json()['id']}",
+        headers=auth_headers,
+    )
+    assert org_portfolio_dashboard.status_code == 200
+    assert org_portfolio_dashboard.json()["projects"]
 
     mention_reputation = client.get(
         f"/api/v1/settings/mention-reputation-center?project_id={project_id}",
@@ -1033,6 +1086,7 @@ def test_workspace_project_and_audit_flow(
     )
     assert operator_board.status_code == 200
     assert operator_board.json()["board_columns"]
+    assert operator_board.json()["summary"]["total_tasks"] >= 1
 
     proof_export = client.get(
         f"/api/v1/proof/export-pack?project_id={project_id}",

@@ -1,5 +1,21 @@
 # Changelog
 
+## v6.4.0 — Managed Runtime Delivery, Portfolio Rollups, and Proof-Ops Center
+
+- Added runtime-policy editing for integrations so operators can govern
+  managed-runtime mode, sync cadence, retry behavior, token rotation, failure
+  recovery, and notes from the app layer
+- Added organization-switcher, stronger tenant overview, onboarding checklist,
+  quota alerts, and usage-health signals for teams turning the repo into their
+  own service operation
+- Expanded portfolio reporting so operators can review multiple workspaces or
+  whole organizations with workspace breakdowns and projects that need
+  attention
+- Added `proof-ops-center` plus richer frontend rendering for evidence,
+  experiments, confidence distribution, and recommended next steps
+- Strengthened operator board summaries and aligned active runtime, frontend,
+  and documentation version markers around `v6.4.0`
+
 ## v6.3.0 — Standards Calibration, Script-First DX, and Safer Runtime Delivery
 
 - Recalibrated current methodology, checklist, and GEO docs so `llms.txt`,
