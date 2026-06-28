@@ -1,6 +1,6 @@
 # Карта документации
 
-Это самый короткий путь по репозиторию после `v6.8.0`.
+Это самый короткий путь по репозиторию после `v6.8.5`.
 
 ## Идите в таком порядке
 
@@ -34,8 +34,9 @@
 - [Case Library](./docs/ru/case-library.md)
 - [Synthetic Cases](./docs/ru/synthetic-cases.md)
 - [Issue Pack Workflow](./docs/ru/issue-pack-workflow.md)
+- [Community and Launch](./docs/ru/community-and-launch.md)
 - [GEO and AI Operations Playbook](./docs/ru/geo-ai-operations-playbook.md)
-- [Сводка релиза v6.8.0](./docs/ru/v680-release.md)
+- [Сводка релиза v6.8.5](./docs/ru/v685-release.md)
 
 ## Основа доказательств и границ
 
@@ -46,6 +47,9 @@
 - Архитектурная справка: [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
 - Путь поддержки: [SUPPORT.md](./SUPPORT.md)
 - Путь безопасности: [SECURITY.md](./SECURITY.md)
+- Community path: [COMMUNITY_RU.md](./COMMUNITY_RU.md)
+- Showcase path: [SHOWCASE_RU.md](./SHOWCASE_RU.md)
+- Launch pack: [LAUNCH_PACK_RU.md](./LAUNCH_PACK_RU.md)
 
 ## Исторические и versioned материалы
 

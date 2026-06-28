@@ -79,5 +79,6 @@ Meaningful contributors can be recognized in:
 Use the current support path:
 
 - [SUPPORT.md](./SUPPORT.md)
+- [COMMUNITY.md](./COMMUNITY.md)
 - open a GitHub issue for a concrete bug or broken path
 - use discussions/community surfaces when they are enabled in the public repo

@@ -22,9 +22,9 @@ enterprise SSO и SLA от автора репозитория.
 
 Контекст последнего релиза:
 
-- `v6.8.0` добавляет более сильный tooling для proof, case-library, synthetic
-  training и implementation-handoff поверх operator-tooling базы, введенной в
-  `v6.7.5`
+- `v6.8.5` добавляет community, launch и contributor-growth layer поверх более
+  сильного tooling для proof, case-library, synthetic training и
+  implementation-handoff, введенного в `v6.8.0`
 
 ## Что production-ready уже сегодня
 
@@ -39,6 +39,7 @@ enterprise SSO и SLA от автора репозитория.
 - provider-backed AI layer для cloud и local runtimes
 - CI workflows для markdown, scripts, docs, Python tests, links и security scans
 - public proof surfaces, включая реальные кейсы и demo screenshots
+- launch-safe public entrypoints для showcase, contribution и community routing
 
 ## Что уже сильное, но пока на уровне foundation
 

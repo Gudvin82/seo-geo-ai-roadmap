@@ -927,7 +927,7 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v6.8.0"
+        generation_contracts.json()["project_generation_contract_version"] == "v6.8.5"
     )
 
     seo_intelligence = client.get(
@@ -1072,9 +1072,28 @@ def test_workspace_project_and_audit_flow(
     assert docs_consolidation_center.status_code == 200
     assert docs_consolidation_center.json()["current_entrypoints"]
 
+    community_participation_center = client.get(
+        "/api/v1/settings/community-participation-center", headers=auth_headers
+    )
+    assert community_participation_center.status_code == 200
+    assert community_participation_center.json()["intake_paths"]
+
+    community_launch_center = client.get(
+        "/api/v1/settings/community-launch-center", headers=auth_headers
+    )
+    assert community_launch_center.status_code == 200
+    assert community_launch_center.json()["launch_assets"]
+
+    community_showcase_center = client.get(
+        "/api/v1/settings/community-showcase-center", headers=auth_headers
+    )
+    assert community_showcase_center.status_code == 200
+    assert community_showcase_center.json()["showcase_tracks"]
+
     repo_assets = client.get("/api/v1/settings/repo-assets", headers=auth_headers)
     assert repo_assets.status_code == 200
     assert repo_assets.json()["tooling_boosters"]
+    assert repo_assets.json()["community_surfaces"]
 
     managed_integration_center = client.get(
         "/api/v1/settings/managed-integration-center", headers=auth_headers

@@ -1,6 +1,6 @@
 # Documentation Index
 
-This is the shortest path through the repository after `v6.8.0`.
+This is the shortest path through the repository after `v6.8.5`.
 
 ## Start in this order
 
@@ -34,8 +34,9 @@ This is the shortest path through the repository after `v6.8.0`.
 - [Case Library](./docs/en/case-library.md)
 - [Synthetic Cases](./docs/en/synthetic-cases.md)
 - [Issue Pack Workflow](./docs/en/issue-pack-workflow.md)
+- [Community and Launch](./docs/en/community-and-launch.md)
 - [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
-- [v6.8.0 Release Summary](./docs/en/v680-release.md)
+- [v6.8.5 Release Summary](./docs/en/v685-release.md)
 
 ## Core proof and boundaries
 
@@ -46,6 +47,9 @@ This is the shortest path through the repository after `v6.8.0`.
 - Architecture note: [ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md)
 - Support path: [SUPPORT.md](./SUPPORT.md)
 - Security path: [SECURITY.md](./SECURITY.md)
+- Community path: [COMMUNITY.md](./COMMUNITY.md)
+- Showcase path: [SHOWCASE.md](./SHOWCASE.md)
+- Launch pack: [LAUNCH_PACK.md](./LAUNCH_PACK.md)
 
 ## Historical and versioned materials
 

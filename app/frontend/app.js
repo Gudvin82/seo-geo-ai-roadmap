@@ -56,6 +56,9 @@ const state = {
   tenantAdminConsole: {},
   docsConsolidationCenter: {},
   managedIntegrationCenter: {},
+  communityParticipationCenter: {},
+  communityLaunchCenter: {},
+  communityShowcaseCenter: {},
   runtimeOpsCenter: {},
   seoMaturityCenter: {},
   evidenceLab: {},
@@ -118,7 +121,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.8.0 proof, case library, synthetic training, and issue-pack maturity",
+      "v6.8.5 community, launch, and contributor growth layer",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -309,7 +312,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.8.0 proof, case library, synthetic training и issue-pack maturity",
+      "v6.8.5 community, launch, and contributor growth layer",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -861,6 +864,21 @@ function renderSaasCenter() {
     null,
     2,
   );
+  $("#community-participation-center").textContent = JSON.stringify(
+    state.communityParticipationCenter || {},
+    null,
+    2,
+  );
+  $("#community-launch-center").textContent = JSON.stringify(
+    state.communityLaunchCenter || {},
+    null,
+    2,
+  );
+  $("#community-showcase-center").textContent = JSON.stringify(
+    state.communityShowcaseCenter || {},
+    null,
+    2,
+  );
   $("#deployment-posture").textContent = JSON.stringify(
     state.deploymentPosture || {},
     null,
@@ -1352,6 +1370,9 @@ async function refreshSaasCenter() {
     apiRequest("/settings/productization-center", { headers: {} }),
     apiRequest("/settings/docs-consolidation-center", { headers: {} }),
     apiRequest("/settings/managed-integration-center", { headers: {} }),
+    apiRequest("/settings/community-participation-center", { headers: {} }),
+    apiRequest("/settings/community-launch-center", { headers: {} }),
+    apiRequest("/settings/community-showcase-center", { headers: {} }),
   ];
   if (state.selectedWorkspaceId) {
     requests.push(
@@ -1378,6 +1399,9 @@ async function refreshSaasCenter() {
     productizationCenter,
     docsConsolidationCenter,
     managedIntegrationCenter,
+    communityParticipationCenter,
+    communityLaunchCenter,
+    communityShowcaseCenter,
     portfolioDashboard,
     saasGrowthCenter,
     saasReadinessCenter,
@@ -1391,6 +1415,9 @@ async function refreshSaasCenter() {
   state.productizationCenter = productizationCenter || {};
   state.docsConsolidationCenter = docsConsolidationCenter || {};
   state.managedIntegrationCenter = managedIntegrationCenter || {};
+  state.communityParticipationCenter = communityParticipationCenter || {};
+  state.communityLaunchCenter = communityLaunchCenter || {};
+  state.communityShowcaseCenter = communityShowcaseCenter || {};
   state.portfolioDashboard = portfolioDashboard || {};
   state.saasGrowthCenter = saasGrowthCenter || {};
   state.saasReadinessCenter = saasReadinessCenter || {};

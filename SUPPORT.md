@@ -19,6 +19,8 @@ reasonable, and how to report something clearly.
    - [DOCS_INDEX.md](./DOCS_INDEX.md)
    - [WALKTHROUGH.md](./WALKTHROUGH.md)
    - [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
+   - [COMMUNITY.md](./COMMUNITY.md)
+   - [LAUNCH_PACK.md](./LAUNCH_PACK.md)
 2. If the problem is concrete, open a GitHub issue.
 3. If the problem is security-sensitive, use [SECURITY.md](./SECURITY.md).
 

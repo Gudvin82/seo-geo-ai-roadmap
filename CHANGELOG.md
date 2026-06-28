@@ -1,5 +1,18 @@
 # Changelog
 
+## v6.8.5 — Community, Launch, and Contributor Growth Layer
+
+- Added root community-facing entrypoints: `COMMUNITY*`, `SHOWCASE*`, and
+  `LAUNCH_PACK*`
+- Added `scripts/community_showcase_builder.py` so proof and showcase materials
+  can be indexed into a compact public-facing surface
+- Added `scripts/launch_pack_generator.py` so operators can generate a safer
+  public launch narrative without overclaiming hosted-SaaS maturity
+- Added app-level community participation, launch, and showcase centers so this
+  layer is visible inside the self-hosted product and not only in markdown
+- Updated current-docs routing, public readiness context, release markers, and
+  tests around the new `v6.8.5` community and launch layer
+
 ## v6.8.0 — Proof, Case Library, Synthetic Training Packs, and Issue-Pack Maturity
 
 - Added `scripts/case_library_builder.py` so bounded public and synthetic cases

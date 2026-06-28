@@ -176,6 +176,8 @@ def repo_assets() -> dict:
             "scripts/case_library_builder.py",
             "scripts/synthetic_case_builder.py",
             "scripts/issue_pack_generator.py",
+            "scripts/community_showcase_builder.py",
+            "scripts/launch_pack_generator.py",
             "examples/semantic-keywords-example.txt",
         ],
         "glossary": ["GLOSSARY.md", "GLOSSARY_RU.md"],
@@ -192,6 +194,14 @@ def repo_assets() -> dict:
             "integrations/telegram/bot_stub.py",
         ],
         "managed_cloud": ["infra/k8s/"],
+        "community_surfaces": [
+            "COMMUNITY.md",
+            "COMMUNITY_RU.md",
+            "SHOWCASE.md",
+            "SHOWCASE_RU.md",
+            "LAUNCH_PACK.md",
+            "LAUNCH_PACK_RU.md",
+        ],
     }
 
 
@@ -278,6 +288,120 @@ def docs_consolidation_center() -> dict:
             "treat versioned release docs as proof and historical slices, not the main explanation path",
             "promote repeat-used release lessons into current root docs instead of cloning more one-off docs",
         ],
+    }
+
+
+@router.get("/community-participation-center")
+def community_participation_center() -> dict:
+    return {
+        "purpose": (
+            "Make it obvious how operators, AI-agent users, and contributors can "
+            "submit fixes, cases, ideas, and launch feedback."
+        ),
+        "intake_paths": [
+            {
+                "id": "bug_report",
+                "entrypoint": ".github/ISSUE_TEMPLATE/bug-report.md",
+                "best_for": "broken path, mismatch, runtime issue",
+            },
+            {
+                "id": "content_suggestion",
+                "entrypoint": ".github/ISSUE_TEMPLATE/content-suggestion.md",
+                "best_for": "docs, checklists, templates, prompts",
+            },
+            {
+                "id": "proof_case_request",
+                "entrypoint": ".github/ISSUE_TEMPLATE/proof-or-case-request.md",
+                "best_for": "bounded public proof, synthetic case, issue-pack improvement",
+            },
+        ],
+        "supporting_docs": [
+            "COMMUNITY.md",
+            "COMMUNITY_RU.md",
+            "CONTRIBUTING.md",
+            "SUPPORT.md",
+        ],
+        "best_submissions": [
+            "bounded public case with fact/inference boundaries",
+            "reproducible deployment or script issue",
+            "EN/RU parity fix",
+            "launch feedback from a real operator or AI coding agent",
+        ],
+    }
+
+
+@router.get("/community-launch-center")
+def community_launch_center() -> dict:
+    return {
+        "promise": (
+            "Give operators a safe public launch narrative and a stronger route "
+            "from product use into community growth."
+        ),
+        "safe_public_positioning": [
+            "free self-hosted SEO/GEO/AI platform",
+            "AI-agent-ready repository with app layer and scripts",
+            "foundation for your own audit or scanner service",
+        ],
+        "avoid_claims": [
+            "maintainer-operated hosted SaaS",
+            "guaranteed rankings or guaranteed AI citations",
+            "fully autonomous site changes without human review",
+        ],
+        "launch_assets": [
+            "LAUNCH_PACK.md",
+            "LAUNCH_PACK_RU.md",
+            "SHOWCASE.md",
+            "SHOWCASE_RU.md",
+            "docs/en/community-and-launch.md",
+            "docs/ru/community-and-launch.md",
+        ],
+        "best_ctas": [
+            "star the repository",
+            "share a bounded case or proof pack",
+            "report onboarding friction",
+            "submit a content or tooling improvement",
+        ],
+    }
+
+
+@router.get("/community-showcase-center")
+def community_showcase_center() -> dict:
+    return {
+        "purpose": "Highlight the strongest current proof, product, and script surfaces.",
+        "showcase_tracks": [
+            {
+                "id": "public_cases",
+                "entrypoints": [
+                    "REAL_CASES.md",
+                    "REAL_CASES_RU.md",
+                    "docs/en/v430-case-anmalishev.md",
+                    "docs/en/v430-case-auditguard-sitepravo.md",
+                ],
+            },
+            {
+                "id": "synthetic_training",
+                "entrypoints": [
+                    "examples/synthetic-case-example-en.md",
+                    "examples/synthetic-case-example-ru.md",
+                    "docs/en/synthetic-cases.md",
+                    "docs/ru/synthetic-cases.md",
+                ],
+            },
+            {
+                "id": "working_tools",
+                "entrypoints": [
+                    "scripts/README.md",
+                    "scripts/README_RU.md",
+                    "docs/en/checklist-generator.md",
+                    "docs/en/proof-pack-playbook.md",
+                    "docs/en/issue-pack-workflow.md",
+                ],
+            },
+        ],
+        "operator_rule": (
+            "Use public cases as bounded evidence, synthetic cases as labeled "
+            "training material, and tool docs as implementation support."
+        ),
     }
 
 

@@ -22,9 +22,9 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 
 Latest release context:
 
-- `v6.8.0` adds stronger proof, case-library, synthetic training, and
-  implementation-handoff tooling on top of the operator-tooling base introduced
-  in `v6.7.5`
+- `v6.8.5` adds a community, launch, and contributor-growth layer on top of
+  the stronger proof, case-library, synthetic training, and implementation
+  handoff tooling introduced in `v6.8.0`
 
 ## What is production-ready today
 
@@ -39,6 +39,7 @@ Latest release context:
 - provider-backed AI layer for cloud and local runtimes
 - CI workflows for markdown, scripts, docs, Python tests, links, and security scans
 - public proof surfaces, including real case framing and demo screenshots
+- launch-safe public entrypoints for showcase, contribution, and community routing
 
 ## What is strong but still foundation-level
 

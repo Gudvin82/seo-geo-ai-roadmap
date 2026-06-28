@@ -245,19 +245,20 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.8.0
+## На чем сфокусирован v6.8.5
 
-`v6.8.0` усиливает proof, case-library и working-tool layer, чтобы
-репозиторий было проще использовать для public evidence, training и
-implementation handoff.
+`v6.8.5` добавляет запланированный community, launch и contributor-growth
+layer, чтобы репозиторий было проще публично представлять, улучшать и
+маршрутизировать без overclaiming hosted SaaS maturity.
 
 Он добавляет:
 
-- `scripts/case_library_builder.py`
-- `scripts/synthetic_case_builder.py`
-- `scripts/issue_pack_generator.py`
-- [Synthetic Cases](./docs/ru/synthetic-cases.md)
-- [Issue Pack Workflow](./docs/ru/issue-pack-workflow.md)
+- `scripts/community_showcase_builder.py`
+- `scripts/launch_pack_generator.py`
+- [COMMUNITY_RU.md](./COMMUNITY_RU.md)
+- [SHOWCASE_RU.md](./SHOWCASE_RU.md)
+- [LAUNCH_PACK_RU.md](./LAUNCH_PACK_RU.md)
+- [Community and Launch](./docs/ru/community-and-launch.md)
 
 ## Лицензия
 

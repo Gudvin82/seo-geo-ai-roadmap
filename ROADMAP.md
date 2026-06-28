@@ -97,6 +97,13 @@ Main deliverables:
 - launch content pack inside the repo
 - clearer public project participation surface
 
+Delivered in this wave:
+
+- root community, showcase, and launch-pack entrypoints
+- community showcase builder and launch-pack generator
+- stronger contribution and participation routing
+- app-level community, launch, and showcase centers
+
 ## What Is Explicitly Out Of Scope For This Roadmap
 
 These four releases do not promise:

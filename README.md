@@ -243,19 +243,20 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.8.0 focus
+## v6.8.5 focus
 
-`v6.8.0` strengthens the proof, case-library, and working-tool layer so the
-repository is easier to use for public evidence, training, and implementation
-handoff.
+`v6.8.5` adds the planned community, launch, and contributor-growth layer so
+the repository is easier to present publicly, contribute to, and route through
+without overclaiming hosted-SaaS maturity.
 
 It adds:
 
-- `scripts/case_library_builder.py`
-- `scripts/synthetic_case_builder.py`
-- `scripts/issue_pack_generator.py`
-- [Synthetic Cases](./docs/en/synthetic-cases.md)
-- [Issue Pack Workflow](./docs/en/issue-pack-workflow.md)
+- `scripts/community_showcase_builder.py`
+- `scripts/launch_pack_generator.py`
+- [COMMUNITY.md](./COMMUNITY.md)
+- [SHOWCASE.md](./SHOWCASE.md)
+- [LAUNCH_PACK.md](./LAUNCH_PACK.md)
+- [Community and Launch](./docs/en/community-and-launch.md)
 
 ## License
 
