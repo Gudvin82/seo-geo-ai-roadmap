@@ -926,7 +926,7 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v6.6.0"
+        generation_contracts.json()["project_generation_contract_version"] == "v6.7.0"
     )
 
     seo_intelligence = client.get(

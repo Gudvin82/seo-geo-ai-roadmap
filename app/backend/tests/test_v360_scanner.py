@@ -137,7 +137,7 @@ def test_scan_job_lifecycle_and_artifacts(client, settings, monkeypatch) -> None
         "csv",
         "html",
     }
-    assert all(item["schema_version"] == "v6.6.0" for item in artifact_payload)
+    assert all(item["schema_version"] == "v6.7.0" for item in artifact_payload)
 
     result = client.get(
         f"/api/v1/scan-jobs/{payload['scan_job_id']}/result",

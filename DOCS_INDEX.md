@@ -1,6 +1,6 @@
 # Documentation Index
 
-This is the shortest path through the repository after `v6.6.0`.
+This is the shortest path through the repository after `v6.7.0`.
 
 ## Start in this order
 
@@ -12,6 +12,7 @@ This is the shortest path through the repository after `v6.6.0`.
 6. [REAL_CASES.md](./REAL_CASES.md)
 7. [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md) or [WALKTHROUGH.md](./WALKTHROUGH.md)
 8. [AI_TASK_PACKS.md](./AI_TASK_PACKS.md)
+9. [docs/i18n-status.md](./docs/i18n-status.md)
 
 ## Pick your mode
 
@@ -29,7 +30,7 @@ This is the shortest path through the repository after `v6.6.0`.
 - [Semantic Core and Intent Playbook](./docs/en/semantic-core-and-intent-playbook.md)
 - [Competitor Gap and Authority Playbook](./docs/en/competitor-gap-and-authority-playbook.md)
 - [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
-- [v6.6.0 Release Summary](./docs/en/v660-release.md)
+- [v6.7.0 Release Summary](./docs/en/v670-release.md)
 
 ## Core proof and boundaries
 
@@ -38,6 +39,8 @@ This is the shortest path through the repository after `v6.6.0`.
 - Real cases: [REAL_CASES.md](./REAL_CASES.md)
 - Archive policy: [DOCS_ARCHIVE.md](./DOCS_ARCHIVE.md)
 - Architecture note: [ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md)
+- Support path: [SUPPORT.md](./SUPPORT.md)
+- Security path: [SECURITY.md](./SECURITY.md)
 
 ## Historical and versioned materials
 

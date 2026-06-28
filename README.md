@@ -3,17 +3,20 @@
 [![Version](https://img.shields.io/github/v/tag/Gudvin82/seo-geo-ai-roadmap?label=version)](https://github.com/Gudvin82/seo-geo-ai-roadmap/tags)
 [![License](https://img.shields.io/github/license/Gudvin82/seo-geo-ai-roadmap)](./LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/Gudvin82/seo-geo-ai-roadmap)](https://github.com/Gudvin82/seo-geo-ai-roadmap/commits/main)
-[![Markdown Lint](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/.github/workflows/markdown-lint.yml)
-[![Script Smoke Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/.github/workflows/script-smoke-tests.yml)
-[![Python Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/.github/workflows/python-tests.yml)
-[![Docs Build](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/.github/workflows/docs-site.yml)
-[![Security Scans](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/security-scans.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/.github/workflows/security-scans.yml)
+[![Markdown Lint](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/markdown-lint.yml)
+[![Script Smoke Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/script-smoke-tests.yml)
+[![Python Tests](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/python-tests.yml)
+[![Docs Build](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/docs-site.yml)
+[![Security Scans](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/security-scans.yml/badge.svg)](https://github.com/Gudvin82/seo-geo-ai-roadmap/actions/workflows/security-scans.yml)
 [![Docker](https://img.shields.io/badge/docker-self--hosted-2496ED?logo=docker&logoColor=white)](./docker-compose.yml)
 [![FastAPI](https://img.shields.io/badge/FastAPI-app-009688?logo=fastapi&logoColor=white)](./app/backend/app/main.py)
 
 ![SEO GEO AI Project Badge](./docs_site/assets/screenshots/project-badge-v530.png)
 
+[🇷🇺 Русская версия](./README_RU.md) | [🇬🇧 English alias](./README_EN.md) | [Docs map](./DOCS_INDEX.md)
+
 Free, transparent, self-hosted platform for SEO, GEO, and AI discoverability.
+
 It combines:
 
 - a methodology layer
@@ -22,12 +25,24 @@ It combines:
 - AI-agent task packs
 - bilingual operator and client-delivery flows
 
-[Русская версия](./README_RU.md)
-[Docs map](./DOCS_INDEX.md)
+## Table Of Contents
 
-## What this repository really is
+- [What This Is](#what-this-is)
+- [Who It Is For](#who-it-is-for)
+- [Visual Roadmap](#visual-roadmap)
+- [Quick Start In 5 Minutes](#quick-start-in-5-minutes)
+- [How To Use The Repository](#how-to-use-the-repository)
+- [Learning Paths](#learning-paths)
+- [Tools And Resources](#tools-and-resources)
+- [Cases And Proof](#cases-and-proof)
+- [Contributing And Support](#contributing-and-support)
+- [Project Roadmap](#project-roadmap)
+- [FAQ](#faq)
+- [License](#license)
 
-This repo should be read as a connected system with three layers:
+## What This Is
+
+This repo is a connected system with three layers:
 
 1. Framework
    Methodology, playbooks, prompts, checklists, templates, and scripts.
@@ -37,26 +52,7 @@ This repo should be read as a connected system with three layers:
 3. Service system
    A repeatable way to audit, prioritize, fix, verify, and re-run.
 
-The point is not “more docs”.
-
-The point is one end-to-end operating system that a human operator or AI coding
-agent can actually use.
-
-## The honest public promise
-
-Safe claims:
-
-- manual framework use
-- AI-agent-assisted audit and delivery
-- self-hosted foundation for your own scanner or audit service
-
-Not safe claims:
-
-- finished hosted SaaS with maintainer-operated uptime
-- enterprise product with zero setup
-- AI that silently fixes production sites by itself
-
-Read this before making public claims:
+Read the boundaries before making public claims:
 
 - [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
 - [WHAT_THIS_PROJECT_IS.md](./WHAT_THIS_PROJECT_IS.md)
@@ -64,150 +60,198 @@ Read this before making public claims:
 - [METHODOLOGY.md](./METHODOLOGY.md)
 - [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
 
-## Why it is different
+## Who It Is For
 
-Most repos in this space stop at one of these:
+Best fit:
 
-- a methodology with no runtime
-- a scanner with no honest methodology
-- a prompt collection with no product surface
-- a product shell with hidden scoring and unclear proof
+- agencies running recurring client audits
+- in-house SEO, content, GEO, and AI teams
+- founders building discoverability systems for their own sites
+- AI coding agents that need a clear repo-to-audit-to-delivery path
 
-This repository tries to connect:
+Not the right fit:
 
-- technical SEO
-- GEO and AI visibility
-- RU and Yandex reality
-- factual consistency
-- operator evidence
-- task export and repeatable delivery
+- teams expecting a maintainer-operated hosted SaaS
+- users who want black-box automation with no human review
+- anyone treating GEO as a replacement for technical SEO and content quality
 
-## Core path
+## Visual Roadmap
 
-If you are new, use this path first:
+The current learning and execution path is shown here:
 
-1. [README.md](./README.md)
-2. [METHODOLOGY.md](./METHODOLOGY.md)
-3. [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
-4. [REAL_CASES.md](./REAL_CASES.md)
-5. [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md) or [WALKTHROUGH.md](./WALKTHROUGH.md)
-6. [AI_TASK_PACKS.md](./AI_TASK_PACKS.md)
-7. [DOCS_ARCHIVE.md](./DOCS_ARCHIVE.md)
+![Discoverability OS Roadmap](./assets/roadmap-visual.svg)
 
-## Deep practical playbooks
+Supporting docs:
 
-These are the v6 “substance first” docs:
+- [DOCS_INDEX.md](./DOCS_INDEX.md)
+- [ROADMAP.md](./ROADMAP.md)
+- [docs/i18n-status.md](./docs/i18n-status.md)
 
-- [Technical SEO Deep Playbook](./docs/en/technical-seo-deep-playbook.md)
-- [Semantic Core and Intent Playbook](./docs/en/semantic-core-and-intent-playbook.md)
-- [Competitor Gap and Authority Playbook](./docs/en/competitor-gap-and-authority-playbook.md)
-- [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
+## Quick Start In 5 Minutes
 
-## SEO intelligence path
+### 1. Read the right entrypoint
+
+- Human operator: [WALKTHROUGH.md](./WALKTHROUGH.md)
+- AI coding agent: [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
+- Service builder: [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
+
+### 2. Choose one practical path
+
+- Audit a site: [AI_TASK_PACKS.md](./AI_TASK_PACKS.md)
+- Learn the system: [METHODOLOGY.md](./METHODOLOGY.md)
+- Deploy the stack: [DEPLOYMENT.md](./DEPLOYMENT.md)
+- Validate the stack: [VERIFY_DEPLOYMENT.md](./VERIFY_DEPLOYMENT.md)
+
+### 3. Run a local proof path
+
+```bash
+make turnkey-demo
+make verify-demo
+```
+
+### 4. Review one public proof path
+
+- [REAL_CASES.md](./REAL_CASES.md)
+- [docs/en/v600-case-anmalishev-audit.md](./docs/en/v600-case-anmalishev-audit.md)
+
+## How To Use The Repository
+
+There are three safe use modes:
+
+1. Manual framework use
+   Read the docs, playbooks, prompts, checklists, and apply them yourself.
+2. AI-agent-assisted audit and delivery
+   Give the repo to Cursor, Claude Code, Codex, VS Code, or a similar agent.
+3. Self-hosted product foundation
+   Deploy the platform under your own control and use it as the basis for your
+   own audit or scanner service.
+
+See the exact wording:
+
+- [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
+- [SUPPORT.md](./SUPPORT.md)
+- [SECURITY.md](./SECURITY.md)
+
+## Learning Paths
+
+### Path A: Learn The Methodology
+
+1. [METHODOLOGY.md](./METHODOLOGY.md)
+2. [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
+3. [docs/en/technical-seo-deep-playbook.md](./docs/en/technical-seo-deep-playbook.md)
+4. [docs/en/geo-ai-operations-playbook.md](./docs/en/geo-ai-operations-playbook.md)
+
+### Path B: Run Real Work
+
+1. [WALKTHROUGH.md](./WALKTHROUGH.md)
+2. [AI_TASK_PACKS.md](./AI_TASK_PACKS.md)
+3. [REAL_CASES.md](./REAL_CASES.md)
+4. `make turnkey-demo`
+
+### Path C: Use With An AI Agent
+
+1. [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
+2. [AGENTS.md](./AGENTS.md)
+3. [AI_TASK_PACKS.md](./AI_TASK_PACKS.md)
+4. [prompts/en/repo-site-audit-agent-prompt.md](./prompts/en/repo-site-audit-agent-prompt.md)
+
+### Path D: Build Your Own Service
+
+1. [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
+2. [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
+3. [DEPLOYMENT.md](./DEPLOYMENT.md)
+4. [PUBLIC_PRODUCT_READINESS.md](./PUBLIC_PRODUCT_READINESS.md)
+
+## Tools And Resources
+
+Current practical tools and helper paths:
 
 - `/api/v1/settings/seo-intelligence-center`
 - `scripts/keyword_research_stub.py`
 - `scripts/competitor_intelligence_stub.py`
 - `scripts/backlink_intelligence_stub.py`
 - `scripts/rank_tracking_stub.py`
+- `scripts/release_hygiene_check.py`
+- `scripts/version_consistency_check.py`
 
-## Evidence and cases
+Key repo resources:
+
+- [DOCS_INDEX.md](./DOCS_INDEX.md)
+- [DOCS_ARCHIVE.md](./DOCS_ARCHIVE.md)
+- [CONTRIBUTING.md](./CONTRIBUTING.md)
+- [ROADMAP.md](./ROADMAP.md)
+- [docs/i18n-status.md](./docs/i18n-status.md)
+
+## Cases And Proof
+
+Core evidence path:
 
 - [REAL_CASES.md](./REAL_CASES.md)
 - [anmalishev.ru public audit case](./docs/en/v600-case-anmalishev-audit.md)
 - [anmalishev.ru before/after case](./docs/en/v430-case-anmalishev.md)
 - [auditguard.ru + sitepravo.ru case](./docs/en/v430-case-auditguard-sitepravo.md)
 
-## AI-agent path
+Important rule:
 
-For Cursor, Claude Code, Codex, VS Code, or similar agents:
+- treat public proof as bounded evidence, not universal guarantees
+- separate facts, inferences, and operator judgment
 
-- [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md)
-- [AGENTS.md](./AGENTS.md)
-- [AI_TASK_PACKS.md](./AI_TASK_PACKS.md)
-- [prompts/en/repo-site-audit-agent-prompt.md](./prompts/en/repo-site-audit-agent-prompt.md)
-- [prompts/en/deploy-client-scanner-agent-prompt.md](./prompts/en/deploy-client-scanner-agent-prompt.md)
-- [prompts/en/improve-existing-site-agent-prompt.md](./prompts/en/improve-existing-site-agent-prompt.md)
+## Contributing And Support
 
-## Self-hosted path
+- Contribution guide: [CONTRIBUTING.md](./CONTRIBUTING.md)
+- Code of conduct: [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+- Support path: [SUPPORT.md](./SUPPORT.md)
+- Security reporting: [SECURITY.md](./SECURITY.md)
 
-- [DEPLOYMENT.md](./DEPLOYMENT.md)
-- [VERIFY_DEPLOYMENT.md](./VERIFY_DEPLOYMENT.md)
-- [ONE_CLICK_DEPLOY_OPTIONS.md](./ONE_CLICK_DEPLOY_OPTIONS.md)
-- [ONE_DAY_SERVICE_BLUEPRINT.md](./ONE_DAY_SERVICE_BLUEPRINT.md)
-- `make turnkey-demo`
+## Project Roadmap
 
-## What the checklists are, and what they are not
+The active release path is:
 
-The `checklists/` folder is intentionally compact.
+- `v6.7.0`: docs and core UX foundation
+- `v6.7.5`: GEO and classical SEO depth expansion
+- `v6.8.0`: proof, cases, and tool maturity
+- `v6.8.5`: community, launch, and contributor growth layer
 
-Those files are:
+Read the full plan:
 
-- quick execution cards
-- QA reminders
-- handoff summaries
+- [ROADMAP.md](./ROADMAP.md)
 
-They are not the full methodology by themselves.
+## FAQ
 
-For serious work, combine:
+### Is this already a public hosted SaaS?
 
-- one deep playbook
-- one checklist
-- one prompt or task pack
-- one script or app flow
-- one case or proof reference
+No. It is a free self-hosted platform and product foundation, not a
+maintainer-operated hosted service.
 
-## Transparent scoring
+### Can I give this repo to an AI coding agent?
 
-The repo does not claim a universal SEO truth score.
+Yes. That is a first-class supported use mode.
 
-It exposes:
+### Does this replace classic SEO?
 
-- overall audit scoring
-- priority scoring by impact / effort / confidence
-- AI Citation Score formula
-- benchmark status logic
-- heuristic script boundaries
+No. GEO and AI discoverability are a higher layer on top of technical SEO,
+semantic coverage, authority, trust, and conversion clarity.
 
-Read:
+### Is every integration fully production-ready and zero-touch?
 
-- [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
-- [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
+No. Some integrations are already stronger and more operational than others.
+Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.6.0 focus
+## v6.7.0 focus
 
-`v6.6.0` turns the repo into a more operator-ready multi-tenant platform by
-adding tenant admin visibility, managed-integration proof, docs
-consolidation, and stricter release hygiene on top of the `v6.5.0` maturity
-work.
+`v6.7.0` upgrades the documentation and onboarding layer so the repository feels
+closer to a real learning system and operator-ready open-source product, not
+just a growing collection of strong materials.
 
 It adds:
 
-- tenant-admin console for plan posture, quota pressure, onboarding state, and
-  API key visibility
-- managed-integration center that groups GSC, GA4, Ads, Yandex, local
-  business, Alice AI, and CrUX into one production-flow matrix
-- docs-consolidation center so current docs, AI-agent paths, service-builder
-  paths, and archive policy are explicit
-- richer frontend operator visibility for tenant, docs, and integration
-  maturity layers instead of backend-only surfaces
-- stronger release hygiene across runtime contracts, docs, frontend markers,
-  docs build, and syntax verification
+- a clearer hero, quick-start, learning-path, and proof-first root experience
+- a visual roadmap plus explicit language and documentation-status surfaces
+- stronger governance docs for support, security, and contributions
+- a rewritten roadmap around the actual next four release waves
+- a cleaner bilingual entry strategy across current docs, AI-agent paths, and
+  product-builder paths
 
-## Current boundaries
+## License
 
-Strong today:
-
-- self-hosted app
-- AI-agent-ready workflow
-- RU GEO and Yandex framing
-- evidence-first reporting
-- bounded scoring and repeatable audit flow
-
-Still foundation-level:
-
-- some integrations remain guided or starter-first
-- hosted SaaS maturity is outside the current promise
-- not every SEO subdiscipline is documented at “final agency bible” depth
-
-That boundary is intentional and public.
+See [LICENSE](./LICENSE).

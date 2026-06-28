@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860" role="img" aria-labelledby="title desc">
+  <title id="title">SEO GEO AI Discoverability OS roadmap</title>
+  <desc id="desc">Visual roadmap showing four layers: foundations, execution, GEO and AI operations, and product or proof maturity.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1726"/>
+      <stop offset="100%" stop-color="#12243a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#35d7a4"/>
+      <stop offset="100%" stop-color="#57a8ff"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 42px 'Helvetica Neue', Arial, sans-serif; fill: #ffffff; }
+      .subtitle { font: 400 19px 'Helvetica Neue', Arial, sans-serif; fill: #bfd4ea; }
+      .section { font: 700 24px 'Helvetica Neue', Arial, sans-serif; fill: #ffffff; }
+      .copy { font: 400 18px 'Helvetica Neue', Arial, sans-serif; fill: #dce8f5; }
+      .small { font: 400 15px 'Helvetica Neue', Arial, sans-serif; fill: #a8bdd5; }
+      .pill { font: 700 13px 'Helvetica Neue', Arial, sans-serif; fill: #0b1726; }
+      .done { fill: #35d7a4; }
+      .progress { fill: #ffd166; }
+      .next { fill: #57a8ff; }
+      .box { fill: rgba(255,255,255,0.06); stroke: rgba(255,255,255,0.15); stroke-width: 2; }
+    </style>
+  </defs>
+  <rect width="1400" height="860" rx="32" fill="url(#bg)"/>
+  <rect x="48" y="42" width="1304" height="64" rx="20" fill="rgba(255,255,255,0.05)"/>
+  <text x="72" y="84" class="title">SEO + GEO + AI Discoverability OS</text>
+  <text x="72" y="118" class="subtitle">Learning path, operator path, and product path in one visual map</text>
+
+  <rect x="70" y="150" width="285" height="250" rx="24" class="box"/>
+  <text x="94" y="190" class="section">Level 1: Foundations</text>
+  <text x="94" y="228" class="copy">• Methodology</text>
+  <text x="94" y="260" class="copy">• Technical SEO basics</text>
+  <text x="94" y="292" class="copy">• Semantic and intent basics</text>
+  <text x="94" y="324" class="copy">• Scoring transparency</text>
+  <text x="94" y="356" class="copy">• Public boundaries</text>
+  <rect x="94" y="374" width="110" height="28" rx="14" class="done"/>
+  <text x="123" y="393" class="pill">Active</text>
+  <text x="94" y="430" class="small">Primary docs: README, METHODOLOGY, SCORING, READINESS</text>
+
+  <rect x="390" y="150" width="285" height="250" rx="24" class="box"/>
+  <text x="414" y="190" class="section">Level 2: Execution</text>
+  <text x="414" y="228" class="copy">• Checklists and prompts</text>
+  <text x="414" y="260" class="copy">• Audit flows</text>
+  <text x="414" y="292" class="copy">• Reports and artifacts</text>
+  <text x="414" y="324" class="copy">• AI task packs</text>
+  <text x="414" y="356" class="copy">• Self-hosted onboarding</text>
+  <rect x="414" y="374" width="128" height="28" rx="14" class="progress"/>
+  <text x="443" y="393" class="pill">Matured</text>
+  <text x="414" y="430" class="small">Primary docs: WALKTHROUGH, START_HERE_FOR_AI, AI_TASK_PACKS</text>
+
+  <rect x="710" y="150" width="285" height="250" rx="24" class="box"/>
+  <text x="734" y="190" class="section">Level 3: GEO + AI Ops</text>
+  <text x="734" y="228" class="copy">• AI discoverability</text>
+  <text x="734" y="260" class="copy">• Yandex and RU reality</text>
+  <text x="734" y="292" class="copy">• Runtime ops</text>
+  <text x="734" y="324" class="copy">• SEO maturity layer</text>
+  <text x="734" y="356" class="copy">• Evidence lab</text>
+  <rect x="734" y="374" width="112" height="28" rx="14" class="progress"/>
+  <text x="762" y="393" class="pill">Strong</text>
+  <text x="734" y="430" class="small">Primary surfaces: runtime ops, SEO maturity, proof and RU GEO</text>
+
+  <rect x="1030" y="150" width="300" height="250" rx="24" class="box"/>
+  <text x="1054" y="190" class="section">Level 4: Product + Proof</text>
+  <text x="1054" y="228" class="copy">• Tenant admin</text>
+  <text x="1054" y="260" class="copy">• Managed integrations</text>
+  <text x="1054" y="292" class="copy">• Docs consolidation</text>
+  <text x="1054" y="324" class="copy">• Release hygiene</text>
+  <text x="1054" y="356" class="copy">• Multi-tenant operator UX</text>
+  <rect x="1054" y="374" width="128" height="28" rx="14" class="next"/>
+  <text x="1087" y="393" class="pill">v6.7 wave</text>
+  <text x="1054" y="430" class="small">Primary surfaces: docs UX, proof UX, service-builder clarity</text>
+
+  <path d="M356 276 L388 276" stroke="url(#accent)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M676 276 L708 276" stroke="url(#accent)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M996 276 L1028 276" stroke="url(#accent)" stroke-width="6" stroke-linecap="round"/>
+
+  <rect x="70" y="470" width="1260" height="300" rx="24" class="box"/>
+  <text x="96" y="518" class="section">Approved Release Path</text>
+
+  <rect x="96" y="548" width="286" height="170" rx="22" fill="rgba(53,215,164,0.10)" stroke="rgba(53,215,164,0.4)" stroke-width="2"/>
+  <text x="120" y="586" class="section">v6.7.0</text>
+  <text x="120" y="620" class="copy">Docs and core UX foundation</text>
+  <text x="120" y="654" class="small">README overhaul, visual roadmap, support/security, i18n status, current-docs routing</text>
+
+  <rect x="410" y="548" width="286" height="170" rx="22" fill="rgba(255,209,102,0.10)" stroke="rgba(255,209,102,0.4)" stroke-width="2"/>
+  <text x="434" y="586" class="section">v6.7.5</text>
+  <text x="434" y="620" class="copy">Depth expansion</text>
+  <text x="434" y="654" class="small">GEO deep dives, classical SEO depth, stronger calibrated methodology and checklists</text>
+
+  <rect x="724" y="548" width="286" height="170" rx="22" fill="rgba(87,168,255,0.10)" stroke="rgba(87,168,255,0.4)" stroke-width="2"/>
+  <text x="748" y="586" class="section">v6.8.0</text>
+  <text x="748" y="620" class="copy">Proof and tools</text>
+  <text x="748" y="654" class="small">Cases, proof packs, practical generators, stronger operator evidence and tooling</text>
+
+  <rect x="1038" y="548" width="268" height="170" rx="22" fill="rgba(196,132,252,0.10)" stroke="rgba(196,132,252,0.4)" stroke-width="2"/>
+  <text x="1062" y="586" class="section">v6.8.5</text>
+  <text x="1062" y="620" class="copy">Community and launch</text>
+  <text x="1062" y="654" class="small">Contributor funnel, launch pack, community docs, showcase, public participation paths</text>
+
+  <text x="96" y="798" class="small">Rule: every release must keep version markers aligned, tests green, docs build working, and public claims honest.</text>
+</svg>

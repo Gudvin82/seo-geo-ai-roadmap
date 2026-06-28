@@ -32,6 +32,16 @@ def main() -> int:
     for path, needle in checks.items():
         if needle not in read(path):
             failures.append(f"{path}:missing:{needle}")
+    existence_checks = [
+        "README_EN.md",
+        "SUPPORT.md",
+        "SECURITY.md",
+        "docs/i18n-status.md",
+        "assets/roadmap-visual.svg",
+    ]
+    for path in existence_checks:
+        if not (ROOT / path).exists():
+            failures.append(f"{path}:missing")
     release_doc = ROOT / "docs" / "en" / f"v{app_version.replace('.', '')}-release.md"
     release_doc_ru = (
         ROOT / "docs" / "ru" / f"v{app_version.replace('.', '')}-release.md"

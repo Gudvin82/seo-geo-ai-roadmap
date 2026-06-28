@@ -1,5 +1,19 @@
 # Changelog
 
+## v6.7.0 — Docs Foundation, Quick-Start Routing, and Bilingual Onboarding
+
+- Rebuilt the root `README.md` and `README_RU.md` around hero clarity, quick
+  start, learning paths, proof references, and explicit operator or AI-agent
+  entrypoints
+- Added `README_EN.md`, `SUPPORT.md`, `SECURITY.md`, `docs/i18n-status.md`, and
+  `assets/roadmap-visual.svg` to make documentation routing and governance more
+  publish-ready
+- Rewrote `ROADMAP.md`, `CONTRIBUTING.md`, and `CODE_OF_CONDUCT.md` around the
+  approved four-release plan and a clearer contributor quality bar
+- Updated `DOCS_INDEX*` and public readiness docs so current-docs-first routing
+  is easier to follow for both humans and AI agents
+- Aligned active runtime, contract, docs, and frontend markers around `v6.7.0`
+
 ## v6.6.0 — Tenant Admin Console, Managed Integration Center, and Release Hygiene Sweep
 
 - Added `tenant-admin-console` so workspace and organization operators can review

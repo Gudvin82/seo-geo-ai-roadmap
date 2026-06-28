@@ -1,63 +1,113 @@
 # Repository Roadmap
 
-## v4.4.x stabilization
+This roadmap reflects the approved four-release path from the current `v6`
+state toward a stronger `10/10` repository.
 
-- keep public-positioning docs synchronized with the implemented product foundation
-- keep one-day service blueprint and one-click deploy guidance honest as deployment surfaces evolve
-- strengthen the proof path from post to repo to demo to real audit
-- keep AI-agent prompt packs synchronized with `AGENTS.md`, `START_HERE_FOR_AI*.md`, and actual command paths
+## Current Direction
 
-## v4.3.x stabilization
+The goal is not to create more markdown noise.
 
-- turn external criticism into concrete proof work instead of defensive marketing
-- publish more public before or after cases with explicit fact vs inference boundaries
-- consolidate current docs and archive release-history noise more aggressively
-- deepen live AI SoV, citation measurement, and provider cost governance
-- keep improving RU-market proof around Yandex, YandexAdditional, and answer-engine discoverability
-- grow the community-proof layer through installs, operator feedback, and external pull requests
+The goal is to improve four things in a disciplined order:
 
-## v4.0.x stabilization
+1. docs and onboarding clarity
+2. methodology depth
+3. proof, cases, and working tools
+4. community and launch maturity
 
-- keep AI Agent Mode honest, useful, and approval-bound instead of pretending to be silent production autopilot
-- deepen one-click audit, task export, dynamic graph, and executive delivery paths without losing self-hosted clarity
-- mature GitHub Action, extension, and Telegram entrypoints from scaffold to reliable operator tooling
-- keep scanner, product/app, and repo/operator surfaces clearly separated in docs, UI, and contracts
+## Release Wave 1: v6.7.0
 
-## v3.8.x stabilization
+Focus: docs and core UX foundation.
 
-- keep the new `/geo` command layer synchronized across API, CLI, docs, and AI handoff files
-- harden graph intelligence as an explainability surface, not a fake enterprise graph claim
-- keep reporting packs, GTM packaging, and use-case docs aligned with implemented product behavior
-- strengthen framework integrations, notification, and scanner delivery paths without overclaiming hosted SaaS readiness
+Target outcomes:
 
-## v3.7.x stabilization
+- stronger root README experience in RU and EN
+- clearer quick-start and learning-path routing
+- visual roadmap and language/status visibility
+- better support, security, and contribution guidance
+- cleaner current-docs vs archive-docs separation
 
-- keep the validator, retry, and scheduling surfaces honest and reviewable
-- mature governance, fact drift, and trust-surface layers without overclaiming
-- keep CI green across tests, docs, links, security scans, and smoke checks
-- deepen RU/EN parity across new operational and executive assets
-- keep the command surface and bootstrap guidance aligned with real self-hosted behavior
-- harden the new public scanner foundation without overclaiming public SaaS readiness
-- keep `ai.txt`, YandexAdditional, schema, FAQ, social metadata, and robots+sitemap checks connected to reporting instead of isolated scripts
+Main deliverables:
 
-## Near-term product direction
+- rewritten `README.md` and `README_RU.md`
+- `README_EN.md` alias entrypoint
+- `SUPPORT.md`
+- `SECURITY.md`
+- `docs/i18n-status.md`
+- `assets/roadmap-visual.svg`
+- refreshed `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `DOCS_INDEX*`
 
-- richer answer-surface monitoring and evidence tagging
-- stronger reusable validators and lightweight operator tools
-- consent-aware scanner intake and ownership verification for active scanning
-- more explicit queue controls, retention rules, and abuse-boundary observability
-- deeper business reporting templates for GEO, AI visibility, and pipeline
-- more scenario packs by niche, site type, and market
-- more durable scheduling and queue semantics where they improve real operations
-- safer CMS writeback execution beyond package preparation
-- stronger AI-agent onboarding and task-routing without turning the project into a black-box wrapper
-- more evaluator-ready proof bundles and current-limitations communication for external reviewers
+## Release Wave 2: v6.7.5
 
-## Guardrails for future work
+Focus: GEO depth and classical SEO depth expansion.
 
-- keep the methodology layer first-class
-- keep the app transparent and self-hosted first
-- do not hide scoring or overclaim AI outcomes
-- treat GEO/AI discoverability as a higher layer on top of technical SEO
-- prefer real, testable, repeatable features over broad placeholder scope
-- keep governance and proof surfaces honest about what is implemented now
+Target outcomes:
+
+- stronger GEO deep-dive materials
+- stronger classic SEO depth around semantics, competitors, authority, and
+  measurement
+- better calibrated distinction between official, heuristic, and experimental
+  advice
+
+Main deliverables:
+
+- new GEO deep-dive documents
+- stronger SEO depth documents
+- improved checklists and prompt packs
+- methodology cleanup for evidence and calibration
+
+## Release Wave 3: v6.8.0
+
+Focus: proof, cases, and tool maturity.
+
+Target outcomes:
+
+- more public and bounded proof
+- a larger case library
+- stronger practical scripts and repeatable outputs
+- more machine-readable evidence packs
+
+Main deliverables:
+
+- expanded public and synthetic cases
+- stronger proof templates
+- improved scripts and generators
+- stronger issue templates and operational validation
+
+## Release Wave 4: v6.8.5
+
+Focus: community, launch, and contributor growth layer.
+
+Target outcomes:
+
+- better contributor funnel
+- stronger community-facing documentation
+- cleaner launch narrative for external audiences
+- more obvious ways for users to submit cases, ideas, and improvements
+
+Main deliverables:
+
+- community-facing docs and showcase structure
+- stronger contribution workflows
+- launch content pack inside the repo
+- clearer public project participation surface
+
+## What Is Explicitly Out Of Scope For This Roadmap
+
+These four releases do not promise:
+
+- maintainer-run hosted SaaS
+- billing product maturity
+- enterprise SSO
+- guaranteed rankings or guaranteed AI citations
+- zero-touch integration setup in all environments
+
+## Quality Bar For Every Release
+
+Each release should leave the repository in a state where:
+
+- version markers are aligned
+- root tests are green
+- backend tests are green
+- docs build succeeds
+- release docs exist in RU and EN
+- public wording remains honest

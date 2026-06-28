@@ -1,6 +1,6 @@
 # Карта документации
 
-Это самый короткий путь по репозиторию после `v6.6.0`.
+Это самый короткий путь по репозиторию после `v6.7.0`.
 
 ## Идите в таком порядке
 
@@ -12,6 +12,7 @@
 6. [REAL_CASES_RU.md](./REAL_CASES_RU.md)
 7. [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md) или [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
 8. [AI_TASK_PACKS_RU.md](./AI_TASK_PACKS_RU.md)
+9. [docs/i18n-status.md](./docs/i18n-status.md)
 
 ## Выберите свой режим
 
@@ -29,7 +30,7 @@
 - [Semantic Core and Intent Playbook](./docs/ru/semantic-core-and-intent-playbook.md)
 - [Competitor Gap and Authority Playbook](./docs/ru/competitor-gap-and-authority-playbook.md)
 - [GEO and AI Operations Playbook](./docs/ru/geo-ai-operations-playbook.md)
-- [Сводка релиза v6.6.0](./docs/ru/v660-release.md)
+- [Сводка релиза v6.7.0](./docs/ru/v670-release.md)
 
 ## Основа доказательств и границ
 
@@ -38,6 +39,8 @@
 - Реальные кейсы: [REAL_CASES_RU.md](./REAL_CASES_RU.md)
 - Политика архива: [DOCS_ARCHIVE_RU.md](./DOCS_ARCHIVE_RU.md)
 - Архитектурная справка: [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
+- Путь поддержки: [SUPPORT.md](./SUPPORT.md)
+- Путь безопасности: [SECURITY.md](./SECURITY.md)
 
 ## Исторические и versioned материалы
 

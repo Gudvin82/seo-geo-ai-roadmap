@@ -118,7 +118,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.6.0 tenant admin, managed integrations, docs consolidation, and release hygiene",
+      "v6.7.0 docs foundation, quick-start routing, and bilingual onboarding hardening",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -309,7 +309,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.6.0 tenant admin, managed integrations, docs consolidation и release hygiene",
+      "v6.7.0 docs foundation, quick-start routing и bilingual onboarding hardening",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:

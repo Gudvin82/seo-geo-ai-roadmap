@@ -127,9 +127,10 @@ production-решений от команды, которая используе
 
 ## Связь с релизом
 
-`v6.6.0` делает это публичное обещание более пригодным к исполнению за счет:
+`v6.7.0` делает это публичное обещание более понятным и более безопасным для
+handoff за счет:
 
-- tenant-admin visibility для quota pressure, onboarding state и API key posture
-- managed-integration center, который превращает ключевые Google, Yandex, local, Alice AI и CrUX flows в одну machine-readable operating layer
-- docs-consolidation visibility, чтобы current entrypoints и archive policy были явными
-- более строгой release hygiene для version alignment между runtime, docs, frontend и release docs
+- более сильного root README и quick-start структуры
+- visual roadmap и i18n-status visibility
+- более явной guidance по support, security и contributions
+- более чистого current-docs-first пути для людей и AI-агентов
