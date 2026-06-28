@@ -48,8 +48,12 @@ def build_payload(paths: list[Path]) -> dict:
     items = [summarize_case(path) for path in paths]
     return {
         "case_count": len(items),
-        "public_case_count": sum(1 for item in items if item["case_type"] == "public_case"),
-        "synthetic_case_count": sum(1 for item in items if item["case_type"] == "synthetic"),
+        "public_case_count": sum(
+            1 for item in items if item["case_type"] == "public_case"
+        ),
+        "synthetic_case_count": sum(
+            1 for item in items if item["case_type"] == "synthetic"
+        ),
         "items": items,
         "next_steps": [
             "promote bounded public cases in SHOWCASE.md",
