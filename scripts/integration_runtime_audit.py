@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import json
 
-
 DEFAULT_SOURCES = [
     "gsc",
     "ga4",
@@ -22,7 +21,9 @@ def build_row(source: str) -> dict:
     )
     return {
         "source_type": source,
-        "refresh_minutes": 1440 if "ads" not in source and "direct" not in source else 720,
+        "refresh_minutes": 1440
+        if "ads" not in source and "direct" not in source
+        else 720,
         "token_rotation_days": 30 if "service" not in source else 45,
         "recovery_mode": recovery_mode,
         "proof_status": "operator_ready_runtime",

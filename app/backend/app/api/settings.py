@@ -508,9 +508,7 @@ def managed_integration_center() -> dict:
                     "refresh_minutes": runtime_profile["refresh_minutes"],
                     "token_rotation_days": runtime_profile["token_rotation_days"],
                     "retry_backoff_minutes": runtime_profile["retry_backoff_minutes"],
-                    "failure_recovery_mode": runtime_profile[
-                        "failure_recovery_mode"
-                    ],
+                    "failure_recovery_mode": runtime_profile["failure_recovery_mode"],
                 },
                 "next_step": contract["next_step"],
             }
@@ -2997,9 +2995,7 @@ def classic_seo_workbench(
             "tracked_competitors": _first_numeric(
                 competitor_metrics, "tracked_competitors"
             ),
-            "referring_domains": _first_numeric(
-                backlink_metrics, "referring_domains"
-            ),
+            "referring_domains": _first_numeric(backlink_metrics, "referring_domains"),
             "top_10_share": _first_numeric(rank_metrics, "top_10_share"),
         },
         "tracks": tracks,
