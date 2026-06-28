@@ -147,6 +147,47 @@ COMMAND_CATALOG: dict[str, CommandRoute] = {
         ],
         next_step="Define the recurring schedule, artifact expectations, and the comparison questions before the next run.",
     ),
+    "cases": CommandRoute(
+        command="cases",
+        title="Case-library and proof operations",
+        summary="Review bounded public cases, synthetic training cases, and evidence-pack paths.",
+        intent="Keep case publication, proof boundaries, and implementation handoff explicit.",
+        aliases=["case-library", "proof-library", "synthetic-cases"],
+        recommended_scripts=[
+            "scripts/case_library_builder.py",
+            "scripts/synthetic_case_builder.py",
+            "scripts/proof_pack_builder.py",
+            "scripts/issue_pack_generator.py",
+        ],
+        recommended_docs=[
+            "REAL_CASES.md",
+            "docs/en/case-library.md",
+            "docs/en/synthetic-cases.md",
+            "docs/en/issue-pack-workflow.md",
+        ],
+        api_routes=[
+            "GET /api/v1/settings/proof-kit",
+            "GET /api/v1/settings/evidence-lab",
+            "GET /api/v1/proof/timeline",
+        ],
+        example_invocations=[
+            "/geo cases",
+            "/geo case-library",
+            "/geo synthetic-cases",
+        ],
+        output_artifacts=[
+            "case-library index",
+            "synthetic training case",
+            "issue pack",
+            "bounded proof export",
+        ],
+        use_cases=[
+            "public proof review",
+            "team training",
+            "implementation handoff",
+        ],
+        next_step="Separate bounded public evidence from synthetic training material before publishing or handing off any case output.",
+    ),
     "content": CommandRoute(
         command="content",
         title="Content quality and freshness",

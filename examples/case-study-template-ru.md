@@ -2,34 +2,44 @@
 
 ## Контекст проекта
 
-- Ниша:
+- Индустрия:
 - Рынок:
 - Оффер:
 - Тип сайта:
 
-## Baseline
+## Базовая точка
 
-- Органический трафик:
-- Лиды:
-- Продажи:
-- Базовая AI-видимость:
+- Organic traffic:
+- Leads:
+- Sales:
+- AI visibility baseline:
 
 ## Ключевые проблемы
 
-- Добавьте здесь ключевые формулировки проблем.
+- Добавьте основные problem statements.
 
-## Какие действия были сделаны
+## Что было сделано
 
-- Перечислите здесь основные действия.
+- Перечислите основные actions.
 
-## Изменения по SEO / GEO / AI visibility
+## Изменения в SEO / GEO / AI visibility
 
-- Опишите здесь ключевые discoverability-изменения.
+- Опишите главные discoverability changes.
 
 ## Метрики результата
 
-- Добавьте здесь итоговые метрики.
+- Добавьте resulting metrics.
 
-## Выводы
+## Граница доказательств
 
-- Зафиксируйте здесь главные выводы.
+- Public facts:
+- Bounded rollout records:
+- Internal-only evidence excluded from publication:
+
+## Evidence links
+
+- Добавьте проверенные public или internal links.
+
+## Итоги и уроки
+
+- Зафиксируйте главные lessons.

@@ -1,6 +1,6 @@
 # Documentation Index
 
-This is the shortest path through the repository after `v6.7.5`.
+This is the shortest path through the repository after `v6.8.0`.
 
 ## Start in this order
 
@@ -32,9 +32,10 @@ This is the shortest path through the repository after `v6.7.5`.
 - [Competitor Gap and Authority Playbook](./docs/en/competitor-gap-and-authority-playbook.md)
 - [Proof Pack Playbook](./docs/en/proof-pack-playbook.md)
 - [Case Library](./docs/en/case-library.md)
+- [Synthetic Cases](./docs/en/synthetic-cases.md)
+- [Issue Pack Workflow](./docs/en/issue-pack-workflow.md)
 - [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
-- [v6.7.0 Release Summary](./docs/en/v670-release.md)
-- [v6.7.5 Release Summary](./docs/en/v675-release.md)
+- [v6.8.0 Release Summary](./docs/en/v680-release.md)
 
 ## Core proof and boundaries
 

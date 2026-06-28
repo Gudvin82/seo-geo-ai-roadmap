@@ -30,6 +30,16 @@
 
 - Add the resulting metrics here.
 
+## Proof boundary
+
+- Public facts:
+- Bounded rollout records:
+- Internal-only evidence excluded from publication:
+
+## Evidence links
+
+- Add checked public or internal links here.
+
 ## Lessons learned
 
 - Capture the main lessons here.

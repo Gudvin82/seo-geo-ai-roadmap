@@ -173,6 +173,9 @@ def repo_assets() -> dict:
             "scripts/checklist_generator.py",
             "scripts/semantic_gap_mapper.py",
             "scripts/proof_pack_builder.py",
+            "scripts/case_library_builder.py",
+            "scripts/synthetic_case_builder.py",
+            "scripts/issue_pack_generator.py",
             "examples/semantic-keywords-example.txt",
         ],
         "glossary": ["GLOSSARY.md", "GLOSSARY_RU.md"],
@@ -579,6 +582,15 @@ def proof_kit() -> dict:
             "executive_summary_sample",
             "client_delivery_sample",
             "experiment_log_sample",
+            "issue_pack_sample",
+            "synthetic_case_sample",
+            "case_library_index_sample",
+        ],
+        "proof_workflows": [
+            "public bounded case",
+            "synthetic training case",
+            "issue-pack handoff",
+            "client-safe proof export",
         ],
     }
 
@@ -2668,6 +2680,14 @@ def evidence_lab(
                 "asset": "operator_proof_timeline",
                 "ready": bool(experiment_rows),
             },
+            {
+                "asset": "synthetic_training_case",
+                "ready": True,
+            },
+            {
+                "asset": "issue_pack",
+                "ready": bool(latest_audit or experiment_rows),
+            },
         ],
         "case_library_targets": [
             {
@@ -2699,6 +2719,12 @@ def evidence_lab(
             "attach GSC, GA4, or Yandex screenshots to major before/after claims",
             "promote strong experiments into reusable public case formats",
             "export at least one client-safe markdown pack per high-impact fix cycle",
+        ],
+        "tooling": [
+            "scripts/proof_pack_builder.py",
+            "scripts/case_library_builder.py",
+            "scripts/synthetic_case_builder.py",
+            "scripts/issue_pack_generator.py",
         ],
         "recent_assets": [
             {

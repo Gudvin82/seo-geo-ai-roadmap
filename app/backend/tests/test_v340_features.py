@@ -9,6 +9,7 @@ def test_command_catalog_endpoint_lists_routes(client) -> None:
     commands = {item["command"] for item in payload["routes"]}
     assert {
         "audit",
+        "cases",
         "llmstxt",
         "compare",
         "deploy",
@@ -61,3 +62,7 @@ def test_command_router_supports_new_semantic_and_proofpack_routes(client) -> No
     )
     assert proofpack.status_code == 200
     assert proofpack.json()["command"] == "proofpack"
+
+    cases = client.post("/api/v1/tools/command-router", json={"command": "cases"})
+    assert cases.status_code == 200
+    assert cases.json()["command"] == "cases"

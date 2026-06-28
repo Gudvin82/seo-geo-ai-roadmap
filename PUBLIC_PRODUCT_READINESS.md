@@ -22,9 +22,9 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 
 Latest release context:
 
-- `v6.7.5` adds practical operator tooling for checklist generation, semantic
-  mapping, and bounded proof-pack creation on top of the stronger docs
-  foundation introduced in `v6.7.0`
+- `v6.8.0` adds stronger proof, case-library, synthetic training, and
+  implementation-handoff tooling on top of the operator-tooling base introduced
+  in `v6.7.5`
 
 ## What is production-ready today
 

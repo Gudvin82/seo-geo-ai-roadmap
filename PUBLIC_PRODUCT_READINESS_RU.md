@@ -22,9 +22,9 @@ enterprise SSO и SLA от автора репозитория.
 
 Контекст последнего релиза:
 
-- `v6.7.5` добавляет практический operator tooling для генерации checklist,
-  semantic mapping и bounded proof-pack creation поверх более сильной docs
-  foundation, введенной в `v6.7.0`
+- `v6.8.0` добавляет более сильный tooling для proof, case-library, synthetic
+  training и implementation-handoff поверх operator-tooling базы, введенной в
+  `v6.7.5`
 
 ## Что production-ready уже сегодня
 

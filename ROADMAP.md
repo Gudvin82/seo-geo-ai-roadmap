@@ -72,6 +72,13 @@ Main deliverables:
 - improved scripts and generators
 - stronger issue templates and operational validation
 
+Delivered in this wave:
+
+- case-library builder
+- synthetic-case builder
+- issue-pack generator
+- stronger proof/case docs and templates
+
 ## Release Wave 4: v6.8.5
 
 Focus: community, launch, and contributor growth layer.

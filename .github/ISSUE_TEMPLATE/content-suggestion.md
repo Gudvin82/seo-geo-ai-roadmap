@@ -17,3 +17,12 @@ Describe the practical use case.
 ## Market focus
 
 State whether the suggestion is Universal, RU/CIS, INT, or AI/GEO.
+
+## Evidence or proof angle
+
+State whether this suggestion affects:
+
+- public proof
+- synthetic demo/training material
+- case library quality
+- implementation handoff

@@ -118,7 +118,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.7.5 checklist tooling, semantic mapping, and proof-pack workflow",
+      "v6.8.0 proof, case library, synthetic training, and issue-pack maturity",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -309,7 +309,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.7.5 checklist tooling, semantic mapping и proof-pack workflow",
+      "v6.8.0 proof, case library, synthetic training и issue-pack maturity",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:

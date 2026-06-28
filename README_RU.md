@@ -172,6 +172,9 @@ make verify-demo
 - `scripts/checklist_generator.py`
 - `scripts/semantic_gap_mapper.py`
 - `scripts/proof_pack_builder.py`
+- `scripts/case_library_builder.py`
+- `scripts/synthetic_case_builder.py`
+- `scripts/issue_pack_generator.py`
 - `scripts/keyword_research_stub.py`
 - `scripts/competitor_intelligence_stub.py`
 - `scripts/backlink_intelligence_stub.py`
@@ -214,7 +217,7 @@ make verify-demo
 
 - `v6.7.0`: docs and core UX foundation
 - `v6.7.5`: operator tools для checklists, semantic mapping и proof packs
-- `v6.8.0`: proof, cases, and tool maturity
+- `v6.8.0`: proof, case library, synthetic training packs и issue-pack maturity
 - `v6.8.5`: community, launch, and contributor growth layer
 
 Полный план:
@@ -242,19 +245,19 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.7.5
+## На чем сфокусирован v6.8.0
 
-`v6.7.5` добавляет практические operator tools поверх более сильной docs
-foundation, чтобы репозиторий было проще использовать как execution system, а
-не только как methodology map.
+`v6.8.0` усиливает proof, case-library и working-tool layer, чтобы
+репозиторий было проще использовать для public evidence, training и
+implementation handoff.
 
 Он добавляет:
 
-- `scripts/checklist_generator.py`
-- `scripts/semantic_gap_mapper.py`
-- `scripts/proof_pack_builder.py`
-- [Checklist Generator](./docs/ru/checklist-generator.md)
-- [Proof Pack Playbook](./docs/ru/proof-pack-playbook.md)
+- `scripts/case_library_builder.py`
+- `scripts/synthetic_case_builder.py`
+- `scripts/issue_pack_generator.py`
+- [Synthetic Cases](./docs/ru/synthetic-cases.md)
+- [Issue Pack Workflow](./docs/ru/issue-pack-workflow.md)
 
 ## Лицензия
 

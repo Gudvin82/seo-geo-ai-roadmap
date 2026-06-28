@@ -19,6 +19,8 @@ Detailed case studies:
 - [anmalishev.ru public v6 audit case](./docs/en/v600-case-anmalishev-audit.md)
 - [anmalishev.ru — public before / after case](./docs/en/v430-case-anmalishev.md)
 - [auditguard.ru + sitepravo.ru — AI crawler access and public before / after case](./docs/en/v430-case-auditguard-sitepravo.md)
+- [Case library entrypoint](./docs/en/case-library.md)
+- [Synthetic case policy](./docs/en/synthetic-cases.md)
 
 ## sitepravo.ru
 
@@ -122,4 +124,5 @@ See also:
 - [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
 - [docs/en/canonical-facts-and-entity-consistency.md](./docs/en/canonical-facts-and-entity-consistency.md)
 - [docs/en/v430-review-response-and-upgrade-path.md](./docs/en/v430-review-response-and-upgrade-path.md)
+- [docs/en/issue-pack-workflow.md](./docs/en/issue-pack-workflow.md)
 - [WALKTHROUGH.md](./WALKTHROUGH.md)

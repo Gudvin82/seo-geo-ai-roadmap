@@ -1,5 +1,20 @@
 # Changelog
 
+## v6.8.0 — Proof, Case Library, Synthetic Training Packs, and Issue-Pack Maturity
+
+- Added `scripts/case_library_builder.py` so bounded public and synthetic cases
+  can be indexed as a reusable case-library surface
+- Added `scripts/synthetic_case_builder.py` so operator training and demo
+  scenarios can be created without pretending they are real client outcomes
+- Added `scripts/issue_pack_generator.py` so findings can be translated into a
+  lightweight implementation handoff pack
+- Expanded EN/RU proof and case docs with synthetic-case and issue-pack
+  workflows
+- Strengthened proof-kit and evidence-lab surfaces with richer evidence-pack and
+  case-library readiness signals
+- Added a dedicated proof-or-case issue template and richer proof-boundary
+  templates for reports and case studies
+
 ## v6.7.5 — Operator Tooling for Checklists, Semantic Mapping, and Proof Packs
 
 - Added `scripts/checklist_generator.py` so teams can generate a tailored

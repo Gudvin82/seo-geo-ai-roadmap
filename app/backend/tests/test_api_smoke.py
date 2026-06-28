@@ -902,6 +902,7 @@ def test_workspace_project_and_audit_flow(
     assert evidence_lab.status_code == 200
     assert evidence_lab.json()["summary"]["evidence_records"] >= 1
     assert evidence_lab.json()["case_library_targets"]
+    assert evidence_lab.json()["tooling"]
 
     runtime_ops_center = client.get(
         f"/api/v1/settings/runtime-ops-center?project_id={project_id}",
@@ -926,7 +927,7 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v6.7.5"
+        generation_contracts.json()["project_generation_contract_version"] == "v6.8.0"
     )
 
     seo_intelligence = client.get(
@@ -991,6 +992,7 @@ def test_workspace_project_and_audit_flow(
     proof_kit = client.get("/api/v1/settings/proof-kit", headers=auth_headers)
     assert proof_kit.status_code == 200
     assert proof_kit.json()["sample_tenants"]
+    assert proof_kit.json()["proof_workflows"]
 
     social_distribution = client.get(
         "/api/v1/settings/social-distribution-center", headers=auth_headers

@@ -87,7 +87,7 @@ def ask_report_assistant(
     ]
     return ReportAssistantRead(
         report_id=row.id,
-        contract_version="v6.7.5",
+        contract_version="v6.8.0",
         answer=answer,
         key_points=[item for item in key_points if item],
         follow_up_actions=[item for item in follow_up_actions if item],

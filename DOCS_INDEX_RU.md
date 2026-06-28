@@ -1,6 +1,6 @@
 # Карта документации
 
-Это самый короткий путь по репозиторию после `v6.7.5`.
+Это самый короткий путь по репозиторию после `v6.8.0`.
 
 ## Идите в таком порядке
 
@@ -32,9 +32,10 @@
 - [Competitor Gap and Authority Playbook](./docs/ru/competitor-gap-and-authority-playbook.md)
 - [Proof Pack Playbook](./docs/ru/proof-pack-playbook.md)
 - [Case Library](./docs/ru/case-library.md)
+- [Synthetic Cases](./docs/ru/synthetic-cases.md)
+- [Issue Pack Workflow](./docs/ru/issue-pack-workflow.md)
 - [GEO and AI Operations Playbook](./docs/ru/geo-ai-operations-playbook.md)
-- [Сводка релиза v6.7.0](./docs/ru/v670-release.md)
-- [Сводка релиза v6.7.5](./docs/ru/v675-release.md)
+- [Сводка релиза v6.8.0](./docs/ru/v680-release.md)
 
 ## Основа доказательств и границ
 

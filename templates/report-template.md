@@ -6,6 +6,12 @@
 - Main risk:
 - Main decision needed:
 
+## Proof boundary
+
+- Public facts used:
+- Bounded rollout records used:
+- Internal-only evidence intentionally excluded:
+
 ## KPI movement
 
 | Metric | Previous | Current | Delta | Comment |
@@ -17,6 +23,12 @@
 ## Releases shipped
 
 - Add shipped releases here
+
+## Case / proof assets
+
+- Public case candidate:
+- Client-safe proof pack:
+- Synthetic training pack used:
 
 ## Risks and next actions
 

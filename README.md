@@ -170,6 +170,9 @@ Current practical tools and helper paths:
 - `scripts/checklist_generator.py`
 - `scripts/semantic_gap_mapper.py`
 - `scripts/proof_pack_builder.py`
+- `scripts/case_library_builder.py`
+- `scripts/synthetic_case_builder.py`
+- `scripts/issue_pack_generator.py`
 - `scripts/keyword_research_stub.py`
 - `scripts/competitor_intelligence_stub.py`
 - `scripts/backlink_intelligence_stub.py`
@@ -212,7 +215,7 @@ The active release path is:
 
 - `v6.7.0`: docs and core UX foundation
 - `v6.7.5`: operator tools for checklists, semantic mapping, and proof packs
-- `v6.8.0`: proof, cases, and tool maturity
+- `v6.8.0`: proof, case library, synthetic training packs, and issue-pack maturity
 - `v6.8.5`: community, launch, and contributor growth layer
 
 Read the full plan:
@@ -240,19 +243,19 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.7.5 focus
+## v6.8.0 focus
 
-`v6.7.5` adds practical operator tools on top of the stronger documentation
-foundation so the repository is easier to use as an execution system, not only
-as a methodology map.
+`v6.8.0` strengthens the proof, case-library, and working-tool layer so the
+repository is easier to use for public evidence, training, and implementation
+handoff.
 
 It adds:
 
-- `scripts/checklist_generator.py`
-- `scripts/semantic_gap_mapper.py`
-- `scripts/proof_pack_builder.py`
-- [Checklist Generator](./docs/en/checklist-generator.md)
-- [Proof Pack Playbook](./docs/en/proof-pack-playbook.md)
+- `scripts/case_library_builder.py`
+- `scripts/synthetic_case_builder.py`
+- `scripts/issue_pack_generator.py`
+- [Synthetic Cases](./docs/en/synthetic-cases.md)
+- [Issue Pack Workflow](./docs/en/issue-pack-workflow.md)
 
 ## License
 
