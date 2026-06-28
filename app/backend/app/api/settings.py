@@ -169,6 +169,12 @@ def repo_assets() -> dict:
             "templates/reporting/executive-summary-v400.md",
             "templates/reporting/fix-pack-v400.md",
         ],
+        "tooling_boosters": [
+            "scripts/checklist_generator.py",
+            "scripts/semantic_gap_mapper.py",
+            "scripts/proof_pack_builder.py",
+            "examples/semantic-keywords-example.txt",
+        ],
         "glossary": ["GLOSSARY.md", "GLOSSARY_RU.md"],
         "agents": ["AGENTS.md"],
         "positioning": [
@@ -1913,6 +1919,12 @@ def seo_intelligence_center(
             "separate authority recovery from content production work",
             "treat positions 4-12 as the first rank-ops lane",
         ],
+        "practical_toolkit": [
+            "scripts/checklist_generator.py",
+            "scripts/semantic_gap_mapper.py",
+            "scripts/serp-intent-cluster-helper.py",
+            "scripts/content-inventory-helper.py",
+        ],
         "provider_strategy": {
             "native_repo_mode": "starter stubs, exports, and provider-agnostic contracts",
             "external_provider_mode": "connect any approved keyword, competitor, backlink, or rank provider through the same contract surface",
@@ -2674,6 +2686,13 @@ def evidence_lab(
             {
                 "id": "sitepravo_ru",
                 "paths": ["REAL_CASES.md", "REAL_CASES_RU.md"],
+            },
+            {
+                "id": "case_library",
+                "paths": [
+                    "docs/en/case-library.md",
+                    "docs/ru/case-library.md",
+                ],
             },
         ],
         "independent_proof_targets": [

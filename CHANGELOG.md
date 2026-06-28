@@ -1,5 +1,19 @@
 # Changelog
 
+## v6.7.5 — Operator Tooling for Checklists, Semantic Mapping, and Proof Packs
+
+- Added `scripts/checklist_generator.py` so teams can generate a tailored
+  SEO/GEO/AI checklist instead of assembling every kickoff manually
+- Added `scripts/semantic_gap_mapper.py` so keyword demand can be clustered into
+  page types and execution lanes directly from the repo
+- Added `scripts/proof_pack_builder.py` so before/after work can be turned into
+  bounded public or client-safe evidence packs
+- Added EN/RU docs for the checklist generator, proof-pack workflow, and a
+  cleaner case-library entrypoint
+- Expanded the command surface and settings payloads so semantic and proof-pack
+  tooling is visible to both operators and AI agents
+- Updated root entrypoints and docs indexes for the new `v6.7.5` tooling layer
+
 ## v6.7.0 — Docs Foundation, Quick-Start Routing, and Bilingual Onboarding
 
 - Rebuilt the root `README.md` and `README_RU.md` around hero clarity, quick

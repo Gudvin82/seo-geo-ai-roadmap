@@ -118,7 +118,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.7.0 docs foundation, quick-start routing, and bilingual onboarding hardening",
+      "v6.7.5 checklist tooling, semantic mapping, and proof-pack workflow",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -309,7 +309,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.7.0 docs foundation, quick-start routing и bilingual onboarding hardening",
+      "v6.7.5 checklist tooling, semantic mapping и proof-pack workflow",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:

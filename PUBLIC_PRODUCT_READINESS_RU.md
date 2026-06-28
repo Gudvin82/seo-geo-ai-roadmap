@@ -20,6 +20,12 @@
 Нет, его не стоит описывать как готовый публичный hosted SaaS с billing,
 enterprise SSO и SLA от автора репозитория.
 
+Контекст последнего релиза:
+
+- `v6.7.5` добавляет практический operator tooling для генерации checklist,
+  semantic mapping и bounded proof-pack creation поверх более сильной docs
+  foundation, введенной в `v6.7.0`
+
 ## Что production-ready уже сегодня
 
 - двуязычная методология SEO, GEO и AI

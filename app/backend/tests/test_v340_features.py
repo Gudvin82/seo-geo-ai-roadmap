@@ -7,9 +7,16 @@ def test_command_catalog_endpoint_lists_routes(client) -> None:
     payload = response.json()
     assert payload["routes"]
     commands = {item["command"] for item in payload["routes"]}
-    assert {"audit", "llmstxt", "compare", "deploy", "scanner", "graph"}.issubset(
-        commands
-    )
+    assert {
+        "audit",
+        "llmstxt",
+        "compare",
+        "deploy",
+        "scanner",
+        "graph",
+        "semantic",
+        "proofpack",
+    }.issubset(commands)
     audit = next(item for item in payload["routes"] if item["command"] == "audit")
     assert "scan" in audit["aliases"]
     assert "/geo audit" in audit["example_invocations"]
@@ -40,3 +47,17 @@ def test_command_router_supports_geo_prefix_and_alias(client) -> None:
     assert response.status_code == 200
     payload = response.json()
     assert payload["command"] == "audit"
+
+
+def test_command_router_supports_new_semantic_and_proofpack_routes(client) -> None:
+    semantic = client.post(
+        "/api/v1/tools/command-router", json={"command": "semantics"}
+    )
+    assert semantic.status_code == 200
+    assert semantic.json()["command"] == "semantic"
+
+    proofpack = client.post(
+        "/api/v1/tools/command-router", json={"command": "proof-pack"}
+    )
+    assert proofpack.status_code == 200
+    assert proofpack.json()["command"] == "proofpack"

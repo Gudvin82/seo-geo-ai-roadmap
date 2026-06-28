@@ -167,6 +167,9 @@ See the exact wording:
 Current practical tools and helper paths:
 
 - `/api/v1/settings/seo-intelligence-center`
+- `scripts/checklist_generator.py`
+- `scripts/semantic_gap_mapper.py`
+- `scripts/proof_pack_builder.py`
 - `scripts/keyword_research_stub.py`
 - `scripts/competitor_intelligence_stub.py`
 - `scripts/backlink_intelligence_stub.py`
@@ -208,7 +211,7 @@ Important rule:
 The active release path is:
 
 - `v6.7.0`: docs and core UX foundation
-- `v6.7.5`: GEO and classical SEO depth expansion
+- `v6.7.5`: operator tools for checklists, semantic mapping, and proof packs
 - `v6.8.0`: proof, cases, and tool maturity
 - `v6.8.5`: community, launch, and contributor growth layer
 
@@ -237,20 +240,19 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.7.0 focus
+## v6.7.5 focus
 
-`v6.7.0` upgrades the documentation and onboarding layer so the repository feels
-closer to a real learning system and operator-ready open-source product, not
-just a growing collection of strong materials.
+`v6.7.5` adds practical operator tools on top of the stronger documentation
+foundation so the repository is easier to use as an execution system, not only
+as a methodology map.
 
 It adds:
 
-- a clearer hero, quick-start, learning-path, and proof-first root experience
-- a visual roadmap plus explicit language and documentation-status surfaces
-- stronger governance docs for support, security, and contributions
-- a rewritten roadmap around the actual next four release waves
-- a cleaner bilingual entry strategy across current docs, AI-agent paths, and
-  product-builder paths
+- `scripts/checklist_generator.py`
+- `scripts/semantic_gap_mapper.py`
+- `scripts/proof_pack_builder.py`
+- [Checklist Generator](./docs/en/checklist-generator.md)
+- [Proof Pack Playbook](./docs/en/proof-pack-playbook.md)
 
 ## License
 

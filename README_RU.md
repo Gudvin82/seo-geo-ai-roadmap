@@ -169,6 +169,9 @@ make verify-demo
 Текущие практические инструменты и helper paths:
 
 - `/api/v1/settings/seo-intelligence-center`
+- `scripts/checklist_generator.py`
+- `scripts/semantic_gap_mapper.py`
+- `scripts/proof_pack_builder.py`
 - `scripts/keyword_research_stub.py`
 - `scripts/competitor_intelligence_stub.py`
 - `scripts/backlink_intelligence_stub.py`
@@ -210,7 +213,7 @@ make verify-demo
 Активная release path сейчас такая:
 
 - `v6.7.0`: docs and core UX foundation
-- `v6.7.5`: GEO and classical SEO depth expansion
+- `v6.7.5`: operator tools для checklists, semantic mapping и proof packs
 - `v6.8.0`: proof, cases, and tool maturity
 - `v6.8.5`: community, launch, and contributor growth layer
 
@@ -239,20 +242,19 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.7.0
+## На чем сфокусирован v6.7.5
 
-`v6.7.0` усиливает documentation и onboarding layer так, чтобы репозиторий
-ощущался ближе к реальной learning system и operator-ready open-source
-platform, а не просто к растущему набору сильных материалов.
+`v6.7.5` добавляет практические operator tools поверх более сильной docs
+foundation, чтобы репозиторий было проще использовать как execution system, а
+не только как methodology map.
 
 Он добавляет:
 
-- более понятный hero, quick-start, learning-path и proof-first root experience
-- visual roadmap и явные language/documentation-status surfaces
-- более сильные governance docs для support, security и contributions
-- переписанный roadmap вокруг реальных следующих четырех release waves
-- более чистую bilingual entry strategy между current docs, AI-agent paths и
-  product-builder paths
+- `scripts/checklist_generator.py`
+- `scripts/semantic_gap_mapper.py`
+- `scripts/proof_pack_builder.py`
+- [Checklist Generator](./docs/ru/checklist-generator.md)
+- [Proof Pack Playbook](./docs/ru/proof-pack-playbook.md)
 
 ## Лицензия
 

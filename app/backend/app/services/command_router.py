@@ -383,6 +383,36 @@ COMMAND_CATALOG: dict[str, CommandRoute] = {
         use_cases=["monthly reporting", "sales support", "client handoff"],
         next_step="Translate operator evidence into owner, founder, or client language before presenting the work.",
     ),
+    "proofpack": CommandRoute(
+        command="proofpack",
+        title="Proof-pack and case evidence builder",
+        summary="Turn before/after work into a reusable, bounded, and publishable proof artifact.",
+        intent="Separate safe facts from inferences and keep evidence links explicit.",
+        aliases=["proof-pack", "case-pack", "evidence-pack"],
+        recommended_scripts=["scripts/proof_pack_builder.py"],
+        recommended_docs=[
+            "docs/en/proof-pack-playbook.md",
+            "docs/en/case-library.md",
+            "docs/en/v420-production-proof.md",
+        ],
+        api_routes=["GET /api/v1/proof/timeline", "GET /api/v1/proof/evidence"],
+        example_invocations=[
+            "/geo proofpack",
+            "/geo proof-pack",
+            "/geo case-pack",
+        ],
+        output_artifacts=[
+            "proof pack",
+            "client-safe case summary",
+            "bounded evidence notes",
+        ],
+        use_cases=[
+            "case publication",
+            "client reporting",
+            "public proof hygiene",
+        ],
+        next_step="Collect facts, score deltas, and evidence links first, then build a proof pack before making public claims.",
+    ),
     "scanner": CommandRoute(
         command="scanner",
         title="Public or client-facing scanner deployment",
@@ -446,6 +476,40 @@ COMMAND_CATALOG: dict[str, CommandRoute] = {
             "trust-surface reinforcement",
         ],
         next_step="Validate syntax first, then strengthen the business and entity meaning carried by the schema.",
+    ),
+    "semantic": CommandRoute(
+        command="semantic",
+        title="Semantic demand and page mapping",
+        summary="Cluster keyword demand into page types, intent lanes, and execution priorities.",
+        intent="Translate search demand into a practical page architecture instead of disconnected keyword lists.",
+        aliases=["semantics", "intent", "keyword-map"],
+        recommended_scripts=[
+            "scripts/semantic_gap_mapper.py",
+            "scripts/serp-intent-cluster-helper.py",
+            "scripts/content-inventory-helper.py",
+        ],
+        recommended_docs=[
+            "docs/en/semantic-core-and-intent-playbook.md",
+            "docs/en/06-semantics-onpage.md",
+            "docs/en/checklist-generator.md",
+        ],
+        api_routes=["GET /api/v1/settings/seo-maturity-center"],
+        example_invocations=[
+            "/geo semantic",
+            "/geo semantics",
+            "/geo intent",
+        ],
+        output_artifacts=[
+            "semantic cluster map",
+            "recommended page types",
+            "content backlog inputs",
+        ],
+        use_cases=[
+            "new page planning",
+            "content strategy",
+            "demand-to-page mapping",
+        ],
+        next_step="Cluster intent first, then connect each cluster to one owned page type and a proof requirement.",
     ),
     "technical": CommandRoute(
         command="technical",

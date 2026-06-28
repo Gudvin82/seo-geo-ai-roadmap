@@ -7,7 +7,7 @@ from typing import Any
 
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v6.7.0"
+CONTRACT_VERSION = "v6.7.5"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {

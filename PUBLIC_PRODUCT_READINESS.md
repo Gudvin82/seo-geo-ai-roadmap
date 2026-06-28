@@ -20,6 +20,12 @@ Yes, the repository already supports three real use modes:
 No, it should not be described as a finished public hosted SaaS with billing,
 enterprise SSO, or maintainer-operated uptime guarantees.
 
+Latest release context:
+
+- `v6.7.5` adds practical operator tooling for checklist generation, semantic
+  mapping, and bounded proof-pack creation on top of the stronger docs
+  foundation introduced in `v6.7.0`
+
 ## What is production-ready today
 
 - bilingual SEO, GEO, and AI methodology

@@ -5,7 +5,7 @@ from typing import Any
 
 from .script_runner import run_script
 
-CMS_CONTRACT_VERSION = "v6.7.0"
+CMS_CONTRACT_VERSION = "v6.7.5"
 
 CMS_CONTRACTS: dict[str, dict[str, Any]] = {
     "wordpress": {

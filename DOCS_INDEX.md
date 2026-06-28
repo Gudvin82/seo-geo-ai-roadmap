@@ -1,6 +1,6 @@
 # Documentation Index
 
-This is the shortest path through the repository after `v6.7.0`.
+This is the shortest path through the repository after `v6.7.5`.
 
 ## Start in this order
 
@@ -28,9 +28,13 @@ This is the shortest path through the repository after `v6.7.0`.
 
 - [Technical SEO Deep Playbook](./docs/en/technical-seo-deep-playbook.md)
 - [Semantic Core and Intent Playbook](./docs/en/semantic-core-and-intent-playbook.md)
+- [Checklist Generator](./docs/en/checklist-generator.md)
 - [Competitor Gap and Authority Playbook](./docs/en/competitor-gap-and-authority-playbook.md)
+- [Proof Pack Playbook](./docs/en/proof-pack-playbook.md)
+- [Case Library](./docs/en/case-library.md)
 - [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
 - [v6.7.0 Release Summary](./docs/en/v670-release.md)
+- [v6.7.5 Release Summary](./docs/en/v675-release.md)
 
 ## Core proof and boundaries
 

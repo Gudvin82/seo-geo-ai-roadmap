@@ -26,6 +26,9 @@
 | `roi_calculator.py` | Estimate business ROI / ROMI for SEO and AI traffic | `python scripts/roi_calculator.py --traffic 5000 --conversion-rate 0.03 --lead-to-sale-rate 0.2 --average-check 1200 --margin-rate 0.45 --seo-cost 1500` |
 | `content_freshness_checker.py` | Classify sitemap URLs as fresh, stale, or unknown | `python scripts/content_freshness_checker.py --sitemap-url https://example.com/sitemap.xml --days-stale 180 --output-file freshness.md` |
 | `check_hallucinations.py` | Create a starter hallucination-checking report from brand facts and questions | `python scripts/check_hallucinations.py --brand-facts-file examples/brand-facts-example.md --questions-file examples/hallucination-questions-example.md --output-file hallucination-report.md` |
+| `checklist_generator.py` | Generate a tailored SEO/GEO/AI checklist by site type and market | `python scripts/checklist_generator.py --site-type service --market ru --focus seo --focus geo` |
+| `semantic_gap_mapper.py` | Cluster keywords into semantic execution lanes and page types | `python scripts/semantic_gap_mapper.py --file examples/semantic-keywords-example.txt --format json` |
+| `proof_pack_builder.py` | Build a reusable before/after proof or case-study pack | `python scripts/proof_pack_builder.py --site example.com --change "expanded FAQ proof" --before-score 90 --after-score 94` |
 | `gsc_data_stub.py` | Emit a Google Search Console shaped starter payload | `python scripts/gsc_data_stub.py` |
 | `yandex_data_stub.py` | Emit a Yandex shaped starter payload | `python scripts/yandex_data_stub.py` |
 | `x_ads_stub.py` | Emit a starter X Ads payload | `python scripts/x_ads_stub.py` |

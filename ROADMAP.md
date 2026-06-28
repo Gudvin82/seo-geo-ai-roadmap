@@ -38,22 +38,21 @@ Main deliverables:
 
 ## Release Wave 2: v6.7.5
 
-Focus: GEO depth and classical SEO depth expansion.
+Focus: operator tools for methodology-to-execution translation.
 
 Target outcomes:
 
-- stronger GEO deep-dive materials
-- stronger classic SEO depth around semantics, competitors, authority, and
-  measurement
-- better calibrated distinction between official, heuristic, and experimental
-  advice
+- stronger practical operators tools, not only narrative depth
+- easier translation from methodology into checklist, semantic plan, and proof
+  pack
+- stronger classic SEO execution around semantics, competitors, and evidence
 
 Main deliverables:
 
-- new GEO deep-dive documents
-- stronger SEO depth documents
-- improved checklists and prompt packs
-- methodology cleanup for evidence and calibration
+- checklist generator
+- semantic mapping helper
+- proof-pack builder
+- documentation and command-surface updates for the new operator tools
 
 ## Release Wave 3: v6.8.0
 

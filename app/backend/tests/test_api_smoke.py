@@ -926,7 +926,7 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v6.7.0"
+        generation_contracts.json()["project_generation_contract_version"] == "v6.7.5"
     )
 
     seo_intelligence = client.get(
@@ -936,6 +936,7 @@ def test_workspace_project_and_audit_flow(
     assert seo_intelligence.status_code == 200
     assert seo_intelligence.json()["connected_surfaces"]
     assert seo_intelligence.json()["scorecard"]["tracked_keywords"] > 0
+    assert seo_intelligence.json()["practical_toolkit"]
 
     generation_manifest = client.post(
         "/api/v1/generation/manifests/generate",
@@ -1068,6 +1069,10 @@ def test_workspace_project_and_audit_flow(
     )
     assert docs_consolidation_center.status_code == 200
     assert docs_consolidation_center.json()["current_entrypoints"]
+
+    repo_assets = client.get("/api/v1/settings/repo-assets", headers=auth_headers)
+    assert repo_assets.status_code == 200
+    assert repo_assets.json()["tooling_boosters"]
 
     managed_integration_center = client.get(
         "/api/v1/settings/managed-integration-center", headers=auth_headers

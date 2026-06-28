@@ -1,6 +1,6 @@
 # Карта документации
 
-Это самый короткий путь по репозиторию после `v6.7.0`.
+Это самый короткий путь по репозиторию после `v6.7.5`.
 
 ## Идите в таком порядке
 
@@ -28,9 +28,13 @@
 
 - [Technical SEO Deep Playbook](./docs/ru/technical-seo-deep-playbook.md)
 - [Semantic Core and Intent Playbook](./docs/ru/semantic-core-and-intent-playbook.md)
+- [Checklist Generator](./docs/ru/checklist-generator.md)
 - [Competitor Gap and Authority Playbook](./docs/ru/competitor-gap-and-authority-playbook.md)
+- [Proof Pack Playbook](./docs/ru/proof-pack-playbook.md)
+- [Case Library](./docs/ru/case-library.md)
 - [GEO and AI Operations Playbook](./docs/ru/geo-ai-operations-playbook.md)
 - [Сводка релиза v6.7.0](./docs/ru/v670-release.md)
+- [Сводка релиза v6.7.5](./docs/ru/v675-release.md)
 
 ## Основа доказательств и границ
 

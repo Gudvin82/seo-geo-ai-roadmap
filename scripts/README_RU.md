@@ -26,6 +26,9 @@
 | `roi_calculator.py` | Считает ROI / ROMI для SEO и AI-трафика | `python scripts/roi_calculator.py --traffic 5000 --conversion-rate 0.03 --lead-to-sale-rate 0.2 --average-check 1200 --margin-rate 0.45 --seo-cost 1500` |
 | `content_freshness_checker.py` | Классифицирует URL из sitemap как fresh, stale или unknown | `python scripts/content_freshness_checker.py --sitemap-url https://example.com/sitemap.xml --days-stale 180 --output-file freshness.md` |
 | `check_hallucinations.py` | Создает стартовый отчет для проверки AI-галлюцинаций | `python scripts/check_hallucinations.py --brand-facts-file examples/brand-facts-example.md --questions-file examples/hallucination-questions-example.md --output-file hallucination-report.md` |
+| `checklist_generator.py` | Генерирует tailored SEO/GEO/AI checklist по типу сайта и рынку | `python scripts/checklist_generator.py --site-type service --market ru --focus seo --focus geo` |
+| `semantic_gap_mapper.py` | Кластеризует keyword в semantic execution lanes и типы страниц | `python scripts/semantic_gap_mapper.py --file examples/semantic-keywords-example.txt --format json` |
+| `proof_pack_builder.py` | Собирает reusable before/after proof или case-study pack | `python scripts/proof_pack_builder.py --site example.com --change "expanded FAQ proof" --before-score 90 --after-score 94` |
 | `gsc_data_stub.py` | Выдает starter-payload в форме Google Search Console | `python scripts/gsc_data_stub.py` |
 | `yandex_data_stub.py` | Выдает starter-payload в форме Яндекс-данных | `python scripts/yandex_data_stub.py` |
 | `x_ads_stub.py` | Выдает starter-payload в форме X Ads | `python scripts/x_ads_stub.py` |
