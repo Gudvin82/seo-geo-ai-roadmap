@@ -18,6 +18,7 @@ from ..models import (
     IntegrationConnection,
     IntegrationSyncEvent,
     NotificationEndpoint,
+    Organization,
     Project,
     Report,
     ScanJob,
@@ -37,7 +38,11 @@ from ..schemas import (
     ServiceFoundationRead,
 )
 from ..services.cms import cms_contract
-from ..services.integrations import integration_contract, integration_runtime_profile
+from ..services.integrations import (
+    integration_contract,
+    integration_env_status,
+    integration_runtime_profile,
+)
 from ..services.scoring import benchmark_status, ru_geo_score
 from ..services.task_center import build_task_bundle_from_audit_run
 
@@ -50,6 +55,59 @@ def _maturity_status(score: float) -> str:
     if score >= 0.55:
         return "watch"
     return "needs_work"
+
+
+def _tenant_quota_alerts(row: Optional[TenantProfile]) -> list[dict]:
+    if not row:
+        return []
+    quota = json.loads(row.quota_json or "{}")
+    usage = json.loads(row.usage_json or "{}")
+    alerts: list[dict] = []
+    for key, limit in quota.items():
+        if not isinstance(limit, (int, float)) or limit <= 0:
+            continue
+        used = usage.get(f"{key}_used")
+        if not isinstance(used, (int, float)):
+            continue
+        ratio = round(float(used) / float(limit), 3)
+        status = "healthy"
+        if ratio >= 1:
+            status = "exceeded"
+        elif ratio >= 0.8:
+            status = "watch"
+        alerts.append(
+            {
+                "metric": key,
+                "limit": limit,
+                "used": used,
+                "ratio": ratio,
+                "status": status,
+            }
+        )
+    return alerts
+
+
+def _tenant_usage_health(row: Optional[TenantProfile]) -> dict:
+    alerts = _tenant_quota_alerts(row)
+    if not row:
+        return {
+            "status": "missing",
+            "healthy_metrics": 0,
+            "watch_metrics": 0,
+            "exceeded_metrics": 0,
+        }
+    return {
+        "status": (
+            "exceeded"
+            if any(item["status"] == "exceeded" for item in alerts)
+            else "watch"
+            if any(item["status"] == "watch" for item in alerts)
+            else "healthy"
+        ),
+        "healthy_metrics": sum(1 for item in alerts if item["status"] == "healthy"),
+        "watch_metrics": sum(1 for item in alerts if item["status"] == "watch"),
+        "exceeded_metrics": sum(1 for item in alerts if item["status"] == "exceeded"),
+    }
 
 
 @router.get("/deployment-posture")
@@ -173,6 +231,101 @@ def prompt_library() -> dict:
                 "human_review_required": True,
             },
         ]
+    }
+
+
+@router.get("/docs-consolidation-center")
+def docs_consolidation_center() -> dict:
+    return {
+        "current_entrypoints": [
+            "README.md",
+            "README_RU.md",
+            "DOCS_INDEX.md",
+            "DOCS_INDEX_RU.md",
+            "METHODOLOGY.md",
+            "METHODOLOGY_RU.md",
+            "PUBLIC_PRODUCT_READINESS.md",
+            "PUBLIC_PRODUCT_READINESS_RU.md",
+        ],
+        "operator_paths": {
+            "human_operator": ["WALKTHROUGH.md", "WALKTHROUGH_RU.md"],
+            "ai_agent": ["START_HERE_FOR_AI.md", "START_HERE_FOR_AI_RU.md"],
+            "service_builder": [
+                "ONE_DAY_SERVICE_BLUEPRINT.md",
+                "ONE_DAY_SERVICE_BLUEPRINT_RU.md",
+            ],
+        },
+        "archive_policy": {
+            "current_docs_first": True,
+            "historical_release_notes_in_archive": True,
+            "historical_paths": [
+                "DOCS_ARCHIVE.md",
+                "DOCS_ARCHIVE_RU.md",
+                "CHANGELOG.md",
+            ],
+        },
+        "recommended_cleanup_rules": [
+            "treat README, DOCS_INDEX, METHODOLOGY, and PUBLIC_PRODUCT_READINESS as the live root path",
+            "treat versioned release docs as proof and historical slices, not the main explanation path",
+            "promote repeat-used release lessons into current root docs instead of cloning more one-off docs",
+        ],
+    }
+
+
+@router.get("/managed-integration-center")
+def managed_integration_center() -> dict:
+    priority_sources = [
+        "gsc",
+        "ga4",
+        "google_ads",
+        "yandex_webmaster",
+        "yandex_metrica",
+        "yandex_direct",
+        "google_business_profile",
+        "yandex_business",
+        "alice_ai_visibility",
+        "crux",
+    ]
+    rows = []
+    for source_type in priority_sources:
+        contract = integration_contract(source_type)
+        env_status = integration_env_status(contract)
+        runtime_profile = integration_runtime_profile(
+            source_type,
+            config={"managed_runtime_enabled": True, "refresh_minutes": 1440},
+        )
+        rows.append(
+            {
+                "source_type": source_type,
+                "label": contract["label"],
+                "readiness_tier": contract["readiness_tier"],
+                "runtime_level": runtime_profile["runtime_level"],
+                "credential_ready": runtime_profile["credential_ready"],
+                "required_env_vars": env_status["required_env_vars"],
+                "missing_env_vars": env_status["missing_env_vars"],
+                "sync_mode": contract["sync_mode"],
+                "production_flow": contract["production_flow"],
+                "ci_gates": contract["ci_gates"],
+                "capabilities": contract["capabilities"],
+                "next_step": contract["next_step"],
+            }
+        )
+    return {
+        "summary": {
+            "first_class_integrations": len(rows),
+            "credential_ready_count": len(
+                [row for row in rows if row["credential_ready"]]
+            ),
+            "runtime_ready_count": len(
+                [row for row in rows if row["runtime_level"] == "managed_runtime"]
+            ),
+        },
+        "rows": rows,
+        "operator_rule": (
+            "Treat GSC, GA4, Ads, Yandex, local business, Alice AI, and CrUX as "
+            "one managed operating layer with credential lifecycle, refresh "
+            "cadence, CI gates, and explicit recovery ownership."
+        ),
     }
 
 
@@ -1324,6 +1477,94 @@ def productization_center() -> dict:
             "rate-limited public scanner",
             "queue priority by plan",
             "proof-safe exports only",
+        ],
+    }
+
+
+@router.get("/tenant-admin-console")
+def tenant_admin_console(
+    workspace_id: Optional[int] = None,
+    organization_id: Optional[int] = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    if workspace_id:
+        require_workspace_access(db, workspace_id, current_user, minimum_role="admin")
+        workspace_ids = [workspace_id]
+    else:
+        workspace_ids = [
+            row.id
+            for row in db.query(Workspace)
+            .filter(Workspace.owner_user_id == current_user.id)
+            .order_by(Workspace.id.asc())
+            .all()
+        ]
+    tenant_rows_query = db.query(TenantProfile).filter(
+        TenantProfile.workspace_id.in_(workspace_ids or [0])
+    )
+    if organization_id is not None:
+        tenant_rows_query = tenant_rows_query.filter(
+            TenantProfile.organization_id == organization_id
+        )
+    tenant_rows = tenant_rows_query.order_by(TenantProfile.id.desc()).all()
+    org_map = {
+        row.id: row
+        for row in db.query(Organization)
+        .filter(Organization.owner_user_id == current_user.id)
+        .all()
+    }
+    api_keys = (
+        db.query(TenantApiKey)
+        .filter(TenantApiKey.workspace_id.in_(workspace_ids or [0]))
+        .order_by(TenantApiKey.id.desc())
+        .all()
+    )
+    api_keys_by_workspace: dict[int, list[TenantApiKey]] = {}
+    for row in api_keys:
+        api_keys_by_workspace.setdefault(row.workspace_id, []).append(row)
+    tenants = []
+    for row in tenant_rows:
+        org = org_map.get(row.organization_id)
+        key_rows = api_keys_by_workspace.get(row.workspace_id, [])
+        quota = json.loads(row.quota_json or "{}")
+        usage = json.loads(row.usage_json or "{}")
+        onboarding = json.loads(row.onboarding_state_json or "{}")
+        tenants.append(
+            {
+                "tenant_profile_id": row.id,
+                "workspace_id": row.workspace_id,
+                "organization_id": row.organization_id,
+                "organization_name": org.name if org else None,
+                "tenant_name": row.tenant_name,
+                "plan_code": row.plan_code,
+                "plan_status": row.plan_status,
+                "quota": quota,
+                "usage": usage,
+                "usage_health": _tenant_usage_health(row),
+                "onboarding_state": onboarding,
+                "api_key_count": len(key_rows),
+                "enabled_api_key_count": len(
+                    [item for item in key_rows if item.is_enabled]
+                ),
+            }
+        )
+    return {
+        "summary": {
+            "organization_count": len(org_map),
+            "workspace_count": len(workspace_ids),
+            "tenant_count": len(tenant_rows),
+            "api_key_count": len(api_keys),
+            "enabled_api_key_count": len([row for row in api_keys if row.is_enabled]),
+        },
+        "filters": {
+            "workspace_id": workspace_id,
+            "organization_id": organization_id,
+        },
+        "tenants": tenants,
+        "recommended_operator_actions": [
+            "review usage and quota pressure before adding new client workloads",
+            "disable stale tenant API keys and rotate short-lived credentials",
+            "keep onboarding states explicit so service delivery does not hide partial setup",
         ],
     }
 

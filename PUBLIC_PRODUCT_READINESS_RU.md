@@ -127,9 +127,9 @@ production-решений от команды, которая используе
 
 ## Связь с релизом
 
-`v6.5.0` делает это публичное обещание более пригодным к исполнению за счет:
+`v6.6.0` делает это публичное обещание более пригодным к исполнению за счет:
 
-- более сильной видимости runtime operations для integrations, refresh cadence, token rotation и recovery
-- более явного SEO maturity слоя, чтобы классическая SEO-глубина не терялась рядом с GEO и AI
-- evidence lab, который лучше показывает case assets, proof targets и publication readiness
-- более строгой release hygiene для version alignment между runtime, docs и frontend surfaces
+- tenant-admin visibility для quota pressure, onboarding state и API key posture
+- managed-integration center, который превращает ключевые Google, Yandex, local, Alice AI и CrUX flows в одну machine-readable operating layer
+- docs-consolidation visibility, чтобы current entrypoints и archive policy были явными
+- более строгой release hygiene для version alignment между runtime, docs, frontend и release docs

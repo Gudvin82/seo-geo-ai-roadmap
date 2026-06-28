@@ -1,6 +1,6 @@
 # Documentation Index
 
-This is the shortest path through the repository after `v6.5.0`.
+This is the shortest path through the repository after `v6.6.0`.
 
 ## Start in this order
 
@@ -29,7 +29,7 @@ This is the shortest path through the repository after `v6.5.0`.
 - [Semantic Core and Intent Playbook](./docs/en/semantic-core-and-intent-playbook.md)
 - [Competitor Gap and Authority Playbook](./docs/en/competitor-gap-and-authority-playbook.md)
 - [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
-- [v6.5.0 Release Summary](./docs/en/v650-release.md)
+- [v6.6.0 Release Summary](./docs/en/v660-release.md)
 
 ## Core proof and boundaries
 

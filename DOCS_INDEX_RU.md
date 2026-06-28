@@ -1,6 +1,6 @@
 # Карта документации
 
-Это самый короткий путь по репозиторию после `v6.5.0`.
+Это самый короткий путь по репозиторию после `v6.6.0`.
 
 ## Идите в таком порядке
 
@@ -29,7 +29,7 @@
 - [Semantic Core and Intent Playbook](./docs/ru/semantic-core-and-intent-playbook.md)
 - [Competitor Gap and Authority Playbook](./docs/ru/competitor-gap-and-authority-playbook.md)
 - [GEO and AI Operations Playbook](./docs/ru/geo-ai-operations-playbook.md)
-- [Сводка релиза v6.5.0](./docs/ru/v650-release.md)
+- [Сводка релиза v6.6.0](./docs/ru/v660-release.md)
 
 ## Основа доказательств и границ
 

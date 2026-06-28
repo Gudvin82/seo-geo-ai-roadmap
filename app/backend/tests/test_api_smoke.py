@@ -926,7 +926,7 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v6.5.0"
+        generation_contracts.json()["project_generation_contract_version"] == "v6.6.0"
     )
 
     seo_intelligence = client.get(
@@ -1062,6 +1062,28 @@ def test_workspace_project_and_audit_flow(
     )
     assert productization_center.status_code == 200
     assert productization_center.json()["billing_abstraction"]
+
+    docs_consolidation_center = client.get(
+        "/api/v1/settings/docs-consolidation-center", headers=auth_headers
+    )
+    assert docs_consolidation_center.status_code == 200
+    assert docs_consolidation_center.json()["current_entrypoints"]
+
+    managed_integration_center = client.get(
+        "/api/v1/settings/managed-integration-center", headers=auth_headers
+    )
+    assert managed_integration_center.status_code == 200
+    managed_rows = managed_integration_center.json()["rows"]
+    assert any(row["source_type"] == "gsc" for row in managed_rows)
+    assert any(row["source_type"] == "yandex_webmaster" for row in managed_rows)
+
+    tenant_admin_console = client.get(
+        f"/api/v1/settings/tenant-admin-console?workspace_id={workspace_id}",
+        headers=auth_headers,
+    )
+    assert tenant_admin_console.status_code == 200
+    assert tenant_admin_console.json()["summary"]["tenant_count"] >= 1
+    assert tenant_admin_console.json()["tenants"]
 
     saas_growth_center = client.get(
         f"/api/v1/settings/saas-growth-center?workspace_id={workspace_id}",

@@ -1,0 +1,32 @@
+name: release-hygiene
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip mkdocs-material
+
+      - name: Verify release markers
+        run: python scripts/release_hygiene_check.py
+
+      - name: Verify version consistency
+        run: python scripts/version_consistency_check.py
+
+      - name: Verify docs build
+        run: python -m mkdocs build
+
+      - name: Verify frontend syntax
+        run: node --check app/frontend/app.js

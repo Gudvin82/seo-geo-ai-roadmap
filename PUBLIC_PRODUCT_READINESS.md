@@ -126,9 +126,9 @@ If you want to prove the repo matches the public post, use this path:
 
 ## Release alignment
 
-`v6.5.0` is the release that makes this public promise more execution-ready by adding:
+`v6.6.0` is the release that makes this public promise more execution-ready by adding:
 
-- stronger runtime operations visibility for integrations, refresh cadence, token rotation, and recovery
-- a clearer SEO maturity layer so classic SEO depth remains first-class beside GEO and AI
-- an evidence lab that makes case assets, proof targets, and publication readiness more visible
-- stricter release hygiene for version alignment across runtime, docs, and frontend surfaces
+- tenant-admin visibility for quota pressure, onboarding state, and API key posture
+- a managed-integration center that turns key Google, Yandex, local, Alice AI, and CrUX flows into one machine-readable operating layer
+- docs-consolidation visibility so current entrypoints and archive policy are explicit
+- stricter release hygiene for version alignment across runtime, docs, frontend, and release docs

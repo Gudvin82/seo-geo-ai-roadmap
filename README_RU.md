@@ -175,23 +175,24 @@ discoverability. Она объединяет:
 - [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
 - [docs/ru/ai-citation-score.md](./docs/ru/ai-citation-score.md)
 
-## На чем сфокусирован v6.5.0
+## На чем сфокусирован v6.6.0
 
-`v6.5.0` делает repo более целостной execution-платформой за счет того, что
-добавляет runtime operations discipline, SEO maturity framing и более плотный
-evidence lab поверх self-hosted foundation.
+`v6.6.0` делает repo более operator-ready multi-tenant платформой за счет
+tenant admin visibility, managed-integration proof, docs consolidation и более
+строгой release hygiene поверх зрелости `v6.5.0`.
 
 Он добавляет:
 
-- runtime-ops center для token rotation, refresh cadence, recovery mode и CMS
-  writeback governance
-- SEO maturity center, который делает semantics, competitor workflows,
-  authority и measurement depth first-class треками, а не побочными блоками
-- evidence lab, который собирает proof assets, publishable case targets и
-  independent proof goals в одну execution surface
-- более богатую frontend-видимость runtime, maturity и evidence слоев, а не
-  только raw JSON
-- более аккуратное выравнивание runtime contracts, docs и активных UI surfaces
+- tenant-admin console для видимости plan posture, quota pressure,
+  onboarding state и API keys
+- managed-integration center, который собирает GSC, GA4, Ads, Yandex, local
+  business, Alice AI и CrUX в одну production-flow матрицу
+- docs-consolidation center, чтобы current docs, AI-agent paths,
+  service-builder paths и archive policy были явно видны
+- более богатую frontend-видимость tenant, docs и integration maturity слоев,
+  а не только backend-only surfaces
+- более сильную release hygiene для runtime contracts, docs, frontend markers,
+  docs build и syntax verification
 
 ## Текущие границы
 

@@ -81,6 +81,9 @@ def test_frontend_mentions_required_workflows() -> None:
         "seo-maturity-cards",
         "seo-maturity-json",
         "evidence-lab",
+        "tenant-admin-console",
+        "docs-consolidation-center",
+        "managed-integration-center",
         "social-command-center",
         "saas-readiness-center",
         "integration-runtime-center",
@@ -112,3 +115,11 @@ def test_frontend_dockerfile_copies_all_primary_surfaces() -> None:
         "styles.css",
     ]:
         assert asset in dockerfile
+
+
+def test_release_hygiene_assets_exist() -> None:
+    for path in [
+        Path("scripts/release_hygiene_check.py"),
+        Path(".github/workflows/release-hygiene.yml"),
+    ]:
+        assert path.exists(), f"Missing release hygiene asset: {path}"

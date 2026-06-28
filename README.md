@@ -174,24 +174,25 @@ Read:
 - [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
 - [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
 
-## v6.5.0 focus
+## v6.6.0 focus
 
-`v6.5.0` turns the repo into a more execution-complete operating platform by
-adding runtime operations discipline, SEO maturity framing, and a denser
-evidence lab on top of the self-hosted foundation.
+`v6.6.0` turns the repo into a more operator-ready multi-tenant platform by
+adding tenant admin visibility, managed-integration proof, docs
+consolidation, and stricter release hygiene on top of the `v6.5.0` maturity
+work.
 
 It adds:
 
-- runtime-ops center for token rotation, refresh cadence, recovery mode, and
-  CMS writeback governance
-- SEO maturity center that treats semantics, competitor workflows, authority,
-  and measurement depth as first-class tracks instead of side notes
-- evidence lab that groups proof assets, publishable case targets, and
-  independent proof goals into one execution surface
-- richer frontend operator visibility for runtime, maturity, and evidence
-  layers instead of raw JSON only
-- fuller release alignment across runtime contracts, docs, and active UI
-  surfaces
+- tenant-admin console for plan posture, quota pressure, onboarding state, and
+  API key visibility
+- managed-integration center that groups GSC, GA4, Ads, Yandex, local
+  business, Alice AI, and CrUX into one production-flow matrix
+- docs-consolidation center so current docs, AI-agent paths, service-builder
+  paths, and archive policy are explicit
+- richer frontend operator visibility for tenant, docs, and integration
+  maturity layers instead of backend-only surfaces
+- stronger release hygiene across runtime contracts, docs, frontend markers,
+  docs build, and syntax verification
 
 ## Current boundaries
 

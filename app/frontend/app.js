@@ -53,6 +53,9 @@ const state = {
   saasGrowthCenter: {},
   saasReadinessCenter: {},
   deploymentPosture: {},
+  tenantAdminConsole: {},
+  docsConsolidationCenter: {},
+  managedIntegrationCenter: {},
   runtimeOpsCenter: {},
   seoMaturityCenter: {},
   evidenceLab: {},
@@ -115,7 +118,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.5.0 runtime ops, SEO maturity, and evidence lab delivery",
+      "v6.6.0 tenant admin, managed integrations, docs consolidation, and release hygiene",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -306,7 +309,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.5.0 runtime ops, SEO maturity и evidence lab delivery",
+      "v6.6.0 tenant admin, managed integrations, docs consolidation и release hygiene",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -843,6 +846,21 @@ function renderSaasCenter() {
     null,
     2,
   );
+  $("#tenant-admin-console").textContent = JSON.stringify(
+    state.tenantAdminConsole || {},
+    null,
+    2,
+  );
+  $("#docs-consolidation-center").textContent = JSON.stringify(
+    state.docsConsolidationCenter || {},
+    null,
+    2,
+  );
+  $("#managed-integration-center").textContent = JSON.stringify(
+    state.managedIntegrationCenter || {},
+    null,
+    2,
+  );
   $("#deployment-posture").textContent = JSON.stringify(
     state.deploymentPosture || {},
     null,
@@ -1332,6 +1350,8 @@ async function refreshSaasCenter() {
     apiRequest("/saas/organization-switcher"),
     apiRequest("/settings/demo-center", { headers: {} }),
     apiRequest("/settings/productization-center", { headers: {} }),
+    apiRequest("/settings/docs-consolidation-center", { headers: {} }),
+    apiRequest("/settings/managed-integration-center", { headers: {} }),
   ];
   if (state.selectedWorkspaceId) {
     requests.push(
@@ -1345,6 +1365,9 @@ async function refreshSaasCenter() {
         `/settings/saas-readiness-center?workspace_id=${state.selectedWorkspaceId}`,
       ),
       apiRequest("/settings/deployment-posture"),
+      apiRequest(
+        `/settings/tenant-admin-console?workspace_id=${state.selectedWorkspaceId}`,
+      ),
     );
   }
   const [
@@ -1353,20 +1376,26 @@ async function refreshSaasCenter() {
     organizationSwitcher,
     demoCenter,
     productizationCenter,
+    docsConsolidationCenter,
+    managedIntegrationCenter,
     portfolioDashboard,
     saasGrowthCenter,
     saasReadinessCenter,
     deploymentPosture,
+    tenantAdminConsole,
   ] = await Promise.all(requests);
   state.saasCatalog = catalog.items || [];
   state.organizations = organizations || [];
   state.organizationSwitcher = organizationSwitcher || {};
   state.demoCenter = demoCenter || {};
   state.productizationCenter = productizationCenter || {};
+  state.docsConsolidationCenter = docsConsolidationCenter || {};
+  state.managedIntegrationCenter = managedIntegrationCenter || {};
   state.portfolioDashboard = portfolioDashboard || {};
   state.saasGrowthCenter = saasGrowthCenter || {};
   state.saasReadinessCenter = saasReadinessCenter || {};
   state.deploymentPosture = deploymentPosture || {};
+  state.tenantAdminConsole = tenantAdminConsole || {};
   if (state.selectedWorkspaceId) {
     try {
       state.tenantOverview = await apiRequest(

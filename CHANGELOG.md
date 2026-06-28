@@ -1,5 +1,20 @@
 # Changelog
 
+## v6.6.0 — Tenant Admin Console, Managed Integration Center, and Release Hygiene Sweep
+
+- Added `tenant-admin-console` so workspace and organization operators can review
+  tenant profiles, quota pressure, onboarding state, API key posture, and usage
+  health from the settings surface instead of relying on the SaaS API alone
+- Added `managed-integration-center` so GSC, GA4, Google Ads, Yandex
+  Webmaster, Yandex Metrica, Yandex Direct, local business surfaces, Alice AI,
+  and CrUX are grouped into one machine-readable production-flow matrix
+- Added `docs-consolidation-center` plus frontend visibility so current docs,
+  operator paths, AI-agent entrypoints, and archive policy are explicit inside
+  the app instead of being implied in the repository structure only
+- Added `release-hygiene` CI so version alignment, release docs, docs build, and
+  frontend syntax are checked as one release discipline path
+- Aligned active runtime, contract, and frontend markers around `v6.6.0`
+
 ## v6.5.0 — Runtime Ops Center, SEO Maturity Layer, and Evidence Lab
 
 - Added `runtime-ops-center` so operators can review refresh cadence, token
