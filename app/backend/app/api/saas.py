@@ -233,7 +233,9 @@ def organization_switcher(
     org_items = []
     for organization in organizations:
         matching = [
-            item for item in workspace_items if item["organization_id"] == organization.id
+            item
+            for item in workspace_items
+            if item["organization_id"] == organization.id
         ]
         org_items.append(
             {
@@ -244,7 +246,9 @@ def organization_switcher(
                 "active_workspace_ids": [item["workspace_id"] for item in matching],
             }
         )
-    suggested_workspace_id = workspace_items[0]["workspace_id"] if workspace_items else None
+    suggested_workspace_id = (
+        workspace_items[0]["workspace_id"] if workspace_items else None
+    )
     suggested_organization_id = (
         next(
             (
@@ -351,7 +355,10 @@ def update_tenant_profile(
         "tenant_profile.updated",
         user_id=current_user.id,
         workspace_id=row.workspace_id,
-        metadata={"tenant_profile_id": row.id, "updated_fields": sorted(updates.keys())},
+        metadata={
+            "tenant_profile_id": row.id,
+            "updated_fields": sorted(updates.keys()),
+        },
     )
     db.add(row)
     db.commit()
@@ -382,7 +389,9 @@ def tenant_overview(
     )
     quota_alerts = _tenant_quota_alerts(tenant)
     usage_health = _tenant_usage_health(tenant)
-    onboarding_state = json.loads(tenant.onboarding_state_json or "{}") if tenant else {}
+    onboarding_state = (
+        json.loads(tenant.onboarding_state_json or "{}") if tenant else {}
+    )
     settings_summary = json.loads(tenant.tenant_settings_json or "{}") if tenant else {}
     return {
         "workspace_id": workspace.id,
@@ -405,7 +414,9 @@ def tenant_overview(
                 "label": row.label,
                 "key_prefix": row.key_prefix,
                 "is_enabled": row.is_enabled,
-                "last_used_at": row.last_used_at.isoformat() if row.last_used_at else None,
+                "last_used_at": row.last_used_at.isoformat()
+                if row.last_used_at
+                else None,
             }
             for row in api_keys[:5]
         ],

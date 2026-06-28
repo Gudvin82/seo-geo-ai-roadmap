@@ -1770,7 +1770,9 @@ def portfolio_dashboard(
         workspace_breakdown.append(
             {
                 "workspace_id": target_workspace_id,
-                "workspace_name": workspace.name if workspace else f"Workspace {target_workspace_id}",
+                "workspace_name": workspace.name
+                if workspace
+                else f"Workspace {target_workspace_id}",
                 "project_count": len(workspace_rows),
                 "average_audit_score": round(
                     sum(
@@ -1817,7 +1819,8 @@ def portfolio_dashboard(
             "projects_needing_attention": sum(
                 1
                 for row in rows
-                if row["latest_audit_score"] is not None and row["latest_audit_score"] < 70
+                if row["latest_audit_score"] is not None
+                and row["latest_audit_score"] < 70
             ),
         },
         "workspace_breakdown": workspace_breakdown,

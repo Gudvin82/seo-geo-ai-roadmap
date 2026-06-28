@@ -163,7 +163,9 @@ def create_integration(
     return _serialize(row)
 
 
-@router.patch("/{integration_id}/runtime-policy", response_model=IntegrationConnectionRead)
+@router.patch(
+    "/{integration_id}/runtime-policy", response_model=IntegrationConnectionRead
+)
 def update_integration_runtime_policy(
     integration_id: int,
     payload: IntegrationRuntimePolicyUpdate,
