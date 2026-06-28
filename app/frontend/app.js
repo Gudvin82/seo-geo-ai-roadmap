@@ -53,6 +53,9 @@ const state = {
   saasGrowthCenter: {},
   saasReadinessCenter: {},
   deploymentPosture: {},
+  runtimeOpsCenter: {},
+  seoMaturityCenter: {},
+  evidenceLab: {},
   proofTimeline: [],
   proofEvidence: [],
   proofExperiments: [],
@@ -112,7 +115,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.4.0 managed runtime, portfolio command, and proof-ops delivery",
+      "v6.5.0 runtime ops, SEO maturity, and evidence lab delivery",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -303,7 +306,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.4.0 managed runtime, portfolio command и proof-ops delivery",
+      "v6.5.0 runtime ops, SEO maturity и evidence lab delivery",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -699,6 +702,10 @@ function renderExecutiveDashboard() {
     $("#executive-owners").replaceChildren();
     $("#executive-portfolio").textContent = "";
     $("#executive-benchmarks").textContent = "";
+    $("#runtime-ops-cards").replaceChildren();
+    $("#runtime-ops-json").textContent = "";
+    $("#seo-maturity-cards").replaceChildren();
+    $("#seo-maturity-json").textContent = "";
     $("#executive-dashboard-json").textContent = "";
     return;
   }
@@ -736,6 +743,35 @@ function renderExecutiveDashboard() {
   );
   $("#executive-benchmarks").textContent = JSON.stringify(
     dashboard.benchmark_overlays || {},
+    null,
+    2,
+  );
+  renderCards(
+    "#runtime-ops-cards",
+    (state.runtimeOpsCenter && state.runtimeOpsCenter.managed_runtime_matrix) || [],
+    (row) =>
+      simpleCard(row.label || row.source_type || "runtime", [
+        `${row.runtime_level || "contract_only"} · ${row.status || "unknown"}`,
+        `Refresh: ${row.refresh_minutes ?? "n/a"} min · Rotation: ${row.token_rotation_days ?? "n/a"}d`,
+        `Action: ${row.next_operator_action || "monitor"}`,
+      ]),
+  );
+  $("#runtime-ops-json").textContent = JSON.stringify(
+    state.runtimeOpsCenter || {},
+    null,
+    2,
+  );
+  renderCards(
+    "#seo-maturity-cards",
+    (state.seoMaturityCenter && state.seoMaturityCenter.tracks) || [],
+    (row) =>
+      simpleCard(row.track || "track", [
+        `${row.status || "unknown"} · score ${row.score ?? "n/a"}`,
+        (row.next_steps || [])[0] || "No next step",
+      ]),
+  );
+  $("#seo-maturity-json").textContent = JSON.stringify(
+    state.seoMaturityCenter || {},
     null,
     2,
   );
@@ -845,6 +881,7 @@ function renderProofCenter() {
     null,
     2,
   );
+  $("#evidence-lab").textContent = JSON.stringify(state.evidenceLab || {}, null, 2);
   $("#mention-reputation-center").textContent = JSON.stringify(
     state.mentionReputationCenter || {},
     null,
@@ -1268,11 +1305,18 @@ async function refreshExecutiveDashboard() {
     return;
   }
   try {
-    state.executiveDashboard = await apiRequest(
-      `/settings/executive-dashboard?project_id=${state.selectedProjectId}`,
-    );
+    const [dashboard, runtimeOpsCenter, seoMaturityCenter] = await Promise.all([
+      apiRequest(`/settings/executive-dashboard?project_id=${state.selectedProjectId}`),
+      apiRequest(`/settings/runtime-ops-center?project_id=${state.selectedProjectId}`),
+      apiRequest(`/settings/seo-maturity-center?project_id=${state.selectedProjectId}`),
+    ]);
+    state.executiveDashboard = dashboard;
+    state.runtimeOpsCenter = runtimeOpsCenter || {};
+    state.seoMaturityCenter = seoMaturityCenter || {};
   } catch (error) {
     state.executiveDashboard = null;
+    state.runtimeOpsCenter = {};
+    state.seoMaturityCenter = {};
     log(`Executive dashboard not ready yet: ${error.message}`, "warning");
   }
   renderExecutiveDashboard();
@@ -1348,6 +1392,7 @@ async function refreshProofCenter() {
     exportPack,
     mentionReputationCenter,
     operatorBoard,
+    evidenceLab,
   ] =
     await Promise.all([
       apiRequest(`/proof/timeline?project_id=${state.selectedProjectId}`),
@@ -1360,6 +1405,7 @@ async function refreshProofCenter() {
         `/settings/mention-reputation-center?project_id=${state.selectedProjectId}`,
       ),
       apiRequest(`/settings/operator-board?project_id=${state.selectedProjectId}`),
+      apiRequest(`/settings/evidence-lab?project_id=${state.selectedProjectId}`),
     ]);
   state.proofTimeline = timeline.items || [];
   state.proofEvidence = evidence || [];
@@ -1369,6 +1415,7 @@ async function refreshProofCenter() {
   state.proofExportPack = exportPack || {};
   state.mentionReputationCenter = mentionReputationCenter || {};
   state.operatorBoard = operatorBoard || {};
+  state.evidenceLab = evidenceLab || {};
   renderProofCenter();
 }
 

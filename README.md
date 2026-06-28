@@ -174,24 +174,24 @@ Read:
 - [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
 - [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
 
-## v6.4.0 focus
+## v6.5.0 focus
 
-`v6.4.0` turns the repo into a more operator-complete system by tightening the
-gap between strong self-hosted foundations and day-to-day managed runtime,
-tenant, portfolio, and proof operations.
+`v6.5.0` turns the repo into a more execution-complete operating platform by
+adding runtime operations discipline, SEO maturity framing, and a denser
+evidence lab on top of the self-hosted foundation.
 
 It adds:
 
-- managed-runtime policy editing so integration refresh, retry, token-rotation,
-  and recovery expectations can be governed from the product layer
-- organization-switcher, tenant usage health, onboarding checklist, and
-  stronger tenant overview surfaces for service-building teams
-- portfolio rollups across multiple workspaces plus a proof-ops center that
-  combines evidence, experiments, confidence distribution, and next steps
-- a stronger operator board summary so task lanes, ownership pressure, and
-  follow-through are visible instead of hidden in raw JSON alone
-- fuller release alignment across runtime contracts, frontend surfaces, docs,
-  and current version markers
+- runtime-ops center for token rotation, refresh cadence, recovery mode, and
+  CMS writeback governance
+- SEO maturity center that treats semantics, competitor workflows, authority,
+  and measurement depth as first-class tracks instead of side notes
+- evidence lab that groups proof assets, publishable case targets, and
+  independent proof goals into one execution surface
+- richer frontend operator visibility for runtime, maturity, and evidence
+  layers instead of raw JSON only
+- fuller release alignment across runtime contracts, docs, and active UI
+  surfaces
 
 ## Current boundaries
 

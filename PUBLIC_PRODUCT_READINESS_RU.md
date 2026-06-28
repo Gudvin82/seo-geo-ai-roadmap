@@ -127,9 +127,9 @@ production-решений от команды, которая используе
 
 ## Связь с релизом
 
-`v6.4.0` делает это публичное обещание более пригодным к исполнению за счет:
+`v6.5.0` делает это публичное обещание более пригодным к исполнению за счет:
 
-- более сильной видимости managed-runtime policy для integrations и operator recovery
-- более явных tenant, organization, usage и onboarding поверхностей в продукте
-- proof-ops и portfolio rollup, которые делают follow-through после аудитов более заметным
+- более сильной видимости runtime operations для integrations, refresh cadence, token rotation и recovery
+- более явного SEO maturity слоя, чтобы классическая SEO-глубина не терялась рядом с GEO и AI
+- evidence lab, который лучше показывает case assets, proof targets и publication readiness
 - более строгой release hygiene для version alignment между runtime, docs и frontend surfaces

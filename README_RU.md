@@ -175,24 +175,23 @@ discoverability. Она объединяет:
 - [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
 - [docs/ru/ai-citation-score.md](./docs/ru/ai-citation-score.md)
 
-## На чем сфокусирован v6.4.0
+## На чем сфокусирован v6.5.0
 
-`v6.4.0` делает repo более цельной операторской системой за счет того, что
-сближает сильный self-hosted foundation с ежедневной managed runtime,
-tenant, portfolio и proof-operations работой.
+`v6.5.0` делает repo более целостной execution-платформой за счет того, что
+добавляет runtime operations discipline, SEO maturity framing и более плотный
+evidence lab поверх self-hosted foundation.
 
 Он добавляет:
 
-- управление managed-runtime policy, чтобы refresh, retry, token rotation и
-  recovery expectations можно было задавать из продуктового слоя
-- organization switcher, tenant usage health, onboarding checklist и более
-  сильный tenant overview для команд, которые строят свой сервис
-- portfolio rollup по нескольким workspace и proof-ops center, который
-  объединяет evidence, experiments, confidence distribution и next steps
-- более сильный operator board summary, чтобы lane pressure, ownership и
-  follow-through были видны не только в raw JSON
-- более аккуратное выравнивание runtime contracts, frontend surfaces, docs и
-  текущих version markers
+- runtime-ops center для token rotation, refresh cadence, recovery mode и CMS
+  writeback governance
+- SEO maturity center, который делает semantics, competitor workflows,
+  authority и measurement depth first-class треками, а не побочными блоками
+- evidence lab, который собирает proof assets, publishable case targets и
+  independent proof goals в одну execution surface
+- более богатую frontend-видимость runtime, maturity и evidence слоев, а не
+  только raw JSON
+- более аккуратное выравнивание runtime contracts, docs и активных UI surfaces
 
 ## Текущие границы
 

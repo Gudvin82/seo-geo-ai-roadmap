@@ -1,5 +1,19 @@
 # Changelog
 
+## v6.5.0 — Runtime Ops Center, SEO Maturity Layer, and Evidence Lab
+
+- Added `runtime-ops-center` so operators can review refresh cadence, token
+  rotation, recovery mode, and CMS writeback governance from one machine-readable
+  surface
+- Added `seo-maturity-center` so semantic workflows, competitor analysis,
+  authority or link depth, and measurement maturity are evaluated as explicit
+  tracks
+- Added `evidence-lab` so proof assets, case-library targets, and independent
+  proof goals are grouped into one execution view
+- Expanded the frontend executive and proof panes with runtime ops, SEO maturity,
+  and evidence-lab surfaces instead of leaving those layers hidden in the API only
+- Aligned active runtime, contract, and release markers around `v6.5.0`
+
 ## v6.4.0 — Managed Runtime Delivery, Portfolio Rollups, and Proof-Ops Center
 
 - Added runtime-policy editing for integrations so operators can govern

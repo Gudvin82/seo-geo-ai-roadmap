@@ -126,9 +126,9 @@ If you want to prove the repo matches the public post, use this path:
 
 ## Release alignment
 
-`v6.4.0` is the release that makes this public promise more execution-ready by adding:
+`v6.5.0` is the release that makes this public promise more execution-ready by adding:
 
-- stronger managed-runtime policy visibility for integrations and operator recovery
-- clearer tenant, organization, usage, and onboarding product surfaces
-- proof-ops and portfolio rollups that make follow-through more visible after audits
+- stronger runtime operations visibility for integrations, refresh cadence, token rotation, and recovery
+- a clearer SEO maturity layer so classic SEO depth remains first-class beside GEO and AI
+- an evidence lab that makes case assets, proof targets, and publication readiness more visible
 - stricter release hygiene for version alignment across runtime, docs, and frontend surfaces

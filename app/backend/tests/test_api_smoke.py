@@ -895,6 +895,30 @@ def test_workspace_project_and_audit_flow(
     assert proof_ops_center.status_code == 200
     assert proof_ops_center.json()["summary"]["evidence_count"] >= 1
 
+    evidence_lab = client.get(
+        f"/api/v1/settings/evidence-lab?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert evidence_lab.status_code == 200
+    assert evidence_lab.json()["summary"]["evidence_records"] >= 1
+    assert evidence_lab.json()["case_library_targets"]
+
+    runtime_ops_center = client.get(
+        f"/api/v1/settings/runtime-ops-center?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert runtime_ops_center.status_code == 200
+    assert runtime_ops_center.json()["summary"]["integration_count"] >= 1
+    assert runtime_ops_center.json()["managed_runtime_matrix"]
+
+    seo_maturity_center = client.get(
+        f"/api/v1/settings/seo-maturity-center?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert seo_maturity_center.status_code == 200
+    assert seo_maturity_center.json()["tracks"]
+    assert seo_maturity_center.json()["summary"]["tracks"] >= 1
+
     generation_contracts = client.get(
         "/api/v1/generation/contracts", headers=auth_headers
     )
@@ -902,7 +926,7 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v6.4.0"
+        generation_contracts.json()["project_generation_contract_version"] == "v6.5.0"
     )
 
     seo_intelligence = client.get(

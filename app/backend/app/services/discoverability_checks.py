@@ -11,7 +11,7 @@ from typing import Optional
 
 from .scan_security import safe_fetch_url_bytes, safe_fetch_url_text
 
-CHECKER_USER_AGENT = "Discoverability-Checks/6.4.0"
+CHECKER_USER_AGENT = "Discoverability-Checks/6.5.0"
 DEFAULT_TIMEOUT_SECONDS = 15
 
 AI_BOTS = [

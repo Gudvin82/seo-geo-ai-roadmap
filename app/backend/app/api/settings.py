@@ -16,6 +16,7 @@ from ..models import (
     EvidenceRecord,
     ExperimentRecord,
     IntegrationConnection,
+    IntegrationSyncEvent,
     NotificationEndpoint,
     Project,
     Report,
@@ -41,6 +42,14 @@ from ..services.scoring import benchmark_status, ru_geo_score
 from ..services.task_center import build_task_bundle_from_audit_run
 
 router = APIRouter(prefix="/settings", tags=["settings"])
+
+
+def _maturity_status(score: float) -> str:
+    if score >= 0.8:
+        return "strong"
+    if score >= 0.55:
+        return "watch"
+    return "needs_work"
 
 
 @router.get("/deployment-posture")
@@ -2023,6 +2032,429 @@ def proof_ops_center(
             "capture at least one public before/after proof item per major fix lane",
             "promote strong experiments into client-safe exports and case libraries",
             "attach evidence links to rollback or verify steps in the operator board",
+        ],
+    }
+
+
+@router.get("/runtime-ops-center")
+def runtime_ops_center(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    project, _ = require_project_access(
+        db, project_id, current_user, minimum_role="viewer"
+    )
+    integration_rows = (
+        db.query(IntegrationConnection)
+        .filter(IntegrationConnection.project_id == project_id)
+        .order_by(IntegrationConnection.id.desc())
+        .all()
+    )
+    cms_rows = (
+        db.query(CmsConnector)
+        .filter(CmsConnector.project_id == project_id)
+        .order_by(CmsConnector.id.desc())
+        .all()
+    )
+    latest_events = {}
+    if integration_rows:
+        event_rows = (
+            db.query(IntegrationSyncEvent)
+            .filter(
+                IntegrationSyncEvent.integration_connection_id.in_(
+                    [row.id for row in integration_rows]
+                )
+            )
+            .order_by(IntegrationSyncEvent.id.desc())
+            .all()
+        )
+        for row in event_rows:
+            latest_events.setdefault(row.integration_connection_id, row)
+
+    matrix = []
+    token_rotation_queue = []
+    refresh_queue = []
+    recovery_queue = []
+    for row in integration_rows:
+        latest_snapshot = json.loads(row.latest_snapshot_json or "{}")
+        runtime_profile = integration_runtime_profile(
+            row.source_type,
+            config=json.loads(row.config_json or "{}"),
+            credentials_env_var=row.credentials_env_var,
+            latest_snapshot=latest_snapshot,
+        )
+        diagnostics = integration_runtime_profile(
+            row.source_type,
+            config=json.loads(row.config_json or "{}"),
+            credentials_env_var=row.credentials_env_var,
+            latest_snapshot=latest_snapshot,
+        )
+        latest_event = latest_events.get(row.id)
+        last_status = (
+            latest_event.status if latest_event else row.last_sync_status or "created"
+        )
+        refresh_minutes = runtime_profile["refresh_minutes"]
+        rotation_days = runtime_profile["token_rotation_days"]
+        retry_backoff = runtime_profile["retry_backoff_minutes"]
+        needs_rotation = rotation_days <= 30
+        needs_refresh = refresh_minutes > 1440
+        needs_recovery = (
+            last_status == "failed"
+            or runtime_profile["failure_recovery_mode"] != "retry_then_operator_review"
+        )
+        matrix.append(
+            {
+                "integration_id": row.id,
+                "label": row.label,
+                "source_type": row.source_type,
+                "runtime_level": runtime_profile["runtime_level"],
+                "managed_runtime_enabled": runtime_profile["managed_runtime_enabled"],
+                "refresh_minutes": refresh_minutes,
+                "token_rotation_days": rotation_days,
+                "retry_backoff_minutes": retry_backoff,
+                "failure_recovery_mode": runtime_profile["failure_recovery_mode"],
+                "last_status": last_status,
+                "next_operator_action": (
+                    "rotate_token"
+                    if needs_rotation
+                    else "tighten_refresh_cadence"
+                    if needs_refresh
+                    else "review_failure_recovery"
+                    if needs_recovery
+                    else "monitor"
+                ),
+                "status": (
+                    "attention"
+                    if needs_rotation or needs_refresh or needs_recovery
+                    else "healthy"
+                ),
+                "diagnostics": diagnostics,
+            }
+        )
+        if needs_rotation:
+            token_rotation_queue.append(
+                {
+                    "integration_id": row.id,
+                    "label": row.label,
+                    "source_type": row.source_type,
+                    "token_rotation_days": rotation_days,
+                    "reason": "rotation window is too short or about to expire",
+                }
+            )
+        if needs_refresh:
+            refresh_queue.append(
+                {
+                    "integration_id": row.id,
+                    "label": row.label,
+                    "refresh_minutes": refresh_minutes,
+                    "recommended_target": 1440,
+                }
+            )
+        if needs_recovery:
+            recovery_queue.append(
+                {
+                    "integration_id": row.id,
+                    "label": row.label,
+                    "last_status": last_status,
+                    "failure_recovery_mode": runtime_profile["failure_recovery_mode"],
+                    "retry_backoff_minutes": retry_backoff,
+                }
+            )
+
+    cms_writeback_queue = [
+        {
+            "cms_connector_id": row.id,
+            "label": row.label,
+            "cms_type": row.cms_type,
+            "writeback_mode": row.writeback_mode,
+            "action": (
+                "verify_preview_and_rollback"
+                if row.writeback_mode != "read_only"
+                else "keep_read_only_until_operator_approval"
+            ),
+        }
+        for row in cms_rows
+    ]
+    return {
+        "project_id": project.id,
+        "project_name": project.name,
+        "summary": {
+            "integration_count": len(integration_rows),
+            "cms_count": len(cms_rows),
+            "managed_runtime_count": len(
+                [row for row in matrix if row["runtime_level"] == "managed_runtime"]
+            ),
+            "attention_count": len(
+                [row for row in matrix if row["status"] == "attention"]
+            ),
+            "token_rotations_due": len(token_rotation_queue),
+            "refresh_actions_due": len(refresh_queue),
+            "recovery_actions_due": len(recovery_queue),
+        },
+        "managed_runtime_matrix": matrix,
+        "token_rotation_queue": token_rotation_queue,
+        "refresh_queue": refresh_queue,
+        "recovery_queue": recovery_queue,
+        "cms_writeback_queue": cms_writeback_queue,
+        "operator_runbook": [
+            "keep high-signal demand sources at daily or better refresh cadence",
+            "treat token rotation as an operator calendar, not an afterthought",
+            "use retries for transient failures and explicit review for structural failures",
+            "pair CMS apply flows with preview, verify, and rollback steps",
+        ],
+    }
+
+
+@router.get("/seo-maturity-center")
+def seo_maturity_center(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    project, _ = require_project_access(
+        db, project_id, current_user, minimum_role="viewer"
+    )
+    integration_rows = (
+        db.query(IntegrationConnection)
+        .filter(IntegrationConnection.project_id == project_id)
+        .order_by(IntegrationConnection.id.desc())
+        .all()
+    )
+    latest_audit = (
+        db.query(AuditRun)
+        .filter(AuditRun.project_id == project_id)
+        .order_by(AuditRun.id.desc())
+        .first()
+    )
+    integration_metrics = _integration_metrics_by_source(integration_rows)
+    keyword_metrics = (
+        integration_metrics.get("keyword_research", {}).get("metrics") or {}
+    )
+    competitor_metrics = (
+        integration_metrics.get("competitor_intelligence", {}).get("metrics") or {}
+    )
+    backlink_metrics = (
+        integration_metrics.get("backlink_intelligence", {}).get("metrics") or {}
+    )
+    rank_metrics = integration_metrics.get("rank_tracking", {}).get("metrics") or {}
+    gsc_rows = integration_metrics.get("gsc", {}).get("rows") or []
+    findings = (
+        json.loads(latest_audit.finding_groups_json or "[]") if latest_audit else []
+    )
+
+    semantic_score = min(
+        1.0,
+        (
+            (_first_numeric(keyword_metrics, "query_cluster_coverage"))
+            + (0.2 if len(gsc_rows) >= 5 else 0)
+            + (0.2 if findings else 0)
+        ),
+    )
+    competitor_score = min(
+        1.0,
+        (_first_numeric(competitor_metrics, "tracked_competitors") / 5)
+        + _first_numeric(competitor_metrics, "content_gap_count") / 20,
+    )
+    authority_score = min(
+        1.0,
+        (_first_numeric(backlink_metrics, "referring_domains") / 100)
+        + max(0.0, _first_numeric(backlink_metrics, "authority_trend")),
+    )
+    measurement_score = min(
+        1.0,
+        (_first_numeric(rank_metrics, "top_10_share"))
+        + (0.25 if "gsc" in integration_metrics else 0)
+        + (0.25 if "ga4" in integration_metrics else 0),
+    )
+    tracks = [
+        {
+            "track": "semantic_core",
+            "status": _maturity_status(semantic_score),
+            "score": round(semantic_score, 2),
+            "evidence": {
+                "query_cluster_coverage": _first_numeric(
+                    keyword_metrics, "query_cluster_coverage"
+                ),
+                "gsc_query_rows": len(gsc_rows),
+            },
+            "next_steps": [
+                "expand demand clusters into page and FAQ assets",
+                "map intent gaps between core landing pages and informational support",
+            ],
+        },
+        {
+            "track": "competitor_workflows",
+            "status": _maturity_status(competitor_score),
+            "score": round(competitor_score, 2),
+            "evidence": {
+                "tracked_competitors": _first_numeric(
+                    competitor_metrics, "tracked_competitors"
+                ),
+                "content_gap_count": _first_numeric(
+                    competitor_metrics, "content_gap_count"
+                ),
+            },
+            "next_steps": [
+                "turn competitor gaps into owned content or proof lanes",
+                "compare category, service, and FAQ coverage against live rivals",
+            ],
+        },
+        {
+            "track": "authority_and_links",
+            "status": _maturity_status(authority_score),
+            "score": round(authority_score, 2),
+            "evidence": {
+                "referring_domains": _first_numeric(
+                    backlink_metrics, "referring_domains"
+                ),
+                "authority_trend": _first_numeric(backlink_metrics, "authority_trend"),
+            },
+            "next_steps": [
+                "separate authority recovery from content production",
+                "build linkable proof assets instead of generic outreach asks",
+            ],
+        },
+        {
+            "track": "measurement_and_benchmarks",
+            "status": _maturity_status(measurement_score),
+            "score": round(measurement_score, 2),
+            "evidence": {
+                "top_10_share": _first_numeric(rank_metrics, "top_10_share"),
+                "has_gsc": "gsc" in integration_metrics,
+                "has_ga4": "ga4" in integration_metrics,
+            },
+            "next_steps": [
+                "pair rank tracking with GSC and analytics, not rankings alone",
+                "review benchmark deltas before and after every major fix cycle",
+            ],
+        },
+    ]
+    return {
+        "project_id": project.id,
+        "project_name": project.name,
+        "summary": {
+            "overall_status": _maturity_status(
+                sum(item["score"] for item in tracks) / len(tracks)
+            ),
+            "tracks": len(tracks),
+            "latest_audit_id": latest_audit.id if latest_audit else None,
+            "finding_count": len(findings),
+        },
+        "tracks": tracks,
+        "benchmark_datasets": [
+            "query cluster coverage",
+            "competitor gap count",
+            "referring domains and authority trend",
+            "tracked-query top-10 share",
+            "GSC plus GA4 outcome loop",
+        ],
+        "operator_rule": (
+            "Do not treat GEO or AI visibility as a replacement for semantic, "
+            "competitor, authority, and measurement depth."
+        ),
+    }
+
+
+@router.get("/evidence-lab")
+def evidence_lab(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    project, _ = require_project_access(
+        db, project_id, current_user, minimum_role="viewer"
+    )
+    evidence_rows = (
+        db.query(EvidenceRecord)
+        .filter(EvidenceRecord.project_id == project_id)
+        .order_by(EvidenceRecord.id.desc())
+        .all()
+    )
+    experiment_rows = (
+        db.query(ExperimentRecord)
+        .filter(ExperimentRecord.project_id == project_id)
+        .order_by(ExperimentRecord.id.desc())
+        .all()
+    )
+    reports = (
+        db.query(Report)
+        .filter(Report.project_id == project_id)
+        .order_by(Report.id.desc())
+        .all()
+    )
+    latest_audit = (
+        db.query(AuditRun)
+        .filter(AuditRun.project_id == project_id)
+        .order_by(AuditRun.id.desc())
+        .first()
+    )
+    strong_experiments = [
+        row for row in experiment_rows if row.confidence_label == "strong"
+    ]
+    return {
+        "project_id": project.id,
+        "project_name": project.name,
+        "summary": {
+            "evidence_records": len(evidence_rows),
+            "experiments": len(experiment_rows),
+            "strong_experiments": len(strong_experiments),
+            "reports": len(reports),
+            "latest_audit_id": latest_audit.id if latest_audit else None,
+        },
+        "publishable_assets": [
+            {
+                "asset": "before_after_case_note",
+                "ready": bool(evidence_rows and experiment_rows),
+            },
+            {
+                "asset": "client_safe_export_pack",
+                "ready": bool(reports),
+            },
+            {
+                "asset": "operator_proof_timeline",
+                "ready": bool(experiment_rows),
+            },
+        ],
+        "case_library_targets": [
+            {
+                "id": "anmalishev_ru",
+                "paths": [
+                    "REAL_CASES.md",
+                    "REAL_CASES_RU.md",
+                    "docs/en/v430-case-anmalishev.md",
+                    "docs/ru/v430-case-anmalishev.md",
+                ],
+            },
+            {
+                "id": "auditguard_ru",
+                "paths": ["REAL_CASES.md", "REAL_CASES_RU.md"],
+            },
+            {
+                "id": "sitepravo_ru",
+                "paths": ["REAL_CASES.md", "REAL_CASES_RU.md"],
+            },
+        ],
+        "independent_proof_targets": [
+            "attach GSC, GA4, or Yandex screenshots to major before/after claims",
+            "promote strong experiments into reusable public case formats",
+            "export at least one client-safe markdown pack per high-impact fix cycle",
+        ],
+        "recent_assets": [
+            {
+                "kind": "evidence",
+                "title": row.title,
+                "summary": row.summary,
+            }
+            for row in evidence_rows[:3]
+        ]
+        + [
+            {
+                "kind": "experiment",
+                "title": row.change_summary,
+                "summary": row.confidence_label,
+            }
+            for row in experiment_rows[:3]
         ],
     }
 
