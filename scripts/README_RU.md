@@ -31,7 +31,7 @@
 | `proof_pack_builder.py` | Собирает reusable before/after proof или case-study pack | `python scripts/proof_pack_builder.py --site example.com --change "expanded FAQ proof" --before-score 90 --after-score 94` |
 | `case_library_builder.py` | Строит index из bounded public и synthetic case files | `python scripts/case_library_builder.py docs/en/v430-case-anmalishev.md examples/synthetic-case-example-en.md --format json` |
 | `synthetic_case_builder.py` | Генерирует явно маркированный synthetic training case | `python scripts/synthetic_case_builder.py --name "Synthetic Demo" --before-score 70 --after-score 82` |
-| `issue_pack_generator.py` | Превращает findings в lightweight implementation issue pack | `python scripts/issue_pack_generator.py --project example.com --finding "Thin proof|high|content_lead|add stronger case proof"` |
+| `issue_pack_generator.py` | Превращает findings в lightweight implementation issue pack | `python scripts/issue_pack_generator.py --project example.com --finding "Thin proof / high / content lead / add stronger case proof"` |
 | `gsc_data_stub.py` | Выдает starter-payload в форме Google Search Console | `python scripts/gsc_data_stub.py` |
 | `yandex_data_stub.py` | Выдает starter-payload в форме Яндекс-данных | `python scripts/yandex_data_stub.py` |
 | `x_ads_stub.py` | Выдает starter-payload в форме X Ads | `python scripts/x_ads_stub.py` |

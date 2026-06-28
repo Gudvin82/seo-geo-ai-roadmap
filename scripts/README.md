@@ -31,7 +31,7 @@
 | `proof_pack_builder.py` | Build a reusable before/after proof or case-study pack | `python scripts/proof_pack_builder.py --site example.com --change "expanded FAQ proof" --before-score 90 --after-score 94` |
 | `case_library_builder.py` | Build an index from bounded public and synthetic case files | `python scripts/case_library_builder.py docs/en/v430-case-anmalishev.md examples/synthetic-case-example-en.md --format json` |
 | `synthetic_case_builder.py` | Generate a clearly labeled synthetic training case | `python scripts/synthetic_case_builder.py --name "Synthetic Demo" --before-score 70 --after-score 82` |
-| `issue_pack_generator.py` | Turn findings into a lightweight implementation issue pack | `python scripts/issue_pack_generator.py --project example.com --finding "Thin proof|high|content_lead|add stronger case proof"` |
+| `issue_pack_generator.py` | Turn findings into a lightweight implementation issue pack | `python scripts/issue_pack_generator.py --project example.com --finding "Thin proof / high / content lead / add stronger case proof"` |
 | `gsc_data_stub.py` | Emit a Google Search Console shaped starter payload | `python scripts/gsc_data_stub.py` |
 | `yandex_data_stub.py` | Emit a Yandex shaped starter payload | `python scripts/yandex_data_stub.py` |
 | `x_ads_stub.py` | Emit a starter X Ads payload | `python scripts/x_ads_stub.py` |
