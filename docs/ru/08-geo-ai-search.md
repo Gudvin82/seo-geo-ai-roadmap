@@ -21,7 +21,7 @@ GEO/AI-работу нужно оценивать через три разных
 | Canonical fact consistency | Medium | High | High |
 | Answer-ready структура страниц | Medium | High | High |
 | JSON-LD и entity clarity | High | High | Medium |
-| llms.txt / доступ AI-ботов | Low | High | Low |
+| llms.txt / доступ AI-ботов | Low | Medium | Low |
 | Сильный оффер, proof и CTA | Medium | Medium | High |
 | Согласованные внешние упоминания бренда | Medium | High | Medium |
 
@@ -33,8 +33,10 @@ GEO/AI-работу нужно оценивать через три разных
 2. Синхронизируйте homepage, about, service, FAQ, contacts и policy pages по
    фактам.
 3. Добавьте answer-ready sections и structured data на money pages.
-4. Опубликуйте `llms.txt`, проверьте robots-правила для AI-ботов и отслеживайте
-   AI SoV как proxy, а не как ground truth.
+4. Проверьте robots-правила для тех AI/search-поверхностей, которые реально
+   важны вашим провайдерам. Публикуйте `llms.txt` только если он помогает вашему
+   publisher или agent workflow, и отслеживайте AI SoV как proxy, а не как
+   ground truth.
 5. Привяжите каждое GEO/AI-действие к бизнес-странице или к buyer journey.
 
 ## Decision tree
@@ -61,6 +63,8 @@ GEO/AI-работу нужно оценивать через три разных
 
 - гарантированные AI citations
 - детерминированные rankings от одного `llms.txt`
+- универсальный эффект от экспериментальных AI guidance files сразу для всех
+  поисковиков и answer engines
 - универсальный GEO-playbook для любой ниши
 - “AI optimization” без technical SEO, facts и trust assets
 

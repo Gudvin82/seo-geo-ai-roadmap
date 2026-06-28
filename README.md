@@ -174,19 +174,19 @@ Read:
 - [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
 - [docs/en/ai-citation-score.md](./docs/en/ai-citation-score.md)
 
-## v6.2.0 focus
+## v6.3.0 focus
 
-`v6.2.0` keeps the trust-density and RU/Yandex direction from `v6.1.0` and
-adds a first-class SEO intelligence layer plus stronger release hygiene.
+`v6.3.0` turns the repo into a more trustworthy operating system by tightening
+the gap between public claims, runtime behavior, and script-first execution.
 
 It adds:
 
-- native SEO intelligence surfaces for keyword, competitor, backlink, and rank work
-- `/api/v1/settings/seo-intelligence-center`
-- stronger executive overlays for search demand and authority posture
-- version-consistency checks in the repo and CI path
-- clearer "what this project is / is not" positioning
-- a more complete AI-agent and self-hosted product narrative
+- calibrated GEO/AI guidance that distinguishes Google guidance, provider-specific AI signals, and experimental extras
+- OAI-SearchBot coverage plus stronger multi-agent `robots.txt` evaluation
+- safer frontend token handling and lower-XSS UI rendering paths
+- fuller frontend Docker packaging for scanner, graph, validator, and operator surfaces
+- stricter release and security hygiene for scans, docs, and version alignment
+- stronger standalone script DX so repo-level tooling matches the AI-agent-ready promise
 
 ## Current boundaries
 

@@ -127,9 +127,9 @@ production-решений от команды, которая используе
 
 ## Связь с релизом
 
-`v6.2.0` делает это публичное обещание более полным за счет:
+`v6.3.0` делает это публичное обещание более точным за счет:
 
-- более сильного readiness framing
-- появления first-class SEO intelligence слоя в той же operating system
-- version-consistency checks для release hygiene
-- более явных docs "что это за проект / чем он не является"
+- более сильной standards calibration для Google, AI-provider и experimental GEO signals
+- более безопасного runtime handling во frontend auth и packaged UI surfaces
+- более сильного standalone script DX, чтобы repo-level tooling работал без скрытых допущений
+- более строгой release hygiene для security, version alignment и container packaging

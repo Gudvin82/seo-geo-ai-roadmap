@@ -21,7 +21,9 @@ async function saveShot(name) {
 async function apiCall(pathname, body) {
   return await page.evaluate(
     async ({ pathname, body }) => {
-      const token = localStorage.getItem("discoverability-token");
+      const token =
+        sessionStorage.getItem("discoverability-token") ||
+        localStorage.getItem("discoverability-token");
       const response = await fetch(`http://127.0.0.1:8000/api/v1${pathname}`, {
         method: "POST",
         headers: {

@@ -11,7 +11,7 @@ from typing import Optional
 
 from .scan_security import safe_fetch_url_bytes, safe_fetch_url_text
 
-CHECKER_USER_AGENT = "Discoverability-Checks/4.2.0"
+CHECKER_USER_AGENT = "Discoverability-Checks/6.3.0"
 DEFAULT_TIMEOUT_SECONDS = 15
 
 AI_BOTS = [
@@ -24,6 +24,11 @@ AI_BOTS = [
         "name": "ChatGPT-User",
         "kind": "ai",
         "why_it_matters": "Represents user-triggered retrieval and browsing behavior for ChatGPT.",
+    },
+    {
+        "name": "OAI-SearchBot",
+        "kind": "ai",
+        "why_it_matters": "OpenAI ties this crawler to ChatGPT Search inclusion and publisher controls.",
     },
     {
         "name": "PerplexityBot",
@@ -434,6 +439,7 @@ def faq_detection_report(html: str) -> dict:
 def ai_readability_report(html: str, *, page_url: Optional[str] = None) -> dict:
     analysis = analyze_html(html)
     warnings: list[str] = []
+    experimental_notes: list[str] = []
     detected_layers: list[str] = []
     quick_wins: list[str] = []
 
@@ -452,9 +458,8 @@ def ai_readability_report(html: str, *, page_url: Optional[str] = None) -> dict:
     if analysis.visibility_markers:
         detected_layers.append("screen_reader_support")
     else:
-        warnings.append("No sr-only or visually-hidden support markers were detected.")
-        quick_wins.append(
-            "Review whether hidden support text for assistive or AI parsing is needed."
+        experimental_notes.append(
+            "No sr-only or visually-hidden support markers were detected. This is an optional accessibility or parsing signal, not a standard search requirement."
         )
 
     schema = schema_coverage_report(html)
@@ -485,30 +490,30 @@ def ai_readability_report(html: str, *, page_url: Optional[str] = None) -> dict:
         if reasoning_body:
             detected_layers.append("reasoning_json")
         else:
-            warnings.append(
+            experimental_notes.append(
                 f"reasoning.json is not publicly available: {reasoning_error or 'missing'}"
             )
             quick_wins.append(
-                "Consider publishing reasoning.json if your operating model depends on explicit AI guidance."
+                "Consider publishing reasoning.json only if your operating model depends on explicit non-standard AI guidance."
             )
         if manifest_body:
             detected_layers.append("ai_manifest")
         else:
-            warnings.append(
+            experimental_notes.append(
                 f".well-known/ai-manifest.json is not publicly available: {manifest_error or 'missing'}"
             )
             quick_wins.append(
-                "Consider publishing .well-known/ai-manifest.json for machine-readable AI guidance."
+                "Consider publishing .well-known/ai-manifest.json only if your workflow needs extra machine-readable AI guidance."
             )
 
     score = 0
-    score += 15 if analysis.title else 0
+    score += 20 if analysis.title else 0
     score += 15 if analysis.meta_tags.get("description") else 0
-    score += 15 if analysis.visibility_markers else 0
-    score += 20 if schema["found_types"] else 0
-    score += 15 if faq["status"] in {"pass", "needs-review"} else 0
-    score += 10 if remote_assets.get("reasoning_json") == "present" else 0
-    score += 10 if remote_assets.get("ai_manifest") == "present" else 0
+    score += 5 if analysis.visibility_markers else 0
+    score += 25 if schema["found_types"] else 0
+    score += 20 if faq["status"] in {"pass", "needs-review"} else 0
+    score += 5 if remote_assets.get("reasoning_json") == "present" else 0
+    score += 5 if remote_assets.get("ai_manifest") == "present" else 0
 
     status = (
         "pass"
@@ -535,10 +540,11 @@ def ai_readability_report(html: str, *, page_url: Optional[str] = None) -> dict:
             if layer not in detected_layers
         ],
         "warnings": warnings,
+        "experimental_notes": experimental_notes,
         "quick_wins": quick_wins[:5],
         "remote_assets": remote_assets,
-        "recommendation": "Tighten AI-readable page structure, machine-readable guidance files, and answer-ready formatting before expecting strong citation behavior.",
-        "limitation": "This audit is heuristic and cannot prove how a specific model or retrieval stack will parse the page.",
+        "recommendation": "Tighten page structure, schema, and visible answer-ready formatting first; treat non-standard AI guidance files as optional extras rather than universal ranking signals.",
+        "limitation": "This audit is heuristic and cannot prove how a specific model, search engine, or retrieval stack will parse the page.",
     }
 
 
@@ -858,9 +864,10 @@ def technical_seo_report(html: str, page_url: str) -> dict:
     }
 
 
-def parse_robots_groups(content: str) -> list[dict[str, list[str] | str]]:
-    groups: list[dict[str, list[str] | str]] = []
-    current: Optional[dict[str, list[str] | str]] = None
+def parse_robots_groups(content: str) -> list[dict[str, list[str] | list[str]]]:
+    groups: list[dict[str, list[str] | list[str]]] = []
+    current: Optional[dict[str, list[str] | list[str]]] = None
+    seen_rules_in_group = False
     for raw_line in content.splitlines():
         line = raw_line.split("#", 1)[0].strip()
         if not line or ":" not in line:
@@ -868,8 +875,13 @@ def parse_robots_groups(content: str) -> list[dict[str, list[str] | str]]:
         key, value = [part.strip() for part in line.split(":", 1)]
         key_lower = key.lower()
         if key_lower == "user-agent":
-            current = {"agent": value, "allow": [], "disallow": []}
-            groups.append(current)
+            if current is None or seen_rules_in_group:
+                current = {"agents": [], "allow": [], "disallow": []}
+                groups.append(current)
+                seen_rules_in_group = False
+            cast_agents = current["agents"]
+            assert isinstance(cast_agents, list)
+            cast_agents.append(value)
             continue
         if current is None:
             continue
@@ -877,31 +889,64 @@ def parse_robots_groups(content: str) -> list[dict[str, list[str] | str]]:
             cast = current["allow"]
             assert isinstance(cast, list)
             cast.append(value)
+            seen_rules_in_group = True
         elif key_lower == "disallow":
             cast = current["disallow"]
             assert isinstance(cast, list)
             cast.append(value)
-    merged: dict[str, dict[str, list[str] | str]] = {}
+            seen_rules_in_group = True
+    merged: dict[str, dict[str, list[str] | list[str]]] = {}
     for group in groups:
-        agent = str(group["agent"])
-        bucket = merged.setdefault(agent, {"agent": agent, "allow": [], "disallow": []})
-        for key in ["allow", "disallow"]:
-            source = group[key]
-            target = bucket[key]
-            assert isinstance(source, list) and isinstance(target, list)
-            target.extend(source)
+        agents = group["agents"]
+        assert isinstance(agents, list)
+        for agent in agents:
+            bucket = merged.setdefault(
+                agent,
+                {"agents": [agent], "allow": [], "disallow": []},
+            )
+            for key in ["allow", "disallow"]:
+                source = group[key]
+                target = bucket[key]
+                assert isinstance(source, list) and isinstance(target, list)
+                target.extend(source)
     return list(merged.values())
 
 
+def _bot_matches_agent(bot_name: str, agent: str) -> bool:
+    bot = bot_name.lower()
+    value = agent.lower()
+    return value == "*" or bot == value or bot.startswith(value)
+
+
+def _matching_group_for_bot(
+    groups: list[dict[str, list[str] | list[str]]], bot_name: str
+) -> Optional[dict[str, list[str] | list[str]]]:
+    matches: list[tuple[int, dict[str, list[str] | list[str]], str]] = []
+    for group in groups:
+        agents = group["agents"]
+        assert isinstance(agents, list)
+        for agent in agents:
+            if _bot_matches_agent(bot_name, agent):
+                matches.append((0 if agent == "*" else len(agent), group, agent))
+    if not matches:
+        return None
+    matches.sort(key=lambda item: item[0], reverse=True)
+    best_group = matches[0][1].copy()
+    best_group["matched_agent"] = matches[0][2]
+    return best_group
+
+
+def _best_rule_length(paths: list[str], default_when_empty: int = -1) -> int:
+    matched = [len(path) for path in paths if path]
+    if not matched:
+        return default_when_empty
+    return max(matched)
+
+
 def evaluate_bot_policy(
-    groups: list[dict[str, list[str] | str]], bot_name: str
+    groups: list[dict[str, list[str] | list[str]]], bot_name: str
 ) -> dict:
-    exact = next(
-        (group for group in groups if str(group["agent"]).lower() == bot_name.lower()),
-        None,
-    )
-    wildcard = next((group for group in groups if str(group["agent"]) == "*"), None)
-    target = exact or wildcard
+    target = _matching_group_for_bot(groups, bot_name)
     if target is None:
         return {
             "bot": bot_name,
@@ -914,15 +959,17 @@ def evaluate_bot_policy(
     disallows = target["disallow"]
     assert isinstance(allows, list) and isinstance(disallows, list)
     status = "unspecified"
-    if "/" in disallows and "/" not in allows:
+    allow_length = _best_rule_length(allows)
+    disallow_length = _best_rule_length(disallows)
+    if disallow_length > allow_length and disallow_length >= 0:
         status = "blocked"
-    elif "/" in allows:
+    elif allow_length >= 0:
         status = "allowed"
     return {
         "bot": bot_name,
         "status": status,
-        "matched_group": target["agent"],
-        "detected_in": f"robots group for {target['agent']}",
+        "matched_group": target.get("matched_agent"),
+        "detected_in": f"robots group for {target.get('matched_agent')}",
         "recommendation": (
             "Keep the policy explicit and documented."
             if status != "unspecified"

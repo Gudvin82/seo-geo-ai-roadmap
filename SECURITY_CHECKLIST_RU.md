@@ -63,6 +63,10 @@
 - `pip-audit` запускается в GitHub Actions по `app/backend/requirements.txt`.
 - `gitleaks` запускается в GitHub Actions и ищет вероятные секреты в репозитории.
 - Python CI теперь генерирует coverage artifact, чтобы reviewer мог проверить test reach по critical-path логике.
+- `v6.3.0` сохраняет dependency scanning строгим, но оставшиеся baseline
+  ignores документируются в
+  [SECURITY_ADVISORY_BASELINE_RU.md](./SECURITY_ADVISORY_BASELINE_RU.md), а не
+  прячутся за молчаливым пропуском dependency scan failures.
 
 ## Что эти проверки не гарантируют
 

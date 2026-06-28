@@ -21,7 +21,7 @@ GEO/AI work should be judged through three distinct outcome layers:
 | Canonical fact consistency | Medium | High | High |
 | Answer-ready page structure | Medium | High | High |
 | JSON-LD and entity clarity | High | High | Medium |
-| llms.txt / AI bot accessibility | Low | High | Low |
+| llms.txt / AI bot accessibility | Low | Medium | Low |
 | Strong offer, proof, and CTA design | Medium | Medium | High |
 | Consistent brand mentions off-site | Medium | High | Medium |
 
@@ -32,8 +32,9 @@ If time or resources are limited:
 1. Fix crawlability, rendering, speed, canonicalization, and indexability.
 2. Align homepage, about, service, FAQ, contacts, and policy pages on facts.
 3. Add answer-ready sections and structured data to money pages.
-4. Publish `llms.txt`, review robots rules for AI bots, and track AI SoV as a
-   proxy, not as ground truth.
+4. Review robots rules for the AI/search surfaces that matter to your providers.
+   Publish `llms.txt` only if it supports your publisher or agent workflow, and
+   treat AI SoV as a proxy, not as ground truth.
 5. Tie every GEO/AI action to one business-facing page or one buyer journey.
 
 ## Decision tree
@@ -60,6 +61,8 @@ If time or resources are limited:
 
 - guaranteed AI citations
 - deterministic rankings from `llms.txt`
+- universal benefits from experimental AI guidance files across every search or
+  answer engine
 - one universal GEO playbook for every niche
 - “AI optimization” without technical SEO, facts, and trust assets
 

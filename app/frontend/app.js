@@ -1,6 +1,34 @@
+function readSessionValue(key) {
+  try {
+    return sessionStorage.getItem(key) || "";
+  } catch (_error) {
+    return "";
+  }
+}
+
+function writeSessionValue(key, value) {
+  try {
+    sessionStorage.setItem(key, value);
+  } catch (_error) {}
+}
+
+function removeSessionValue(key) {
+  try {
+    sessionStorage.removeItem(key);
+  } catch (_error) {}
+}
+
+function readLocalValue(key, fallback = "") {
+  try {
+    return localStorage.getItem(key) || fallback;
+  } catch (_error) {
+    return fallback;
+  }
+}
+
 const state = {
-  token: localStorage.getItem("discoverability-token") || "",
-  language: localStorage.getItem("discoverability-language") || "en",
+  token: readSessionValue("discoverability-token"),
+  language: readLocalValue("discoverability-language", "en"),
   workspaces: [],
   projects: [],
   providerConfigs: [],
@@ -78,7 +106,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.2.0 SEO intelligence, Alice AI visibility, and release hygiene",
+      "v6.3.0 standards-calibrated GEO, safer runtime defaults, and script-first DX",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -269,7 +297,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.2.0 SEO intelligence, Alice AI visibility и release hygiene",
+      "v6.3.0 standards-calibrated GEO, более безопасные runtime defaults и script-first DX",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -544,8 +572,8 @@ async function apiRequest(path, options = {}) {
 function renderPresets() {
   const presetList = $("#preset-list");
   const projectPreset = $("#project-preset");
-  presetList.innerHTML = "";
-  projectPreset.innerHTML = "";
+  presetList.replaceChildren();
+  projectPreset.replaceChildren();
   Object.entries(state.presets).forEach(([name, checks]) => {
     const option = document.createElement("option");
     option.value = name;
@@ -560,9 +588,12 @@ function renderPresets() {
 
 function renderCards(target, rows, mapper) {
   const node = $(target);
-  node.innerHTML = "";
+  node.replaceChildren();
   if (!rows.length) {
-    node.innerHTML = `<div class="entity-card">No data yet.</div>`;
+    const empty = document.createElement("div");
+    empty.className = "entity-card";
+    empty.textContent = "No data yet.";
+    node.append(empty);
     return;
   }
   rows.forEach((row) => node.append(mapper(row)));
@@ -570,19 +601,27 @@ function renderCards(target, rows, mapper) {
 
 function renderMiniChart(target, items) {
   const node = $(target);
-  node.innerHTML = "";
+  node.replaceChildren();
   if (!items.length) {
-    node.innerHTML = `<div class="chart-empty">No project data yet.</div>`;
+    const empty = document.createElement("div");
+    empty.className = "chart-empty";
+    empty.textContent = "No project data yet.";
+    node.append(empty);
     return;
   }
   items.forEach((item) => {
     const bar = document.createElement("div");
     bar.className = "chart-bar";
-    bar.innerHTML = `
-      <div class="chart-bar-value">${item.valueLabel}</div>
-      <div class="chart-bar-fill" style="height: ${Math.max(22, item.value)}%"></div>
-      <div class="chart-bar-label">${item.label}</div>
-    `;
+    const value = document.createElement("div");
+    value.className = "chart-bar-value";
+    value.textContent = item.valueLabel;
+    const fill = document.createElement("div");
+    fill.className = "chart-bar-fill";
+    fill.style.height = `${Math.max(22, item.value)}%`;
+    const label = document.createElement("div");
+    label.className = "chart-bar-label";
+    label.textContent = item.label;
+    bar.append(value, fill, label);
     node.append(bar);
   });
 }
@@ -649,9 +688,9 @@ function renderExecutiveDashboard() {
     $("#executive-narrative").textContent =
       "Select a project and run an audit first.";
     $("#executive-weekly-narrative").textContent = "";
-    $("#executive-priorities").innerHTML = "";
-    $("#executive-anomalies").innerHTML = "";
-    $("#executive-owners").innerHTML = "";
+    $("#executive-priorities").replaceChildren();
+    $("#executive-anomalies").replaceChildren();
+    $("#executive-owners").replaceChildren();
     $("#executive-portfolio").textContent = "";
     $("#executive-benchmarks").textContent = "";
     $("#executive-dashboard-json").textContent = "";
@@ -840,12 +879,18 @@ function workspaceCard(workspace) {
     workspace.client_report_subtitle || "No client subtitle yet.",
     workspace.client_report_footer || "No client footer yet.",
   ];
-  card.innerHTML = `
-    <strong>${workspace.name}</strong>
-    <div class="workspace-meta">#${workspace.id} · ${workspace.slug} · ${workspace.default_report_language}</div>
-    <div class="workspace-meta">${branding.join(" · ")}</div>
-    <div class="workspace-meta">${workspace.branding_logo_url || "No logo URL yet."}</div>
-  `;
+  const title = document.createElement("strong");
+  title.textContent = workspace.name;
+  const metaOne = document.createElement("div");
+  metaOne.className = "workspace-meta";
+  metaOne.textContent = `#${workspace.id} · ${workspace.slug} · ${workspace.default_report_language}`;
+  const metaTwo = document.createElement("div");
+  metaTwo.className = "workspace-meta";
+  metaTwo.textContent = branding.join(" · ");
+  const metaThree = document.createElement("div");
+  metaThree.className = "workspace-meta";
+  metaThree.textContent = workspace.branding_logo_url || "No logo URL yet.";
+  card.append(title, metaOne, metaTwo, metaThree);
   card.addEventListener("click", async () => {
     state.selectedWorkspaceId = String(workspace.id);
     document.querySelectorAll("input[name='workspace_id']").forEach((input) => {
@@ -862,11 +907,15 @@ function workspaceCard(workspace) {
 function projectCard(project) {
   const card = document.createElement("article");
   card.className = "entity-card";
-  card.innerHTML = `
-    <strong>${project.name}</strong>
-    <div class="project-meta">#${project.id} · ${project.website_url}</div>
-    <div class="project-meta">${project.market} · ${project.language} · ${project.project_type}</div>
-  `;
+  const title = document.createElement("strong");
+  title.textContent = project.name;
+  const metaOne = document.createElement("div");
+  metaOne.className = "project-meta";
+  metaOne.textContent = `#${project.id} · ${project.website_url}`;
+  const metaTwo = document.createElement("div");
+  metaTwo.className = "project-meta";
+  metaTwo.textContent = `${project.market} · ${project.language} · ${project.project_type}`;
+  card.append(title, metaOne, metaTwo);
   card.addEventListener("click", async () => {
     state.selectedProjectId = String(project.id);
     document.querySelectorAll("input[name='project_id']").forEach((input) => {
@@ -887,7 +936,15 @@ function projectCard(project) {
 function simpleCard(title, lines) {
   const card = document.createElement("article");
   card.className = "entity-card";
-  card.innerHTML = `<strong>${title}</strong>${lines.map((line) => `<div class="project-meta">${line}</div>`).join("")}`;
+  const heading = document.createElement("strong");
+  heading.textContent = title;
+  card.append(heading);
+  lines.forEach((line) => {
+    const meta = document.createElement("div");
+    meta.className = "project-meta";
+    meta.textContent = line;
+    card.append(meta);
+  });
   return card;
 }
 
@@ -1311,7 +1368,7 @@ async function handleLogin(event) {
   const payload = formPayload(event.currentTarget);
   const data = await apiRequest("/auth/login", { method: "POST", body: JSON.stringify(payload) });
   state.token = data.access_token;
-  localStorage.setItem("discoverability-token", state.token);
+  writeSessionValue("discoverability-token", state.token);
   log(`Signed in as ${payload.email}.`);
   setStatus();
   await bootstrapAuthedState();
@@ -1648,7 +1705,7 @@ function installEventListeners() {
   $("#export-project").addEventListener("click", () => handleProjectExport().catch((error) => log(error.message, "warning")));
   $("#sign-out").addEventListener("click", () => {
     state.token = "";
-    localStorage.removeItem("discoverability-token");
+    removeSessionValue("discoverability-token");
     log("Signed out.");
     setStatus();
   });

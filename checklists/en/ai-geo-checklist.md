@@ -1,6 +1,6 @@
 # AI / GEO Checklist
 
-- [ ] `llms.txt` published
+- [ ] `llms.txt` reviewed as optional, not mandatory for Google
 - [ ] `robots.txt` reviewed for AI bots
 - [ ] Important content available in HTML
 - [ ] Brand facts documented consistently

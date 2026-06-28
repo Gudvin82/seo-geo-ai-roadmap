@@ -53,27 +53,27 @@ def validate_llms_text(
     if not has_header:
         warnings.append("Missing top-level heading.")
         recommendations.append(
-            "Add a top-level heading that explains what the file covers."
+            "Add a top-level heading that explains what the file covers if you intentionally use llms.txt as an optional AI-routing file."
         )
     if not bullet_like:
         warnings.append("Missing structured entries or bullet-like lines.")
         recommendations.append(
-            "List key pages, offers, policies, or fact hubs in a structured bullet format."
+            "List key pages, offers, policies, or fact hubs in a structured bullet format if this file is part of your agent or AI-discovery workflow."
         )
     if not has_url:
         warnings.append("No explicit absolute URLs detected.")
         recommendations.append(
-            "Add canonical URLs for priority pages so AI systems can resolve the right destinations."
+            "Add canonical URLs for priority pages so agent-style or AI consumers can resolve the right destinations."
         )
     if len(lines) < 4:
         warnings.append("The file is very short and may be under-specified.")
         recommendations.append(
-            "Expand the file with core sections for homepage, about, FAQ, contact, and trust pages."
+            "Expand the file with core sections for homepage, about, FAQ, contact, and trust pages if you choose to maintain llms.txt at all."
         )
     if missing:
         warnings.append(f"Missing common hints: {', '.join(missing)}.")
         recommendations.append(
-            "Mention homepage, about/trust material, and FAQ or answer-ready sections explicitly."
+            "Mention homepage, about/trust material, and FAQ or answer-ready sections explicitly if the file is part of your operating model."
         )
 
     observed_facts.extend(
@@ -87,6 +87,7 @@ def validate_llms_text(
             "At least one absolute URL detected."
             if has_url
             else "No absolute URLs detected.",
+            "llms.txt is treated here as an optional AI-routing surface, not a Google ranking requirement.",
         ]
     )
 

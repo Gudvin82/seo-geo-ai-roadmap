@@ -33,6 +33,23 @@ The repository treats discoverability as three connected layers:
 
 The repository is strongest when these three layers are handled together.
 
+## Signal boundaries matter
+
+The methodology intentionally separates:
+
+- classic search guidance
+- provider-specific AI guidance
+- experimental agent-facing extras
+
+Examples:
+
+- `llms.txt` is treated as an optional AI-routing or agent-facing surface, not a
+  Google ranking requirement
+- `reasoning.json` and `.well-known/ai-manifest.json` are experimental extras,
+  not universal search standards
+- Yandex and Alice AI surfaces should be evaluated separately from Google AI
+  surfaces
+
 ## What the methodology includes
 
 ### 1. Audit system

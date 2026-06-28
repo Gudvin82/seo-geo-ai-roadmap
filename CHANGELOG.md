@@ -1,5 +1,21 @@
 # Changelog
 
+## v6.3.0 — Standards Calibration, Script-First DX, and Safer Runtime Delivery
+
+- Recalibrated current methodology, checklist, and GEO docs so `llms.txt`,
+  `reasoning.json`, and `.well-known/ai-manifest.json` are treated as optional or
+  experimental signals instead of universal ranking requirements
+- Added `OAI-SearchBot` coverage and upgraded `robots.txt` parsing so multi-agent
+  groups and longest-match allow/disallow rules are evaluated more faithfully
+- Lowered `llms.txt` audit severity and updated AI readability scoring to favor
+  visible structure, schema, and answer-ready content over experimental files
+- Hardened frontend session handling by moving auth tokens to `sessionStorage`
+  and replacing dynamic `innerHTML` rendering paths with safer DOM construction
+- Expanded frontend Docker packaging so scanner, graph, integration-health,
+  repo-understanding, and llms-validator surfaces ship inside the container
+- Made security scanning stricter and aligned release markers, runtime contracts,
+  and public readiness positioning around `v6.3.0`
+
 ## v6.2.0 — SEO Intelligence Layer and Release Hygiene Upgrade
 
 - Added first-class SEO intelligence starter surfaces for keyword research,

@@ -7,9 +7,12 @@ def test_frontend_shell_exists() -> None:
         "index.html",
         "styles.css",
         "app.js",
+        "scanner.html",
+        "scanner.js",
         "graph.html",
         "repo-understanding.html",
         "integration-health.html",
+        "llms-validator.html",
         "graph.js",
         "nginx.conf",
         "Dockerfile",
@@ -81,3 +84,20 @@ def test_scanner_result_surface_exists() -> None:
     html = Path("app/frontend/scanner.html").read_text(encoding="utf-8")
     assert "One-Click Audit Result" in html
     assert "scanner-result-summary" in html
+
+
+def test_frontend_dockerfile_copies_all_primary_surfaces() -> None:
+    dockerfile = Path("app/frontend/Dockerfile").read_text(encoding="utf-8")
+    for asset in [
+        "index.html",
+        "scanner.html",
+        "graph.html",
+        "integration-health.html",
+        "repo-understanding.html",
+        "llms-validator.html",
+        "app.js",
+        "scanner.js",
+        "graph.js",
+        "styles.css",
+    ]:
+        assert asset in dockerfile

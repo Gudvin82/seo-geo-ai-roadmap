@@ -88,11 +88,57 @@
   const progressBar = document.getElementById("scanner-job-progress-bar");
   const cancelButton = document.getElementById("scanner-cancel-job");
 
+  function sessionStoreGet(key) {
+    try {
+      return sessionStorage.getItem(key);
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  function sessionStoreSet(key, value) {
+    try {
+      sessionStorage.setItem(key, value);
+    } catch (_error) {}
+  }
+
+  function resetNode(node, className = "", text = "") {
+    node.replaceChildren();
+    if (text) {
+      const child = document.createElement("div");
+      if (className) child.className = className;
+      child.textContent = text;
+      node.appendChild(child);
+    }
+  }
+
+  function appendLine(node, text, strongLabel = "") {
+    const row = document.createElement("div");
+    if (strongLabel) {
+      const strong = document.createElement("strong");
+      strong.textContent = strongLabel;
+      row.appendChild(strong);
+      row.append(` ${text}`);
+    } else {
+      row.textContent = text;
+    }
+    node.appendChild(row);
+  }
+
+  function renderList(node, items, mapper) {
+    node.replaceChildren();
+    items.forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = mapper(item);
+      node.appendChild(li);
+    });
+  }
+
   function scannerSession() {
-    let value = localStorage.getItem(sessionKey);
+    let value = sessionStoreGet(sessionKey);
     if (!value) {
       value = crypto.randomUUID();
-      localStorage.setItem(sessionKey, value);
+      sessionStoreSet(sessionKey, value);
     }
     return value;
   }
@@ -123,8 +169,8 @@
     const mode = modeSelect.value;
     const meta = modeMeta[mode];
     modeSummary.textContent = meta.summary;
-    checkedList.innerHTML = meta.checked.map((item) => `<li>${item}</li>`).join("");
-    notCheckedList.innerHTML = meta.notChecked.map((item) => `<li>${item}</li>`).join("");
+    renderList(checkedList, meta.checked, (item) => item);
+    renderList(notCheckedList, meta.notChecked, (item) => item);
     const activeLike = mode !== "passive";
     verificationMethodField.classList.toggle("scanner-hidden", !activeLike);
     createVerificationButton.classList.toggle("scanner-hidden", !activeLike);
@@ -135,18 +181,55 @@
 
   function renderConfig() {
     if (!state.config) return;
-    limitationsBox.innerHTML = [
-      `<strong>Configured modes</strong>`,
-      `<div>Public intake: ${state.config.allow_public_intake ? "enabled" : "disabled"}</div>`,
-      `<div>Active scan: ${state.config.allow_active_scan ? "enabled" : "disabled"}</div>`,
-      `<div>Anonymous submission: ${state.config.allow_anonymous_submission ? "enabled" : "disabled"}</div>`,
-      `<div>Full scan: ${state.config.allow_full_scan ? "enabled" : "disabled"}</div>`,
-      `<div>Allowed schemes: ${state.config.allowed_schemes.join(", ")}</div>`,
-      `<div>Max URL length: ${state.config.max_url_length}</div>`,
-      `<div>Concurrent submissions per IP: ${state.config.max_concurrent_submissions_per_ip}</div>`,
-      `<strong>Limitations</strong>`,
-      `<ul>${state.config.limitations.map((item) => `<li>${item}</li>`).join("")}</ul>`,
-    ].join("");
+    limitationsBox.replaceChildren();
+    const title = document.createElement("strong");
+    title.textContent = "Configured modes";
+    limitationsBox.appendChild(title);
+    appendLine(
+      limitationsBox,
+      state.config.allow_public_intake ? "enabled" : "disabled",
+      "Public intake:",
+    );
+    appendLine(
+      limitationsBox,
+      state.config.allow_active_scan ? "enabled" : "disabled",
+      "Active scan:",
+    );
+    appendLine(
+      limitationsBox,
+      state.config.allow_anonymous_submission ? "enabled" : "disabled",
+      "Anonymous submission:",
+    );
+    appendLine(
+      limitationsBox,
+      state.config.allow_full_scan ? "enabled" : "disabled",
+      "Full scan:",
+    );
+    appendLine(
+      limitationsBox,
+      state.config.allowed_schemes.join(", "),
+      "Allowed schemes:",
+    );
+    appendLine(
+      limitationsBox,
+      String(state.config.max_url_length),
+      "Max URL length:",
+    );
+    appendLine(
+      limitationsBox,
+      String(state.config.max_concurrent_submissions_per_ip),
+      "Concurrent submissions per IP:",
+    );
+    const limitationsTitle = document.createElement("strong");
+    limitationsTitle.textContent = "Limitations";
+    limitationsBox.appendChild(limitationsTitle);
+    const list = document.createElement("ul");
+    (state.config.limitations || []).forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      list.appendChild(li);
+    });
+    limitationsBox.appendChild(list);
     const fullOption = modeSelect.querySelector('option[value="full"]');
     if (fullOption) {
       fullOption.disabled = !state.config.allow_full_scan;
@@ -213,20 +296,33 @@
       state.verificationPayload = payload;
       state.verificationVerified = false;
       verificationBox.classList.remove("scanner-hidden");
-      verificationBox.innerHTML = [
-        `<strong>Verification challenge created</strong>`,
-        `<div>Method: ${payload.method}</div>`,
-        payload.verification_path
-          ? `<div>Place this file on the target: <code>${payload.verification_path}</code></div>`
-          : "",
-        payload.verification_meta_tag
-          ? `<div>Add this meta tag: <code>${payload.verification_meta_tag}</code></div>`
-          : "",
-        payload.verification_dns_name
-          ? `<div>Add TXT record on <code>${payload.verification_dns_name}</code> with value <code>${payload.challenge_value}</code></div>`
-          : "",
-        `<div>Challenge value: <code>${payload.challenge_value}</code></div>`,
-      ].join("");
+      verificationBox.replaceChildren();
+      const title = document.createElement("strong");
+      title.textContent = "Verification challenge created";
+      verificationBox.appendChild(title);
+      appendLine(verificationBox, payload.method, "Method:");
+      if (payload.verification_path) {
+        appendLine(
+          verificationBox,
+          payload.verification_path,
+          "Place this file on the target:",
+        );
+      }
+      if (payload.verification_meta_tag) {
+        appendLine(
+          verificationBox,
+          payload.verification_meta_tag,
+          "Add this meta tag:",
+        );
+      }
+      if (payload.verification_dns_name) {
+        appendLine(
+          verificationBox,
+          `${payload.verification_dns_name} = ${payload.challenge_value}`,
+          "Add TXT record:",
+        );
+      }
+      appendLine(verificationBox, payload.challenge_value, "Challenge value:");
       setFormMessage("Verification challenge created. Publish it on the target, then verify.");
     } catch (error) {
       setFormMessage(error.message, true);
@@ -248,7 +344,7 @@
       );
       state.verificationVerified = payload.status === "verified";
       verificationBox.classList.remove("scanner-hidden");
-      verificationBox.innerHTML += `<div><strong>Status:</strong> ${payload.status}</div>`;
+      appendLine(verificationBox, payload.status, "Status:");
       setFormMessage(
         state.verificationVerified
           ? "Ownership verification succeeded."
@@ -278,12 +374,13 @@
   }
 
   function renderJobStatus(job) {
-    jobStatusBox.innerHTML = [
-      `<strong>Status:</strong> ${job.status}`,
-      `<div>Stage: ${job.current_stage}</div>`,
-      `<div>Progress: ${job.progress_percent}%</div>`,
-      job.error_summary ? `<div>Error: ${job.error_summary}</div>` : "",
-    ].join("");
+    jobStatusBox.replaceChildren();
+    appendLine(jobStatusBox, job.status, "Status:");
+    appendLine(jobStatusBox, job.current_stage, "Stage:");
+    appendLine(jobStatusBox, `${job.progress_percent}%`, "Progress:");
+    if (job.error_summary) {
+      appendLine(jobStatusBox, job.error_summary, "Error:");
+    }
     progressShell.classList.remove("scanner-hidden");
     progressBar.style.width = `${job.progress_percent}%`;
     cancelButton.classList.toggle(
@@ -317,13 +414,15 @@
       const events = await fetchJson(`/scan-jobs/${jobId}/events`, {
         headers: apiHeaders(),
       });
-      jobEvents.innerHTML = events
-        .map((item) => `<li><strong>${item.status}</strong> · ${item.stage} · ${item.message}</li>`)
-        .join("");
+      renderList(
+        jobEvents,
+        events,
+        (item) => `${item.status} · ${item.stage} · ${item.message}`,
+      );
       const artifacts = await fetchJson(`/scan-jobs/${jobId}/artifacts`, {
         headers: apiHeaders(),
       });
-      jobArtifacts.innerHTML = "";
+      jobArtifacts.replaceChildren();
       artifacts.forEach((artifact) => {
         const li = document.createElement("li");
         const button = document.createElement("button");
@@ -357,20 +456,21 @@
       const payload = await fetchJson(`/scan-jobs/${jobId}/result`, {
         headers: apiHeaders(),
       });
-      resultSummary.innerHTML = [
-        `<strong>${payload.target_domain}</strong>`,
-        `<div>${payload.executive_summary}</div>`,
-        siteTypeInput.value.trim()
-          ? `<div>Site type hint: ${siteTypeInput.value.trim()}</div>`
-          : "",
-        `<div>Mode: ${payload.scan_mode}</div>`,
-      ].join("");
-      resultRecommendations.innerHTML = (payload.recommendations || [])
-        .map((item) => `<li>${item}</li>`)
-        .join("");
-      resultIssues.innerHTML = (payload.issues || [])
-        .map((item) => `<li><strong>${item.severity}</strong> · ${item.title}</li>`)
-        .join("");
+      resultSummary.replaceChildren();
+      const title = document.createElement("strong");
+      title.textContent = payload.target_domain;
+      resultSummary.appendChild(title);
+      appendLine(resultSummary, payload.executive_summary);
+      if (siteTypeInput.value.trim()) {
+        appendLine(resultSummary, siteTypeInput.value.trim(), "Site type hint:");
+      }
+      appendLine(resultSummary, payload.scan_mode, "Mode:");
+      renderList(resultRecommendations, payload.recommendations || [], (item) => item);
+      renderList(
+        resultIssues,
+        payload.issues || [],
+        (item) => `${item.severity} · ${item.title}`,
+      );
       resultTasksLink.href = `${apiBaseInput.value}${payload.tasks_endpoint}`;
       resultGraphLink.href = `./graph.html?api=${encodeURIComponent(apiBaseInput.value)}&source=scan_job&id=${jobId}`;
       resultTasksLink.classList.remove("scanner-hidden");

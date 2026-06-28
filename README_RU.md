@@ -175,19 +175,19 @@ discoverability. Она объединяет:
 - [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
 - [docs/ru/ai-citation-score.md](./docs/ru/ai-citation-score.md)
 
-## На чем сфокусирован v6.2.0
+## На чем сфокусирован v6.3.0
 
-`v6.2.0` сохраняет направление `v6.1.0` на trust density и RU/Yandex layer и
-добавляет first-class SEO intelligence слой плюс более сильную release hygiene.
+`v6.3.0` делает repo более trustworthy operating system за счет того, что
+сближает публичные обещания, runtime behavior и script-first execution.
 
 Он добавляет:
 
-- native SEO intelligence surfaces для keyword, competitor, backlink и rank work
-- `/api/v1/settings/seo-intelligence-center`
-- более сильные executive overlays для search demand и authority posture
-- version-consistency checks в repo и CI
-- более явное позиционирование "что это за проект / чем он не является"
-- более полную связку для AI-agent и self-hosted narrative
+- более калиброванную GEO/AI guidance с разделением Google guidance, provider-specific AI signals и experimental extras
+- покрытие OAI-SearchBot и более сильную оценку multi-agent `robots.txt`
+- более безопасную обработку токенов во frontend и менее рискованные UI rendering paths
+- более полный frontend Docker package для scanner, graph, validator и operator surfaces
+- более строгую release и security hygiene для scans, docs и version alignment
+- более сильный standalone script DX, чтобы repo-level tooling соответствовал обещанию AI-agent-ready
 
 ## Текущие границы
 

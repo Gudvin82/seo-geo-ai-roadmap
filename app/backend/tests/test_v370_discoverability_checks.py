@@ -21,6 +21,39 @@ Disallow: /
     assert yandex_bot["matched_group"] != yandex_additional["matched_group"]
 
 
+def test_oai_searchbot_is_tracked_separately() -> None:
+    robots = """
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Disallow: /
+"""
+    groups = discoverability_checks.parse_robots_groups(robots)
+    oai_searchbot = discoverability_checks.evaluate_bot_policy(groups, "OAI-SearchBot")
+    gpt_bot = discoverability_checks.evaluate_bot_policy(groups, "GPTBot")
+    assert oai_searchbot["status"] == "allowed"
+    assert gpt_bot["status"] == "blocked"
+
+
+def test_parse_robots_groups_keeps_multi_agent_group_together() -> None:
+    robots = """
+User-agent: Googlebot
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: *
+Disallow: /
+"""
+    groups = discoverability_checks.parse_robots_groups(robots)
+    googlebot = discoverability_checks.evaluate_bot_policy(groups, "Googlebot")
+    image = discoverability_checks.evaluate_bot_policy(groups, "Googlebot-Image")
+    bing = discoverability_checks.evaluate_bot_policy(groups, "Bingbot")
+    assert googlebot["status"] == "allowed"
+    assert image["status"] == "allowed"
+    assert bing["status"] == "blocked"
+
+
 def test_ai_txt_report_warns_on_robot_contradiction() -> None:
     ai_content = """
 policy: allow-public-facts
@@ -70,6 +103,28 @@ def test_faq_detection_distinguishes_visible_and_schema_only_faq() -> None:
     assert report["faq_schema_present"] is True
     assert report["status"] in {"warn", "needs-review"}
     assert any("visible FAQ" in item for item in report["warnings"])
+
+
+def test_ai_readability_treats_experimental_assets_as_optional() -> None:
+    html = """
+    <html><head>
+    <title>Example service</title>
+    <meta name="description" content="Example description" />
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":["Organization","WebSite"]}
+    </script>
+    </head><body><section id="faq"><h2>FAQ</h2><h3>What is this?</h3></section></body></html>
+    """
+    report = discoverability_checks.ai_readability_report(
+        html,
+        page_url="https://example.com",
+    )
+    assert report["score"] < 100
+    assert report["experimental_notes"]
+    assert any(
+        "experimental" in item.lower() or "optional" in item.lower()
+        for item in report["experimental_notes"]
+    )
 
 
 def test_open_graph_report_flags_missing_and_generic_fields() -> None:
@@ -213,7 +268,7 @@ def test_scanner_summary_includes_v370_module_results(monkeypatch) -> None:
         "_scanner_runtime_settings",
         lambda: settings,
     )
-    assert summary["schema_version"] == "v6.2.0"
+    assert summary["schema_version"] == "v6.3.0"
     module_ids = {item["id"] for item in summary["module_results"]}
     assert {
         "ru_ai_bots",

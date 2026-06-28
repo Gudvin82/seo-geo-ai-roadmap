@@ -323,14 +323,16 @@ def execute_audit_run(
                     ["--url", f"{project.website_url.rstrip('/')}/llms.txt"],
                 )
                 raw_output = stdout or stderr
-                severity = "high" if code else "low"
-                summary = "Validated llms.txt structure for public AI discovery."
-                recommendation = "Publish or fix llms.txt so AI systems can map key pages and entity signals."
+                severity = "medium" if code else "low"
+                summary = (
+                    "Reviewed llms.txt as an optional AI-routing and agent-facing file."
+                )
+                recommendation = "Use llms.txt only if it supports your AI-agent or publisher workflow; do not treat it as a Google ranking prerequisite."
                 benchmark_metric_key = "ai_visibility_readiness"
-                benchmark_value = 0.35 if code else 0.88
-                impact = 5
+                benchmark_value = 0.52 if code else 0.72
+                impact = 3
                 effort = 2
-                confidence = 5
+                confidence = 3
             elif check_name == "content_freshness":
                 path = _artifact_path(settings, audit_run.id, "freshness-preview", "md")
                 code, stdout, stderr = run_script(

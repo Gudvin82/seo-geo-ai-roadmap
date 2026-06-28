@@ -303,7 +303,7 @@ function renderGraph(modeKey) {
   const mode = graphModes[modeKey];
   graphTitle.textContent = mode.title;
   graphSubtitle.textContent = mode.subtitle;
-  graphCanvas.innerHTML = "";
+  graphCanvas.replaceChildren();
 
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("viewBox", "0 0 100 100");
@@ -340,13 +340,24 @@ function renderGraph(modeKey) {
 
 function selectNode(node) {
   activeNode = node;
-  graphNodeCard.innerHTML = `
-    <strong>${node.label}</strong>
-    <p>${node.what}</p>
-    <p><strong>Why:</strong> ${node.why}</p>
-    <p><strong>Impact:</strong> ${node.impact}</p>
-    <p><strong>Next:</strong> ${node.next}</p>
-  `;
+  graphNodeCard.replaceChildren();
+  const title = document.createElement("strong");
+  title.textContent = node.label;
+  const what = document.createElement("p");
+  what.textContent = node.what;
+  const why = document.createElement("p");
+  const whyStrong = document.createElement("strong");
+  whyStrong.textContent = "Why:";
+  why.append(whyStrong, ` ${node.why}`);
+  const impact = document.createElement("p");
+  const impactStrong = document.createElement("strong");
+  impactStrong.textContent = "Impact:";
+  impact.append(impactStrong, ` ${node.impact}`);
+  const next = document.createElement("p");
+  const nextStrong = document.createElement("strong");
+  nextStrong.textContent = "Next:";
+  next.append(nextStrong, ` ${node.next}`);
+  graphNodeCard.append(title, what, why, impact, next);
   graphAnswer.textContent = node.what;
 }
 
