@@ -41,6 +41,7 @@ from ..services.cms import cms_contract
 from ..services.integrations import (
     integration_contract,
     integration_env_status,
+    integration_managed_metadata,
     integration_runtime_profile,
 )
 from ..services.scoring import benchmark_status, ru_geo_score
@@ -178,6 +179,10 @@ def repo_assets() -> dict:
             "scripts/issue_pack_generator.py",
             "scripts/community_showcase_builder.py",
             "scripts/launch_pack_generator.py",
+            "scripts/integration_runtime_audit.py",
+            "scripts/serp_competitor_matrix.py",
+            "scripts/link_gap_summary.py",
+            "scripts/benchmark_dataset_builder.py",
             "examples/semantic-keywords-example.txt",
         ],
         "glossary": ["GLOSSARY.md", "GLOSSARY_RU.md"],
@@ -405,6 +410,54 @@ def community_showcase_center() -> dict:
     }
 
 
+@router.get("/community-growth-center")
+def community_growth_center() -> dict:
+    return {
+        "purpose": (
+            "Turn the repository from a static launch surface into a repeatable "
+            "submission, showcase, and launch-material pipeline."
+        ),
+        "recent_submission_examples": [
+            {
+                "type": "bounded_public_case",
+                "title": "anmalishev.ru public case",
+                "status": "published",
+                "best_next_step": "attach more before/after metrics and screenshots",
+            },
+            {
+                "type": "synthetic_training_case",
+                "title": "synthetic demo fixture",
+                "status": "published",
+                "best_next_step": "expand with more product modes and vertical examples",
+            },
+            {
+                "type": "launch_material",
+                "title": "safe public launch pack",
+                "status": "ready",
+                "best_next_step": "localize and reuse for social posts and release threads",
+            },
+        ],
+        "showcase_backlog": [
+            "collect more RU and Yandex-heavy public cases",
+            "add more independent before/after proof packs",
+            "expand launch-safe screenshots and product walkthrough assets",
+        ],
+        "launch_materials": [
+            "LAUNCH_PACK.md",
+            "LAUNCH_PACK_RU.md",
+            "SHOWCASE.md",
+            "SHOWCASE_RU.md",
+            "docs/en/community-and-launch.md",
+            "docs/ru/community-and-launch.md",
+        ],
+        "operator_rule": (
+            "Treat community growth as a governed proof layer: every showcase item "
+            "needs a boundary, every launch claim needs a source, and every "
+            "submission needs a clear next step."
+        ),
+    }
+
+
 @router.get("/managed-integration-center")
 def managed_integration_center() -> dict:
     priority_sources = [
@@ -425,8 +478,14 @@ def managed_integration_center() -> dict:
         env_status = integration_env_status(contract)
         runtime_profile = integration_runtime_profile(
             source_type,
-            config={"managed_runtime_enabled": True, "refresh_minutes": 1440},
+            config={
+                "managed_runtime_enabled": True,
+                "refresh_minutes": 1440,
+                "token_rotation_days": 30,
+                "retry_backoff_minutes": [5, 15, 60],
+            },
         )
+        managed_metadata = integration_managed_metadata(source_type)
         rows.append(
             {
                 "source_type": source_type,
@@ -440,6 +499,19 @@ def managed_integration_center() -> dict:
                 "production_flow": contract["production_flow"],
                 "ci_gates": contract["ci_gates"],
                 "capabilities": contract["capabilities"],
+                "auth_model": managed_metadata["auth_model"],
+                "refresh_lifecycle": managed_metadata["refresh_lifecycle"],
+                "failure_signals": managed_metadata["failure_signals"],
+                "recovery_playbook": managed_metadata["recovery_playbook"],
+                "proof_assets": managed_metadata["proof_assets"],
+                "sync_diagnostics": {
+                    "refresh_minutes": runtime_profile["refresh_minutes"],
+                    "token_rotation_days": runtime_profile["token_rotation_days"],
+                    "retry_backoff_minutes": runtime_profile["retry_backoff_minutes"],
+                    "failure_recovery_mode": runtime_profile[
+                        "failure_recovery_mode"
+                    ],
+                },
                 "next_step": contract["next_step"],
             }
         )
@@ -452,12 +524,75 @@ def managed_integration_center() -> dict:
             "runtime_ready_count": len(
                 [row for row in rows if row["runtime_level"] == "managed_runtime"]
             ),
+            "oauth_or_token_integrations": len(
+                [
+                    row
+                    for row in rows
+                    if row["auth_model"]
+                    in {
+                        "oauth_token",
+                        "oauth_token_or_reviewed_export",
+                        "developer_token_and_account_binding",
+                    }
+                ]
+            ),
         },
         "rows": rows,
         "operator_rule": (
             "Treat GSC, GA4, Ads, Yandex, local business, Alice AI, and CrUX as "
             "one managed operating layer with credential lifecycle, refresh "
             "cadence, CI gates, and explicit recovery ownership."
+        ),
+    }
+
+
+@router.get("/managed-runtime-proof-center")
+def managed_runtime_proof_center() -> dict:
+    priority_sources = [
+        "gsc",
+        "ga4",
+        "google_ads",
+        "yandex_webmaster",
+        "yandex_metrica",
+        "yandex_direct",
+        "google_business_profile",
+        "yandex_business",
+        "alice_ai_visibility",
+        "crux",
+    ]
+    rows = []
+    for source_type in priority_sources:
+        metadata = integration_managed_metadata(source_type)
+        rows.append(
+            {
+                "source_type": source_type,
+                "proof_assets": metadata["proof_assets"],
+                "failure_signals": metadata["failure_signals"],
+                "recovery_playbook": metadata["recovery_playbook"],
+            }
+        )
+    return {
+        "summary": {
+            "proof_ready_surfaces": len(rows),
+            "ru_market_proof_surfaces": len(
+                [
+                    row
+                    for row in rows
+                    if row["source_type"]
+                    in {
+                        "yandex_webmaster",
+                        "yandex_metrica",
+                        "yandex_direct",
+                        "yandex_business",
+                        "alice_ai_visibility",
+                    }
+                ]
+            ),
+        },
+        "rows": rows,
+        "operator_rule": (
+            "Every managed integration should have proof assets, failure signals, "
+            "and a recovery playbook before it is treated as production-guided."
         ),
     }
 
@@ -2741,6 +2876,143 @@ def seo_maturity_center(
         "operator_rule": (
             "Do not treat GEO or AI visibility as a replacement for semantic, "
             "competitor, authority, and measurement depth."
+        ),
+    }
+
+
+@router.get("/classic-seo-workbench")
+def classic_seo_workbench(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    project, _ = require_project_access(
+        db, project_id, current_user, minimum_role="viewer"
+    )
+    integration_rows = (
+        db.query(IntegrationConnection)
+        .filter(IntegrationConnection.project_id == project_id)
+        .order_by(IntegrationConnection.id.desc())
+        .all()
+    )
+    integration_metrics = _integration_metrics_by_source(integration_rows)
+    keyword_metrics = (
+        integration_metrics.get("keyword_research", {}).get("metrics") or {}
+    )
+    competitor_metrics = (
+        integration_metrics.get("competitor_intelligence", {}).get("metrics") or {}
+    )
+    backlink_metrics = (
+        integration_metrics.get("backlink_intelligence", {}).get("metrics") or {}
+    )
+    rank_metrics = integration_metrics.get("rank_tracking", {}).get("metrics") or {}
+
+    tracks = [
+        {
+            "track": "semantic_execution",
+            "score": round(
+                min(
+                    1.0,
+                    _first_numeric(keyword_metrics, "query_cluster_coverage") + 0.2,
+                ),
+                2,
+            ),
+            "headline": "Turn demand clusters into owned page types and FAQ support lanes.",
+            "scripts": [
+                "scripts/checklist_generator.py",
+                "scripts/semantic_gap_mapper.py",
+            ],
+            "docs": [
+                "docs/en/semantic-core-and-intent-playbook.md",
+                "docs/en/06-semantics-onpage.md",
+            ],
+        },
+        {
+            "track": "competitor_workflows",
+            "score": round(
+                min(
+                    1.0,
+                    (_first_numeric(competitor_metrics, "tracked_competitors") / 5)
+                    + _first_numeric(competitor_metrics, "content_gap_count") / 20,
+                ),
+                2,
+            ),
+            "headline": "Compare competitor proof, offer, FAQ, and authority gaps with repeatable matrices.",
+            "scripts": [
+                "scripts/competitor_intelligence_stub.py",
+                "scripts/serp_competitor_matrix.py",
+            ],
+            "docs": [
+                "docs/en/02-competitor-analysis.md",
+                "docs/en/competitor-gap-and-authority-playbook.md",
+            ],
+        },
+        {
+            "track": "authority_and_link_depth",
+            "score": round(
+                min(
+                    1.0,
+                    (_first_numeric(backlink_metrics, "referring_domains") / 100)
+                    + max(0.0, _first_numeric(backlink_metrics, "authority_trend")),
+                ),
+                2,
+            ),
+            "headline": "Separate link recovery, local citations, and proof-driven editorial outreach.",
+            "scripts": [
+                "scripts/backlink_intelligence_stub.py",
+                "scripts/link_gap_summary.py",
+            ],
+            "docs": [
+                "docs/en/09-linkbuilding-pr.md",
+                "docs/en/competitor-gap-and-authority-playbook.md",
+            ],
+        },
+        {
+            "track": "benchmark_datasets",
+            "score": round(
+                min(
+                    1.0,
+                    _first_numeric(rank_metrics, "top_10_share")
+                    + (0.2 if "gsc" in integration_metrics else 0)
+                    + (0.2 if "ga4" in integration_metrics else 0),
+                ),
+                2,
+            ),
+            "headline": "Use benchmark datasets that connect rankings, authority, and conversion outcomes.",
+            "scripts": [
+                "scripts/provider_benchmark_stub.py",
+                "scripts/benchmark_dataset_builder.py",
+            ],
+            "docs": [
+                "docs/en/provider-benchmarks.md",
+                "docs/en/geo-measurement-maturity.md",
+            ],
+        },
+    ]
+    return {
+        "project_id": project.id,
+        "project_name": project.name,
+        "summary": {
+            "track_count": len(tracks),
+            "tracked_competitors": _first_numeric(
+                competitor_metrics, "tracked_competitors"
+            ),
+            "referring_domains": _first_numeric(
+                backlink_metrics, "referring_domains"
+            ),
+            "top_10_share": _first_numeric(rank_metrics, "top_10_share"),
+        },
+        "tracks": tracks,
+        "benchmark_dataset_pack": [
+            "query cluster coverage",
+            "content gap count",
+            "referring domain growth",
+            "top-10 share",
+            "landing-page conversion delta",
+        ],
+        "operator_rule": (
+            "Classical SEO should be reviewed as semantics, competitors, links, "
+            "and benchmarks working together, not as isolated tasks."
         ),
     }
 

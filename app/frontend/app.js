@@ -56,11 +56,14 @@ const state = {
   tenantAdminConsole: {},
   docsConsolidationCenter: {},
   managedIntegrationCenter: {},
+  managedRuntimeProofCenter: {},
   communityParticipationCenter: {},
   communityLaunchCenter: {},
   communityShowcaseCenter: {},
+  communityGrowthCenter: {},
   runtimeOpsCenter: {},
   seoMaturityCenter: {},
+  classicSeoWorkbench: {},
   evidenceLab: {},
   proofTimeline: [],
   proofEvidence: [],
@@ -121,7 +124,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.8.5 community, launch, and contributor growth layer",
+      "v6.9.0 live integrations, classic SEO depth, and product polish",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -312,7 +315,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.8.5 community, launch, and contributor growth layer",
+      "v6.9.0 live integrations, classic SEO depth, and product polish",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -711,6 +714,7 @@ function renderExecutiveDashboard() {
     $("#runtime-ops-cards").replaceChildren();
     $("#runtime-ops-json").textContent = "";
     $("#seo-maturity-cards").replaceChildren();
+    $("#classic-seo-cards").replaceChildren();
     $("#seo-maturity-json").textContent = "";
     $("#executive-dashboard-json").textContent = "";
     return;
@@ -776,8 +780,21 @@ function renderExecutiveDashboard() {
         (row.next_steps || [])[0] || "No next step",
       ]),
   );
+  renderCards(
+    "#classic-seo-cards",
+    (state.classicSeoWorkbench && state.classicSeoWorkbench.tracks) || [],
+    (row) =>
+      simpleCard(row.track || "track", [
+        `score ${row.score ?? "n/a"}`,
+        row.headline || "No headline",
+        `Scripts: ${(row.scripts || []).slice(0, 2).join(", ") || "n/a"}`,
+      ]),
+  );
   $("#seo-maturity-json").textContent = JSON.stringify(
-    state.seoMaturityCenter || {},
+    {
+      maturity: state.seoMaturityCenter || {},
+      classic_workbench: state.classicSeoWorkbench || {},
+    },
     null,
     2,
   );
@@ -864,6 +881,31 @@ function renderSaasCenter() {
     null,
     2,
   );
+  renderCards(
+    "#managed-integration-cards",
+    (state.managedIntegrationCenter && state.managedIntegrationCenter.rows) || [],
+    (row) =>
+      simpleCard(row.label || row.source_type || "integration", [
+        `${row.runtime_level || "n/a"} · ${row.auth_model || "operator_managed"}`,
+        `Refresh: ${row.sync_diagnostics?.refresh_minutes ?? "n/a"} min`,
+        row.refresh_lifecycle || row.next_step || "No lifecycle yet",
+      ]),
+  );
+  renderCards(
+    "#managed-runtime-proof-cards",
+    (state.managedRuntimeProofCenter && state.managedRuntimeProofCenter.rows) || [],
+    (row) =>
+      simpleCard(row.source_type || "proof", [
+        `Proof assets: ${(row.proof_assets || []).length}`,
+        (row.failure_signals || [])[0] || "No failure signal",
+        (row.recovery_playbook || [])[0] || "No recovery playbook",
+      ]),
+  );
+  $("#managed-runtime-proof-center").textContent = JSON.stringify(
+    state.managedRuntimeProofCenter || {},
+    null,
+    2,
+  );
   $("#community-participation-center").textContent = JSON.stringify(
     state.communityParticipationCenter || {},
     null,
@@ -876,6 +918,22 @@ function renderSaasCenter() {
   );
   $("#community-showcase-center").textContent = JSON.stringify(
     state.communityShowcaseCenter || {},
+    null,
+    2,
+  );
+  renderCards(
+    "#community-growth-cards",
+    (state.communityGrowthCenter &&
+      state.communityGrowthCenter.recent_submission_examples) ||
+      [],
+    (row) =>
+      simpleCard(row.title || row.type || "submission", [
+        `${row.type || "submission"} · ${row.status || "n/a"}`,
+        row.best_next_step || "No next step",
+      ]),
+  );
+  $("#community-growth-center").textContent = JSON.stringify(
+    state.communityGrowthCenter || {},
     null,
     2,
   );
@@ -1341,18 +1399,22 @@ async function refreshExecutiveDashboard() {
     return;
   }
   try {
-    const [dashboard, runtimeOpsCenter, seoMaturityCenter] = await Promise.all([
+    const [dashboard, runtimeOpsCenter, seoMaturityCenter, classicSeoWorkbench] =
+      await Promise.all([
       apiRequest(`/settings/executive-dashboard?project_id=${state.selectedProjectId}`),
       apiRequest(`/settings/runtime-ops-center?project_id=${state.selectedProjectId}`),
       apiRequest(`/settings/seo-maturity-center?project_id=${state.selectedProjectId}`),
+      apiRequest(`/settings/classic-seo-workbench?project_id=${state.selectedProjectId}`),
     ]);
     state.executiveDashboard = dashboard;
     state.runtimeOpsCenter = runtimeOpsCenter || {};
     state.seoMaturityCenter = seoMaturityCenter || {};
+    state.classicSeoWorkbench = classicSeoWorkbench || {};
   } catch (error) {
     state.executiveDashboard = null;
     state.runtimeOpsCenter = {};
     state.seoMaturityCenter = {};
+    state.classicSeoWorkbench = {};
     log(`Executive dashboard not ready yet: ${error.message}`, "warning");
   }
   renderExecutiveDashboard();
@@ -1370,9 +1432,11 @@ async function refreshSaasCenter() {
     apiRequest("/settings/productization-center", { headers: {} }),
     apiRequest("/settings/docs-consolidation-center", { headers: {} }),
     apiRequest("/settings/managed-integration-center", { headers: {} }),
+    apiRequest("/settings/managed-runtime-proof-center", { headers: {} }),
     apiRequest("/settings/community-participation-center", { headers: {} }),
     apiRequest("/settings/community-launch-center", { headers: {} }),
     apiRequest("/settings/community-showcase-center", { headers: {} }),
+    apiRequest("/settings/community-growth-center", { headers: {} }),
   ];
   if (state.selectedWorkspaceId) {
     requests.push(
@@ -1399,9 +1463,11 @@ async function refreshSaasCenter() {
     productizationCenter,
     docsConsolidationCenter,
     managedIntegrationCenter,
+    managedRuntimeProofCenter,
     communityParticipationCenter,
     communityLaunchCenter,
     communityShowcaseCenter,
+    communityGrowthCenter,
     portfolioDashboard,
     saasGrowthCenter,
     saasReadinessCenter,
@@ -1415,9 +1481,11 @@ async function refreshSaasCenter() {
   state.productizationCenter = productizationCenter || {};
   state.docsConsolidationCenter = docsConsolidationCenter || {};
   state.managedIntegrationCenter = managedIntegrationCenter || {};
+  state.managedRuntimeProofCenter = managedRuntimeProofCenter || {};
   state.communityParticipationCenter = communityParticipationCenter || {};
   state.communityLaunchCenter = communityLaunchCenter || {};
   state.communityShowcaseCenter = communityShowcaseCenter || {};
+  state.communityGrowthCenter = communityGrowthCenter || {};
   state.portfolioDashboard = portfolioDashboard || {};
   state.saasGrowthCenter = saasGrowthCenter || {};
   state.saasReadinessCenter = saasReadinessCenter || {};

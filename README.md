@@ -217,6 +217,7 @@ The active release path is:
 - `v6.7.5`: operator tools for checklists, semantic mapping, and proof packs
 - `v6.8.0`: proof, case library, synthetic training packs, and issue-pack maturity
 - `v6.8.5`: community, launch, and contributor growth layer
+- `v6.9.0`: managed runtime proof, classic SEO workbench, product polish, and community proof depth
 
 Read the full plan:
 
@@ -243,20 +244,22 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.8.5 focus
+## v6.9.0 focus
 
-`v6.8.5` adds the planned community, launch, and contributor-growth layer so
-the repository is easier to present publicly, contribute to, and route through
-without overclaiming hosted-SaaS maturity.
+`v6.9.0` deepens the product on four fronts at once: richer managed-runtime
+proof for live integrations, stronger classical SEO execution paths, a more
+product-like SaaS shell, and better community or launch materials grounded in
+real showcase routing.
 
 It adds:
 
-- `scripts/community_showcase_builder.py`
-- `scripts/launch_pack_generator.py`
-- [COMMUNITY.md](./COMMUNITY.md)
-- [SHOWCASE.md](./SHOWCASE.md)
-- [LAUNCH_PACK.md](./LAUNCH_PACK.md)
-- [Community and Launch](./docs/en/community-and-launch.md)
+- `scripts/integration_runtime_audit.py`
+- `scripts/serp_competitor_matrix.py`
+- `scripts/link_gap_summary.py`
+- `scripts/benchmark_dataset_builder.py`
+- [Managed Runtime Proof](./docs/en/managed-runtime-proof.md)
+- [Classic SEO Workbench](./docs/en/classic-seo-workbench.md)
+- [v6.9.0 Release Summary](./docs/en/v690-release.md)
 
 ## License
 

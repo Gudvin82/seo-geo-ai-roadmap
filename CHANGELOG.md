@@ -1,5 +1,22 @@
 # Changelog
 
+## v6.9.0 — Managed Runtime Proof, Classic SEO Workbench, and Product Polish
+
+- Added richer managed-runtime metadata for GSC, GA4, Google Ads, Yandex
+  Webmaster, Yandex Metrica, Yandex Direct, business-profile surfaces, Alice
+  AI visibility, and CrUX so refresh lifecycle, failure signals, recovery
+  playbooks, and proof assets are first-class data instead of scattered notes
+- Added `managed-runtime-proof-center`, `classic-seo-workbench`, and
+  `community-growth-center` API and frontend surfaces so runtime proof,
+  classical SEO execution, and launch/community maturity are visible inside the
+  product shell
+- Added `scripts/integration_runtime_audit.py`,
+  `scripts/serp_competitor_matrix.py`, `scripts/link_gap_summary.py`, and
+  `scripts/benchmark_dataset_builder.py` so integrations and classical SEO
+  depth are usable as repo-level script surfaces, not only app concepts
+- Updated EN/RU release docs, script references, root entrypoints, and version
+  markers around `v6.9.0`
+
 ## v6.8.5 — Community, Launch, and Contributor Growth Layer
 
 - Added root community-facing entrypoints: `COMMUNITY*`, `SHOWCASE*`, and

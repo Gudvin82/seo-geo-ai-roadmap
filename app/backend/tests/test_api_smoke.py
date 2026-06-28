@@ -927,8 +927,32 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v6.8.5"
+        generation_contracts.json()["project_generation_contract_version"] == "v6.9.0"
     )
+
+    managed_runtime_proof = client.get(
+        "/api/v1/settings/managed-runtime-proof-center",
+        headers=auth_headers,
+    )
+    assert managed_runtime_proof.status_code == 200
+    assert managed_runtime_proof.json()["rows"]
+    assert managed_runtime_proof.json()["summary"]["proof_ready_surfaces"] >= 1
+
+    community_growth = client.get(
+        "/api/v1/settings/community-growth-center",
+        headers=auth_headers,
+    )
+    assert community_growth.status_code == 200
+    assert community_growth.json()["recent_submission_examples"]
+    assert community_growth.json()["launch_materials"]
+
+    classic_seo_workbench = client.get(
+        f"/api/v1/settings/classic-seo-workbench?project_id={project_id}",
+        headers=auth_headers,
+    )
+    assert classic_seo_workbench.status_code == 200
+    assert classic_seo_workbench.json()["tracks"]
+    assert classic_seo_workbench.json()["benchmark_dataset_pack"]
 
     seo_intelligence = client.get(
         f"/api/v1/settings/seo-intelligence-center?project_id={project_id}",

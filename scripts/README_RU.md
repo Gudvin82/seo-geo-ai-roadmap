@@ -33,7 +33,11 @@
 | `synthetic_case_builder.py` | Генерирует явно маркированный synthetic training case | `python scripts/synthetic_case_builder.py --name "Synthetic Demo" --before-score 70 --after-score 82` |
 | `issue_pack_generator.py` | Превращает findings в lightweight implementation issue pack | `python scripts/issue_pack_generator.py --project example.com --finding "Thin proof / high / content lead / add stronger case proof"` |
 | `community_showcase_builder.py` | Строит компактный showcase-index из public и synthetic case files | `python scripts/community_showcase_builder.py docs/en/v430-case-anmalishev.md examples/synthetic-case-example-en.md --format json` |
-| `launch_pack_generator.py` | Генерирует безопасный public launch pack с claims, boundaries и CTA | `python scripts/launch_pack_generator.py --version v6.8.5 --format json` |
+| `launch_pack_generator.py` | Генерирует безопасный public launch pack с claims, boundaries и CTA | `python scripts/launch_pack_generator.py --version v6.9.0 --format json` |
+| `integration_runtime_audit.py` | Собирает managed-runtime снимок по диагностике и recovery для ключевых integrations | `python scripts/integration_runtime_audit.py --format json` |
+| `serp_competitor_matrix.py` | Превращает competitor URLs и keyword themes в classic SEO comparison matrix | `python scripts/serp_competitor_matrix.py --competitor example.com --competitor competitor.com --keyword-theme legal ai` |
+| `link_gap_summary.py` | Суммирует link-authority gaps, proof-needs и next-step hypotheses | `python scripts/link_gap_summary.py --domain example.com --competitor competitor.com` |
+| `benchmark_dataset_builder.py` | Собирает benchmark datasets для semantic, competitor и authority workflows | `python scripts/benchmark_dataset_builder.py --dataset-name ru-legal-discoverability --format json` |
 | `gsc_data_stub.py` | Выдает starter-payload в форме Google Search Console | `python scripts/gsc_data_stub.py` |
 | `yandex_data_stub.py` | Выдает starter-payload в форме Яндекс-данных | `python scripts/yandex_data_stub.py` |
 | `x_ads_stub.py` | Выдает starter-payload в форме X Ads | `python scripts/x_ads_stub.py` |

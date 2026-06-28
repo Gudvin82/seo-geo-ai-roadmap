@@ -22,9 +22,9 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 
 Latest release context:
 
-- `v6.8.5` adds a community, launch, and contributor-growth layer on top of
-  the stronger proof, case-library, synthetic training, and implementation
-  handoff tooling introduced in `v6.8.0`
+- `v6.9.0` adds managed-runtime proof, a classic SEO workbench, stronger
+  product polish, and deeper community-proof routing on top of the proof,
+  showcase, and launch layer introduced in `v6.8.5`
 
 ## What is production-ready today
 

@@ -1,6 +1,6 @@
 # Documentation Index
 
-This is the shortest path through the repository after `v6.8.5`.
+This is the shortest path through the repository after `v6.9.0`.
 
 ## Start in this order
 
@@ -35,8 +35,10 @@ This is the shortest path through the repository after `v6.8.5`.
 - [Synthetic Cases](./docs/en/synthetic-cases.md)
 - [Issue Pack Workflow](./docs/en/issue-pack-workflow.md)
 - [Community and Launch](./docs/en/community-and-launch.md)
+- [Managed Runtime Proof](./docs/en/managed-runtime-proof.md)
+- [Classic SEO Workbench](./docs/en/classic-seo-workbench.md)
 - [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
-- [v6.8.5 Release Summary](./docs/en/v685-release.md)
+- [v6.9.0 Release Summary](./docs/en/v690-release.md)
 
 ## Core proof and boundaries
 

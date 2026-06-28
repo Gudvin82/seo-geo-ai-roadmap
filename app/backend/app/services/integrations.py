@@ -7,7 +7,7 @@ from typing import Any
 
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v6.8.5"
+CONTRACT_VERSION = "v6.9.0"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {
@@ -908,6 +908,204 @@ def integration_runtime_profile(
         ),
         "required_env_vars": contract.get("required_env_vars", []),
     }
+
+
+def integration_managed_metadata(source_type: str) -> dict[str, Any]:
+    metadata = {
+        "gsc": {
+            "auth_model": "service_account_json",
+            "refresh_lifecycle": "manual bootstrap -> scheduled daily sync -> drift compare -> report regeneration",
+            "failure_signals": [
+                "credential rejection",
+                "property mismatch",
+                "zero-row import",
+            ],
+            "recovery_playbook": [
+                "revalidate service account scope",
+                "verify property identifier",
+                "rerun baseline sync and compare snapshot source",
+            ],
+            "proof_assets": [
+                "scripts/gsc_data_stub.py",
+                "docs/en/integration-production-matrix-v450.md",
+            ],
+        },
+        "ga4": {
+            "auth_model": "service_account_json",
+            "refresh_lifecycle": "manual bootstrap -> daily landing-page sync -> anomaly review -> executive refresh",
+            "failure_signals": [
+                "missing property access",
+                "empty landing-page export",
+                "stale engagement window",
+            ],
+            "recovery_playbook": [
+                "reconfirm GA4 property binding",
+                "rerun engagement export",
+                "compare with GSC landing-page layer",
+            ],
+            "proof_assets": [
+                "scripts/ga4_data_stub.py",
+                "docs/en/integration-production-matrix-v450.md",
+            ],
+        },
+        "google_ads": {
+            "auth_model": "developer_token_and_account_binding",
+            "refresh_lifecycle": "baseline sync -> scheduled campaign refresh -> search-term drift review -> delivery pack update",
+            "failure_signals": [
+                "account token mismatch",
+                "brand split missing",
+                "conversion lag",
+            ],
+            "recovery_playbook": [
+                "recheck account mapping",
+                "validate brand vs non-brand segmentation",
+                "rerun spend-to-conversion export",
+            ],
+            "proof_assets": [
+                "scripts/google_ads_stub.py",
+                "docs/en/integration-production-matrix-v450.md",
+            ],
+        },
+        "yandex_webmaster": {
+            "auth_model": "oauth_token",
+            "refresh_lifecycle": "manual property bind -> daily regional refresh -> RU diagnostics compare -> Alice visibility context attach",
+            "failure_signals": [
+                "site mismatch",
+                "regional gaps missing",
+                "query feed stale",
+            ],
+            "recovery_playbook": [
+                "rebind Yandex site id",
+                "recheck token scope",
+                "rerun RU diagnostics export",
+            ],
+            "proof_assets": [
+                "scripts/yandex_data_stub.py",
+                "docs/en/13-russia-yandex.md",
+            ],
+        },
+        "yandex_metrica": {
+            "auth_model": "oauth_token",
+            "refresh_lifecycle": "counter bind -> daily visits/goals refresh -> conversion compare -> RU executive refresh",
+            "failure_signals": [
+                "counter mismatch",
+                "goal set empty",
+                "traffic snapshot stale",
+            ],
+            "recovery_playbook": [
+                "reconfirm Metrica counter id",
+                "rerun visits and goals export",
+                "compare with Webmaster and Direct context",
+            ],
+            "proof_assets": [
+                "scripts/yandex_metrica_stub.py",
+                "docs/en/13-russia-yandex.md",
+            ],
+        },
+        "yandex_direct": {
+            "auth_model": "oauth_token",
+            "refresh_lifecycle": "campaign bind -> scheduled paid-demand sync -> RU paid vs organic compare -> executive delivery refresh",
+            "failure_signals": [
+                "campaign map drift",
+                "search-term export empty",
+                "conversion mapping stale",
+            ],
+            "recovery_playbook": [
+                "recheck account and campaign scope",
+                "rerun search-term export",
+                "reconcile spend and conversion mappings",
+            ],
+            "proof_assets": [
+                "scripts/yandex_direct_stub.py",
+                "docs/en/13-russia-yandex.md",
+            ],
+        },
+        "google_business_profile": {
+            "auth_model": "service_account_or_operator_export",
+            "refresh_lifecycle": "profile bind -> weekly local refresh -> rating/review compare -> local proof pack update",
+            "failure_signals": [
+                "profile not found",
+                "reviews empty",
+                "local actions stale",
+            ],
+            "recovery_playbook": [
+                "verify business profile access",
+                "rerun review export",
+                "compare against local entity dashboard",
+            ],
+            "proof_assets": [
+                "scripts/google_business_profile_stub.py",
+                "docs/en/11-local-seo.md",
+            ],
+        },
+        "yandex_business": {
+            "auth_model": "oauth_token_or_reviewed_export",
+            "refresh_lifecycle": "profile bind -> weekly local refresh -> trust compare -> RU local proof update",
+            "failure_signals": [
+                "listing mismatch",
+                "review feed empty",
+                "trust data stale",
+            ],
+            "recovery_playbook": [
+                "reconfirm listing identifier",
+                "rerun local trust export",
+                "compare with Metrica and Webmaster regional layer",
+            ],
+            "proof_assets": [
+                "scripts/yandex_business_stub.py",
+                "docs/en/11-local-seo.md",
+            ],
+        },
+        "alice_ai_visibility": {
+            "auth_model": "operator_export_or_webmaster_surface",
+            "refresh_lifecycle": "weekly visibility refresh -> query example compare -> source overlap review -> RU GEO follow-up pack",
+            "failure_signals": [
+                "insufficient data",
+                "query sample empty",
+                "competitor overlap stale",
+            ],
+            "recovery_playbook": [
+                "increase Yandex source visibility first",
+                "rerun weekly export after Webmaster refresh",
+                "compare cited source set and query examples",
+            ],
+            "proof_assets": [
+                "scripts/alice_ai_visibility_stub.py",
+                "docs/en/13-russia-yandex.md",
+            ],
+        },
+        "crux": {
+            "auth_model": "api_key_or_sampled_export",
+            "refresh_lifecycle": "field-data fetch -> benchmark compare -> regression note -> executive refresh",
+            "failure_signals": [
+                "api key missing",
+                "field window empty",
+                "stale p75 metrics",
+            ],
+            "recovery_playbook": [
+                "verify CRUX_API_KEY",
+                "rerun field-data fetch",
+                "fallback to sampled export with explicit label",
+            ],
+            "proof_assets": [
+                "scripts/crux_field_data.py",
+                "docs/en/geo-measurement-maturity.md",
+            ],
+        },
+    }
+    return metadata.get(
+        source_type,
+        {
+            "auth_model": "operator_managed",
+            "refresh_lifecycle": "manual sync -> compare -> operator review",
+            "failure_signals": ["credentials missing", "starter snapshot still active"],
+            "recovery_playbook": [
+                "configure credentials",
+                "replace starter snapshot with reviewed runtime data",
+            ],
+            "proof_assets": ["scripts/README.md"],
+        },
+    )
 
 
 def integration_sync_diagnostics(

@@ -219,6 +219,7 @@ make verify-demo
 - `v6.7.5`: operator tools для checklists, semantic mapping и proof packs
 - `v6.8.0`: proof, case library, synthetic training packs и issue-pack maturity
 - `v6.8.5`: community, launch, and contributor growth layer
+- `v6.9.0`: managed runtime proof, classic SEO workbench, product polish и community proof depth
 
 Полный план:
 
@@ -245,20 +246,22 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.8.5
+## На чем сфокусирован v6.9.0
 
-`v6.8.5` добавляет запланированный community, launch и contributor-growth
-layer, чтобы репозиторий было проще публично представлять, улучшать и
-маршрутизировать без overclaiming hosted SaaS maturity.
+`v6.9.0` одновременно усиливает четыре направления: более доказательный
+managed-runtime слой для live integrations, более глубокий classical SEO
+execution path, более продуктовый SaaS-интерфейс и более сильные community /
+launch materials, привязанные к реальному showcase-routing.
 
 Он добавляет:
 
-- `scripts/community_showcase_builder.py`
-- `scripts/launch_pack_generator.py`
-- [COMMUNITY_RU.md](./COMMUNITY_RU.md)
-- [SHOWCASE_RU.md](./SHOWCASE_RU.md)
-- [LAUNCH_PACK_RU.md](./LAUNCH_PACK_RU.md)
-- [Community and Launch](./docs/ru/community-and-launch.md)
+- `scripts/integration_runtime_audit.py`
+- `scripts/serp_competitor_matrix.py`
+- `scripts/link_gap_summary.py`
+- `scripts/benchmark_dataset_builder.py`
+- [Managed Runtime Proof](./docs/ru/managed-runtime-proof.md)
+- [Classic SEO Workbench](./docs/ru/classic-seo-workbench.md)
+- [Сводка релиза v6.9.0](./docs/ru/v690-release.md)
 
 ## Лицензия
 

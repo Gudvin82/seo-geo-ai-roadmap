@@ -22,9 +22,9 @@ enterprise SSO и SLA от автора репозитория.
 
 Контекст последнего релиза:
 
-- `v6.8.5` добавляет community, launch и contributor-growth layer поверх более
-  сильного tooling для proof, case-library, synthetic training и
-  implementation-handoff, введенного в `v6.8.0`
+- `v6.9.0` добавляет managed-runtime proof, classic SEO workbench, более
+  продуктовый polish и более глубокий community-proof routing поверх proof,
+  showcase и launch layer, который был введен в `v6.8.5`
 
 ## Что production-ready уже сегодня
 

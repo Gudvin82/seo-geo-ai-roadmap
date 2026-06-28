@@ -33,7 +33,11 @@
 | `synthetic_case_builder.py` | Generate a clearly labeled synthetic training case | `python scripts/synthetic_case_builder.py --name "Synthetic Demo" --before-score 70 --after-score 82` |
 | `issue_pack_generator.py` | Turn findings into a lightweight implementation issue pack | `python scripts/issue_pack_generator.py --project example.com --finding "Thin proof / high / content lead / add stronger case proof"` |
 | `community_showcase_builder.py` | Build a compact showcase index from public and synthetic case files | `python scripts/community_showcase_builder.py docs/en/v430-case-anmalishev.md examples/synthetic-case-example-en.md --format json` |
-| `launch_pack_generator.py` | Generate a safe public launch pack with claims, boundaries, and CTAs | `python scripts/launch_pack_generator.py --version v6.8.5 --format json` |
+| `launch_pack_generator.py` | Generate a safe public launch pack with claims, boundaries, and CTAs | `python scripts/launch_pack_generator.py --version v6.9.0 --format json` |
+| `integration_runtime_audit.py` | Build a managed-runtime diagnostics and recovery snapshot for core integrations | `python scripts/integration_runtime_audit.py --format json` |
+| `serp_competitor_matrix.py` | Turn competitor URLs and keyword themes into a classic SEO comparison matrix | `python scripts/serp_competitor_matrix.py --competitor example.com --competitor competitor.com --keyword-theme legal ai` |
+| `link_gap_summary.py` | Summarize link authority gaps, proof needs, and next-step hypotheses | `python scripts/link_gap_summary.py --domain example.com --competitor competitor.com` |
+| `benchmark_dataset_builder.py` | Assemble benchmark datasets for semantic, competitor, and authority workflows | `python scripts/benchmark_dataset_builder.py --dataset-name ru-legal-discoverability --format json` |
 | `gsc_data_stub.py` | Emit a Google Search Console shaped starter payload | `python scripts/gsc_data_stub.py` |
 | `yandex_data_stub.py` | Emit a Yandex shaped starter payload | `python scripts/yandex_data_stub.py` |
 | `x_ads_stub.py` | Emit a starter X Ads payload | `python scripts/x_ads_stub.py` |

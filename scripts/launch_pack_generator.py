@@ -43,7 +43,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="Generate a safe public launch pack for the repository."
     )
-    parser.add_argument("--version", default="v6.8.5", help="Release version label")
+    parser.add_argument("--version", default="v6.9.0", help="Release version label")
     parser.add_argument(
         "--repo-url",
         default="https://github.com/Gudvin82/seo-geo-ai-roadmap",
