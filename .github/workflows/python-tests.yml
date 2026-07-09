@@ -2,6 +2,8 @@ name: python-tests
 
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 jobs:
