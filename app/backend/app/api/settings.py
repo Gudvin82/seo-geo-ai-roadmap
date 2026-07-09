@@ -179,6 +179,10 @@ def repo_assets() -> dict:
             "scripts/issue_pack_generator.py",
             "scripts/community_showcase_builder.py",
             "scripts/launch_pack_generator.py",
+            "scripts/conversion_ops_pack.py",
+            "scripts/content_growth_ops.py",
+            "scripts/customer_research_pack.py",
+            "scripts/launch_ops_pack.py",
             "scripts/integration_runtime_audit.py",
             "scripts/serp_competitor_matrix.py",
             "scripts/link_gap_summary.py",
@@ -454,6 +458,125 @@ def community_growth_center() -> dict:
             "Treat community growth as a governed proof layer: every showcase item "
             "needs a boundary, every launch claim needs a source, and every "
             "submission needs a clear next step."
+        ),
+    }
+
+
+@router.get("/conversion-ops-center")
+def conversion_ops_center() -> dict:
+    return {
+        "purpose": (
+            "Translate audit findings into concrete CRO, lead-flow, and offer-clarity "
+            "workstreams instead of generic advice."
+        ),
+        "tracks": [
+            {
+                "id": "landing_page_cro",
+                "tool": "scripts/conversion_ops_pack.py",
+                "best_use": "turn top money pages into prioritized hero, proof, and CTA fixes",
+            },
+            {
+                "id": "lead_flow_ops",
+                "tool": "scripts/conversion_ops_pack.py",
+                "best_use": "reduce friction in forms, signup, callback, and inquiry flows",
+            },
+            {
+                "id": "offer_clarity",
+                "tool": "scripts/conversion_ops_pack.py",
+                "best_use": "align offer language, pricing posture, and objection handling",
+            },
+        ],
+        "operator_rule": (
+            "Every conversion task needs a target page, a target action, and a reason "
+            "linked to proof, objections, or analytics."
+        ),
+    }
+
+
+@router.get("/content-growth-center")
+def content_growth_center() -> dict:
+    return {
+        "purpose": (
+            "Move from loose content ideas to site architecture, programmatic SEO, and "
+            "schema-backed answer coverage."
+        ),
+        "tracks": [
+            {
+                "id": "site_architecture",
+                "tool": "scripts/content_growth_ops.py",
+                "best_use": "separate money pages, comparison pages, and explainer assets",
+            },
+            {
+                "id": "programmatic_seo",
+                "tool": "scripts/content_growth_ops.py",
+                "best_use": "define repeatable page families without thin-page bloat",
+            },
+            {
+                "id": "schema_and_fact_ops",
+                "tool": "scripts/content_growth_ops.py",
+                "best_use": "align schema coverage, fact sources, and FAQ answer blocks",
+            },
+        ],
+        "operator_rule": (
+            "Treat content growth as a governed architecture layer, not as isolated page writing."
+        ),
+    }
+
+
+@router.get("/research-ops-center")
+def research_ops_center() -> dict:
+    return {
+        "purpose": (
+            "Ground positioning, comparison pages, and messaging in direct customer language and proof."
+        ),
+        "tracks": [
+            {
+                "id": "voice_of_customer",
+                "tool": "scripts/customer_research_pack.py",
+                "best_use": "harvest objections, phrasing, and trust cues from real operator inputs",
+            },
+            {
+                "id": "competitor_comparisons",
+                "tool": "scripts/customer_research_pack.py",
+                "best_use": "build why-us and alternatives surfaces with explicit contrast",
+            },
+            {
+                "id": "proof_harvest",
+                "tool": "scripts/customer_research_pack.py",
+                "best_use": "turn evidence, metrics, and screenshots into quote-safe assets",
+            },
+        ],
+        "operator_rule": (
+            "Prefer direct customer language, direct objections, and bounded proof over generic marketing abstractions."
+        ),
+    }
+
+
+@router.get("/launch-ops-center")
+def launch_ops_center() -> dict:
+    return {
+        "purpose": (
+            "Package releases, social posts, and showcase narratives with safe claims and proof links."
+        ),
+        "tracks": [
+            {
+                "id": "public_post",
+                "tool": "scripts/launch_ops_pack.py",
+                "best_use": "prepare a short honest announcement with proof and boundaries",
+            },
+            {
+                "id": "release_thread",
+                "tool": "scripts/launch_pack_generator.py",
+                "best_use": "turn a release into a reusable thread, note, or launch-safe recap",
+            },
+            {
+                "id": "proof_routing",
+                "tool": "scripts/community_showcase_builder.py",
+                "best_use": "route new cases into showcase, launch, and community surfaces",
+            },
+        ],
+        "operator_rule": (
+            "Launch copy should compress the product honestly, never overstating hosted SaaS maturity."
         ),
     }
 

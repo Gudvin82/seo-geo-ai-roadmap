@@ -220,6 +220,7 @@ make verify-demo
 - `v6.8.0`: proof, case library, synthetic training packs и issue-pack maturity
 - `v6.8.5`: community, launch, and contributor growth layer
 - `v6.9.0`: managed runtime proof, classic SEO workbench, product polish и community proof depth
+- `v6.9.1`: growth ops layer для conversion, content architecture, customer research и launch routing
 
 Полный план:
 
@@ -246,22 +247,21 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.9.0
+## На чем сфокусирован v6.9.1
 
-`v6.9.0` одновременно усиливает четыре направления: более доказательный
-managed-runtime слой для live integrations, более глубокий classical SEO
-execution path, более продуктовый SaaS-интерфейс и более сильные community /
-launch materials, привязанные к реальному showcase-routing.
+`v6.9.1` превращает еще большую часть репозитория в execution-system: не только
+аудиты и proof-layer, но и conversion ops, content architecture ops,
+customer-research packs и более безопасный launch-routing для релизов и
+публичных постов.
 
 Он добавляет:
 
-- `scripts/integration_runtime_audit.py`
-- `scripts/serp_competitor_matrix.py`
-- `scripts/link_gap_summary.py`
-- `scripts/benchmark_dataset_builder.py`
-- [Managed Runtime Proof](./docs/ru/managed-runtime-proof.md)
-- [Classic SEO Workbench](./docs/ru/classic-seo-workbench.md)
-- [Сводка релиза v6.9.0](./docs/ru/v690-release.md)
+- `scripts/conversion_ops_pack.py`
+- `scripts/content_growth_ops.py`
+- `scripts/customer_research_pack.py`
+- `scripts/launch_ops_pack.py`
+- [Growth Ops Layer](./docs/ru/growth-ops-layer.md)
+- [Сводка релиза v6.9.1](./docs/ru/v691-release.md)
 
 ## Лицензия
 

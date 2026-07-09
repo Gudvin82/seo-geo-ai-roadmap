@@ -125,7 +125,7 @@ Delivered in this wave:
 
 ## What Is Explicitly Out Of Scope For This Roadmap
 
-These four releases do not promise:
+These release waves do not promise:
 
 - maintainer-run hosted SaaS
 - billing product maturity
@@ -143,3 +143,22 @@ Each release should leave the repository in a state where:
 - docs build succeeds
 - release docs exist in RU and EN
 - public wording remains honest
+
+## Release Wave 6: v6.9.1
+
+Focus: growth operations, customer research, and safer launch packaging.
+
+Target outcomes:
+
+- turn audit outputs into conversion and page-improvement workstreams
+- make content growth and site architecture more explicit as operating lanes
+- ground positioning and comparison assets in direct-language research packs
+- package releases and social announcements with clearer safe-claim routing
+
+Main deliverables:
+
+- conversion ops center
+- content growth center
+- research ops center
+- launch ops center
+- four repo-level growth scripts

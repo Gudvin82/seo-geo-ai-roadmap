@@ -927,7 +927,7 @@ def test_workspace_project_and_audit_flow(
     assert generation_contracts.json()["schema_files"]
     assert "scanner_saas" in generation_contracts.json()["project_types"]
     assert (
-        generation_contracts.json()["project_generation_contract_version"] == "v6.9.0"
+        generation_contracts.json()["project_generation_contract_version"] == "v6.9.1"
     )
 
     managed_runtime_proof = client.get(
@@ -945,6 +945,34 @@ def test_workspace_project_and_audit_flow(
     assert community_growth.status_code == 200
     assert community_growth.json()["recent_submission_examples"]
     assert community_growth.json()["launch_materials"]
+
+    conversion_ops = client.get(
+        "/api/v1/settings/conversion-ops-center",
+        headers=auth_headers,
+    )
+    assert conversion_ops.status_code == 200
+    assert conversion_ops.json()["tracks"]
+
+    content_growth = client.get(
+        "/api/v1/settings/content-growth-center",
+        headers=auth_headers,
+    )
+    assert content_growth.status_code == 200
+    assert content_growth.json()["tracks"]
+
+    research_ops = client.get(
+        "/api/v1/settings/research-ops-center",
+        headers=auth_headers,
+    )
+    assert research_ops.status_code == 200
+    assert research_ops.json()["tracks"]
+
+    launch_ops = client.get(
+        "/api/v1/settings/launch-ops-center",
+        headers=auth_headers,
+    )
+    assert launch_ops.status_code == 200
+    assert launch_ops.json()["tracks"]
 
     classic_seo_workbench = client.get(
         f"/api/v1/settings/classic-seo-workbench?project_id={project_id}",

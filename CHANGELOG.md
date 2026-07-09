@@ -1,5 +1,18 @@
 # Changelog
 
+## v6.9.1 — Growth Ops Layer and Launch-Ready Product Routing
+
+- Added `conversion-ops-center`, `content-growth-center`,
+  `research-ops-center`, and `launch-ops-center` API and frontend surfaces so
+  the repository can translate audits into conversion, architecture, research,
+  and launch workstreams instead of stopping at diagnosis
+- Added `scripts/conversion_ops_pack.py`, `scripts/content_growth_ops.py`,
+  `scripts/customer_research_pack.py`, and `scripts/launch_ops_pack.py` so the
+  new growth layer is usable as a repo-level script surface and not only as app
+  narrative
+- Updated root release wording, docs indexes, script references, and current
+  version markers around `v6.9.1`
+
 ## v6.9.0 — Managed Runtime Proof, Classic SEO Workbench, and Product Polish
 
 - Added richer managed-runtime metadata for GSC, GA4, Google Ads, Yandex

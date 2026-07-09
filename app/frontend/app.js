@@ -61,6 +61,10 @@ const state = {
   communityLaunchCenter: {},
   communityShowcaseCenter: {},
   communityGrowthCenter: {},
+  conversionOpsCenter: {},
+  contentGrowthCenter: {},
+  researchOpsCenter: {},
+  launchOpsCenter: {},
   runtimeOpsCenter: {},
   seoMaturityCenter: {},
   classicSeoWorkbench: {},
@@ -124,7 +128,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.9.0 live integrations, classic SEO depth, and product polish",
+      "v6.9.1 growth ops, live integrations, classic SEO depth, and product polish",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -315,7 +319,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.9.0 live integrations, classic SEO depth, and product polish",
+      "v6.9.1 growth ops, live integrations, classic SEO depth, and product polish",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -937,6 +941,26 @@ function renderSaasCenter() {
     null,
     2,
   );
+  $("#conversion-ops-center").textContent = JSON.stringify(
+    state.conversionOpsCenter || {},
+    null,
+    2,
+  );
+  $("#content-growth-center").textContent = JSON.stringify(
+    state.contentGrowthCenter || {},
+    null,
+    2,
+  );
+  $("#research-ops-center").textContent = JSON.stringify(
+    state.researchOpsCenter || {},
+    null,
+    2,
+  );
+  $("#launch-ops-center").textContent = JSON.stringify(
+    state.launchOpsCenter || {},
+    null,
+    2,
+  );
   $("#deployment-posture").textContent = JSON.stringify(
     state.deploymentPosture || {},
     null,
@@ -1437,6 +1461,10 @@ async function refreshSaasCenter() {
     apiRequest("/settings/community-launch-center", { headers: {} }),
     apiRequest("/settings/community-showcase-center", { headers: {} }),
     apiRequest("/settings/community-growth-center", { headers: {} }),
+    apiRequest("/settings/conversion-ops-center", { headers: {} }),
+    apiRequest("/settings/content-growth-center", { headers: {} }),
+    apiRequest("/settings/research-ops-center", { headers: {} }),
+    apiRequest("/settings/launch-ops-center", { headers: {} }),
   ];
   if (state.selectedWorkspaceId) {
     requests.push(
@@ -1468,6 +1496,10 @@ async function refreshSaasCenter() {
     communityLaunchCenter,
     communityShowcaseCenter,
     communityGrowthCenter,
+    conversionOpsCenter,
+    contentGrowthCenter,
+    researchOpsCenter,
+    launchOpsCenter,
     portfolioDashboard,
     saasGrowthCenter,
     saasReadinessCenter,
@@ -1486,6 +1518,10 @@ async function refreshSaasCenter() {
   state.communityLaunchCenter = communityLaunchCenter || {};
   state.communityShowcaseCenter = communityShowcaseCenter || {};
   state.communityGrowthCenter = communityGrowthCenter || {};
+  state.conversionOpsCenter = conversionOpsCenter || {};
+  state.contentGrowthCenter = contentGrowthCenter || {};
+  state.researchOpsCenter = researchOpsCenter || {};
+  state.launchOpsCenter = launchOpsCenter || {};
   state.portfolioDashboard = portfolioDashboard || {};
   state.saasGrowthCenter = saasGrowthCenter || {};
   state.saasReadinessCenter = saasReadinessCenter || {};

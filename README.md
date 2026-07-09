@@ -218,6 +218,7 @@ The active release path is:
 - `v6.8.0`: proof, case library, synthetic training packs, and issue-pack maturity
 - `v6.8.5`: community, launch, and contributor growth layer
 - `v6.9.0`: managed runtime proof, classic SEO workbench, product polish, and community proof depth
+- `v6.9.1`: growth ops layer for conversion, content architecture, customer research, and launch routing
 
 Read the full plan:
 
@@ -244,22 +245,20 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.9.0 focus
+## v6.9.1 focus
 
-`v6.9.0` deepens the product on four fronts at once: richer managed-runtime
-proof for live integrations, stronger classical SEO execution paths, a more
-product-like SaaS shell, and better community or launch materials grounded in
-real showcase routing.
+`v6.9.1` turns more of the repository into an execution system: not just audits
+and proof, but conversion ops, content architecture ops, customer-research
+packs, and safer launch routing for releases and public posts.
 
 It adds:
 
-- `scripts/integration_runtime_audit.py`
-- `scripts/serp_competitor_matrix.py`
-- `scripts/link_gap_summary.py`
-- `scripts/benchmark_dataset_builder.py`
-- [Managed Runtime Proof](./docs/en/managed-runtime-proof.md)
-- [Classic SEO Workbench](./docs/en/classic-seo-workbench.md)
-- [v6.9.0 Release Summary](./docs/en/v690-release.md)
+- `scripts/conversion_ops_pack.py`
+- `scripts/content_growth_ops.py`
+- `scripts/customer_research_pack.py`
+- `scripts/launch_ops_pack.py`
+- [Growth Ops Layer](./docs/en/growth-ops-layer.md)
+- [v6.9.1 Release Summary](./docs/en/v691-release.md)
 
 ## License
 

@@ -22,9 +22,9 @@ enterprise SSO и SLA от автора репозитория.
 
 Контекст последнего релиза:
 
-- `v6.9.0` добавляет managed-runtime proof, classic SEO workbench, более
-  продуктовый polish и более глубокий community-proof routing поверх proof,
-  showcase и launch layer, который был введен в `v6.8.5`
+- `v6.9.1` добавляет growth-ops layer поверх `v6.9.0`: conversion routing,
+  content architecture planning, customer-research packs и более безопасную
+  launch-ops упаковку, которая ближе подводит аудит к реальному исполнению
 
 ## Что production-ready уже сегодня
 

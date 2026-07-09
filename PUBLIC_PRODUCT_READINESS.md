@@ -22,9 +22,9 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 
 Latest release context:
 
-- `v6.9.0` adds managed-runtime proof, a classic SEO workbench, stronger
-  product polish, and deeper community-proof routing on top of the proof,
-  showcase, and launch layer introduced in `v6.8.5`
+- `v6.9.1` adds a growth-ops layer on top of `v6.9.0`: conversion routing,
+  content architecture planning, customer-research packs, and safer launch-ops
+  packaging that connect audits more directly to execution
 
 ## What is production-ready today
 
