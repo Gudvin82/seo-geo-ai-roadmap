@@ -12,17 +12,29 @@ def build_plan(vertical: str, market: str) -> dict:
             {
                 "id": "site_architecture",
                 "goal": "separate money pages, comparison pages, and answer-ready explainers",
-                "deliverables": ["url map", "intent clusters", "internal linking notes"],
+                "deliverables": [
+                    "url map",
+                    "intent clusters",
+                    "internal linking notes",
+                ],
             },
             {
                 "id": "programmatic_seo",
                 "goal": "define safe repeatable page families without index bloat",
-                "deliverables": ["template rules", "quality gates", "indexability guardrails"],
+                "deliverables": [
+                    "template rules",
+                    "quality gates",
+                    "indexability guardrails",
+                ],
             },
             {
                 "id": "schema_and_facts",
                 "goal": "align entity facts, schema coverage, and FAQ answer blocks",
-                "deliverables": ["schema coverage plan", "fact source map", "FAQ backlog"],
+                "deliverables": [
+                    "schema coverage plan",
+                    "fact source map",
+                    "FAQ backlog",
+                ],
             },
         ],
         "operator_rule": (

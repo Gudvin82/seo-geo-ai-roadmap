@@ -20,15 +20,27 @@ def build_pack(site_type: str, market: str) -> dict:
             {
                 "id": "form_and_lead_flow",
                 "goal": "reduce friction in request, signup, and callback flows",
-                "inputs": ["form inventory", "analytics events", "heatmap or operator notes"],
-                "outputs": ["field cleanup", "objection handling", "fallback contact path"],
+                "inputs": [
+                    "form inventory",
+                    "analytics events",
+                    "heatmap or operator notes",
+                ],
+                "outputs": [
+                    "field cleanup",
+                    "objection handling",
+                    "fallback contact path",
+                ],
                 "owner": "cro_operator",
             },
             {
                 "id": "offer_and_pricing_clarity",
                 "goal": "make commercial terms, scope, and proof obvious before the click",
                 "inputs": ["service pages", "pricing notes", "sales objections"],
-                "outputs": ["offer matrix", "pricing language pass", "trust signals plan"],
+                "outputs": [
+                    "offer matrix",
+                    "pricing language pass",
+                    "trust signals plan",
+                ],
                 "owner": "product_marketer",
             },
         ],

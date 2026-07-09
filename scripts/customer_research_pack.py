@@ -20,7 +20,12 @@ def build_pack(audience: str) -> dict:
             },
             {
                 "id": "proof_harvest",
-                "sources": ["case notes", "metrics", "screenshots", "operator artifacts"],
+                "sources": [
+                    "case notes",
+                    "metrics",
+                    "screenshots",
+                    "operator artifacts",
+                ],
                 "output": "quote-safe proof inventory",
             },
         ],
