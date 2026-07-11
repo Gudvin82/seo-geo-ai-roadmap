@@ -48,6 +48,9 @@ class Settings:
     scanner_smtp_from_email: str = ""
     scanner_telegram_bot_token: str = ""
     scanner_telegram_webhook_secret: str = ""
+    worker_mode: str = "embedded"
+    worker_poll_seconds: int = 5
+    worker_max_attempts: int = 3
     secret_key_is_ephemeral: bool = False
     auto_create_schema_mode: str = "explicit"
 
@@ -159,6 +162,9 @@ def load_settings() -> Settings:
         scanner_telegram_webhook_secret=os.getenv(
             "SCANNER_TELEGRAM_WEBHOOK_SECRET", ""
         ),
+        worker_mode=os.getenv("APP_WORKER_MODE", "embedded").strip().lower(),
+        worker_poll_seconds=max(1, int(os.getenv("APP_WORKER_POLL_SECONDS", "5"))),
+        worker_max_attempts=max(1, int(os.getenv("APP_WORKER_MAX_ATTEMPTS", "3"))),
         secret_key_is_ephemeral=secret_key_is_ephemeral,
         auto_create_schema_mode=auto_create_schema_mode,
     )

@@ -51,11 +51,11 @@ def test_launch_ops_pack_tracks_release_version() -> None:
     result = run_script_main(
         "scripts/launch_ops_pack.py",
         "--version",
-        "v6.9.1",
+        "v6.9.4",
         "--format",
         "json",
     )
     assert result.returncode == 0
     payload = json.loads(result.stdout)
-    assert payload["version"] == "v6.9.1"
+    assert payload["version"] == "v6.9.4"
     assert any("proof" in item.lower() for item in payload["assets"])

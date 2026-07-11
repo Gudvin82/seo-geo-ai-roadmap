@@ -221,6 +221,9 @@ make verify-demo
 - `v6.8.5`: community, launch, and contributor growth layer
 - `v6.9.0`: managed runtime proof, classic SEO workbench, product polish и community proof depth
 - `v6.9.1`: growth ops layer для conversion, content architecture, customer research и launch routing
+- `v6.9.2`: formatting fix для growth scripts и GitHub Actions stability
+- `v6.9.3`: cleanup CI triggers и публичная синхронизация версий
+- `v6.9.4`: tag-aware release integrity, durable scanner runtime, live read-only GSC/Yandex adapters и прозрачность capability
 
 Полный план:
 
@@ -247,21 +250,20 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.9.1
+## На чем сфокусирован v6.9.4
 
-`v6.9.1` превращает еще большую часть репозитория в execution-system: не только
-аудиты и proof-layer, но и conversion ops, content architecture ops,
-customer-research packs и более безопасный launch-routing для релизов и
-публичных постов.
+`v6.9.4` — текущее публичное состояние репозитория. Он делает release layer
+tag-aware, превращает Docker worker в постоянный database-backed scanner worker
+и добавляет machine-readable прозрачность зрелости интеграций.
 
 Он добавляет:
 
-- `scripts/conversion_ops_pack.py`
-- `scripts/content_growth_ops.py`
-- `scripts/customer_research_pack.py`
-- `scripts/launch_ops_pack.py`
-- [Growth Ops Layer](./docs/ru/growth-ops-layer.md)
-- [Сводка релиза v6.9.1](./docs/ru/v691-release.md)
+- tag-aware release integrity checks
+- durable queue processing с retry и dead-letter visibility
+- read-only adapters GSC и Яндекс Вебмастера для credentials владельца
+- [Integration Capability Matrix](./scripts/capability_matrix.py)
+- [Privacy-First измерения](./docs/ru/privacy-first-measurement.md)
+- [Сводка релиза v6.9.4](./docs/ru/v694-release.md)
 
 ## Лицензия
 

@@ -5,9 +5,14 @@ import os
 from datetime import datetime
 from typing import Any
 
+from .live_connectors import (
+    ConnectorUnavailable,
+    fetch_gsc_snapshot,
+    fetch_yandex_webmaster_snapshot,
+)
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v6.9.1"
+CONTRACT_VERSION = "v6.9.4"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {
@@ -15,7 +20,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
         "label": "Google Search Console",
         "readiness_tier": "managed_runtime_ready",
         "sync_mode": "manual_or_scheduled_pull",
-        "required_env_vars": ["GSC_SERVICE_ACCOUNT_JSON"],
+        "required_env_vars": ["GSC_ACCESS_TOKEN"],
         "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
         "ci_gates": [
             "scheduled sync",
@@ -24,7 +29,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
             "report regeneration",
         ],
         "production_flow": [
-            "connect service account secret",
+            "connect a read-only OAuth access token or refresh-token configuration",
             "run first manual sync",
             "review imported snapshot",
             "promote to scheduled GitHub Action or scheduled check",
@@ -36,7 +41,7 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
             "search visibility baseline",
             "report attachment",
         ],
-        "next_step": "Connect a service account secret, sync manually once, then move it into GitHub Actions or scheduled checks.",
+        "next_step": "Connect a read-only OAuth credential, sync manually once, then move it into GitHub Actions or scheduled checks.",
     },
     "ga4": {
         "source_type": "ga4",
@@ -860,6 +865,40 @@ def all_integration_contracts() -> list[dict[str, Any]]:
     return [integration_contract(key) for key in sorted(INTEGRATION_CONTRACTS)]
 
 
+def integration_capability_matrix() -> dict[str, Any]:
+    """Expose the real maturity of every shipped integration surface."""
+    live_read_only = {"gsc", "yandex_webmaster", "crux"}
+    rows = []
+    for contract in all_integration_contracts():
+        source_type = contract["source_type"]
+        if source_type in live_read_only:
+            delivery_state = "live_read_only_with_operator_credentials"
+        elif source_type in {"indexnow"}:
+            delivery_state = "live_push_with_operator_credentials"
+        else:
+            delivery_state = "starter_or_operator_guided"
+        rows.append(
+            {
+                "source_type": source_type,
+                "label": contract["label"],
+                "delivery_state": delivery_state,
+                "readiness_tier": contract["readiness_tier"],
+                "required_env_vars": contract["required_env_vars"],
+                "capabilities": contract["capabilities"],
+                "limitations": (
+                    "Requires operator-owned credentials; no tokens are stored by the app."
+                    if source_type in live_read_only | {"indexnow"}
+                    else "Returns a starter payload or follows an operator-guided import path until a live connector is implemented."
+                ),
+            }
+        )
+    return {
+        "contract_version": CONTRACT_VERSION,
+        "generated_from": "app.backend.app.services.integrations.INTEGRATION_CONTRACTS",
+        "rows": rows,
+    }
+
+
 def integration_runtime_profile(
     source_type: str,
     *,
@@ -926,7 +965,7 @@ def integration_managed_metadata(source_type: str) -> dict[str, Any]:
                 "rerun baseline sync and compare snapshot source",
             ],
             "proof_assets": [
-                "scripts/gsc_data_stub.py",
+                "app/backend/app/services/live_connectors.py",
                 "docs/en/integration-production-matrix-v450.md",
             ],
         },
@@ -980,7 +1019,7 @@ def integration_managed_metadata(source_type: str) -> dict[str, Any]:
                 "rerun RU diagnostics export",
             ],
             "proof_assets": [
-                "scripts/yandex_data_stub.py",
+                "app/backend/app/services/live_connectors.py",
                 "docs/en/13-russia-yandex.md",
             ],
         },
@@ -1187,7 +1226,10 @@ def sync_integration_source(
     source = source_type.strip().lower()
     contract = integration_contract(source)
     if source == "gsc":
-        payload = _run_json_script("gsc_data_stub.py", "GSC starter import failed.")
+        try:
+            payload = fetch_gsc_snapshot(property_identifier, config)
+        except ConnectorUnavailable:
+            payload = _run_json_script("gsc_data_stub.py", "GSC starter import failed.")
     elif source == "ga4":
         payload = _ga4_stub()
     elif source == "google_ads":
@@ -1195,9 +1237,12 @@ def sync_integration_source(
             "google_ads_stub.py", "Google Ads starter import failed."
         )
     elif source == "yandex_webmaster":
-        payload = _run_json_script(
-            "yandex_data_stub.py", "Yandex Webmaster starter import failed."
-        )
+        try:
+            payload = fetch_yandex_webmaster_snapshot(property_identifier, config)
+        except ConnectorUnavailable:
+            payload = _run_json_script(
+                "yandex_data_stub.py", "Yandex Webmaster starter import failed."
+            )
     elif source == "yandex_metrica":
         payload = _yandex_metrica_stub()
     elif source == "yandex_direct":

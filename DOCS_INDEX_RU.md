@@ -1,6 +1,6 @@
 # Карта документации
 
-Это самый короткий путь по репозиторию после `v6.9.1`.
+Это самый короткий путь по репозиторию после `v6.9.4`.
 
 ## Идите в таком порядке
 
@@ -38,8 +38,12 @@
 - [Managed Runtime Proof](./docs/ru/managed-runtime-proof.md)
 - [Classic SEO Workbench](./docs/ru/classic-seo-workbench.md)
 - [Growth Ops Layer](./docs/ru/growth-ops-layer.md)
+- [Privacy-First измерения](./docs/ru/privacy-first-measurement.md)
+- [Калибровка scoring](./docs/ru/scoring-calibration.md)
+- [Подача независимого кейса](./docs/ru/independent-case-submission.md)
+- [Каноническая карта документации](./DOCS_CANONICAL.md)
 - [GEO and AI Operations Playbook](./docs/ru/geo-ai-operations-playbook.md)
-- [Сводка релиза v6.9.1](./docs/ru/v691-release.md)
+- [Сводка релиза v6.9.4](./docs/ru/v694-release.md)
 
 ## Основа доказательств и границ
 

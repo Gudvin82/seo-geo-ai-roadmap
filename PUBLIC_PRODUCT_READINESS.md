@@ -22,9 +22,8 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 
 Latest release context:
 
-- `v6.9.1` adds a growth-ops layer on top of `v6.9.0`: conversion routing,
-  content architecture planning, customer-research packs, and safer launch-ops
-  packaging that connect audits more directly to execution
+- `v6.9.4` is the current public release. It adds tag-aware release integrity,
+  a durable self-hosted scanner worker, and explicit integration maturity labels
 
 ## What is production-ready today
 
@@ -45,9 +44,9 @@ Latest release context:
 
 - public scanner service for client-facing use
 - webhook and notification operations
-- queue and retry maturity for higher-volume production workloads
+- higher-volume queue scaling beyond the bundled database-backed worker
 - managed cloud rollout packs
-- GSC, GA4, Yandex, and CMS integrations as repeatable operator flows
+- GA4, Ads, Metrica, Direct, business, social, and CMS integrations as repeatable operator flows
 - external keyword and authority providers as repeatable operator-owned flows
 - extension and automation entrypoints
 

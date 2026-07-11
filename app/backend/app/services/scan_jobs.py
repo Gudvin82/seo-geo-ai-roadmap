@@ -49,7 +49,7 @@ from .scan_security import (
     safe_fetch_url_text,
 )
 
-SCANNER_SCHEMA_VERSION = "v6.9.1"
+SCANNER_SCHEMA_VERSION = "v6.9.4"
 SCAN_JOB_TERMINAL_STATES = {
     "partial_success",
     "completed",
@@ -505,6 +505,9 @@ def serialize_verification_request(
 
 def _launch_scan_job(settings: Settings, scan_job_id: int) -> None:
     del scan_job_id
+    # Docker deployments use the external worker so the API process never owns jobs.
+    if settings.worker_mode == "external":
+        return
     with _WORKER_LOCK:
         global _WORKER_THREAD
         if _WORKER_THREAD is not None and _WORKER_THREAD.is_alive():
@@ -561,6 +564,26 @@ def _scan_worker_loop(settings: Settings) -> None:
         with _WORKER_LOCK:
             global _WORKER_THREAD
             _WORKER_THREAD = None
+
+
+def run_durable_scan_worker(settings: Settings, *, once: bool = False) -> None:
+    """Process durable DB-backed scan jobs until stopped.
+
+    The queue state lives in the database, so queued jobs survive an API or worker
+    restart. This deliberately avoids pretending that an in-process thread is a
+    production queue.
+    """
+    recover_incomplete_scan_jobs()
+    while True:
+        claimed_job_id = _claim_next_scan_job()
+        if claimed_job_id is None:
+            if once:
+                return
+            time.sleep(settings.worker_poll_seconds)
+            continue
+        _run_scan_job(settings, claimed_job_id, already_claimed=True)
+        if once:
+            return
 
 
 def _claim_next_scan_job() -> int | None:
@@ -671,7 +694,12 @@ def _run_scan_job(
     except Exception as exc:  # pragma: no cover - defensive worker boundary
         row = db.get(ScanJob, scan_job_id)
         if row:
-            _fail_job(db, row, f"{exc.__class__.__name__}: {exc}")
+            _retry_or_dead_letter_job(
+                db,
+                row,
+                f"{exc.__class__.__name__}: {exc}",
+                settings.worker_max_attempts,
+            )
     finally:
         _THREADS.pop(scan_job_id, None)
         db.close()
@@ -715,6 +743,49 @@ def _fail_job(db: Session, row: ScanJob, error_summary: str) -> None:
     row.error_summary = error_summary
     row.finished_at = now_utc()
     _append_event(db, row.id, "failed", "failed", error_summary, {})
+    db.commit()
+
+
+def _retry_or_dead_letter_job(
+    db: Session, row: ScanJob, error_summary: str, max_attempts: int
+) -> None:
+    failures = (
+        db.query(ScanJobEvent)
+        .filter(
+            ScanJobEvent.scan_job_id == row.id,
+            ScanJobEvent.stage.in_(("retry_scheduled", "dead_letter")),
+        )
+        .count()
+        + 1
+    )
+    if failures < max_attempts:
+        row.status = "queued"
+        row.current_stage = "retry_scheduled"
+        row.progress_percent = min(row.progress_percent or 0, 10)
+        row.error_summary = error_summary
+        _append_event(
+            db,
+            row.id,
+            "queued",
+            "retry_scheduled",
+            "Worker failure; job returned to the durable queue.",
+            {"attempt": failures, "max_attempts": max_attempts, "error": error_summary},
+        )
+        db.commit()
+        return
+    row.status = "failed"
+    row.current_stage = "dead_letter"
+    row.progress_percent = 100
+    row.error_summary = error_summary
+    row.finished_at = now_utc()
+    _append_event(
+        db,
+        row.id,
+        "failed",
+        "dead_letter",
+        "Worker retries exhausted; operator review is required.",
+        {"attempt": failures, "max_attempts": max_attempts, "error": error_summary},
+    )
     db.commit()
 
 

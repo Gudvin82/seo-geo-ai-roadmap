@@ -162,3 +162,32 @@ Main deliverables:
 - research ops center
 - launch ops center
 - four repo-level growth scripts
+
+## Release Wave 7: v6.9.3
+
+Focus: CI stability, public release hygiene, and active-version synchronization.
+
+Target outcomes:
+
+- current public release matches active local version markers
+- core CI workflows stop duplicating on tag pushes
+- public latest release and in-product version messaging stay aligned
+
+Main deliverables:
+
+- `v6.9.2` formatting stabilization
+- `v6.9.3` workflow trigger cleanup
+- synchronized active version markers across app, frontend, scripts, and docs
+
+## Release Wave 8: v6.9.4
+
+Focus: release integrity, durable self-hosted operations, and honest connector
+maturity.
+
+Main deliverables:
+
+- tag-aware CI and release hygiene
+- database-backed persistent scanner worker with retry and dead-letter flow
+- capability matrix generated from runtime contracts
+- read-only live GSC and Yandex Webmaster adapters
+- privacy-first measurement and independent proof submission paths

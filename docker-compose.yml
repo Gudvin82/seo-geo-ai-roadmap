@@ -24,6 +24,7 @@ services:
       APP_ARTIFACT_ROOT: ${APP_ARTIFACT_ROOT:-/app/app/backend/artifacts}
       APP_DEFAULT_REPORT_LANGUAGE: ${APP_DEFAULT_REPORT_LANGUAGE:-en}
       APP_CORS_ORIGINS: ${APP_CORS_ORIGINS:-http://localhost:3000,http://localhost:8080}
+      APP_WORKER_MODE: external
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
@@ -45,6 +46,9 @@ services:
       APP_DATABASE_URL: ${APP_DATABASE_URL:-postgresql://discoverability:discoverability@db:5432/discoverability}
       APP_SECRET_KEY: ${APP_SECRET_KEY:-change-me}
       APP_ARTIFACT_ROOT: ${APP_ARTIFACT_ROOT:-/app/app/backend/artifacts}
+      APP_WORKER_MODE: external
+      APP_WORKER_POLL_SECONDS: ${APP_WORKER_POLL_SECONDS:-5}
+      APP_WORKER_MAX_ATTEMPTS: ${APP_WORKER_MAX_ATTEMPTS:-3}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}

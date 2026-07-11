@@ -223,7 +223,7 @@ def _scaffold_files(
 @router.get("/contracts")
 def generation_contracts() -> dict:
     return {
-        "project_generation_contract_version": "v6.9.1",
+        "project_generation_contract_version": "v6.9.4",
         "schema_files": BLUEPRINT_SCHEMA_FILES,
         "project_types": [
             "landing_page",

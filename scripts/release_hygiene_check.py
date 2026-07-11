@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import re
+import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -10,7 +12,25 @@ def read(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
 
 
+def validate_tag(expected_tag: str) -> str | None:
+    result = subprocess.run(
+        ["git", "tag", "--points-at", "HEAD"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        return "git-tag-check-failed"
+    tags = [item.strip() for item in result.stdout.splitlines() if item.strip()]
+    if expected_tag not in tags:
+        return (
+            f"git-tag-mismatch:expected:{expected_tag}:found:{','.join(tags) or 'none'}"
+        )
+    return None
+
+
 def main() -> int:
+    require_tag = "--require-tag" in sys.argv
     version = read("app/backend/app/version.py")
     match = re.search(r'APP_VERSION = "(\d+\.\d+\.\d+)"', version)
     if not match:
@@ -50,6 +70,10 @@ def main() -> int:
         failures.append(f"{release_doc.relative_to(ROOT)}:missing")
     if not release_doc_ru.exists():
         failures.append(f"{release_doc_ru.relative_to(ROOT)}:missing")
+    if require_tag:
+        tag_failure = validate_tag(tag_version)
+        if tag_failure:
+            failures.append(tag_failure)
     if failures:
         print("release-hygiene-failed")
         for row in failures:

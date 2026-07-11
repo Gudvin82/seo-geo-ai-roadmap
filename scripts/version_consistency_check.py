@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -52,11 +53,27 @@ def extract_version(path: Path, pattern: str) -> str | None:
     return match.group(1) if match else None
 
 
+def tags_at_head() -> list[str]:
+    result = subprocess.run(
+        ["git", "tag", "--points-at", "HEAD"],
+        cwd=REPO_ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return [item.strip() for item in result.stdout.splitlines() if item.strip()]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Check release version consistency.")
     parser.add_argument(
         "--expected",
         help="Optional explicit expected version. Defaults to APP_VERSION.",
+    )
+    parser.add_argument(
+        "--require-tag",
+        action="store_true",
+        help="Require HEAD to carry the matching vX.Y.Z Git tag.",
     )
     args = parser.parse_args()
     expected = args.expected or discover_version()
@@ -66,6 +83,18 @@ def main() -> int:
         found = extract_version(path, pattern)
         if found != expected:
             failures.append(f"{label}: expected {expected}, found {found!r}")
+
+    if args.require_tag:
+        expected_tag = f"v{expected}"
+        try:
+            tags = tags_at_head()
+        except (OSError, subprocess.CalledProcessError) as exc:
+            failures.append(f"git_tag_check: unable to inspect HEAD tags: {exc}")
+        else:
+            if expected_tag not in tags:
+                failures.append(
+                    f"git_tag: expected {expected_tag} at HEAD, found {tags or 'none'}"
+                )
 
     if failures:
         for item in failures:

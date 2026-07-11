@@ -26,6 +26,7 @@ from ..services.integrations import (
     all_integration_contracts,
     build_integration_verification_row,
     compact_integration_summary,
+    integration_capability_matrix,
     integration_contract,
     integration_env_status,
     integration_runtime_profile,
@@ -106,6 +107,12 @@ def list_integration_contracts() -> IntegrationContractsResponse:
             for contract in all_integration_contracts()
         ]
     )
+
+
+@router.get("/capability-matrix")
+def capability_matrix() -> dict:
+    """Machine-readable public status of connector maturity and boundaries."""
+    return integration_capability_matrix()
 
 
 @router.get("", response_model=list[IntegrationConnectionRead])

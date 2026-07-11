@@ -22,9 +22,8 @@ enterprise SSO и SLA от автора репозитория.
 
 Контекст последнего релиза:
 
-- `v6.9.1` добавляет growth-ops layer поверх `v6.9.0`: conversion routing,
-  content architecture planning, customer-research packs и более безопасную
-  launch-ops упаковку, которая ближе подводит аудит к реальному исполнению
+- `v6.9.4` — текущий публичный релиз. Он добавляет tag-aware release integrity,
+  durable self-hosted scanner worker и явные метки зрелости интеграций
 
 ## Что production-ready уже сегодня
 
@@ -45,9 +44,9 @@ enterprise SSO и SLA от автора репозитория.
 
 - публичный scanner service для client-facing сценария
 - webhook и notification operations
-- queue и retry maturity для более тяжелых production workloads
+- масштабирование очереди выше bundled database-backed worker для high volume
 - managed cloud rollout packs
-- GSC, GA4, Yandex и CMS integrations как повторяемые operator flows
+- GA4, Ads, Метрика, Директ, business, social и CMS integrations как repeatable operator flows
 - внешние keyword и authority providers как повторяемые operator-owned flows
 - extension и automation entrypoints
 

@@ -1,0 +1,28 @@
+name: release-integrity
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  verify-tagged-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tagged source
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Verify tag, active markers, and release notes
+        run: |
+          python scripts/version_consistency_check.py --require-tag
+          python scripts/release_hygiene_check.py --require-tag

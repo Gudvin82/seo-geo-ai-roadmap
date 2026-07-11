@@ -1,5 +1,31 @@
 # Changelog
 
+## v6.9.4 — Release Integrity and Durable Runtime
+
+- Added tag-aware release checks that compare `HEAD`, Git tag, runtime version,
+  release notes, and active public markers during tagged releases
+- Added a generated integration capability matrix that distinguishes live
+  read-only, operator-guided, and starter/stub surfaces
+- Replaced the idle Docker worker entry point with a persistent database-backed
+  scanner worker with bounded retry and dead-letter handling
+- Added read-only live API adapters for GSC and Yandex Webmaster using
+  deployer-owned credentials without token persistence
+- Added privacy-first measurement, independent-case submission, and canonical
+  documentation routing
+
+## v6.9.3 — CI Trigger Cleanup and Public Version Synchronization
+
+- Limited core GitHub Actions workflows to `push` on `main` so tag pushes no
+  longer duplicate CI runs and notification noise
+- Promoted the active app, script, frontend, and contract markers to `v6.9.3`
+- Kept older `v6.9.0` and `v6.9.1` release notes as historical snapshots while
+  updating the live product layer to the latest public release
+
+## v6.9.2 — Growth Script Formatting Fix
+
+- Reformatted the new growth-layer scripts so `ruff format --check` and
+  `python-tests` pass in GitHub Actions
+
 ## v6.9.1 — Growth Ops Layer and Launch-Ready Product Routing
 
 - Added `conversion-ops-center`, `content-growth-center`,
