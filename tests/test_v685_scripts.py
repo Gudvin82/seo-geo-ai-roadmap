@@ -24,12 +24,12 @@ def test_launch_pack_generator_exposes_safe_claims_and_boundaries() -> None:
     result = run_script_main(
         "scripts/launch_pack_generator.py",
         "--version",
-        "v6.9.4",
+        "v6.9.5",
         "--format",
         "json",
     )
     assert result.returncode == 0
     payload = json.loads(result.stdout)
-    assert payload["version"] == "v6.9.4"
+    assert payload["version"] == "v6.9.5"
     assert "free self-hosted SEO/GEO/AI platform" in payload["safe_public_claims"]
     assert "maintainer-operated hosted SaaS" in payload["do_not_claim"]

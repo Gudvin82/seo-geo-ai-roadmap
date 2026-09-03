@@ -191,3 +191,14 @@ Main deliverables:
 - capability matrix generated from runtime contracts
 - read-only live GSC and Yandex Webmaster adapters
 - privacy-first measurement and independent proof submission paths
+
+## Release Wave 9: v6.9.5
+
+Focus: governed content execution without autonomous publishing.
+
+Main deliverables:
+
+- approval-first content operations queue with transparent prioritization
+- bilingual playbooks for demand, briefs, quality gates, freshness, and
+  cannibalization review
+- explicit factual, editorial, legal, technical, and post-publish controls

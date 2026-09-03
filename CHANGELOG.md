@@ -1,5 +1,18 @@
 # Changelog
 
+## v6.9.5 — Content Operations Engine
+
+- Added an original, approval-first Content Operations Engine that connects
+  operator-supplied demand, topic prioritization, briefs, review gates, and
+  post-publish verification without copying third-party content or branding
+- Added `scripts/content_ops_queue.py` and an example CSV so teams and AI
+  agents can create a transparent editorial queue with owners and guardrails
+- Added EN/RU operating playbooks that cover Wordstat/GSC/Yandex inputs,
+  factual source control, freshness, cannibalization review, and safe CMS
+  governance
+- Kept autonomous publishing, rankings claims, and citation guarantees outside
+  the product promise
+
 ## v6.9.4 — Release Integrity and Durable Runtime
 
 - Added tag-aware release checks that compare `HEAD`, Git tag, runtime version,

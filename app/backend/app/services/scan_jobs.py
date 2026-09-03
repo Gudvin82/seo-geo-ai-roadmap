@@ -49,7 +49,7 @@ from .scan_security import (
     safe_fetch_url_text,
 )
 
-SCANNER_SCHEMA_VERSION = "v6.9.4"
+SCANNER_SCHEMA_VERSION = "v6.9.5"
 SCAN_JOB_TERMINAL_STATES = {
     "partial_success",
     "completed",

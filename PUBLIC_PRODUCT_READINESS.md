@@ -22,8 +22,8 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 
 Latest release context:
 
-- `v6.9.4` is the current public release. It adds tag-aware release integrity,
-  a durable self-hosted scanner worker, and explicit integration maturity labels
+- `v6.9.5` is the current public release. It adds an approval-first Content
+  Operations Engine for governed demand, briefs, quality gates, and verification
 
 ## What is production-ready today
 

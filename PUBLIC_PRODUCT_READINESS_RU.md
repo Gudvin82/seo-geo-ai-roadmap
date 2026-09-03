@@ -22,8 +22,8 @@ enterprise SSO и SLA от автора репозитория.
 
 Контекст последнего релиза:
 
-- `v6.9.4` — текущий публичный релиз. Он добавляет tag-aware release integrity,
-  durable self-hosted scanner worker и явные метки зрелости интеграций
+- `v6.9.5` — текущий публичный релиз. Он добавляет approval-first Content
+  Operations Engine для управляемого demand, брифов, quality gates и verification
 
 ## Что production-ready уже сегодня
 

@@ -12,7 +12,7 @@ from .live_connectors import (
 )
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v6.9.4"
+CONTRACT_VERSION = "v6.9.5"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {

@@ -1,6 +1,6 @@
 # Documentation Index
 
-This is the shortest path through the repository after `v6.9.4`.
+This is the shortest path through the repository after `v6.9.5`.
 
 ## Start in this order
 
@@ -38,12 +38,13 @@ This is the shortest path through the repository after `v6.9.4`.
 - [Managed Runtime Proof](./docs/en/managed-runtime-proof.md)
 - [Classic SEO Workbench](./docs/en/classic-seo-workbench.md)
 - [Growth Ops Layer](./docs/en/growth-ops-layer.md)
+- [Content Operations Engine](./docs/en/content-operations-engine.md)
 - [Privacy-First Measurement](./docs/en/privacy-first-measurement.md)
 - [Scoring Calibration](./docs/en/scoring-calibration.md)
 - [Independent Case Submission](./docs/en/independent-case-submission.md)
 - [Canonical Documentation Map](./DOCS_CANONICAL.md)
 - [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
-- [v6.9.4 Release Summary](./docs/en/v694-release.md)
+- [v6.9.5 Release Summary](./docs/en/v695-release.md)
 
 ## Core proof and boundaries
 

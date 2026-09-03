@@ -223,7 +223,7 @@ make verify-demo
 - `v6.9.1`: growth ops layer для conversion, content architecture, customer research и launch routing
 - `v6.9.2`: formatting fix для growth scripts и GitHub Actions stability
 - `v6.9.3`: cleanup CI triggers и публичная синхронизация версий
-- `v6.9.4`: tag-aware release integrity, durable scanner runtime, live read-only GSC/Yandex adapters и прозрачность capability
+- `v6.9.5`: approval-first Content Operations Engine для demand, брифов, редакционных гейтов и post-publish verification
 
 Полный план:
 
@@ -250,20 +250,19 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.9.4
+## На чем сфокусирован v6.9.5
 
-`v6.9.4` — текущее публичное состояние репозитория. Он делает release layer
-tag-aware, превращает Docker worker в постоянный database-backed scanner worker
-и добавляет machine-readable прозрачность зрелости интеграций.
+`v6.9.5` — текущее публичное состояние репозитория. Он превращает
+подтвержденный спрос в задачи с owner, объяснимым planning score и обязательным
+approval path до публикации.
 
 Он добавляет:
 
-- tag-aware release integrity checks
-- durable queue processing с retry и dead-letter visibility
-- read-only adapters GSC и Яндекс Вебмастера для credentials владельца
-- [Integration Capability Matrix](./scripts/capability_matrix.py)
-- [Privacy-First измерения](./docs/ru/privacy-first-measurement.md)
-- [Сводка релиза v6.9.4](./docs/ru/v694-release.md)
+- CSV-to-queue планирование по demand, value, evidence и effort
+- обязательные factual, editorial, legal, technical и post-publish гейты
+- явные безопасные границы для Wordstat, Яндекса, GSC и конкурентного исследования
+- [Content Operations Engine](./docs/ru/content-operations-engine.md)
+- [Сводка релиза v6.9.5](./docs/ru/v695-release.md)
 
 ## Лицензия
 

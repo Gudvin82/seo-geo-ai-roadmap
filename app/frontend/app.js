@@ -128,7 +128,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.9.4 growth ops, CI stability, live integrations, and classic SEO depth",
+      "v6.9.5 approval-first content operations, governed briefs, and post-publish proof",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -319,7 +319,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.9.4 growth ops, CI stability, live integrations, and classic SEO depth",
+      "v6.9.5 approval-first content operations, governed briefs, and post-publish proof",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:

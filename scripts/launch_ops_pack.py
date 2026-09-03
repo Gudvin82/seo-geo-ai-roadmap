@@ -30,7 +30,7 @@ def build_pack(channel: str, version: str) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build a launch-ops pack.")
     parser.add_argument("--channel", default="social-post")
-    parser.add_argument("--version", default="v6.9.4")
+    parser.add_argument("--version", default="v6.9.5")
     parser.add_argument("--format", choices=("json", "markdown"), default="markdown")
     args = parser.parse_args()
 

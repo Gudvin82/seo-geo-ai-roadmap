@@ -221,7 +221,7 @@ The active release path is:
 - `v6.9.1`: growth ops layer for conversion, content architecture, customer research, and launch routing
 - `v6.9.2`: growth-script formatting fix for GitHub Actions stability
 - `v6.9.3`: CI trigger cleanup and public version synchronization
-- `v6.9.4`: tag-aware release integrity, durable scanner runtime, live read-only GSC/Yandex adapters, and capability transparency
+- `v6.9.5`: approval-first Content Operations Engine for demand, briefs, editorial gates, and post-publish verification
 
 Read the full plan:
 
@@ -248,20 +248,19 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.9.4 focus
+## v6.9.5 focus
 
-`v6.9.4` is the live public state of the repository. It makes the release
-surface tag-aware, turns the Docker worker into a persistent database-backed
-scanner worker, and makes integration maturity machine-readable.
+`v6.9.5` is the live public state of the repository. It turns validated demand
+into owned content tasks with an explainable planning score and a mandatory
+approval path before publication.
 
 It adds:
 
-- tag-aware release integrity checks
-- durable queue processing with retry and dead-letter visibility
-- read-only GSC and Yandex Webmaster adapters for operator-owned credentials
-- [Integration Capability Matrix](./scripts/capability_matrix.py)
-- [Privacy-First Measurement](./docs/en/privacy-first-measurement.md)
-- [v6.9.4 Release Summary](./docs/en/v694-release.md)
+- CSV-to-queue planning for demand, value, evidence, and effort
+- mandatory factual, editorial, legal, technical, and post-publish gates
+- explicit safe boundaries for Wordstat, Yandex, GSC, and competitor research
+- [Content Operations Engine](./docs/en/content-operations-engine.md)
+- [v6.9.5 Release Summary](./docs/en/v695-release.md)
 
 ## License
 
