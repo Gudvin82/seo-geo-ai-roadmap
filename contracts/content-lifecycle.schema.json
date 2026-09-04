@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/contracts/content-lifecycle.schema.json",
+  "title": "Content Lifecycle Manifest",
+  "type": "object",
+  "required": [
+    "demand_sources",
+    "registry_file",
+    "drafts_file",
+    "previous_positions_file",
+    "current_positions_file"
+  ],
+  "properties": {
+    "demand_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "file"],
+        "properties": {
+          "type": {"enum": ["gsc", "yandex_webmaster", "wordstat", "competitor", "customer_research"]},
+          "file": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "registry_file": {"type": "string"},
+    "drafts_file": {"type": "string"},
+    "previous_positions_file": {"type": "string"},
+    "current_positions_file": {"type": "string"},
+    "cannibalization_threshold": {"type": "number", "minimum": 0, "maximum": 1},
+    "advisor_budget": {"type": "object"},
+    "knowledge_base": {"type": "object"},
+    "optional_media": {"type": "object"}
+  },
+  "additionalProperties": false
+}

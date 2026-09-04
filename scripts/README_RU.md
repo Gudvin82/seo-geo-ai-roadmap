@@ -29,16 +29,18 @@
 | `checklist_generator.py` | Генерирует tailored SEO/GEO/AI checklist по типу сайта и рынку | `python scripts/checklist_generator.py --site-type service --market ru --focus seo --focus geo` |
 | `semantic_gap_mapper.py` | Кластеризует keyword в semantic execution lanes и типы страниц | `python scripts/semantic_gap_mapper.py --file examples/semantic-keywords-example.txt --format json` |
 | `content_ops_queue.py` | Превращает подтвержденный спрос в approval-first редакционную очередь | `python scripts/content_ops_queue.py --file examples/content-ops-queue-example.csv --format json` |
+| `content_lifecycle.py` | Запускает multi-source demand, registry, draft QA, monitoring, advisor и optional cover generation | `python scripts/content_lifecycle.py --manifest examples/content-lifecycle/manifest.json --output-dir ./artifacts/content-lifecycle` |
+| `indexnow_submit.py` | Отправляет согласованные HTTPS URL в IndexNow и optional проверяет доступность | `INDEXNOW_KEY=replace-me python scripts/indexnow_submit.py --host example.com --url https://example.com/new-page --verify` |
 | `proof_pack_builder.py` | Собирает reusable before/after proof или case-study pack | `python scripts/proof_pack_builder.py --site example.com --change "expanded FAQ proof" --before-score 90 --after-score 94` |
 | `case_library_builder.py` | Строит index из bounded public и synthetic case files | `python scripts/case_library_builder.py docs/en/v430-case-anmalishev.md examples/synthetic-case-example-en.md --format json` |
 | `synthetic_case_builder.py` | Генерирует явно маркированный synthetic training case | `python scripts/synthetic_case_builder.py --name "Synthetic Demo" --before-score 70 --after-score 82` |
 | `issue_pack_generator.py` | Превращает findings в lightweight implementation issue pack | `python scripts/issue_pack_generator.py --project example.com --finding "Thin proof / high / content lead / add stronger case proof"` |
 | `community_showcase_builder.py` | Строит компактный showcase-index из public и synthetic case files | `python scripts/community_showcase_builder.py docs/en/v430-case-anmalishev.md examples/synthetic-case-example-en.md --format json` |
-| `launch_pack_generator.py` | Генерирует безопасный public launch pack с claims, boundaries и CTA | `python scripts/launch_pack_generator.py --version v6.9.5 --format json` |
+| `launch_pack_generator.py` | Генерирует безопасный public launch pack с claims, boundaries и CTA | `python scripts/launch_pack_generator.py --version v6.9.6 --format json` |
 | `conversion_ops_pack.py` | Собирает conversion-ops pack для лендингов, lead-flow и offer clarity | `python scripts/conversion_ops_pack.py --site-type saas --format json` |
 | `content_growth_ops.py` | Собирает content-growth plan для architecture, programmatic SEO и schema ops | `python scripts/content_growth_ops.py --vertical legal --format json` |
 | `customer_research_pack.py` | Собирает customer-research pack для позиционирования и proof | `python scripts/customer_research_pack.py --audience founders --format json` |
-| `launch_ops_pack.py` | Собирает безопасный launch-ops checklist для постов, тредов и showcase-routing | `python scripts/launch_ops_pack.py --version v6.9.5 --format json` |
+| `launch_ops_pack.py` | Собирает безопасный launch-ops checklist для постов, тредов и showcase-routing | `python scripts/launch_ops_pack.py --version v6.9.6 --format json` |
 | `integration_runtime_audit.py` | Собирает managed-runtime снимок по диагностике и recovery для ключевых integrations | `python scripts/integration_runtime_audit.py --format json` |
 | `serp_competitor_matrix.py` | Превращает competitor URLs и keyword themes в classic SEO comparison matrix | `python scripts/serp_competitor_matrix.py --competitor example.com --competitor competitor.com --keyword-theme legal ai` |
 | `link_gap_summary.py` | Суммирует link-authority gaps, proof-needs и next-step hypotheses | `python scripts/link_gap_summary.py --domain example.com --competitor competitor.com` |

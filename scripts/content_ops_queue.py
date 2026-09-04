@@ -120,7 +120,7 @@ def build_payload(rows: list[dict[str, str]], default_owner: str) -> dict[str, o
         key=lambda item: (-item.score, item.topic.lower()),
     )
     return {
-        "schema_version": "v6.9.5",
+        "schema_version": "v6.9.6",
         "mode": "approval_first_content_operations",
         "task_count": len(items),
         "items": [asdict(item) for item in items],

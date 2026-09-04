@@ -1,0 +1,28 @@
+{
+  "demand_sources": [
+    {"type": "gsc", "file": "gsc.csv"},
+    {"type": "yandex_webmaster", "file": "yandex.csv"},
+    {"type": "wordstat", "file": "wordstat.csv"},
+    {"type": "competitor", "file": "competitor.csv"}
+  ],
+  "registry_file": "registry.csv",
+  "drafts_file": "drafts.json",
+  "previous_positions_file": "positions-previous.csv",
+  "current_positions_file": "positions-current.csv",
+  "cannibalization_threshold": 0.5,
+  "advisor_budget": {
+    "max_recommendations": 5,
+    "llm_calls_allowed": 0,
+    "max_cost_usd": 0
+  },
+  "knowledge_base": {
+    "article_standard": "knowledge-base-en.md",
+    "stop_list": ["invented facts", "copied competitor text", "unapproved publishing"],
+    "source_policy": "material claims require a reviewable source"
+  },
+  "optional_media": {
+    "enabled": true,
+    "title": "AI visibility audit",
+    "subtitle": "Evidence-first SEO, GEO, and AI operations"
+  }
+}

@@ -32,6 +32,30 @@ The score is deliberately explainable:
 It prioritizes work. It does not predict rankings, traffic, leads, or AI
 citations.
 
+## Run The Full Lifecycle
+
+```bash
+python scripts/content_lifecycle.py \
+  --manifest examples/content-lifecycle/manifest.json \
+  --output-dir ./artifacts/content-lifecycle
+```
+
+The example joins GSC, Yandex Webmaster, Wordstat, and competitor exports,
+checks the page-to-cluster registry, validates drafts, finds position 4-15
+opportunities, creates a no-writeback advisor summary, and optionally renders
+an editable SVG cover. Replace example exports with operator-owned data.
+
+After an approved page is live, IndexNow can be called explicitly:
+
+```bash
+INDEXNOW_KEY=replace-me python scripts/indexnow_submit.py \
+  --host example.com \
+  --url https://example.com/new-page \
+  --verify
+```
+
+IndexNow acceptance and URL availability do not prove indexing or rankings.
+
 ## Mandatory Gates
 
 - Intent and audience review
@@ -60,3 +84,6 @@ Yandex/Alice surfaces as review inputs, not instructions to manufacture pages.
 - `scripts/content_freshness_checker.py`
 - `scripts/fact_drift_checker.py`
 - `scripts/checklist_generator.py`
+- `scripts/content_lifecycle.py`
+- `scripts/indexnow_submit.py`
+- `contracts/content-lifecycle.schema.json`

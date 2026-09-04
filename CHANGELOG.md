@@ -1,5 +1,16 @@
 # Changelog
 
+## v6.9.6 — Unified Content Lifecycle
+
+- Connected GSC, Yandex Webmaster, Wordstat, competitor, and customer-research
+  exports into one normalized demand queue
+- Added page-to-cluster registry matching, cannibalization detection,
+  deterministic draft QA, position 4-15 monitoring, and a no-writeback advisor
+- Added real credential-gated IndexNow submission with optional reachability
+  verification and explicit indexing boundaries
+- Added bilingual knowledge-base templates, an optional editable SVG cover,
+  a machine-readable lifecycle contract, and an end-to-end demo fixture
+
 ## v6.9.5 — Content Operations Engine
 
 - Added an original, approval-first Content Operations Engine that connects

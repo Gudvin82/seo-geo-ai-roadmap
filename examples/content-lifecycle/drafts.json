@@ -1,0 +1,18 @@
+[
+  {
+    "id": "draft-ai-audit",
+    "title": "How to audit AI visibility with reviewable evidence",
+    "meta_description": "A practical workflow for auditing search and AI visibility with transparent evidence, human approval, and post-publish verification.",
+    "slug": "audit-ai-visibility",
+    "headings": [
+      {"level": 1, "text": "Audit AI visibility"},
+      {"level": 2, "text": "Collect evidence"},
+      {"level": 2, "text": "Verify changes"}
+    ],
+    "internal_links": ["/methodology", "/cases"],
+    "schema_types": ["Article", "BreadcrumbList"],
+    "factual_sources": ["operator-owned GSC export"],
+    "author": "Content operator",
+    "body": "This example draft demonstrates a governed content workflow. It begins with measurable demand, assigns an accountable owner, records the evidence source, and separates observations from predictions. The editor confirms the user intent and checks every material claim. The technical reviewer checks the canonical URL, headings, structured data, and internal links. The legal reviewer verifies market-specific claims. Publication happens only after explicit human approval. After publishing, the operator checks that the page is reachable, records the resulting artifact, and observes search data without claiming causation. Future updates return to the same review loop when facts, demand, rankings, links, or business priorities change. Competitor pages are used only to identify unanswered user needs and never as text to rewrite."
+  }
+]

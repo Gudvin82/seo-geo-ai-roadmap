@@ -128,7 +128,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.9.5 approval-first content operations, governed briefs, and post-publish proof",
+      "v6.9.6 unified content lifecycle, cannibalization control, IndexNow, and safe advisor",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -319,7 +319,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.9.5 approval-first content operations, governed briefs, and post-publish proof",
+      "v6.9.6 unified content lifecycle, cannibalization control, IndexNow, and safe advisor",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:

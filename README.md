@@ -221,7 +221,7 @@ The active release path is:
 - `v6.9.1`: growth ops layer for conversion, content architecture, customer research, and launch routing
 - `v6.9.2`: growth-script formatting fix for GitHub Actions stability
 - `v6.9.3`: CI trigger cleanup and public version synchronization
-- `v6.9.5`: approval-first Content Operations Engine for demand, briefs, editorial gates, and post-publish verification
+- `v6.9.6`: unified content lifecycle for multi-source demand, cannibalization control, draft QA, IndexNow, monitoring, and safe advice
 
 Read the full plan:
 
@@ -248,19 +248,21 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.9.5 focus
+## v6.9.6 focus
 
-`v6.9.5` is the live public state of the repository. It turns validated demand
-into owned content tasks with an explainable planning score and a mandatory
-approval path before publication.
+`v6.9.6` is the live public state of the repository. It connects demand,
+page-to-cluster governance, draft QA, controlled distribution, monitoring, and
+recommendations into one reproducible approval-first lifecycle.
 
 It adds:
 
-- CSV-to-queue planning for demand, value, evidence, and effort
-- mandatory factual, editorial, legal, technical, and post-publish gates
-- explicit safe boundaries for Wordstat, Yandex, GSC, and competitor research
+- normalized GSC, Yandex Webmaster, Wordstat, competitor, and research exports
+- page-to-cluster registry checks and cannibalization warnings
+- deterministic pre-publish QA and position 4-15 monitoring
+- live credential-gated IndexNow submission with honest verification boundaries
+- budget-limited advisor with no CMS write access and optional SVG cover output
 - [Content Operations Engine](./docs/en/content-operations-engine.md)
-- [v6.9.5 Release Summary](./docs/en/v695-release.md)
+- [v6.9.6 Release Summary](./docs/en/v696-release.md)
 
 ## License
 

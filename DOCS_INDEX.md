@@ -1,6 +1,6 @@
 # Documentation Index
 
-This is the shortest path through the repository after `v6.9.5`.
+This is the shortest path through the repository after `v6.9.6`.
 
 ## Start in this order
 
@@ -44,7 +44,7 @@ This is the shortest path through the repository after `v6.9.5`.
 - [Independent Case Submission](./docs/en/independent-case-submission.md)
 - [Canonical Documentation Map](./DOCS_CANONICAL.md)
 - [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
-- [v6.9.5 Release Summary](./docs/en/v695-release.md)
+- [v6.9.6 Release Summary](./docs/en/v696-release.md)
 
 ## Core proof and boundaries
 

@@ -202,3 +202,14 @@ Main deliverables:
 - bilingual playbooks for demand, briefs, quality gates, freshness, and
   cannibalization review
 - explicit factual, editorial, legal, technical, and post-publish controls
+
+## Release Wave 10: v6.9.6
+
+Focus: connect content operations into one safe, reproducible lifecycle.
+
+Main deliverables:
+
+- multi-source demand ingestion and page-to-cluster registry controls
+- deterministic draft QA, position monitoring, and safe advisory output
+- live credential-gated IndexNow submission and post-publish reachability checks
+- bilingual knowledge-base templates and optional media generation

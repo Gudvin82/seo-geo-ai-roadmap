@@ -1,6 +1,6 @@
 # Security Advisory Baseline
 
-This file documents the current `pip-audit` ignores used by CI in `v6.3.0`.
+This file documents the current `pip-audit` ignores used by CI in `v6.9.6`.
 
 The goal is not to hide dependency risk. The goal is to keep the dependency
 scan strict while making the remaining exceptions explicit and reviewable.
@@ -32,6 +32,18 @@ Reason:
   this repository
 - a clean upgrade path should be taken together with a deliberate Python and
   FastAPI support-floor move, not as an unreviewed patch during a release pass
+
+### `click` transitive advisory
+
+- `PYSEC-2026-2132`
+
+Reason:
+
+- `click` is pulled by the current Uvicorn runtime
+- the advisory names `8.3.3` as the fix, but that version is not available from
+  the package index used by the release environment
+- remove this exception as soon as a compatible fixed release becomes
+  installable and passes the full application suite
 
 ## Review rule
 

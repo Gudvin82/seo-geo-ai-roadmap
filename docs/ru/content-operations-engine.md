@@ -32,6 +32,32 @@ Score намеренно объясним:
 Он приоритизирует работу. Он не прогнозирует позиции, трафик, лиды или AI
 citations.
 
+## Запустить Полный Цикл
+
+```bash
+python scripts/content_lifecycle.py \
+  --manifest examples/content-lifecycle/manifest.json \
+  --output-dir ./artifacts/content-lifecycle
+```
+
+Пример объединяет экспорты GSC, Яндекс Вебмастера, Wordstat и конкурентного
+исследования, проверяет реестр `страница ↔ кластер`, валидирует drafts, находит
+возможности на позициях 4-15, собирает advisor summary без writeback и при
+необходимости создает редактируемую SVG-обложку. Замените примеры данными,
+полученными владельцем проекта.
+
+После согласования и публикации страницы IndexNow запускается явно:
+
+```bash
+INDEXNOW_KEY=replace-me python scripts/indexnow_submit.py \
+  --host example.com \
+  --url https://example.com/new-page \
+  --verify
+```
+
+Прием URL в IndexNow и доступность страницы не доказывают индексацию или рост
+позиций.
+
 ## Обязательные Гейты
 
 - Проверка интента и аудитории
@@ -61,3 +87,6 @@ credentials владельца. Региональные формулировк�
 - `scripts/content_freshness_checker.py`
 - `scripts/fact_drift_checker.py`
 - `scripts/checklist_generator.py`
+- `scripts/content_lifecycle.py`
+- `scripts/indexnow_submit.py`
+- `contracts/content-lifecycle.schema.json`

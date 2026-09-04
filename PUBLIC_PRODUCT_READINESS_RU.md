@@ -22,8 +22,8 @@ enterprise SSO и SLA от автора репозитория.
 
 Контекст последнего релиза:
 
-- `v6.9.5` — текущий публичный релиз. Он добавляет approval-first Content
-  Operations Engine для управляемого demand, брифов, quality gates и verification
+- `v6.9.6` — текущий публичный релиз. Он соединяет multi-source demand,
+  page-cluster governance, draft QA, IndexNow, monitoring и safe advisor
 
 ## Что production-ready уже сегодня
 

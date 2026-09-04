@@ -223,7 +223,7 @@ make verify-demo
 - `v6.9.1`: growth ops layer для conversion, content architecture, customer research и launch routing
 - `v6.9.2`: formatting fix для growth scripts и GitHub Actions stability
 - `v6.9.3`: cleanup CI triggers и публичная синхронизация версий
-- `v6.9.5`: approval-first Content Operations Engine для demand, брифов, редакционных гейтов и post-publish verification
+- `v6.9.6`: единый content lifecycle для multi-source demand, контроля каннибализации, draft QA, IndexNow, мониторинга и безопасных рекомендаций
 
 Полный план:
 
@@ -250,19 +250,21 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.9.5
+## На чем сфокусирован v6.9.6
 
-`v6.9.5` — текущее публичное состояние репозитория. Он превращает
-подтвержденный спрос в задачи с owner, объяснимым planning score и обязательным
-approval path до публикации.
+`v6.9.6` — текущее публичное состояние репозитория. Он соединяет demand,
+управление связью `страница ↔ кластер`, draft QA, контролируемую дистрибуцию,
+мониторинг и рекомендации в один воспроизводимый approval-first lifecycle.
 
 Он добавляет:
 
-- CSV-to-queue планирование по demand, value, evidence и effort
-- обязательные factual, editorial, legal, technical и post-publish гейты
-- явные безопасные границы для Wordstat, Яндекса, GSC и конкурентного исследования
+- нормализованные экспорты GSC, Яндекс Вебмастера, Wordstat, competitors и research
+- проверка реестра `страница ↔ кластер` и предупреждения о каннибализации
+- детерминированный pre-publish QA и мониторинг позиций 4-15
+- live IndexNow submit с credentials и честными границами verification
+- budget-limited advisor без CMS write access и optional SVG-обложка
 - [Content Operations Engine](./docs/ru/content-operations-engine.md)
-- [Сводка релиза v6.9.5](./docs/ru/v695-release.md)
+- [Сводка релиза v6.9.6](./docs/ru/v696-release.md)
 
 ## Лицензия
 

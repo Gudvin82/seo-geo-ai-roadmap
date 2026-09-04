@@ -12,7 +12,7 @@ from .live_connectors import (
 )
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v6.9.5"
+CONTRACT_VERSION = "v6.9.6"
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {
@@ -1250,7 +1250,23 @@ def sync_integration_source(
             "yandex_direct_stub.py", "Yandex Direct starter import failed."
         )
     elif source == "indexnow":
-        payload = _run_json_script("indexnow_stub.py", "IndexNow starter failed.")
+        indexnow_config = config or {}
+        urls = [str(item) for item in indexnow_config.get("urls", [])]
+        host = str(indexnow_config.get("host") or property_identifier or "").strip()
+        if os.environ.get("INDEXNOW_KEY", "").strip() and host and urls:
+            args = ["--host", host]
+            for url in urls:
+                args.extend(["--url", url])
+            if indexnow_config.get("key_location"):
+                args.extend(["--key-location", str(indexnow_config["key_location"])])
+            if indexnow_config.get("verify"):
+                args.append("--verify")
+            code, stdout, stderr = run_script("indexnow_submit.py", args)
+            if code != 0:
+                raise RuntimeError(stderr or "IndexNow submission failed.")
+            payload = json.loads(stdout)
+        else:
+            payload = _run_json_script("indexnow_stub.py", "IndexNow starter failed.")
     elif source == "google_business_profile":
         payload = _run_json_script(
             "google_business_profile_stub.py",

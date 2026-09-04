@@ -728,7 +728,7 @@ def integration_starters() -> dict:
             "scripts/yandex_data_stub.py",
             "scripts/yandex_metrica_stub.py",
             "scripts/yandex_direct_stub.py",
-            "scripts/indexnow_stub.py",
+            "scripts/indexnow_submit.py",
             "scripts/google_business_profile_stub.py",
             "scripts/yandex_business_stub.py",
             "scripts/merchant_center_stub.py",
