@@ -2,27 +2,54 @@ from __future__ import annotations
 
 import json
 from datetime import datetime, timezone
+from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, Header, HTTPException, Request
 from sqlalchemy.orm import Session
 
 from ..access import record_audit_log, require_project_access
 from ..config import load_settings
 from ..database import get_db
-from ..deps import get_current_user
-from ..models import AiVisibilitySnapshot, AuditRun, EvidenceRecord, User
+from ..deps import get_current_user, get_optional_current_user
+from ..models import AiVisibilitySnapshot, AuditRun, EvidenceRecord, ScanJob, User
 from ..schemas import (
     AiVisibilitySnapshotCreate,
     AiVisibilitySnapshotRead,
     GeoIntelligenceRunRead,
     GeoIntelligenceRunRequest,
 )
+from ..services import scan_jobs
 from ..services.audits import _persist_artifact
-from ..services.geo_intelligence import build_agent_audit_pack, build_geo_runtime
+from ..services.geo_intelligence import (
+    build_agent_audit_pack,
+    build_geo_runtime,
+    build_unified_report,
+    normalize_scan_issue,
+)
+from ..services.graph_runtime import (
+    build_graph_from_audit_findings,
+    build_graph_from_scan_summary,
+)
 from ..services.reporting import dumps_json
-from ..services.task_center import build_task_bundle_from_audit_run
+from ..services.task_center import (
+    build_task_bundle_from_audit_run,
+    build_task_bundle_from_scan_job,
+)
 
 router = APIRouter(prefix="/geo-intelligence", tags=["geo-intelligence"])
+
+
+def _scan_summary(scan_job: ScanJob) -> dict:
+    for artifact in json.loads(scan_job.report_artifacts_json or "[]"):
+        if artifact.get("kind") == "machine_report":
+            try:
+                with open(artifact["path"], "r", encoding="utf-8") as handle:
+                    return json.load(handle)
+            except FileNotFoundError as exc:
+                raise HTTPException(
+                    status_code=404, detail="Machine report artifact not found."
+                ) from exc
+    raise HTTPException(status_code=404, detail="Machine report artifact not found.")
 
 
 def _snapshot_read(
@@ -140,6 +167,61 @@ def run_geo_intelligence(
 @router.get("/agent-audit-pack")
 def agent_audit_pack() -> dict:
     return build_agent_audit_pack()
+
+
+@router.get("/audit-runs/{audit_run_id}/unified-report")
+def unified_audit_report(
+    audit_run_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    audit_run = db.get(AuditRun, audit_run_id)
+    if not audit_run:
+        raise HTTPException(status_code=404, detail="Audit run not found.")
+    require_project_access(
+        db, audit_run.project_id, current_user, minimum_role="viewer"
+    )
+    if audit_run.status != "completed":
+        raise HTTPException(
+            status_code=409, detail="Unified report requires a completed audit run."
+        )
+    findings = json.loads(audit_run.finding_groups_json or "[]")
+    report = build_unified_report(
+        target_url=audit_run.target_url or "", findings=findings
+    )
+    report["tasks"] = build_task_bundle_from_audit_run(audit_run, report["findings"])
+    report["graph"] = build_graph_from_audit_findings(audit_run.id, report["findings"])
+    report["source"] = {"type": "audit_run", "id": audit_run.id}
+    return report
+
+
+@router.get("/scan-jobs/{scan_job_id}/unified-report")
+def unified_scan_report(
+    scan_job_id: int,
+    x_scanner_session: Optional[str] = Header(default=None, alias="X-Scanner-Session"),
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_current_user),
+) -> dict:
+    scan_job = db.get(ScanJob, scan_job_id)
+    if not scan_job:
+        raise HTTPException(status_code=404, detail="Scan job not found.")
+    scan_jobs.authorize_scan_job_access(scan_job, current_user, x_scanner_session)
+    if scan_job.status != "completed":
+        raise HTTPException(
+            status_code=409, detail="Unified report requires a completed scan job."
+        )
+    summary = _scan_summary(scan_job)
+    findings = [
+        normalize_scan_issue(issue, summary.get("target_url", scan_job.normalized_url))
+        for issue in summary.get("issues", [])
+    ]
+    report = build_unified_report(
+        target_url=summary.get("target_url", scan_job.normalized_url), findings=findings
+    )
+    report["tasks"] = build_task_bundle_from_scan_job(scan_job, summary)
+    report["graph"] = build_graph_from_scan_summary(scan_job.id, summary)
+    report["source"] = {"type": "scan_job", "id": scan_job.id}
+    return report
 
 
 @router.post("/visibility-snapshots", response_model=AiVisibilitySnapshotRead)

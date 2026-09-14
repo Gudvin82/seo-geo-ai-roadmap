@@ -22,9 +22,8 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 
 Latest release context:
 
-- `v6.12.0` is the current public release. It integrates evidence-first GEO
-  analysis into the audit, report, graph, and task runtime without promising
-  deterministic AI citations.
+- `v6.13.0` is the current public release. It adds a one-command product path
+  and unified report while preserving evidence provenance and honest limits.
 
 ## What is production-ready today
 

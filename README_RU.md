@@ -250,22 +250,22 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.12.0
+## На чем сфокусирован v6.13.0
 
-`v6.12.0` превращает GEO Intelligence prototype в runtime приложения:
-завершенный audit передает данные в analyzers, evidence, scorecard, roadmap,
-report artifact, graph-compatible findings и approval-bound task bundle.
+`v6.13.0` превращает интегрированный runtime в более понятный product path:
+thin CLI передает работу приложению, scanner output адаптируется к каноническому
+контракту, а единый отчет связывает evidence, score, roadmap, tasks, graph и verification.
 
 Он добавляет:
 
-- единый Finding/Evidence contract с source, evidence type, confidence,
-  timestamp и verification method
-- отдельные runtime-выходы entity, citation, authority и competitor analyzers
-- score profiles с validation, versioning, calibration status и честным
-  insufficient-data behavior
-- durable operator/provider AI-visibility snapshots и сравнение истории
-- executable Agent Audit Pack с явными tool limits и approval gates
-- [Сводка релиза v6.12.0](./docs/ru/v6120-release.md)
+- `python scripts/geo.py audit https://example.com` как thin client к
+  self-hosted scanner/report API
+- Unified GEO Intelligence Report для scanner и project-audit sources
+- scanner finding adapter к Canonical Finding/Evidence Model без поломки
+  исторических reports
+- integration lifecycle criteria, которые разделяют foundation и доказанную
+  E2E production readiness
+- [Сводка релиза v6.13.0](./docs/ru/v6130-release.md)
 
 ## Лицензия
 

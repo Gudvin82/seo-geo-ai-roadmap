@@ -1,6 +1,6 @@
 # Documentation Index
 
-This is the shortest path through the repository after `v6.12.0`.
+This is the shortest path through the repository after `v6.13.0`.
 
 ## Start in this order
 

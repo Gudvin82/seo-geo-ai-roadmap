@@ -115,6 +115,32 @@ def capability_matrix() -> dict:
     return integration_capability_matrix()
 
 
+@router.get("/lifecycle")
+def integration_lifecycle() -> dict:
+    """Acceptance criteria, not a claim that every source is connected."""
+    sources = ["gsc", "yandex_webmaster", "ga4", "yandex_metrica"]
+    return {
+        "levels": ["foundation", "prototype", "connected", "production_ready"],
+        "production_ready_requires": [
+            "operator-authorized credential configuration",
+            "successful read-only API call",
+            "refresh-token recovery where OAuth applies",
+            "controlled failure and retry evidence",
+            "disconnect or credential revocation procedure",
+            "automated integration test with a provider-safe fixture",
+        ],
+        "sources": [
+            {
+                "source_type": source,
+                "current_contract": integration_contract(source)["readiness_tier"],
+                "current_level": "foundation",
+                "boundary": "Do not claim production_ready without an operator-owned end-to-end proof record.",
+            }
+            for source in sources
+        ],
+    }
+
+
 @router.get("", response_model=list[IntegrationConnectionRead])
 def list_integrations(
     project_id: int,
@@ -168,6 +194,35 @@ def create_integration(
     )
     db.commit()
     return _serialize(row)
+
+
+@router.delete("/{integration_id}")
+def disconnect_integration(
+    integration_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    row = db.get(IntegrationConnection, integration_id)
+    if not row:
+        raise HTTPException(status_code=404, detail="Integration not found.")
+    require_project_access(db, row.project_id, current_user, minimum_role="editor")
+    record_audit_log(
+        db,
+        "integration.disconnected",
+        user_id=current_user.id,
+        workspace_id=row.workspace_id,
+        project_id=row.project_id,
+        metadata={"integration_id": row.id, "source_type": row.source_type},
+    )
+    # Credentials are never persisted by this app. Operators must revoke or
+    # remove the referenced environment secret separately.
+    db.delete(row)
+    db.commit()
+    return {
+        "status": "disconnected",
+        "integration_id": integration_id,
+        "operator_action": "Revoke the provider grant and remove the referenced environment secret if it is no longer needed.",
+    }
 
 
 @router.patch(

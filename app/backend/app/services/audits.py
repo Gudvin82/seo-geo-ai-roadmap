@@ -32,7 +32,11 @@ from ..models import (
 )
 from ..providers.base import ProviderError
 from ..providers.registry import build_provider
-from .geo_intelligence import build_geo_runtime
+from .geo_intelligence import (
+    build_geo_runtime,
+    build_unified_report,
+    render_unified_markdown,
+)
 from .geo_intelligence import evidence as geo_evidence
 from .geo_intelligence import finding as geo_finding
 from .logging import log_event
@@ -580,6 +584,31 @@ def execute_audit_run(
             "contract_version": geo_runtime["contract_version"],
             "score_status": geo_runtime["scorecard"]["status"],
         },
+    )
+    unified_report = build_unified_report(
+        target_url=audit_run.target_url or project.website_url,
+        findings=findings,
+        scorecard=geo_runtime["scorecard"],
+    )
+    _persist_artifact(
+        db,
+        audit_run=audit_run,
+        project=project,
+        settings=settings,
+        artifact_type="unified_geo_intelligence_report",
+        content=dumps_json(unified_report),
+        fmt="json",
+        metadata={"contract_version": unified_report["contract_version"]},
+    )
+    _persist_artifact(
+        db,
+        audit_run=audit_run,
+        project=project,
+        settings=settings,
+        artifact_type="unified_geo_intelligence_report",
+        content=render_unified_markdown(unified_report),
+        fmt="markdown",
+        metadata={"contract_version": unified_report["contract_version"]},
     )
     score = overall_score(findings)
     benchmark_summary = _benchmark_summary(findings, ai_citation_score_value)

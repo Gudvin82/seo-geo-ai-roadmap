@@ -22,8 +22,8 @@ enterprise SSO и SLA от автора репозитория.
 
 Контекст последнего релиза:
 
-- `v6.12.0` — текущий публичный релиз. Он встраивает evidence-first GEO-анализ
-  в runtime audit, report, graph и tasks, не обещая детерминированных AI citations.
+- `v6.13.0` — текущий публичный релиз. Он добавляет one-command product path и
+  единый отчет, сохраняя provenance evidence и честные границы.
 
 ## Что production-ready уже сегодня
 

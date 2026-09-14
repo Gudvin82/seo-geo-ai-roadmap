@@ -31,6 +31,7 @@ jobs:
           python scripts/scheduled_check_runner.py --help
           python scripts/geo_command_surface.py --help
           python scripts/bootstrap_self_hosted.py --help
+          python scripts/geo.py --help
       - name: Dry-run script behavior
         run: |
           cat > /tmp/sample-sitemap.xml <<'EOF'

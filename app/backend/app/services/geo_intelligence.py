@@ -317,3 +317,138 @@ def build_agent_audit_pack() -> dict[str, Any]:
             "Provider evidence must retain its provenance.",
         ],
     }
+
+
+def normalize_scan_issue(issue: dict[str, Any], target_url: str) -> dict[str, Any]:
+    """Adapt a scanner machine-report issue without changing scanner storage."""
+    severity = str(issue.get("severity", "medium"))
+    priority_score = {"critical": 90, "high": 80, "medium": 55, "low": 25}.get(
+        severity, 40
+    )
+    category = str(issue.get("issue_id", "technical_seo"))
+    return finding(
+        category=category,
+        observation=str(issue.get("title") or issue.get("summary") or "Scanner issue."),
+        recommendation=str(
+            issue.get("recommended_action")
+            or "Review the scanner evidence and prepare an approved fix."
+        ),
+        priority={"impact": 4, "effort": 2, "score": priority_score, "label": severity},
+        severity=severity,
+        evidence_items=[
+            evidence(
+                observation=str(issue.get("title") or "Scanner issue."),
+                source="scanner_machine_report",
+                evidence_type="verified",
+                confidence=0.8,
+                verification_method="bounded scanner fetch and deterministic rule",
+                reference=target_url,
+            )
+        ],
+    )
+
+
+def _section(findings: list[dict[str, Any]], *keywords: str) -> list[dict[str, Any]]:
+    return [
+        item
+        for item in findings
+        if any(keyword in str(item.get("category", "")).lower() for keyword in keywords)
+    ]
+
+
+def build_unified_report(
+    *,
+    target_url: str,
+    findings: list[dict[str, Any]],
+    scorecard: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Produce the product-level report from the canonical finding contract."""
+    canonical = [normalize_finding(item) for item in findings]
+    if scorecard is None:
+        scorecard = build_geo_runtime(canonical)["scorecard"]
+    roadmap = [
+        {
+            "finding_id": item["id"],
+            "action": item["recommendation"],
+            "priority": item["priority"],
+            "verification": item["verification_method"],
+        }
+        for item in sorted(
+            canonical,
+            key=lambda item: float(item["priority"].get("score", 0)),
+            reverse=True,
+        )
+    ]
+    return {
+        "contract_version": CONTRACT_VERSION,
+        "report_type": "geo_intelligence_unified",
+        "generated_at": utc_now(),
+        "target_url": target_url,
+        "executive_summary": {
+            "finding_count": len(canonical),
+            "score_status": scorecard.get("status", "insufficient_data"),
+            "score": scorecard.get("score"),
+            "boundary": "Evidence types preserve provenance and do not guarantee rankings, AI citations, traffic, or conversions.",
+        },
+        "geo_score": scorecard,
+        "technical_seo": _section(
+            canonical, "robots", "sitemap", "canonical", "schema", "crawl", "meta"
+        ),
+        "entity_intelligence": _section(canonical, "entity", "local", "brand"),
+        "citation_readiness": _section(canonical, "citation", "llms", "ai_", "robots"),
+        "authority_signals": _section(
+            canonical, "authority", "factual", "content", "trust"
+        ),
+        "ai_visibility": _section(canonical, "citation", "ai_", "hallucination"),
+        "competitor_gap": _section(canonical, "competitor"),
+        "evidence": [evidence for item in canonical for evidence in item["evidence"]],
+        "recommended_actions": roadmap[:10],
+        "roadmap": roadmap,
+        "findings": canonical,
+        "verification_plan": [
+            "Apply only approved fixes.",
+            "Re-run the same audit and compare source-labelled evidence.",
+            "Record provider-derived observations as snapshots, not guarantees.",
+        ],
+    }
+
+
+def render_unified_markdown(report: dict[str, Any]) -> str:
+    """Human-readable rendering of the JSON source-of-truth report."""
+    summary = report["executive_summary"]
+    lines = [
+        f"# GEO Intelligence Report: {report['target_url']}",
+        "",
+        "## Executive Summary",
+        "",
+        f"- GEO score: {summary['score'] if summary['score'] is not None else 'insufficient_data'}",
+        f"- Findings: {summary['finding_count']}",
+        f"- Evidence boundary: {summary['boundary']}",
+        "",
+    ]
+    sections = (
+        ("Technical SEO", "technical_seo"),
+        ("Entity Intelligence", "entity_intelligence"),
+        ("Citation Readiness", "citation_readiness"),
+        ("Authority Signals", "authority_signals"),
+        ("AI Visibility", "ai_visibility"),
+        ("Competitor Gap", "competitor_gap"),
+    )
+    for label, key in sections:
+        lines.extend([f"## {label}", ""])
+        rows = report[key]
+        if not rows:
+            lines.append("- insufficient_data")
+        for item in rows:
+            lines.append(f"- [{item['severity']}] {item['observation']}")
+            lines.append(
+                f"  Evidence: {item['evidence_type']} from {item['source']} ({item['confidence']})"
+            )
+            lines.append(f"  Action: {item['recommendation']}")
+        lines.append("")
+    lines.extend(["## Roadmap", ""])
+    for item in report["roadmap"]:
+        lines.append(f"- {item['action']} Verify: {item['verification']}")
+    lines.extend(["", "## Verification", ""])
+    lines.extend(f"- {item}" for item in report["verification_plan"])
+    return "\n".join(lines) + "\n"

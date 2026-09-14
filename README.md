@@ -248,22 +248,22 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.12.0 focus
+## v6.13.0 focus
 
-`v6.12.0` turns the GEO Intelligence prototype into an application runtime:
-the completed audit feeds analyzers, evidence, a scorecard, roadmap, report
-artifact, graph-compatible findings, and an approval-bound task bundle.
+`v6.13.0` turns the integrated runtime into a simpler product path: a thin CLI
+submits work to the app, scanner output adapts into the canonical contract, and
+one report connects evidence, score, roadmap, tasks, graph, and verification.
 
 It adds:
 
-- one Finding/Evidence contract with source, evidence type, confidence,
-  timestamp, and verification method
-- per-analyzer runtime outputs for entity, citation, authority, and competitor
-- score profiles with validation, versioning, calibration status, and honest
-  insufficient-data behavior
-- durable operator/provider AI-visibility snapshots and history comparison
-- executable Agent Audit Pack with explicit tool limits and approval gates
-- [v6.12.0 Release Summary](./docs/en/v6120-release.md)
+- `python scripts/geo.py audit https://example.com` as a thin client to the
+  self-hosted scanner/report API
+- Unified GEO Intelligence Report for scanner and project-audit sources
+- scanner finding adapter to Canonical Finding/Evidence Model without breaking
+  historic reports
+- integration lifecycle criteria that distinguish foundation from proven E2E
+  production readiness
+- [v6.13.0 Release Summary](./docs/en/v6130-release.md)
 
 ## License
 

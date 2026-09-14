@@ -4,6 +4,7 @@
 
 | Script | Purpose | Example |
 |---|---|---|
+| `geo.py` | Thin CLI client for the self-hosted scanner and Unified GEO report API | `GEO_SCANNER_SESSION=local-dev python scripts/geo.py audit https://example.com` |
 | `generate_llms_txt.py` | Generate `llms.txt` from a sitemap | `python scripts/generate_llms_txt.py --sitemap-url https://example.com/sitemap.xml` |
 | `check-llms-txt.py` | Validate `llms.txt` structure from file or URL | `python scripts/check-llms-txt.py --file examples/sample-llms.txt` |
 | `check-robots-ai-bots.py` | Check AI/search bot access in `robots.txt` | `python scripts/check-robots-ai-bots.py --url https://example.com` |

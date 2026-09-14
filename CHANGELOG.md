@@ -1,5 +1,14 @@
 # Changelog
 
+## v6.13.0
+
+- Added a thin `geo` product CLI that calls the self-hosted API instead of
+  duplicating analyzer logic locally.
+- Added a scanner-to-canonical Finding/Evidence adapter and one Unified GEO
+  Intelligence Report for scanner and project-audit sources.
+- Added integration lifecycle acceptance criteria and an explicit disconnect
+  path for project integration configuration.
+
 ## v6.12.0
 
 - Integrated the GEO Intelligence runtime with audit runs, artifacts, reports,
