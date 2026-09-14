@@ -1,5 +1,9 @@
 # Changelog
 
+## v6.11.1
+
+- Fixed release hygiene file naming and strict Python formatting gates.
+
 ## v6.11.0
 
 - Added an AI Visibility Scenario Monitor with evidence records, query sets,

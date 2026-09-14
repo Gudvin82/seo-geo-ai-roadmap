@@ -22,7 +22,7 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 
 Latest release context:
 
-- `v6.11.0` is the current public release. It adds evidence-backed visibility
+- `v6.11.1` is the current public release. It adds evidence-backed visibility
   monitoring while preserving transparent scoring boundaries.
   page-cluster governance, draft QA, IndexNow, monitoring, and safe advice
 

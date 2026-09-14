@@ -250,7 +250,7 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.11.0
+## На чем сфокусирован v6.11.1
 
 `v6.11.0` добавляет evidence-backed AI visibility scenario monitoring и историю operating loop.
 управление связью `страница ↔ кластер`, draft QA, контролируемую дистрибуцию,

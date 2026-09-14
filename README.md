@@ -248,7 +248,7 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.11.0 focus
+## v6.11.1 focus
 
 `v6.11.0` adds evidence-backed AI visibility scenario monitoring and operating-loop history.
 page-to-cluster governance, draft QA, controlled distribution, monitoring, and
