@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gudvin82.github.io/seo-geo-ai-roadmap/contracts/geo-intelligence.schema.json",
+  "title": "GEO Intelligence Evidence Contract",
+  "type": "object",
+  "required": ["contract_version", "target", "findings", "scorecard", "evidence"],
+  "properties": {
+    "contract_version": {"type": "string"},
+    "target": {"type": "string"},
+    "findings": {"type": "array", "items": {"type": "object"}},
+    "scorecard": {"type": "object"},
+    "evidence": {"type": "array", "items": {"type": "object"}},
+    "roadmap": {"type": "array", "items": {"type": "object"}}
+  }
+}

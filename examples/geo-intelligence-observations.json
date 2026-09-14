@@ -1,0 +1,7 @@
+{
+  "target": "https://example.com",
+  "observations": [
+    {"id": "entity-org", "component": "entity_authority", "value": 82, "confidence": 0.9, "evidence_type": "verified", "source": "JSON-LD inspection", "verification_method": "validate Organization and Person facts against the page", "claim": "Organization facts are consistent"},
+    {"id": "citation-proof", "component": "citation_readiness", "value": 48, "confidence": 0.6, "evidence_type": "heuristic", "source": "content review", "verification_method": "editor review and source check", "finding": "High-intent answers need attributable evidence.", "recommendation": "Add dated primary sources and named expert attribution to priority answer blocks."}
+  ]
+}

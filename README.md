@@ -248,9 +248,10 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.9.6 focus
+## v6.10.0 focus
 
-`v6.9.6` is the live public state of the repository. It connects demand,
+`v6.10.0` adds an evidence-first GEO Intelligence Core with transparent scorecard,
+verification paths, and agent-safe audit contracts.
 page-to-cluster governance, draft QA, controlled distribution, monitoring, and
 recommendations into one reproducible approval-first lifecycle.
 

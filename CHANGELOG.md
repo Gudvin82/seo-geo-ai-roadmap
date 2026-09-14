@@ -1,5 +1,16 @@
 # Changelog
 
+## v6.11.0
+
+- Added an AI Visibility Scenario Monitor with evidence records, query sets,
+  provider/model metadata, and explicit interpretation boundaries.
+
+## v6.10.0
+
+- Added an evidence-first GEO Intelligence Core with configurable scorecard,
+  confidence, evidence typing, verification paths, and roadmap output.
+- Added a universal Agent Audit Pack and deterministic CLI commands.
+
 ## v6.9.6 — Unified Content Lifecycle
 
 - Connected GSC, Yandex Webmaster, Wordstat, competitor, and customer-research

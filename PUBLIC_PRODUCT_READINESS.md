@@ -22,7 +22,8 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 
 Latest release context:
 
-- `v6.9.6` is the current public release. It connects multi-source demand,
+- `v6.10.0` is the current public release. It adds evidence-first GEO Intelligence
+  contracts and transparent scoring boundaries.
   page-cluster governance, draft QA, IndexNow, monitoring, and safe advice
 
 ## What is production-ready today

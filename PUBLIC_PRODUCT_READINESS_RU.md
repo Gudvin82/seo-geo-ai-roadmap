@@ -22,7 +22,8 @@ enterprise SSO и SLA от автора репозитория.
 
 Контекст последнего релиза:
 
-- `v6.9.6` — текущий публичный релиз. Он соединяет multi-source demand,
+- `v6.10.0` — текущий публичный релиз. Он добавляет evidence-first GEO Intelligence
+  contracts и прозрачные границы scoring.
   page-cluster governance, draft QA, IndexNow, monitoring и safe advisor
 
 ## Что production-ready уже сегодня
