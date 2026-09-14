@@ -1,0 +1,4 @@
+[
+  {"target": "https://example.com", "query_set": "brand", "provider": "operator-import", "model": "not-applicable", "observed_at": "2026-09-14T00:00:00Z", "evidence_type": "manual-review", "result": {"mentioned": true, "query": "Example brand", "source_url": "https://example.com/evidence/1"}},
+  {"target": "https://example.com", "query_set": "comparison", "provider": "operator-import", "model": "not-applicable", "observed_at": "2026-09-14T00:00:00Z", "evidence_type": "manual-review", "result": {"mentioned": false, "query": "best example alternatives"}}
+]

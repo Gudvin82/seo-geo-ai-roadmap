@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gudvin82.github.io/seo-geo-ai-roadmap/contracts/ai-visibility-monitor.schema.json",
+  "title": "AI Visibility Scenario Monitor",
+  "type": "object",
+  "required": ["target", "query_set", "provider", "model", "observed_at", "evidence_type", "result"],
+  "properties": {
+    "target": {"type": "string"}, "query_set": {"enum": ["brand", "non-brand", "comparison", "category", "local"]},
+    "provider": {"type": "string"}, "model": {"type": "string"}, "observed_at": {"type": "string"},
+    "evidence_type": {"enum": ["verified", "provider-derived", "heuristic", "manual-review"]},
+    "result": {"type": "object"}
+  }
+}

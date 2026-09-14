@@ -250,10 +250,9 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.10.0
+## На чем сфокусирован v6.11.0
 
-`v6.10.0` добавляет evidence-first GEO Intelligence Core с прозрачным scorecard,
-verification paths и безопасными audit contracts для агентов.
+`v6.11.0` добавляет evidence-backed AI visibility scenario monitoring и историю operating loop.
 управление связью `страница ↔ кластер`, draft QA, контролируемую дистрибуцию,
 мониторинг и рекомендации в один воспроизводимый approval-first lifecycle.
 

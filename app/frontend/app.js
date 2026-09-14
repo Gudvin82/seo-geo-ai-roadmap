@@ -128,7 +128,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.10.0 evidence-first GEO Intelligence Core",
+      "v6.11.0 evidence-backed AI visibility monitoring",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -319,7 +319,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.10.0 evidence-first GEO Intelligence Core",
+      "v6.11.0 evidence-backed AI visibility monitoring",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
