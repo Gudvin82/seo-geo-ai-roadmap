@@ -248,9 +248,9 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.14.0 focus
+## v6.14.1 focus
 
-`v6.14.0` removes ambiguity between product capabilities and future work: one
+`v6.14.1` finalizes the capability-and-documentation integrity release: one
 generated matrix makes maturity explicit, calibration requires real evidence,
 and the active EN/RU documentation path is checked in CI.
 
@@ -262,7 +262,7 @@ It adds:
 - a calibration dataset protocol with case identity, dates, outcome definition,
   observation window, and evidence reference
 - canonical EN/RU documentation pairs checked on every release
-- [v6.14.0 Release Summary](./docs/en/v6140-release.md)
+- [v6.14.1 Release Summary](./docs/en/v6141-release.md)
 
 ## Capability And Score Boundaries
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## v6.14.1
+
+- Fixed capability-matrix generation in dependency-light CI environments by
+  deferring live connector imports until an actual provider sync is requested.
+
 ## v6.14.0
 
 - Added one generated, evidence-bound product capability matrix with explicit

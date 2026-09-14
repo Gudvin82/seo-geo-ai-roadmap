@@ -128,7 +128,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.14.0 evidence-bound capability matrix",
+      "v6.14.1 evidence-bound capability matrix",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -319,7 +319,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.14.0 capability matrix с evidence boundaries",
+      "v6.14.1 capability matrix с evidence boundaries",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:

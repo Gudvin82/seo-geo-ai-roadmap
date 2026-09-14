@@ -250,9 +250,10 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.14.0
+## На чем сфокусирован v6.14.1
 
-`v6.14.0` убирает двусмысленность между возможностями продукта и планами на
+`v6.14.1` завершает релиз integrity для capability и документации: он убирает
+двусмысленность между возможностями продукта и планами на
 будущее: одна сгенерированная matrix показывает зрелость, calibration требует
 реальные evidence, а актуальный EN/RU-путь по документации проверяется в CI.
 
@@ -263,7 +264,7 @@ guided или starter-first. Используйте runtime, readiness и proof 
 - protocol calibration dataset с case identity, датами, outcome definition,
   observation window и evidence reference
 - канонические EN/RU-пары документации, проверяемые на каждом релизе
-- [Сводка релиза v6.14.0](./docs/ru/v6140-release.md)
+- [Сводка релиза v6.14.1](./docs/ru/v6141-release.md)
 
 ## Границы Capability И Score
 

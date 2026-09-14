@@ -22,7 +22,7 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 
 Latest release context:
 
-- `v6.14.0` is the current public release. It adds a generated capability
+- `v6.14.1` is the current public release. It adds a generated capability
   matrix, stricter evidence-bound score calibration, and checked canonical
   EN/RU documentation routing.
 

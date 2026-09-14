@@ -5,11 +5,6 @@ import os
 from datetime import datetime
 from typing import Any
 
-from .live_connectors import (
-    ConnectorUnavailable,
-    fetch_gsc_snapshot,
-    fetch_yandex_webmaster_snapshot,
-)
 from .script_runner import run_script
 
 CONTRACT_VERSION = "v6.9.6"
@@ -1201,9 +1196,18 @@ def sync_integration_source(
     contract = integration_contract(source)
     if source == "gsc":
         try:
-            payload = fetch_gsc_snapshot(property_identifier, config)
-        except ConnectorUnavailable:
-            payload = _run_json_script("gsc_data_stub.py", "GSC starter import failed.")
+            from .live_connectors import ConnectorUnavailable, fetch_gsc_snapshot
+        except ImportError:
+            payload = _run_json_script(
+                "gsc_data_stub.py", "GSC live connector dependency is unavailable."
+            )
+        else:
+            try:
+                payload = fetch_gsc_snapshot(property_identifier, config)
+            except ConnectorUnavailable:
+                payload = _run_json_script(
+                    "gsc_data_stub.py", "GSC starter import failed."
+                )
     elif source == "ga4":
         payload = _ga4_stub()
     elif source == "google_ads":
@@ -1212,11 +1216,22 @@ def sync_integration_source(
         )
     elif source == "yandex_webmaster":
         try:
-            payload = fetch_yandex_webmaster_snapshot(property_identifier, config)
-        except ConnectorUnavailable:
-            payload = _run_json_script(
-                "yandex_data_stub.py", "Yandex Webmaster starter import failed."
+            from .live_connectors import (
+                ConnectorUnavailable,
+                fetch_yandex_webmaster_snapshot,
             )
+        except ImportError:
+            payload = _run_json_script(
+                "yandex_data_stub.py",
+                "Yandex Webmaster live connector dependency is unavailable.",
+            )
+        else:
+            try:
+                payload = fetch_yandex_webmaster_snapshot(property_identifier, config)
+            except ConnectorUnavailable:
+                payload = _run_json_script(
+                    "yandex_data_stub.py", "Yandex Webmaster starter import failed."
+                )
     elif source == "yandex_metrica":
         payload = _yandex_metrica_stub()
     elif source == "yandex_direct":
