@@ -58,7 +58,10 @@ def build_task_bundle_from_audit_run(
         tasks.append(
             {
                 "id": f"audit-{audit_run.id}-task-{index}",
-                "issue_type": finding.get("slug", finding.get("title", "audit_finding"))
+                "issue_type": finding.get(
+                    "slug",
+                    finding.get("title", finding.get("category", "audit_finding")),
+                )
                 .lower()
                 .replace(" ", "_"),
                 "severity": _severity_from_priority(finding),
@@ -76,7 +79,14 @@ def build_task_bundle_from_audit_run(
                     "workflow", "review -> patch pack -> re-measure"
                 ),
                 "suggested_owner": finding.get("owner", _owner_from_finding(finding)),
-                "evidence": [finding.get("summary", ""), finding.get("notes", "")],
+                "evidence": [
+                    finding.get("summary", finding.get("observation", "")),
+                    finding.get("notes", ""),
+                    *[
+                        item.get("observation", "")
+                        for item in finding.get("evidence", [])
+                    ],
+                ],
                 "estimated_impact": finding.get("benchmark_status", "meaningful"),
                 "status": "open",
                 "source_ref": f"audit_run:{audit_run.id}",

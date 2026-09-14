@@ -248,21 +248,22 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.11.1 focus
+## v6.12.0 focus
 
-`v6.11.0` adds evidence-backed AI visibility scenario monitoring and operating-loop history.
-page-to-cluster governance, draft QA, controlled distribution, monitoring, and
-recommendations into one reproducible approval-first lifecycle.
+`v6.12.0` turns the GEO Intelligence prototype into an application runtime:
+the completed audit feeds analyzers, evidence, a scorecard, roadmap, report
+artifact, graph-compatible findings, and an approval-bound task bundle.
 
 It adds:
 
-- normalized GSC, Yandex Webmaster, Wordstat, competitor, and research exports
-- page-to-cluster registry checks and cannibalization warnings
-- deterministic pre-publish QA and position 4-15 monitoring
-- live credential-gated IndexNow submission with honest verification boundaries
-- budget-limited advisor with no CMS write access and optional SVG cover output
-- [Content Operations Engine](./docs/en/content-operations-engine.md)
-- [v6.9.6 Release Summary](./docs/en/v696-release.md)
+- one Finding/Evidence contract with source, evidence type, confidence,
+  timestamp, and verification method
+- per-analyzer runtime outputs for entity, citation, authority, and competitor
+- score profiles with validation, versioning, calibration status, and honest
+  insufficient-data behavior
+- durable operator/provider AI-visibility snapshots and history comparison
+- executable Agent Audit Pack with explicit tool limits and approval gates
+- [v6.12.0 Release Summary](./docs/en/v6120-release.md)
 
 ## License
 

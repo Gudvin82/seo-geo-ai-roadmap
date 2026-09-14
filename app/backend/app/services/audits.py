@@ -32,6 +32,9 @@ from ..models import (
 )
 from ..providers.base import ProviderError
 from ..providers.registry import build_provider
+from .geo_intelligence import build_geo_runtime
+from .geo_intelligence import evidence as geo_evidence
+from .geo_intelligence import finding as geo_finding
 from .logging import log_event
 from .reporting import build_json_report, build_markdown_report, dumps_json
 from .retries import RetryPolicy, run_with_retry
@@ -197,22 +200,37 @@ def _finding(
         confidence=confidence,
         benchmark=benchmark,
     )
-    return {
-        "title": check_name.replace("_", " ").title(),
-        "category": check_name,
-        "severity": severity,
-        "summary": summary,
-        "recommendation": recommendation,
-        "impact": impact,
-        "effort": effort,
-        "confidence": confidence,
-        "priority_score": priority_score,
-        "priority_label": priority_label,
-        "benchmark_status": benchmark,
-        "benchmark_metric_key": benchmark_metric_key,
-        "benchmark_value": benchmark_value,
-        "notes": notes,
-    }
+    result = geo_finding(
+        category=check_name,
+        observation=summary,
+        recommendation=recommendation,
+        severity=severity,
+        priority={
+            "impact": impact,
+            "effort": effort,
+            "score": priority_score,
+            "label": priority_label,
+        },
+        evidence_items=[
+            geo_evidence(
+                observation=summary,
+                source=f"audit_check:{check_name}",
+                evidence_type="heuristic",
+                confidence=confidence / 5,
+                verification_method="configured audit check",
+                reference=notes,
+            )
+        ],
+    )
+    result.update(
+        {
+            "benchmark_status": benchmark,
+            "benchmark_metric_key": benchmark_metric_key,
+            "benchmark_value": benchmark_value,
+            "notes": notes,
+        }
+    )
+    return result
 
 
 def _benchmark_summary(
@@ -549,6 +567,20 @@ def execute_audit_run(
         raise
 
     ai_citation_score_value = _latest_sov_score(db, project.id)
+    geo_runtime = build_geo_runtime(findings)
+    _persist_artifact(
+        db,
+        audit_run=audit_run,
+        project=project,
+        settings=settings,
+        artifact_type="geo_intelligence_runtime",
+        content=dumps_json(geo_runtime),
+        fmt="json",
+        metadata={
+            "contract_version": geo_runtime["contract_version"],
+            "score_status": geo_runtime["scorecard"]["status"],
+        },
+    )
     score = overall_score(findings)
     benchmark_summary = _benchmark_summary(findings, ai_citation_score_value)
     report_markdown = build_markdown_report(

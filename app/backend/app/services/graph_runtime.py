@@ -84,17 +84,25 @@ def build_graph_from_audit_findings(
     changes = []
     for index, finding in enumerate(findings, start=1):
         finding_id = f"finding-{audit_run_id}-{index}"
-        priority = float(finding.get("priority_score", 0) or 0)
-        severity = "high" if priority >= 80 else "medium" if priority >= 50 else "low"
+        priority = float(
+            finding.get("priority_score", finding.get("priority", {}).get("score", 0))
+            or 0
+        )
+        severity = finding.get("severity") or (
+            "high" if priority >= 80 else "medium" if priority >= 50 else "low"
+        )
         nodes.append(
             {
                 "id": finding_id,
-                "label": finding.get("title", f"Finding {index}"),
+                "label": finding.get(
+                    "title", finding.get("observation", f"Finding {index}")
+                ),
                 "node_type": "finding",
                 "severity": severity,
                 "metadata": {
                     "priority_score": priority,
                     "benchmark_status": finding.get("benchmark_status", ""),
+                    "evidence_type": finding.get("evidence_type", "legacy"),
                 },
             }
         )
@@ -119,7 +127,7 @@ def build_graph_from_audit_findings(
             }
         )
         changes.append(
-            f"{finding.get('title', f'Finding {index}')} scored {priority:.0f}."
+            f"{finding.get('title', finding.get('observation', f'Finding {index}'))} scored {priority:.0f}."
         )
     return {
         "contract_version": GRAPH_CONTRACT_VERSION,

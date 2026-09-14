@@ -477,6 +477,26 @@ class SovRun(Base):
     completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
 
 
+class AiVisibilitySnapshot(Base):
+    __tablename__ = "ai_visibility_snapshots"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    workspace_id: Mapped[int] = mapped_column(ForeignKey("workspaces.id"))
+    project_id: Mapped[int] = mapped_column(ForeignKey("projects.id"))
+    target_url: Mapped[str] = mapped_column(String(2048))
+    query: Mapped[str] = mapped_column(String(1000))
+    query_set: Mapped[str] = mapped_column(String(64))
+    provider: Mapped[str] = mapped_column(String(128))
+    model: Mapped[str] = mapped_column(String(255))
+    evidence_type: Mapped[str] = mapped_column(String(32))
+    confidence: Mapped[float] = mapped_column(Float, default=0.5)
+    response_reference: Mapped[str] = mapped_column(String(2048), default="")
+    evidence_json: Mapped[str] = mapped_column(Text, default="{}")
+    snapshot_json: Mapped[str] = mapped_column(Text, default="{}")
+    observed_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
+
+
 class AuditLog(Base):
     __tablename__ = "audit_logs"
 

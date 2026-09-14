@@ -250,21 +250,22 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.11.1
+## На чем сфокусирован v6.12.0
 
-`v6.11.0` добавляет evidence-backed AI visibility scenario monitoring и историю operating loop.
-управление связью `страница ↔ кластер`, draft QA, контролируемую дистрибуцию,
-мониторинг и рекомендации в один воспроизводимый approval-first lifecycle.
+`v6.12.0` превращает GEO Intelligence prototype в runtime приложения:
+завершенный audit передает данные в analyzers, evidence, scorecard, roadmap,
+report artifact, graph-compatible findings и approval-bound task bundle.
 
 Он добавляет:
 
-- нормализованные экспорты GSC, Яндекс Вебмастера, Wordstat, competitors и research
-- проверка реестра `страница ↔ кластер` и предупреждения о каннибализации
-- детерминированный pre-publish QA и мониторинг позиций 4-15
-- live IndexNow submit с credentials и честными границами verification
-- budget-limited advisor без CMS write access и optional SVG-обложка
-- [Content Operations Engine](./docs/ru/content-operations-engine.md)
-- [Сводка релиза v6.9.6](./docs/ru/v696-release.md)
+- единый Finding/Evidence contract с source, evidence type, confidence,
+  timestamp и verification method
+- отдельные runtime-выходы entity, citation, authority и competitor analyzers
+- score profiles с validation, versioning, calibration status и честным
+  insufficient-data behavior
+- durable operator/provider AI-visibility snapshots и сравнение истории
+- executable Agent Audit Pack с явными tool limits и approval gates
+- [Сводка релиза v6.12.0](./docs/ru/v6120-release.md)
 
 ## Лицензия
 

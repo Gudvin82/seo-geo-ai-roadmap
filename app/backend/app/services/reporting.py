@@ -5,6 +5,28 @@ from datetime import datetime
 from typing import Optional
 
 
+def _finding_value(finding: dict, key: str, default: object = "n/a") -> object:
+    """Read both the v6.12 canonical contract and historical audit records."""
+    if key == "title":
+        return (
+            finding.get("title")
+            or str(finding.get("category", "finding")).replace("_", " ").title()
+        )
+    if key == "summary":
+        return finding.get("summary") or finding.get("observation", default)
+    if key == "priority_score":
+        return finding.get(
+            "priority_score", finding.get("priority", {}).get("score", default)
+        )
+    if key == "priority_label":
+        return finding.get(
+            "priority_label", finding.get("priority", {}).get("label", default)
+        )
+    if key in {"impact", "effort"}:
+        return finding.get(key, finding.get("priority", {}).get(key, default))
+    return finding.get(key, default)
+
+
 def build_markdown_report(
     language: str,
     project_name: str,
@@ -27,18 +49,19 @@ def build_markdown_report(
     sections = []
     for finding in findings:
         sections.append(
-            f"## {finding['title']}\n\n"
-            f"- Severity: {finding['severity']}\n"
-            f"- Category: {finding['category']}\n"
-            f"- {priority_label}: {finding.get('priority_label', 'n/a')} ({finding.get('priority_score', 'n/a')})\n"
+            f"## {_finding_value(finding, 'title')}\n\n"
+            f"- Severity: {_finding_value(finding, 'severity')}\n"
+            f"- Category: {_finding_value(finding, 'category')}\n"
+            f"- {priority_label}: {_finding_value(finding, 'priority_label')} ({_finding_value(finding, 'priority_score')})\n"
             f"- {benchmark_label}: {finding.get('benchmark_status', 'insufficient_data')}\n"
-            f"- {impact_label}: {finding.get('impact', 'n/a')}\n"
-            f"- {effort_label}: {finding.get('effort', 'n/a')}\n"
-            f"- {confidence_label}: {finding.get('confidence', 'n/a')}\n"
-            f"- Summary: {finding['summary']}\n"
+            f"- {impact_label}: {_finding_value(finding, 'impact')}\n"
+            f"- {effort_label}: {_finding_value(finding, 'effort')}\n"
+            f"- {confidence_label}: {_finding_value(finding, 'confidence')}\n"
+            f"- Summary: {_finding_value(finding, 'summary')}\n"
         )
     top_actions = "\n".join(
-        f"- {finding['recommendation']}" for finding in findings[:5]
+        f"- {_finding_value(finding, 'recommendation', 'Review finding')}"
+        for finding in findings[:5]
     )
     benchmark_lines = ""
     if benchmark_summary:

@@ -1289,6 +1289,47 @@ class SovRunRead(BaseModel):
     completed_at: Optional[datetime]
 
 
+class GeoIntelligenceRunRequest(BaseModel):
+    workspace_id: int
+    project_id: int
+    audit_run_id: Optional[int] = None
+    score_profile: str = "default-v1"
+    score_weights: Optional[dict[str, float]] = None
+
+
+class GeoIntelligenceRunRead(BaseModel):
+    audit_run_id: int
+    contract_version: str
+    findings: list[dict[str, Any]] = Field(default_factory=list)
+    scorecard: dict[str, Any] = Field(default_factory=dict)
+    roadmap: list[dict[str, Any]] = Field(default_factory=list)
+    report_artifact_id: Optional[int] = None
+    task_bundle: dict[str, Any] = Field(default_factory=dict)
+
+
+class AiVisibilitySnapshotCreate(BaseModel):
+    workspace_id: int
+    project_id: int
+    target_url: str
+    query: str = Field(min_length=1, max_length=1000)
+    query_set: Literal["brand", "non-brand", "comparison", "category", "local"]
+    provider: str = Field(min_length=1, max_length=128)
+    model: str = Field(min_length=1, max_length=255)
+    evidence_type: Literal["verified", "provider-derived", "heuristic", "manual-review"]
+    confidence: float = Field(ge=0, le=1)
+    response_reference: str = Field(default="", max_length=2048)
+    evidence: dict[str, Any] = Field(default_factory=dict)
+    snapshot: dict[str, Any] = Field(default_factory=dict)
+    observed_at: Optional[datetime] = None
+
+
+class AiVisibilitySnapshotRead(AiVisibilitySnapshotCreate):
+    id: int
+    observed_at: datetime
+    created_at: datetime
+    changes: dict[str, Any] = Field(default_factory=dict)
+
+
 class NotificationEndpointCreate(BaseModel):
     workspace_id: int
     channel_type: str

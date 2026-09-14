@@ -45,4 +45,14 @@ def contracts_catalog() -> list[dict[str, Any]]:
             "path": "contracts/agent-mode.schema.json",
             "purpose": "Approval-bound agent orchestration contract.",
         },
+        {
+            "id": "finding_evidence",
+            "path": "contracts/finding-evidence.schema.json",
+            "purpose": "Canonical evidence-first finding contract for audit, report, graph, and tasks.",
+        },
+        {
+            "id": "agent_audit_pack",
+            "path": "contracts/agent-audit-pack.schema.json",
+            "purpose": "Executable agent audit roles, limits, and approval gates.",
+        },
     ]

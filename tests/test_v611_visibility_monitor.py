@@ -21,5 +21,5 @@ def test_monitor_requires_real_evidence_shape() -> None:
     )
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
-    assert payload["contract_version"] == "v6.11.0"
+    assert payload["contract_version"] == "v1"
     assert payload["coverage"] == 0.5

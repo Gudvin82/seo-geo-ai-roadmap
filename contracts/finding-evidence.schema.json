@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GEO Finding and Evidence Contract",
+  "type": "object",
+  "required": ["id", "category", "observation", "evidence", "source", "evidence_type", "confidence", "timestamp", "verification_method", "recommendation", "priority"],
+  "properties": {
+    "id": {"type": "string"},
+    "category": {"type": "string"},
+    "observation": {"type": "string"},
+    "source": {"type": "string"},
+    "evidence_type": {"enum": ["verified", "provider-derived", "heuristic", "manual-review"]},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "verification_method": {"type": "string"},
+    "recommendation": {"type": "string"},
+    "priority": {"type": "object", "required": ["impact", "effort", "score", "label"]},
+    "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence"}}
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "required": ["id", "observation", "source", "evidence_type", "confidence", "timestamp", "verification_method"],
+      "properties": {
+        "id": {"type": "string"}, "observation": {"type": "string"}, "source": {"type": "string"},
+        "evidence_type": {"enum": ["verified", "provider-derived", "heuristic", "manual-review"]},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "timestamp": {"type": "string", "format": "date-time"}, "verification_method": {"type": "string"}, "reference": {"type": "string"}
+      }
+    }
+  }
+}

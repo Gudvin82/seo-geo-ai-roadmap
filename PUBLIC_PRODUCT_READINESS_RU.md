@@ -22,9 +22,8 @@ enterprise SSO и SLA от автора репозитория.
 
 Контекст последнего релиза:
 
-- `v6.11.1` — текущий публичный релиз. Он добавляет evidence-backed visibility
-  monitoring, сохраняя прозрачные границы scoring.
-  page-cluster governance, draft QA, IndexNow, monitoring и safe advisor
+- `v6.12.0` — текущий публичный релиз. Он встраивает evidence-first GEO-анализ
+  в runtime audit, report, graph и tasks, не обещая детерминированных AI citations.
 
 ## Что production-ready уже сегодня
 

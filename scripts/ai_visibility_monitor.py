@@ -43,7 +43,7 @@ def summarize(rows: list[dict]) -> dict:
         1 for row in rows if bool((row.get("result") or {}).get("mentioned"))
     )
     return {
-        "contract_version": "v6.11.0",
+        "contract_version": "v1",
         "observed_at": datetime.now(timezone.utc).isoformat(),
         "records": len(rows),
         "mentions": mentions,

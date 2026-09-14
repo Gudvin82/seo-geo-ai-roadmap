@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Executable Agent Audit Pack",
+  "type": "object",
+  "required": ["contract_version", "roles", "tools", "input", "output", "limits", "sequence", "approval_gates"],
+  "properties": {"contract_version": {"type": "string"}, "roles": {"type": "array"}, "tools": {"type": "array"}, "input": {"type": "object"}, "output": {"type": "object"}, "limits": {"type": "object"}, "sequence": {"type": "array"}, "approval_gates": {"type": "array"}}
+}

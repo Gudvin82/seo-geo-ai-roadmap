@@ -1,5 +1,13 @@
 # Changelog
 
+## v6.12.0
+
+- Integrated the GEO Intelligence runtime with audit runs, artifacts, reports,
+  task bundles, graph-compatible findings, and evidence records.
+- Added the versioned Finding/Evidence contract, validated score profiles,
+  insufficient-data handling, executable Agent Audit Pack, and durable AI
+  visibility snapshot history.
+
 ## v6.11.1
 
 - Fixed release hygiene file naming and strict Python formatting gates.

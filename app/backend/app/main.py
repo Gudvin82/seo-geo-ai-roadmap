@@ -19,6 +19,7 @@ from .api import (
     deliverables,
     exports,
     generation,
+    geo_intelligence,
     graph_runtime,
     integrations,
     notifications,
@@ -131,6 +132,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
     app.include_router(deliverables.router, prefix=settings_obj.api_prefix)
     app.include_router(exports.router, prefix=settings_obj.api_prefix)
     app.include_router(generation.router, prefix=settings_obj.api_prefix)
+    app.include_router(geo_intelligence.router, prefix=settings_obj.api_prefix)
     app.include_router(proof.router, prefix=settings_obj.api_prefix)
     app.include_router(saas.router, prefix=settings_obj.api_prefix)
     app.include_router(settings.router, prefix=settings_obj.api_prefix)

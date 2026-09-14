@@ -1,153 +1,81 @@
 #!/usr/bin/env python3
-"""Evidence-first GEO Intelligence runner.
-
-This command deliberately scores supplied observations, not claimed AI rankings.
-It is usable by agents and humans: JSON is canonical, Markdown is a rendering.
-"""
+"""CLI adapter for the same GEO runtime used by the FastAPI application."""
 
 from __future__ import annotations
 
 import argparse
 import json
-from datetime import datetime, timezone
+import sys
 from pathlib import Path
 from urllib.parse import urlparse
 
-EVIDENCE_TYPES = {"verified", "provider-derived", "heuristic", "manual-review"}
-DEFAULT_WEIGHTS = {
-    "entity_authority": 25,
-    "citation_readiness": 20,
-    "technical_accessibility": 15,
-    "content_intelligence": 15,
-    "trust_signals": 15,
-    "competitor_context": 10,
-}
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts._runtime_bootstrap import bootstrap_backend_imports  # noqa: E402
+
+bootstrap_backend_imports()
+
+from app.services.geo_intelligence import (  # noqa: E402
+    RUNNERS,
+    build_agent_audit_pack,
+    build_geo_runtime,
+    evidence,
+    finding,
+)
 
 
-def load_payload(path: str | None, target: str) -> dict:
+def load_observations(path: str | None) -> list[dict]:
     if not path:
-        return {"target": target, "observations": []}
+        return []
     payload = json.loads(Path(path).read_text(encoding="utf-8"))
-    payload.setdefault("target", target)
-    payload.setdefault("observations", [])
-    return payload
-
-
-def build_report(payload: dict, weights: dict[str, float]) -> dict:
-    evidence, findings, components = [], [], {key: [] for key in weights}
-    for index, item in enumerate(payload.get("observations", []), start=1):
-        evidence_type = item.get("evidence_type", "manual-review")
-        if evidence_type not in EVIDENCE_TYPES:
-            raise ValueError(f"Observation {index} has unsupported evidence_type.")
-        component = item.get("component", "content_intelligence")
-        if component not in components:
-            continue
-        value = max(0.0, min(100.0, float(item.get("value", 0))))
-        confidence = max(0.0, min(1.0, float(item.get("confidence", 0.5))))
-        components[component].append((value, confidence))
-        evidence.append(
-            {
-                "id": item.get("id", f"evidence-{index}"),
-                "source": item.get("source", "operator"),
-                "evidence_type": evidence_type,
-                "confidence": confidence,
-                "verification_method": item.get("verification_method", "manual review"),
-                "observed_at": item.get("observed_at"),
-                "claim": item.get("claim", ""),
-            }
-        )
-        if value < 70:
-            findings.append(
-                {
-                    "id": item.get("id", f"finding-{index}"),
-                    "component": component,
-                    "severity": "high" if value < 40 else "medium",
-                    "evidence_id": evidence[-1]["id"],
-                    "summary": item.get("finding", f"{component} needs review."),
-                    "recommendation": item.get(
-                        "recommendation",
-                        "Validate the evidence and create an approved remediation task.",
-                    ),
-                    "confidence": confidence,
-                    "evidence_type": evidence_type,
-                }
+    rows = (
+        payload.get("observations", payload) if isinstance(payload, dict) else payload
+    )
+    observations = []
+    for index, row in enumerate(rows, start=1):
+        category = str(row.get("category") or row.get("component") or "citation")
+        value = float(row.get("value", 50))
+        observations.append(
+            finding(
+                category=category,
+                observation=row.get(
+                    "finding", row.get("claim", f"Observation {index}")
+                ),
+                recommendation=row.get(
+                    "recommendation",
+                    "Validate evidence and prepare an approved remediation task.",
+                ),
+                severity="high" if value < 40 else "medium" if value < 70 else "low",
+                priority={
+                    "impact": 3,
+                    "effort": 2,
+                    "score": round(100 - value),
+                    "label": "review",
+                },
+                evidence_items=[
+                    evidence(
+                        observation=row.get(
+                            "claim", row.get("finding", f"Observation {index}")
+                        ),
+                        source=row.get("source", "operator"),
+                        evidence_type=row.get("evidence_type", "manual-review"),
+                        confidence=float(row.get("confidence", 0.5)),
+                        verification_method=row.get(
+                            "verification_method", "operator input"
+                        ),
+                        reference=row.get("reference", ""),
+                    )
+                ],
             )
-    score_components = {}
-    for name, weight in weights.items():
-        rows = components[name]
-        raw = (
-            sum(value * confidence for value, confidence in rows)
-            / sum(confidence for _, confidence in rows)
-            if rows and sum(confidence for _, confidence in rows)
-            else 0.0
         )
-        score_components[name] = {
-            "score": round(raw, 1),
-            "weight": weight,
-            "evidence_count": len(rows),
-            "status": "measured" if rows else "insufficient_data",
-        }
-    total_weight = sum(weights.values()) or 100
-    score = round(
-        sum(row["score"] * row["weight"] for row in score_components.values())
-        / total_weight,
-        1,
-    )
-    roadmap = [
-        {
-            "priority": "P0" if item["severity"] == "high" else "P1",
-            "owner": "unassigned",
-            "impact": "high" if item["severity"] == "high" else "medium",
-            "effort": "estimate_required",
-            "dependency": "evidence verification",
-            "verification": "re-run this GEO Intelligence report",
-            "task": item["recommendation"],
-        }
-        for item in findings
-    ]
-    return {
-        "contract_version": "v6.10.0",
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "target": payload.get("target"),
-        "scorecard": {
-            "score": score,
-            "weights": weights,
-            "components": score_components,
-            "boundary": "Heuristic and provider-derived signals do not guarantee AI citations, rankings, traffic, or conversions.",
-        },
-        "evidence": evidence,
-        "findings": findings,
-        "roadmap": roadmap,
-    }
-
-
-def markdown(report: dict) -> str:
-    lines = [
-        f"# GEO Intelligence Report: {report['target']}",
-        "",
-        f"- GEO score: {report['scorecard']['score']}/100",
-        "- Boundary: this is an evidence-led decision aid, not a citation or ranking guarantee.",
-        "",
-        "## Components",
-        "",
-        "| Component | Score | Evidence | Status |",
-        "| --- | ---: | ---: | --- |",
-    ]
-    lines.extend(
-        f"| {name} | {row['score']} | {row['evidence_count']} | {row['status']} |"
-        for name, row in report["scorecard"]["components"].items()
-    )
-    lines.extend(["", "## Roadmap", ""])
-    lines.extend(
-        f"- [{item['priority']}] {item['task']} Owner: {item['owner']}; verify: {item['verification']}."
-        for item in report["roadmap"]
-    )
-    return "\n".join(lines) + "\n"
+    return observations
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Run an evidence-first GEO Intelligence report."
+        description="Run the application GEO Intelligence runtime from JSON evidence."
     )
     parser.add_argument(
         "command",
@@ -156,6 +84,8 @@ def main() -> int:
             "score",
             "entity",
             "citation",
+            "authority",
+            "competitor",
             "roadmap",
             "monitor",
             "doctor",
@@ -163,10 +93,11 @@ def main() -> int:
     )
     parser.add_argument("target", nargs="?", default="https://example.com")
     parser.add_argument(
-        "--input", help="JSON observations using the GEO Intelligence contract"
+        "--input", help="JSON observations; this command never fetches a URL directly."
     )
+    parser.add_argument("--profile", default="default-v1")
     parser.add_argument(
-        "--weights", help="Optional JSON object overriding scorecard weights"
+        "--weights", help="Optional JSON object overriding a validated profile."
     )
     parser.add_argument("--format", choices=["json", "markdown"], default="json")
     args = parser.parse_args()
@@ -174,13 +105,9 @@ def main() -> int:
         print(
             json.dumps(
                 {
-                    "contract_version": "v6.10.0",
                     "status": "ready",
-                    "checks": [
-                        {"name": "python", "status": "pass"},
-                        {"name": "observations_contract", "status": "pass"},
-                    ],
-                    "boundary": "Provider credentials and browser rendering are optional capabilities.",
+                    "runtime": "app.services.geo_intelligence",
+                    "agent_pack": build_agent_audit_pack(),
                 },
                 ensure_ascii=False,
                 indent=2,
@@ -189,13 +116,26 @@ def main() -> int:
         return 0
     if not urlparse(args.target).scheme:
         raise SystemExit("Target must be an absolute URL.")
-    weights = DEFAULT_WEIGHTS | (json.loads(args.weights) if args.weights else {})
-    report = build_report(load_payload(args.input, args.target), weights)
-    print(
-        markdown(report)
-        if args.format == "markdown"
-        else json.dumps(report, ensure_ascii=False, indent=2)
-    )
+    observations = load_observations(args.input)
+    if args.command in RUNNERS:
+        result = RUNNERS[args.command](observations)
+    else:
+        runtime = build_geo_runtime(
+            observations,
+            args.profile,
+            json.loads(args.weights) if args.weights else None,
+        )
+        result = (
+            runtime
+            if args.command != "roadmap"
+            else {"roadmap": runtime["roadmap"], "scorecard": runtime["scorecard"]}
+        )
+    if args.format == "markdown":
+        print(
+            f"# GEO runtime: {args.target}\n\n```json\n{json.dumps(result, ensure_ascii=False, indent=2)}\n```"
+        )
+    else:
+        print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
 
 
