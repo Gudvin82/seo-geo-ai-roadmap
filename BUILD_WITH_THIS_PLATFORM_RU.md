@@ -4,7 +4,7 @@
 
 ## Что внешний ИИ должен сделать
 
-1. Прочитать `README_RU.md`, `START_HERE_FOR_AI_RU.md` и `EVALUATE_THIS_REPO_FIRST_RU.md`
+1. Прочитать `README_RU.md`, `DOCS_INDEX_RU.md` и `START_HERE_FOR_AI_RU.md`
 2. Прочитать generation contracts в `contracts/*.schema.json`
 3. Определить, что нужно:
    - self-hosted

@@ -1,6 +1,6 @@
 # Documentation Index
 
-This is the shortest path through the repository after `v6.13.0`.
+This is the shortest path through the repository after `v6.14.0`.
 
 ## Start in this order
 
@@ -13,6 +13,7 @@ This is the shortest path through the repository after `v6.13.0`.
 7. [START_HERE_FOR_AI.md](./START_HERE_FOR_AI.md) or [WALKTHROUGH.md](./WALKTHROUGH.md)
 8. [AI_TASK_PACKS.md](./AI_TASK_PACKS.md)
 9. [docs/i18n-status.md](./docs/i18n-status.md)
+10. [Generated Capability Matrix](./docs/generated/capability-matrix.md)
 
 ## Pick your mode
 
@@ -41,9 +42,11 @@ This is the shortest path through the repository after `v6.13.0`.
 - [Content Operations Engine](./docs/en/content-operations-engine.md)
 - [Privacy-First Measurement](./docs/en/privacy-first-measurement.md)
 - [Scoring Calibration](./docs/en/scoring-calibration.md)
+- [Generated EN/RU Parity Manifest](./docs/generated/canonical-docs-parity.json)
 - [Independent Case Submission](./docs/en/independent-case-submission.md)
 - [Canonical Documentation Map](./DOCS_CANONICAL.md)
 - [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
+- [v6.14.0 Release Summary](./docs/en/v6140-release.md)
 - [v6.9.6 Release Summary](./docs/en/v696-release.md)
 
 ## Core proof and boundaries
@@ -52,6 +55,7 @@ This is the shortest path through the repository after `v6.13.0`.
 - Scoring transparency: [SCORING_EXPLAINED.md](./SCORING_EXPLAINED.md)
 - Real cases: [REAL_CASES.md](./REAL_CASES.md)
 - Archive policy: [DOCS_ARCHIVE.md](./DOCS_ARCHIVE.md)
+- Capability maturity: [docs/generated/capability-matrix.md](./docs/generated/capability-matrix.md)
 - Architecture note: [ARCHITECTURE_NOTE.md](./ARCHITECTURE_NOTE.md)
 - Support path: [SUPPORT.md](./SUPPORT.md)
 - Security path: [SECURITY.md](./SECURITY.md)
@@ -63,6 +67,7 @@ This is the shortest path through the repository after `v6.13.0`.
 
 - canonical release history: [CHANGELOG.md](./CHANGELOG.md)
 - historical reasoning and release notes: [DOCS_ARCHIVE.md](./DOCS_ARCHIVE.md)
+- archived evaluation and old launch wrappers: [`archive/`](./archive/)
 
 Rule:
 

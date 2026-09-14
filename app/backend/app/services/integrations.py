@@ -866,37 +866,11 @@ def all_integration_contracts() -> list[dict[str, Any]]:
 
 
 def integration_capability_matrix() -> dict[str, Any]:
-    """Expose the real maturity of every shipped integration surface."""
-    live_read_only = {"gsc", "yandex_webmaster", "crux"}
-    rows = []
-    for contract in all_integration_contracts():
-        source_type = contract["source_type"]
-        if source_type in live_read_only:
-            delivery_state = "live_read_only_with_operator_credentials"
-        elif source_type in {"indexnow"}:
-            delivery_state = "live_push_with_operator_credentials"
-        else:
-            delivery_state = "starter_or_operator_guided"
-        rows.append(
-            {
-                "source_type": source_type,
-                "label": contract["label"],
-                "delivery_state": delivery_state,
-                "readiness_tier": contract["readiness_tier"],
-                "required_env_vars": contract["required_env_vars"],
-                "capabilities": contract["capabilities"],
-                "limitations": (
-                    "Requires operator-owned credentials; no tokens are stored by the app."
-                    if source_type in live_read_only | {"indexnow"}
-                    else "Returns a starter payload or follows an operator-guided import path until a live connector is implemented."
-                ),
-            }
-        )
-    return {
-        "contract_version": CONTRACT_VERSION,
-        "generated_from": "app.backend.app.services.integrations.INTEGRATION_CONTRACTS",
-        "rows": rows,
-    }
+    """Compatibility wrapper for the canonical product capability registry."""
+    # Import lazily because the registry reads this module's contract catalog.
+    from .capabilities import product_capability_matrix
+
+    return product_capability_matrix()
 
 
 def integration_runtime_profile(

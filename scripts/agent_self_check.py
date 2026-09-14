@@ -140,8 +140,8 @@ def main() -> int:
                     "docs/ru/fact-drift-monitoring.md",
                     "COMMERCIAL_ROADMAP.md",
                     "COMMERCIAL_ROADMAP_RU.md",
-                    "EVALUATE_THIS_REPO.md",
-                    "EVALUATE_THIS_REPO_RU.md",
+                    "archive/legacy-evaluation/EVALUATE_THIS_REPO.md",
+                    "archive/legacy-evaluation/EVALUATE_THIS_REPO_RU.md",
                 ]
             ),
         },

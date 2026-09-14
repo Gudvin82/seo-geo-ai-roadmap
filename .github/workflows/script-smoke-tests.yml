@@ -48,3 +48,5 @@ jobs:
           python scripts/scheduled_check_runner.py --project-id 1 --check-type llms --frequency weekly --schedule-mode github_actions
           python scripts/geo_command_surface.py llmstxt --format json
           python scripts/bootstrap_self_hosted.py --mode demo --format json
+          python scripts/capability_matrix.py --format json
+          python scripts/docs_parity_check.py --check

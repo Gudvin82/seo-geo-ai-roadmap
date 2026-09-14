@@ -1,6 +1,6 @@
 # Карта документации
 
-Это самый короткий путь по репозиторию после `v6.13.0`.
+Это самый короткий путь по репозиторию после `v6.14.0`.
 
 ## Идите в таком порядке
 
@@ -13,6 +13,7 @@
 7. [START_HERE_FOR_AI_RU.md](./START_HERE_FOR_AI_RU.md) или [WALKTHROUGH_RU.md](./WALKTHROUGH_RU.md)
 8. [AI_TASK_PACKS_RU.md](./AI_TASK_PACKS_RU.md)
 9. [docs/i18n-status.md](./docs/i18n-status.md)
+10. [Сгенерированная Capability Matrix](./docs/generated/capability-matrix.md)
 
 ## Выберите свой режим
 
@@ -41,9 +42,11 @@
 - [Content Operations Engine](./docs/ru/content-operations-engine.md)
 - [Privacy-First измерения](./docs/ru/privacy-first-measurement.md)
 - [Калибровка scoring](./docs/ru/scoring-calibration.md)
+- [Сгенерированный EN/RU parity manifest](./docs/generated/canonical-docs-parity.json)
 - [Подача независимого кейса](./docs/ru/independent-case-submission.md)
 - [Каноническая карта документации](./DOCS_CANONICAL.md)
 - [GEO and AI Operations Playbook](./docs/ru/geo-ai-operations-playbook.md)
+- [Сводка релиза v6.14.0](./docs/ru/v6140-release.md)
 - [Сводка релиза v6.9.6](./docs/ru/v696-release.md)
 
 ## Основа доказательств и границ
@@ -52,6 +55,7 @@
 - Прозрачность scoring: [SCORING_EXPLAINED_RU.md](./SCORING_EXPLAINED_RU.md)
 - Реальные кейсы: [REAL_CASES_RU.md](./REAL_CASES_RU.md)
 - Политика архива: [DOCS_ARCHIVE_RU.md](./DOCS_ARCHIVE_RU.md)
+- Зрелость capability: [docs/generated/capability-matrix.md](./docs/generated/capability-matrix.md)
 - Архитектурная справка: [ARCHITECTURE_NOTE_RU.md](./ARCHITECTURE_NOTE_RU.md)
 - Путь поддержки: [SUPPORT.md](./SUPPORT.md)
 - Путь безопасности: [SECURITY.md](./SECURITY.md)
@@ -63,6 +67,7 @@
 
 - каноническая история релизов: [CHANGELOG.md](./CHANGELOG.md)
 - историческая логика и release notes: [DOCS_ARCHIVE_RU.md](./DOCS_ARCHIVE_RU.md)
+- архивные evaluation и старые launch wrappers: [`archive/`](./archive/)
 
 Правило:
 

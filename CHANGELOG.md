@@ -1,5 +1,15 @@
 # Changelog
 
+## v6.14.0
+
+- Added one generated, evidence-bound product capability matrix with explicit
+  `production_ready`, `connected`, `foundation`, and `stub` states for core
+  runtime surfaces and every shipped integration.
+- Strengthened score calibration so a readiness score cannot be framed as a
+  prediction without independent, dated, comparable evidence records.
+- Consolidated canonical EN/RU documentation routing, added a generated parity
+  manifest, and archived superseded evaluation and launch-wrapper documents.
+
 ## v6.13.0
 
 - Added a thin `geo` product CLI that calls the self-hosted API instead of

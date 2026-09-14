@@ -1,7 +1,9 @@
-"""Assess whether heuristic scores align with measured outcomes.
+"""Assess whether readiness scores align with observed outcomes.
 
-The script does not invent benchmarks. It only reports calibration after an
-operator supplies dated, consented before/after records.
+The utility never turns a readiness score into a prediction of rankings,
+citations, or revenue. It reports the quality of an operator-supplied,
+dated evidence dataset and only exposes a calibration signal when the sample
+is sufficiently independent and comparable.
 """
 
 from __future__ import annotations
@@ -25,6 +27,48 @@ def correlation(xs: list[float], ys: list[float]) -> float | None:
     return numerator / denominator if denominator else None
 
 
+RECOMMENDED_COLUMNS = {
+    "case_id",
+    "heuristic_score",
+    "observed_outcome",
+    "outcome_definition",
+    "observed_at",
+    "observation_window_days",
+    "evidence_reference",
+}
+
+
+def parse_number(row: dict[str, str], column: str, row_number: int) -> float:
+    try:
+        return float(row[column])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError(
+            f"Row {row_number} has no valid numeric {column!r} value."
+        ) from exc
+
+
+def dataset_quality(rows: list[dict[str, str]], headers: set[str]) -> dict[str, object]:
+    missing = sorted(RECOMMENDED_COLUMNS - headers)
+    case_ids = [row.get("case_id", "").strip() for row in rows]
+    distinct_case_ids = {case_id for case_id in case_ids if case_id}
+    outcomes = {
+        row.get("outcome_definition", "").strip()
+        for row in rows
+        if row.get("outcome_definition", "").strip()
+    }
+    return {
+        "required_columns_present": not missing,
+        "missing_recommended_columns": missing,
+        "distinct_case_count": len(distinct_case_ids),
+        "outcome_definitions": sorted(outcomes),
+        "comparable_outcome_definition": len(outcomes) == 1,
+        "dated_observations": all(row.get("observed_at", "").strip() for row in rows),
+        "evidence_references": all(
+            row.get("evidence_reference", "").strip() for row in rows
+        ),
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Calibrate heuristic score records.")
     parser.add_argument(
@@ -33,18 +77,51 @@ def main() -> int:
     parser.add_argument("--format", choices=("json", "markdown"), default="json")
     args = parser.parse_args()
     with Path(args.input).open(encoding="utf-8", newline="") as handle:
-        rows = list(csv.DictReader(handle))
-    scores = [float(row["heuristic_score"]) for row in rows]
-    outcomes = [float(row["observed_outcome"]) for row in rows]
+        reader = csv.DictReader(handle)
+        rows = list(reader)
+        headers = set(reader.fieldnames or [])
+    if not rows:
+        raise ValueError("Calibration input has no records.")
+    scores = [
+        parse_number(row, "heuristic_score", index) for index, row in enumerate(rows, 2)
+    ]
+    outcomes = [
+        parse_number(row, "observed_outcome", index)
+        for index, row in enumerate(rows, 2)
+    ]
     value = correlation(scores, outcomes)
+    quality = dataset_quality(rows, headers)
+    is_independent_enough = quality["distinct_case_count"] >= 30
+    is_comparable = bool(
+        quality["required_columns_present"]
+        and quality["comparable_outcome_definition"]
+        and quality["dated_observations"]
+        and quality["evidence_references"]
+    )
+    status = (
+        "calibration_signal_available"
+        if len(rows) >= 30
+        and is_independent_enough
+        and is_comparable
+        and value is not None
+        else "insufficient_evidence"
+    )
     payload = {
+        "metric_type": "explainable_readiness_score",
         "record_count": len(rows),
         "correlation": value,
         "minimum_recommended_records": 30,
-        "status": "insufficient_evidence"
-        if len(rows) < 30
-        else "calibration_signal_available",
-        "boundary": "Correlation does not prove causation or guarantee outcomes.",
+        "status": status,
+        "dataset_quality": quality,
+        "boundary": (
+            "Correlation does not prove causation, predict rankings or AI citations, "
+            "or guarantee business outcomes."
+        ),
+        "next_step": (
+            "Collect independent, dated records with one outcome definition and an evidence reference."
+            if status == "insufficient_evidence"
+            else "Review segment-level effects and publish null or negative results beside positive results."
+        ),
     }
     if args.format == "json":
         print(json.dumps(payload, ensure_ascii=False, indent=2))

@@ -10,17 +10,32 @@ def test_capability_matrix_marks_live_and_starter_boundaries() -> None:
     result = run_script_main("scripts/capability_matrix.py", "--format", "json")
     assert result.returncode == 0
     payload = json.loads(result.stdout)
-    rows = {row["source_type"]: row for row in payload["rows"]}
-    assert rows["gsc"]["delivery_state"] == "live_read_only_with_operator_credentials"
-    assert rows["ga4"]["delivery_state"] == "starter_or_operator_guided"
+    rows = {row["id"]: row for row in payload["rows"]}
+    assert rows["integration:gsc"]["level"] == "foundation"
+    assert rows["integration:ga4"]["level"] == "stub"
+    assert rows["scanner"]["level"] == "production_ready"
+
+
+def test_generated_capability_and_docs_parity_artifacts_are_current() -> None:
+    capability = run_script_main(
+        "scripts/capability_matrix.py",
+        "--format",
+        "json",
+        "--output",
+        "docs/generated/capability-matrix.json",
+        "--check",
+    )
+    assert capability.returncode == 0, capability.stderr
+    parity = run_script_main("scripts/docs_parity_check.py", "--check")
+    assert parity.returncode == 0, parity.stderr
 
 
 def test_version_check_accepts_explicit_active_version() -> None:
     result = run_script_main(
-        "scripts/version_consistency_check.py", "--expected", "6.13.0"
+        "scripts/version_consistency_check.py", "--expected", "6.14.0"
     )
     assert result.returncode == 0
-    assert "version-consistency-ok:6.13.0" in result.stdout
+    assert "version-consistency-ok:6.14.0" in result.stdout
 
 
 def test_scoring_calibration_marks_small_samples_as_insufficient(

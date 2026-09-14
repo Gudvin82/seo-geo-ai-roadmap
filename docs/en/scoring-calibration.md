@@ -1,14 +1,24 @@
 # Scoring Calibration
 
-Heuristic scores are useful for triage, not proof of business impact. Use
-`scripts/scoring_calibration.py` with a consented CSV containing:
+The GEO score is an explainable readiness score for prioritization. It is not
+a prediction of rankings, AI citations, traffic, leads, or revenue.
+
+Use `scripts/scoring_calibration.py` only with consented, dated evidence:
 
 ```csv
-heuristic_score,observed_outcome
-62,14
-78,21
+case_id,heuristic_score,observed_outcome,outcome_definition,observed_at,observation_window_days,evidence_reference
+site-001,62,14,organic_click_change_percent,2026-09-01,28,docs/en/proof-pack-site-001.md
 ```
 
-Keep the same outcome definition and observation window across records. Treat
-fewer than 30 independent records as insufficient evidence, and publish
-negative or null results beside positive ones.
+Start from [the template](../../examples/scoring-calibration-template.csv):
+
+```bash
+python scripts/scoring_calibration.py examples/scoring-calibration-template.csv
+```
+
+The tool reports `insufficient_evidence` unless it has at least 30 independent
+cases, one comparable outcome definition, dated observations, and a proof
+reference per record. A reported correlation is a calibration signal only; it
+does not prove causation. Publish negative and null findings with positive
+ones, retain raw provider exports where consent permits, and segment results
+by market or site type before changing score weights.

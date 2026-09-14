@@ -27,6 +27,12 @@ jobs:
       - name: Verify version consistency
         run: python scripts/version_consistency_check.py
 
+      - name: Verify generated capability and docs parity artifacts
+        run: |
+          python scripts/capability_matrix.py --format json --output docs/generated/capability-matrix.json --check
+          python scripts/capability_matrix.py --format markdown --output docs/generated/capability-matrix.md --check
+          python scripts/docs_parity_check.py --check
+
       - name: Verify docs build
         run: python -m mkdocs build
 

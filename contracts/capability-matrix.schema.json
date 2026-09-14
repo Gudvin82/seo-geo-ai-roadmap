@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Product Capability Matrix",
+  "type": "object",
+  "required": ["schema_version", "levels", "level_boundaries", "summary", "rows"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "levels": {
+      "type": "array",
+      "items": {"enum": ["production_ready", "connected", "foundation", "stub"]}
+    },
+    "level_boundaries": {"type": "object"},
+    "summary": {"type": "object"},
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "level", "surface", "evidence", "boundary"],
+        "properties": {
+          "id": {"type": "string"},
+          "label": {"type": "string"},
+          "level": {"enum": ["production_ready", "connected", "foundation", "stub"]},
+          "surface": {"type": "string"},
+          "evidence": {"type": "string"},
+          "boundary": {"type": "string"}
+        }
+      }
+    }
+  }
+}

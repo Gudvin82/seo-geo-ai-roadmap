@@ -27,6 +27,8 @@
 - исторические release summaries
 - version-specific rollout notes
 - промежуточные документы с ответами на reviews и upgrade-path
+- `archive/legacy-evaluation/*`: reviewer prompts и evaluation kits, замененные `DOCS_INDEX_RU.md` и `PUBLIC_PRODUCT_READINESS_RU.md`
+- `archive/legacy-launch/*`: launch wrappers, замененные поддерживаемым `LAUNCH_PACK_RU.md`
 
 ## Зачем вообще хранить архив
 
@@ -53,3 +55,4 @@
 - root entrypoints объясняют текущий продукт
 - archive files остаются для evidence и истории
 - README должен сначала вести в current docs, а не в historical slices
+- канонические EN/RU-документы перечислены в `DOCS_CANONICAL_RU.md` и проверяются `scripts/docs_parity_check.py`

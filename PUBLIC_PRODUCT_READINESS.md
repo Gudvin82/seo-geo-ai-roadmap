@@ -22,8 +22,9 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 
 Latest release context:
 
-- `v6.13.0` is the current public release. It adds a one-command product path
-  and unified report while preserving evidence provenance and honest limits.
+- `v6.14.0` is the current public release. It adds a generated capability
+  matrix, stricter evidence-bound score calibration, and checked canonical
+  EN/RU documentation routing.
 
 ## What is production-ready today
 
@@ -31,8 +32,9 @@ Latest release context:
 - human-readable docs plus machine-readable contracts
 - self-hosted FastAPI app with frontend, auth, workspaces, projects, reports,
   artifacts, and exports
-- first-class SEO intelligence surface for keyword, competitor, backlink, and
-  rank data
+- classic SEO workflow and data contracts; use the generated capability matrix
+  to see which keyword, competitor, backlink, and rank sources are live versus
+  starter-only
 - scanner intake flow with passive, ownership-gated active, and full-scan modes
 - governed CMS workflow with preview, approval, apply, verify, and rollback
 - provider-backed AI layer for cloud and local runtimes
@@ -53,6 +55,13 @@ Latest release context:
 These paths are already inside the repo and can be deployed under your own
 control, but they still expect operator review, infrastructure ownership, and
 production decisions from the team using the repo.
+
+## Capability source of truth
+
+Read the generated [Product Capability Matrix](./docs/generated/capability-matrix.md)
+before evaluating any connector or product claim. It classifies every shipped
+surface as `production_ready`, `connected`, `foundation`, or `stub` and links
+each classification to operational evidence and a boundary.
 
 ## What is not part of the current promise
 

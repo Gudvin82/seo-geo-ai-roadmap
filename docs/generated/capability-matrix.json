@@ -1,0 +1,636 @@
+{
+  "schema_version": "v1",
+  "generated_from": "app.backend.app.services.capabilities",
+  "levels": [
+    "production_ready",
+    "connected",
+    "foundation",
+    "stub"
+  ],
+  "level_boundaries": {
+    "production_ready": "Implemented, tested in the self-hosted runtime, and safe to operate within documented limits.",
+    "connected": "Uses the running application runtime but still depends on operator configuration or an external service.",
+    "foundation": "Contracts and controlled paths exist; operator-owned end-to-end proof is still required.",
+    "stub": "Shape-only starter payload or scaffold. It is not live data or a production connector."
+  },
+  "summary": {
+    "total": 38,
+    "by_level": {
+      "production_ready": 3,
+      "connected": 1,
+      "foundation": 6,
+      "stub": 28
+    }
+  },
+  "rows": [
+    {
+      "id": "geo_cli",
+      "label": "geo audit / score / roadmap / monitor CLI",
+      "level": "connected",
+      "surface": "cli",
+      "evidence": "CLI smoke test plus API-backed endpoint tests",
+      "boundary": "Requires a running self-hosted app and the appropriate scanner session or API token."
+    },
+    {
+      "id": "integration:alice_ai_visibility",
+      "label": "Alice AI Visibility in Yandex Search",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "alice_ai_visibility",
+      "required_env_vars": [
+        "ALICE_AI_VISIBILITY_TOKEN"
+      ],
+      "capabilities": [
+        "weekly share-of-voice tracking",
+        "query and page example review",
+        "competitor/source overlap review",
+        "RU executive dashboard support"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:backlink_intelligence",
+      "label": "Backlink and Authority Intelligence",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "backlink_intelligence",
+      "required_env_vars": [
+        "BACKLINK_INTELLIGENCE_TOKEN"
+      ],
+      "capabilities": [
+        "referring domain baseline",
+        "authority trend tracking",
+        "lost-link review",
+        "entity citation support"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:crux",
+      "label": "Chrome UX Report",
+      "level": "foundation",
+      "surface": "integration",
+      "source_type": "crux",
+      "required_env_vars": [
+        "CRUX_API_KEY"
+      ],
+      "capabilities": [
+        "real-user CWV field data",
+        "origin or URL scope tracking",
+        "executive dashboard support",
+        "release regression context"
+      ],
+      "evidence": "Runtime connector and credential-gated path exist.",
+      "boundary": "Do not claim a connected or production-ready integration without an operator-owned E2E proof record."
+    },
+    {
+      "id": "integration:competitor_intelligence",
+      "label": "Competitor Intelligence",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "competitor_intelligence",
+      "required_env_vars": [
+        "COMPETITOR_INTELLIGENCE_TOKEN"
+      ],
+      "capabilities": [
+        "content gap import",
+        "trust and proof gap detection",
+        "GEO surface gap detection",
+        "authority overlap support"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:dzen",
+      "label": "Dzen Distribution Intelligence",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "dzen",
+      "required_env_vars": [
+        "DZEN_TOKEN"
+      ],
+      "capabilities": [
+        "reach and click tracking",
+        "topic-demand discovery",
+        "RU distribution context"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:google_ads",
+      "label": "Google Ads",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "google_ads",
+      "required_env_vars": [
+        "GOOGLE_ADS_DEVELOPER_TOKEN"
+      ],
+      "capabilities": [
+        "campaign import",
+        "ad group import",
+        "search terms import",
+        "cost and conversion tracking",
+        "brand vs non-brand demand context"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:ga4",
+      "label": "Google Analytics 4",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "ga4",
+      "required_env_vars": [
+        "GA4_SERVICE_ACCOUNT_JSON"
+      ],
+      "capabilities": [
+        "sessions import",
+        "engagement import",
+        "top-page metrics",
+        "executive dashboard rollup"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:google_business_profile",
+      "label": "Google Business Profile",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "google_business_profile",
+      "required_env_vars": [
+        "GBP_SERVICE_ACCOUNT_JSON"
+      ],
+      "capabilities": [
+        "ratings and reviews import",
+        "calls and direction-request context",
+        "local SEO proof support"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:merchant_center",
+      "label": "Google Merchant Center",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "merchant_center",
+      "required_env_vars": [
+        "MERCHANT_CENTER_SERVICE_ACCOUNT_JSON"
+      ],
+      "capabilities": [
+        "feed diagnostics import",
+        "product approval tracking",
+        "e-commerce issue visibility"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:gsc",
+      "label": "Google Search Console",
+      "level": "foundation",
+      "surface": "integration",
+      "source_type": "gsc",
+      "required_env_vars": [
+        "GSC_ACCESS_TOKEN"
+      ],
+      "capabilities": [
+        "top queries import",
+        "top pages import",
+        "search visibility baseline",
+        "report attachment"
+      ],
+      "evidence": "Runtime connector and credential-gated path exist.",
+      "boundary": "Do not claim a connected or production-ready integration without an operator-owned E2E proof record."
+    },
+    {
+      "id": "integration:indexnow",
+      "label": "IndexNow",
+      "level": "foundation",
+      "surface": "integration",
+      "source_type": "indexnow",
+      "required_env_vars": [
+        "INDEXNOW_KEY"
+      ],
+      "capabilities": [
+        "fresh URL submission",
+        "batch diagnostics",
+        "indexation acceleration support"
+      ],
+      "evidence": "Runtime connector and credential-gated path exist.",
+      "boundary": "Do not claim a connected or production-ready integration without an operator-owned E2E proof record."
+    },
+    {
+      "id": "integration:instagram_facebook_organic",
+      "label": "Instagram or Facebook Organic",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "instagram_facebook_organic",
+      "required_env_vars": [
+        "META_GRAPH_TOKEN"
+      ],
+      "capabilities": [
+        "reach import",
+        "engagement tracking",
+        "site-click context"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:keyword_research",
+      "label": "Keyword Research Intelligence",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "keyword_research",
+      "required_env_vars": [
+        "KEYWORD_RESEARCH_TOKEN"
+      ],
+      "capabilities": [
+        "keyword snapshot import",
+        "intent cluster coverage",
+        "brand vs non-brand demand baseline",
+        "opportunity keyword review"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:linkedin_ads",
+      "label": "LinkedIn Ads",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "linkedin_ads",
+      "required_env_vars": [
+        "LINKEDIN_ADS_TOKEN"
+      ],
+      "capabilities": [
+        "campaign spend import",
+        "lead and CPL tracking",
+        "B2B distribution context"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:meta_ads",
+      "label": "Meta Ads",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "meta_ads",
+      "required_env_vars": [
+        "META_ADS_TOKEN"
+      ],
+      "capabilities": [
+        "campaign spend import",
+        "lead and CPL tracking",
+        "retargeting context"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:rank_tracking",
+      "label": "Rank Tracking and SERP Visibility",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "rank_tracking",
+      "required_env_vars": [
+        "RANK_TRACKING_TOKEN"
+      ],
+      "capabilities": [
+        "tracked-query import",
+        "rank movement review",
+        "SERP feature coverage",
+        "weekly visibility trend support"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:reddit_mentions",
+      "label": "Reddit Mentions",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "reddit_mentions",
+      "required_env_vars": [
+        "REDDIT_MONITOR_TOKEN"
+      ],
+      "capabilities": [
+        "community mention tracking",
+        "sentiment context",
+        "content opportunity detection"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:rutube",
+      "label": "RuTube Analytics",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "rutube",
+      "required_env_vars": [
+        "RUTUBE_TOKEN"
+      ],
+      "capabilities": [
+        "video metrics import",
+        "watch-time context",
+        "RU audience demand signals"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:telegram_ads",
+      "label": "Telegram Ads or Channel Analytics",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "telegram_ads",
+      "required_env_vars": [
+        "TELEGRAM_ADS_TOKEN"
+      ],
+      "capabilities": [
+        "channel reach import",
+        "click tracking",
+        "community demand context"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:telegram_channels",
+      "label": "Telegram Channel Intelligence",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "telegram_channels",
+      "required_env_vars": [
+        "TELEGRAM_CHANNEL_TOKEN"
+      ],
+      "capabilities": [
+        "channel reach import",
+        "reply and forward tracking",
+        "content opportunity mining",
+        "site-click and lead context"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:threads",
+      "label": "Threads Intelligence",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "threads",
+      "required_env_vars": [
+        "THREADS_TOKEN"
+      ],
+      "capabilities": [
+        "discussion performance import",
+        "question cluster detection",
+        "site-click context"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:tiktok_organic",
+      "label": "TikTok Organic",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "tiktok_organic",
+      "required_env_vars": [
+        "TIKTOK_ORGANIC_TOKEN"
+      ],
+      "capabilities": [
+        "video performance import",
+        "comment-derived content opportunities",
+        "site-click context"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:vk_ads",
+      "label": "VK Ads",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "vk_ads",
+      "required_env_vars": [
+        "VK_ADS_TOKEN"
+      ],
+      "capabilities": [
+        "campaign spend import",
+        "lead and CPL tracking",
+        "RU paid distribution context"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:vk_organic",
+      "label": "VK Organic Community Intelligence",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "vk_organic",
+      "required_env_vars": [
+        "VK_ORGANIC_TOKEN"
+      ],
+      "capabilities": [
+        "community post performance",
+        "comment-derived FAQ mining",
+        "RU market messaging context",
+        "site-click tracking"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:x_ads",
+      "label": "X Ads",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "x_ads",
+      "required_env_vars": [
+        "X_ADS_TOKEN"
+      ],
+      "capabilities": [
+        "campaign spend import",
+        "click and CPL tracking",
+        "thought-leadership amplification context"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:x_organic",
+      "label": "X Organic Intelligence",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "x_organic",
+      "required_env_vars": [
+        "X_ORGANIC_TOKEN"
+      ],
+      "capabilities": [
+        "post performance import",
+        "mention tracking",
+        "content opportunity detection",
+        "community demand context"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:yandex_business",
+      "label": "Yandex Business",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "yandex_business",
+      "required_env_vars": [
+        "YANDEX_BUSINESS_TOKEN"
+      ],
+      "capabilities": [
+        "rating and review import",
+        "maps action context",
+        "RU local SEO proof support"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:yandex_direct",
+      "label": "Yandex Direct",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "yandex_direct",
+      "required_env_vars": [
+        "YANDEX_DIRECT_TOKEN"
+      ],
+      "capabilities": [
+        "campaign baseline import",
+        "brand-demand context",
+        "paid-vs-organic comparison",
+        "landing-page alignment support"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:yandex_metrica",
+      "label": "Yandex Metrica",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "yandex_metrica",
+      "required_env_vars": [
+        "YANDEX_METRICA_TOKEN"
+      ],
+      "capabilities": [
+        "visit import",
+        "goal conversion import",
+        "top-page metrics",
+        "RU executive dashboard support"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:yandex_neuro",
+      "label": "Yandex Neuro and AI Readiness",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "yandex_neuro",
+      "required_env_vars": [
+        "YANDEX_NEURO_TOKEN"
+      ],
+      "capabilities": [
+        "YandexAdditional readiness tracking",
+        "RU entity readiness review",
+        "trust and answer-block diagnostics",
+        "AI discoverability narrative support"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "integration:yandex_webmaster",
+      "label": "Yandex Webmaster",
+      "level": "foundation",
+      "surface": "integration",
+      "source_type": "yandex_webmaster",
+      "required_env_vars": [
+        "YANDEX_WEBMASTER_TOKEN"
+      ],
+      "capabilities": [
+        "top queries import",
+        "top pages import",
+        "regional discoverability baseline",
+        "RU deliverable support"
+      ],
+      "evidence": "Runtime connector and credential-gated path exist.",
+      "boundary": "Do not claim a connected or production-ready integration without an operator-owned E2E proof record."
+    },
+    {
+      "id": "integration:youtube",
+      "label": "YouTube Analytics",
+      "level": "stub",
+      "surface": "integration",
+      "source_type": "youtube",
+      "required_env_vars": [
+        "YOUTUBE_ANALYTICS_TOKEN"
+      ],
+      "capabilities": [
+        "video metrics import",
+        "watch-time context",
+        "site-click tracking"
+      ],
+      "evidence": "Starter payload or operator-guided import path is shipped.",
+      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+    },
+    {
+      "id": "score_calibration",
+      "label": "Readiness-score calibration",
+      "level": "foundation",
+      "surface": "methodology",
+      "evidence": "dated consented-data calibration utility and validation tests",
+      "boundary": "No validated external benchmark exists until an adequate independent dataset is supplied."
+    },
+    {
+      "id": "ai_visibility_monitoring",
+      "label": "AI visibility history",
+      "level": "foundation",
+      "surface": "runtime",
+      "evidence": "provider evidence snapshot contracts and history storage",
+      "boundary": "Provider-derived observations must be collected with an operator-authorized provider path."
+    },
+    {
+      "id": "canonical_finding_evidence",
+      "label": "Canonical Finding/Evidence model",
+      "level": "production_ready",
+      "surface": "runtime",
+      "evidence": "GEO runtime, report, task, graph, and API integration tests",
+      "boundary": "Evidence types preserve provenance; heuristic evidence is not provider verification."
+    },
+    {
+      "id": "scanner",
+      "label": "Self-hosted URL scanner",
+      "level": "production_ready",
+      "surface": "runtime",
+      "evidence": "scanner job tests and authenticated result access controls",
+      "boundary": "A self-hosted operator owns deployment, rate limits, and target authorization."
+    },
+    {
+      "id": "unified_geo_report",
+      "label": "Unified GEO Intelligence Report",
+      "level": "production_ready",
+      "surface": "runtime",
+      "evidence": "project-audit and scanner adapter report tests",
+      "boundary": "The report explains readiness and evidence; it does not guarantee rankings or AI citations."
+    }
+  ]
+}

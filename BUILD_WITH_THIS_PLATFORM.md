@@ -4,7 +4,7 @@ Use this repository as a platform, not only as a document set.
 
 ## What an external AI should do
 
-1. Read `README.md`, `START_HERE_FOR_AI.md`, and `EVALUATE_THIS_REPO_FIRST.md`
+1. Read `README.md`, `DOCS_INDEX.md`, and `START_HERE_FOR_AI.md`
 2. Read the generation contracts in `contracts/*.schema.json`
 3. Detect whether the target is:
    - self-hosted

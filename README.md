@@ -248,22 +248,33 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.13.0 focus
+## v6.14.0 focus
 
-`v6.13.0` turns the integrated runtime into a simpler product path: a thin CLI
-submits work to the app, scanner output adapts into the canonical contract, and
-one report connects evidence, score, roadmap, tasks, graph, and verification.
+`v6.14.0` removes ambiguity between product capabilities and future work: one
+generated matrix makes maturity explicit, calibration requires real evidence,
+and the active EN/RU documentation path is checked in CI.
 
 It adds:
 
-- `python scripts/geo.py audit https://example.com` as a thin client to the
-  self-hosted scanner/report API
-- Unified GEO Intelligence Report for scanner and project-audit sources
-- scanner finding adapter to Canonical Finding/Evidence Model without breaking
-  historic reports
-- integration lifecycle criteria that distinguish foundation from proven E2E
-  production readiness
-- [v6.13.0 Release Summary](./docs/en/v6130-release.md)
+- generated capability artifacts for API, docs, and release CI
+- strict distinction between `production_ready`, `connected`, `foundation`,
+  and `stub` surfaces
+- a calibration dataset protocol with case identity, dates, outcome definition,
+  observation window, and evidence reference
+- canonical EN/RU documentation pairs checked on every release
+- [v6.14.0 Release Summary](./docs/en/v6140-release.md)
+
+## Capability And Score Boundaries
+
+- [Product Capability Matrix](./docs/generated/capability-matrix.md) is generated
+  from the runtime registry and classifies every shipped surface as
+  `production_ready`, `connected`, `foundation`, or `stub`.
+- [Score Calibration](./docs/en/scoring-calibration.md) defines the GEO score as
+  an explainable readiness signal for prioritization, not a prediction of
+  rankings, traffic, revenue, or AI citations.
+- [Canonical Documentation Map](./DOCS_CANONICAL.md) and the generated
+  [EN/RU parity manifest](./docs/generated/canonical-docs-parity.json) identify
+  the current documentation path and verify that its active language pairs exist.
 
 ## License
 

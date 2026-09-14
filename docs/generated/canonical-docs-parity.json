@@ -1,0 +1,83 @@
+{
+  "schema_version": "v1",
+  "generated_from": "scripts/docs_parity_check.py",
+  "summary": {
+    "canonical_topics": 12,
+    "paired": 12,
+    "missing_pair": 0
+  },
+  "rows": [
+    {
+      "topic": "Product entry",
+      "en_path": "README.md",
+      "ru_path": "README_RU.md",
+      "status": "paired"
+    },
+    {
+      "topic": "Documentation index",
+      "en_path": "DOCS_INDEX.md",
+      "ru_path": "DOCS_INDEX_RU.md",
+      "status": "paired"
+    },
+    {
+      "topic": "Canonical documentation map",
+      "en_path": "DOCS_CANONICAL.md",
+      "ru_path": "DOCS_CANONICAL_RU.md",
+      "status": "paired"
+    },
+    {
+      "topic": "Methodology",
+      "en_path": "METHODOLOGY.md",
+      "ru_path": "METHODOLOGY_RU.md",
+      "status": "paired"
+    },
+    {
+      "topic": "Scoring",
+      "en_path": "SCORING_EXPLAINED.md",
+      "ru_path": "SCORING_EXPLAINED_RU.md",
+      "status": "paired"
+    },
+    {
+      "topic": "Scoring calibration",
+      "en_path": "docs/en/scoring-calibration.md",
+      "ru_path": "docs/ru/scoring-calibration.md",
+      "status": "paired"
+    },
+    {
+      "topic": "Public readiness",
+      "en_path": "PUBLIC_PRODUCT_READINESS.md",
+      "ru_path": "PUBLIC_PRODUCT_READINESS_RU.md",
+      "status": "paired"
+    },
+    {
+      "topic": "Product boundary",
+      "en_path": "WHAT_THIS_PROJECT_IS_NOT.md",
+      "ru_path": "WHAT_THIS_PROJECT_IS_NOT_RU.md",
+      "status": "paired"
+    },
+    {
+      "topic": "Human onboarding",
+      "en_path": "WALKTHROUGH.md",
+      "ru_path": "WALKTHROUGH_RU.md",
+      "status": "paired"
+    },
+    {
+      "topic": "AI agent onboarding",
+      "en_path": "START_HERE_FOR_AI.md",
+      "ru_path": "START_HERE_FOR_AI_RU.md",
+      "status": "paired"
+    },
+    {
+      "topic": "Case evidence",
+      "en_path": "REAL_CASES.md",
+      "ru_path": "REAL_CASES_RU.md",
+      "status": "paired"
+    },
+    {
+      "topic": "Archive policy",
+      "en_path": "DOCS_ARCHIVE.md",
+      "ru_path": "DOCS_ARCHIVE_RU.md",
+      "status": "paired"
+    }
+  ]
+}

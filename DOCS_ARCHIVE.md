@@ -27,6 +27,8 @@ These remain useful, but are not the first stop for newcomers:
 - historical release summaries
 - version-specific rollout notes
 - intermediate upgrade-response documents
+- `archive/legacy-evaluation/*` reviewer prompts and evaluation kits superseded by `DOCS_INDEX.md` and `PUBLIC_PRODUCT_READINESS.md`
+- `archive/legacy-launch/*` launch wrappers superseded by the maintained `LAUNCH_PACK.md`
 
 ## Why keep archive materials at all
 
@@ -53,3 +55,4 @@ From `v6.0.0` onward:
 - root entrypoints explain the current product
 - archive files remain available for evidence and history
 - README should route newcomers into current docs first, not historical slices
+- canonical EN/RU documents are listed in `DOCS_CANONICAL.md` and checked with `scripts/docs_parity_check.py`

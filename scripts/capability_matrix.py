@@ -1,4 +1,4 @@
-"""Generate the public integration capability matrix from the runtime registry."""
+"""Generate the public product capability matrix from the runtime registry."""
 
 from __future__ import annotations
 
@@ -10,41 +10,65 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "app" / "backend"))
 
-from app.services.integrations import integration_capability_matrix  # noqa: E402
+from app.services.capabilities import product_capability_matrix  # noqa: E402
 
 
 def markdown(payload: dict) -> str:
     lines = [
-        "# Integration Capability Matrix",
+        "# Product Capability Matrix",
         "",
-        "Generated from the runtime registry. `starter_or_operator_guided` is not a live API claim.",
+        "Generated from the canonical runtime registry. A maturity label is an evidence-bound operational status, not a marketing claim.",
         "",
-        "| Surface | Delivery state | Credentials | Boundary |",
-        "| --- | --- | --- | --- |",
+        "## Levels",
+        "",
     ]
+    for level in payload["levels"]:
+        lines.append(f"- `{level}`: {payload['level_boundaries'][level]}")
+    lines.extend(
+        [
+            "",
+            "## Surfaces",
+            "",
+            "| Surface | Capability | Status | Evidence | Boundary |",
+            "| --- | --- | --- | --- | --- |",
+        ]
+    )
     for row in payload["rows"]:
-        credentials = ", ".join(row["required_env_vars"]) or "none"
         lines.append(
-            f"| {row['label']} | {row['delivery_state']} | {credentials} | {row['limitations']} |"
+            f"| {row['surface']} | {row['label']} | `{row['level']}` | {row['evidence']} | {row['boundary']} |"
         )
     return "\n".join(lines) + "\n"
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Generate integration capability metadata."
+        description="Generate evidence-bound product capability metadata."
     )
     parser.add_argument("--format", choices=("json", "markdown"), default="json")
     parser.add_argument("--output")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Fail unless the selected output file exactly matches generated content.",
+    )
     args = parser.parse_args()
-    payload = integration_capability_matrix()
+    if args.check and not args.output:
+        parser.error("--check requires --output")
+    payload = product_capability_matrix()
     output = (
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
         if args.format == "json"
         else markdown(payload)
     )
     if args.output:
-        Path(args.output).write_text(output, encoding="utf-8")
+        path = Path(args.output)
+        if args.check:
+            if not path.exists() or path.read_text(encoding="utf-8") != output:
+                print(f"capability-matrix-out-of-date:{path}", file=sys.stderr)
+                return 1
+        else:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(output, encoding="utf-8")
     else:
         print(output, end="")
     return 0

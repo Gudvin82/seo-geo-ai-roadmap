@@ -16,7 +16,7 @@
 https://github.com/Gudvin82/seo-geo-ai-roadmap
 
 Твоя задача:
-1. Сначала прочитать README_RU.md, AGENTS.md и EVALUATE_THIS_REPO_FIRST_RU.md.
+1. Сначала прочитать README_RU.md, DOCS_INDEX_RU.md и AGENTS.md.
 2. Развернуть стек локально или в self-hosted режиме.
 3. Скопировать .env.example в .env и заполнить только минимально нужные значения.
 4. Выполнить make up

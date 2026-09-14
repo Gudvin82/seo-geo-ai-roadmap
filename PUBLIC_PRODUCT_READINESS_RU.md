@@ -22,8 +22,9 @@ enterprise SSO и SLA от автора репозитория.
 
 Контекст последнего релиза:
 
-- `v6.13.0` — текущий публичный релиз. Он добавляет one-command product path и
-  единый отчет, сохраняя provenance evidence и честные границы.
+- `v6.14.0` — текущий публичный релиз. Он добавляет generated capability matrix,
+  более строгую evidence-bound калибровку score и проверяемый канонический
+  EN/RU-путь по документации.
 
 ## Что production-ready уже сегодня
 
@@ -31,8 +32,8 @@ enterprise SSO и SLA от автора репозитория.
 - человекочитаемые docs и machine-readable contracts
 - self-hosted FastAPI app с frontend, auth, workspaces, projects, reports,
   artifacts и exports
-- first-class SEO intelligence слой для keyword, competitor, backlink и rank
-  данных
+- classic SEO workflow и data contracts; смотрите generated capability matrix,
+  чтобы отличать live и starter-only источники keyword, competitor, backlink и rank
 - scanner intake flow с passive, ownership-gated active и full scan modes
 - governed CMS workflow с preview, approval, apply, verify и rollback
 - provider-backed AI layer для cloud и local runtimes
@@ -53,6 +54,13 @@ enterprise SSO и SLA от автора репозитория.
 Эти направления уже лежат внутри репозитория и могут быть развернуты под вашим
 контролем, но они все еще требуют operator review, своей инфраструктуры и
 production-решений от команды, которая использует репозиторий.
+
+## Источник Правды По Capability
+
+Перед оценкой любого коннектора или product claim прочитайте сгенерированную
+[Product Capability Matrix](./docs/generated/capability-matrix.md). Она относит
+каждую поставляемую поверхность к `production_ready`, `connected`, `foundation`
+или `stub` и показывает operational evidence и границу для каждой оценки.
 
 ## Что не входит в текущее обещание
 

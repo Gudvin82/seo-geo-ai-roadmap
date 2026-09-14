@@ -16,7 +16,7 @@ Repository:
 https://github.com/Gudvin82/seo-geo-ai-roadmap
 
 Your job:
-1. Read README.md, AGENTS.md, and EVALUATE_THIS_REPO_FIRST.md first.
+1. Read README.md, DOCS_INDEX.md, and AGENTS.md first.
 2. Deploy the stack locally or self-hosted.
 3. Copy .env.example to .env and fill only the minimum required values.
 4. Run make up

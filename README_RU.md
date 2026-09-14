@@ -250,22 +250,32 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.13.0
+## На чем сфокусирован v6.14.0
 
-`v6.13.0` превращает интегрированный runtime в более понятный product path:
-thin CLI передает работу приложению, scanner output адаптируется к каноническому
-контракту, а единый отчет связывает evidence, score, roadmap, tasks, graph и verification.
+`v6.14.0` убирает двусмысленность между возможностями продукта и планами на
+будущее: одна сгенерированная matrix показывает зрелость, calibration требует
+реальные evidence, а актуальный EN/RU-путь по документации проверяется в CI.
 
 Он добавляет:
 
-- `python scripts/geo.py audit https://example.com` как thin client к
-  self-hosted scanner/report API
-- Unified GEO Intelligence Report для scanner и project-audit sources
-- scanner finding adapter к Canonical Finding/Evidence Model без поломки
-  исторических reports
-- integration lifecycle criteria, которые разделяют foundation и доказанную
-  E2E production readiness
-- [Сводка релиза v6.13.0](./docs/ru/v6130-release.md)
+- generated capability artifacts для API, docs и release CI
+- строгое разделение `production_ready`, `connected`, `foundation` и `stub`
+- protocol calibration dataset с case identity, датами, outcome definition,
+  observation window и evidence reference
+- канонические EN/RU-пары документации, проверяемые на каждом релизе
+- [Сводка релиза v6.14.0](./docs/ru/v6140-release.md)
+
+## Границы Capability И Score
+
+- [Product Capability Matrix](./docs/generated/capability-matrix.md) генерируется
+  из одного runtime registry и относит каждую поставляемую поверхность к
+  `production_ready`, `connected`, `foundation` или `stub`.
+- [Калибровка scoring](./docs/ru/scoring-calibration.md) фиксирует GEO score как
+  объяснимый readiness-сигнал для приоритизации, а не прогноз позиций, трафика,
+  выручки или AI-цитирований.
+- [Каноническая карта документации](./DOCS_CANONICAL_RU.md) и сгенерированный
+  [EN/RU parity manifest](./docs/generated/canonical-docs-parity.json) показывают
+  актуальный путь по документации и проверяют наличие активных языковых пар.
 
 ## Лицензия
 
