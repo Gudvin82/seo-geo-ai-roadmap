@@ -318,12 +318,13 @@ def test_workspace_project_and_audit_flow(
         headers=auth_headers,
     )
     assert keyword_integration.status_code == 200
+    # Paid DataForSEO connectors must not silently fall back to starter data.
     assert (
         client.post(
             f"/api/v1/integrations/{keyword_integration.json()['id']}/sync",
             headers=auth_headers,
         ).status_code
-        == 200
+        == 424
     )
 
     competitor_integration = client.post(
@@ -345,7 +346,7 @@ def test_workspace_project_and_audit_flow(
             f"/api/v1/integrations/{competitor_integration.json()['id']}/sync",
             headers=auth_headers,
         ).status_code
-        == 200
+        == 424
     )
 
     backlink_integration = client.post(
@@ -367,7 +368,7 @@ def test_workspace_project_and_audit_flow(
             f"/api/v1/integrations/{backlink_integration.json()['id']}/sync",
             headers=auth_headers,
         ).status_code
-        == 200
+        == 424
     )
 
     rank_integration = client.post(
@@ -389,7 +390,7 @@ def test_workspace_project_and_audit_flow(
             f"/api/v1/integrations/{rank_integration.json()['id']}/sync",
             headers=auth_headers,
         ).status_code
-        == 200
+        == 424
     )
 
     social_integration = client.post(
@@ -744,12 +745,12 @@ def test_workspace_project_and_audit_flow(
     assert executive_dashboard.json()["weekly_narrative"]
     assert executive_dashboard.json()["benchmark_overlays"]
     assert executive_dashboard.json()["metrics"]["ru_geo_score"] >= 0
-    assert executive_dashboard.json()["metrics"]["tracked_keywords"] > 0
+    assert executive_dashboard.json()["metrics"]["tracked_keywords"] == 0
     assert (
         executive_dashboard.json()["comparison_metrics"]["seo_intelligence"][
             "tracked_competitors"
         ]
-        > 0
+        == 0
     )
 
     integration_detail = client.get(
@@ -988,7 +989,7 @@ def test_workspace_project_and_audit_flow(
     )
     assert seo_intelligence.status_code == 200
     assert seo_intelligence.json()["connected_surfaces"]
-    assert seo_intelligence.json()["scorecard"]["tracked_keywords"] > 0
+    assert seo_intelligence.json()["scorecard"]["tracked_keywords"] == 0
     assert seo_intelligence.json()["practical_toolkit"]
 
     generation_manifest = client.post(

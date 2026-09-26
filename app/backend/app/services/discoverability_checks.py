@@ -9,8 +9,8 @@ from dataclasses import dataclass
 from html.parser import HTMLParser
 from typing import Optional
 
+from ..version import APP_VERSION
 from .scan_security import safe_fetch_url_bytes, safe_fetch_url_text
-from .version import APP_VERSION
 
 CHECKER_USER_AGENT = f"Discoverability-Checks/{APP_VERSION}"
 DEFAULT_TIMEOUT_SECONDS = 15
