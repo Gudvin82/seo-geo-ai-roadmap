@@ -248,21 +248,26 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.14.1 focus
+## v6.15.0 focus
 
-`v6.14.1` finalizes the capability-and-documentation integrity release: one
-generated matrix makes maturity explicit, calibration requires real evidence,
-and the active EN/RU documentation path is checked in CI.
+`v6.15.0` adds credential-gated classic SEO data from DataForSEO, reusable
+project research context, and an authenticated read-only MCP surface over saved
+platform data.
 
 It adds:
 
-- generated capability artifacts for API, docs, and release CI
-- strict distinction between `production_ready`, `connected`, `foundation`,
-  and `stub` surfaces
-- a calibration dataset protocol with case identity, dates, outcome definition,
-  observation window, and evidence reference
-- canonical EN/RU documentation pairs checked on every release
-- [v6.14.1 Release Summary](./docs/en/v6141-release.md)
+- four paid, read-only DataForSEO flows for keyword metrics, live SERP, domain
+  competitors, and backlink summaries
+- these initial DataForSEO flows use Google datasets; they do not supply Yandex
+  search volume or Yandex SERP results
+- explicit paid-request opt-in, a best-effort per-connection daily budget guard, request limits,
+  TTL caching, cost/provenance metadata, and canonical provider-derived evidence
+- saved project context for competitors, goals, key pages, and seed keywords
+- project-scoped MCP tools for unified reports, tasks, evidence, integrations,
+  project context, and AI visibility history; MCP calls never trigger provider
+  requests
+- [DataForSEO and MCP Setup](./docs/en/dataforseo-integration.md)
+- [v6.15.0 Release Summary](./docs/en/v6150-release.md)
 
 ## Capability And Score Boundaries
 

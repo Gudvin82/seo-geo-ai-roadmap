@@ -30,6 +30,7 @@ nav:
   - Discoverability Coverage: coverage.md
   - Validator: validator.md
   - API Overview: api.md
+  - DataForSEO and MCP: dataforseo-mcp.md
   - Operator Mode: operator-mode.md
   - Scripts: scripts.md
   - Checklists: checklists.md

@@ -1,6 +1,6 @@
 # Карта документации
 
-Это самый короткий путь по репозиторию после `v6.14.1`.
+Это самый короткий путь по репозиторию после `v6.15.0`.
 
 ## Идите в таком порядке
 
@@ -42,11 +42,12 @@
 - [Content Operations Engine](./docs/ru/content-operations-engine.md)
 - [Privacy-First измерения](./docs/ru/privacy-first-measurement.md)
 - [Калибровка scoring](./docs/ru/scoring-calibration.md)
+- [Интеграция DataForSEO и MCP](./docs/ru/dataforseo-integration.md)
 - [Сгенерированный EN/RU parity manifest](./docs/generated/canonical-docs-parity.json)
 - [Подача независимого кейса](./docs/ru/independent-case-submission.md)
 - [Каноническая карта документации](./DOCS_CANONICAL.md)
 - [GEO and AI Operations Playbook](./docs/ru/geo-ai-operations-playbook.md)
-- [Сводка релиза v6.14.1](./docs/ru/v6141-release.md)
+- [Сводка релиза v6.15.0](./docs/ru/v6150-release.md)
 - [Сводка релиза v6.9.6](./docs/ru/v696-release.md)
 
 ## Основа доказательств и границ

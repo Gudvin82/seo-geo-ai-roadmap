@@ -128,7 +128,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.14.1 evidence-bound capability matrix",
+      "v6.15.0 DataForSEO + project-scoped MCP",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -202,6 +202,13 @@ const translations = {
     auditPreset: "Audit preset",
     saveProject: "Save project",
     projectList: "Project list",
+    researchContextTitle: "Reusable research context",
+    selectProjectForContext: "Select a project to edit its research context.",
+    saveResearchContext: "Save research context",
+    contextCompetitors: "Competitor domains, one per line",
+    contextGoals: "Research goals, one per line",
+    contextKeyPages: "Key pages, one URL per line",
+    contextKeywords: "Seed keywords, one per line",
     factsTitle: "Brand truth center",
     createFacts: "Create facts profile",
     projectId: "Project ID",
@@ -221,6 +228,18 @@ const translations = {
     createIntegration: "Create integration",
     integrationSource: "Source",
     propertyId: "Property / counter ID",
+    dataforseoNotice: "DataForSEO live requests are paid. Set credentials in the backend environment. The local daily budget is best-effort, not a hard provider cap.",
+    dataforseoDocs: "Setup and billing boundaries",
+    dataforseoLocation: "Search location",
+    dataforseoLanguage: "Language code",
+    dataforseoKeywords: "Keywords, comma-separated",
+    dataforseoQuery: "SERP query",
+    dataforseoBudget: "Approved daily budget (USD)",
+    dataforseoRequests: "Maximum paid requests per day",
+    dataforseoTtl: "Cache lifetime (seconds)",
+    dataforseoConsent: "I approve billable DataForSEO requests for this project",
+    dataforseoSync: "Run paid sync",
+    dataforseoPaidConfirm: "This starts a paid DataForSEO API request. The exact charge may vary. Continue?",
     saveIntegration: "Save integration",
     integrationList: "Integration list",
     cmsTitle: "CMS connectors and writeback gates",
@@ -319,7 +338,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.14.1 capability matrix с evidence boundaries",
+      "v6.15.0 DataForSEO + project-scoped MCP",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:
@@ -393,6 +412,13 @@ const translations = {
     auditPreset: "Audit preset",
     saveProject: "Сохранить проект",
     projectList: "Список проектов",
+    researchContextTitle: "Контекст исследований проекта",
+    selectProjectForContext: "Выберите проект, чтобы редактировать его контекст исследований.",
+    saveResearchContext: "Сохранить контекст",
+    contextCompetitors: "Домены конкурентов, по одному на строку",
+    contextGoals: "Цели исследований, по одной на строку",
+    contextKeyPages: "Ключевые страницы, по одному URL на строку",
+    contextKeywords: "Стартовые ключевые фразы, по одной на строку",
     factsTitle: "Brand truth center",
     createFacts: "Создать facts profile",
     projectId: "ID проекта",
@@ -412,6 +438,18 @@ const translations = {
     createIntegration: "Создать интеграцию",
     integrationSource: "Источник",
     propertyId: "Property / counter ID",
+    dataforseoNotice: "Live-запросы DataForSEO платные. Настройте credentials в окружении backend. Локальный дневной бюджет best-effort, а не жесткий лимит провайдера.",
+    dataforseoDocs: "Настройка и правила расходов",
+    dataforseoLocation: "Регион поиска",
+    dataforseoLanguage: "Код языка",
+    dataforseoKeywords: "Ключевые запросы через запятую",
+    dataforseoQuery: "Запрос для проверки SERP",
+    dataforseoBudget: "Одобренный дневной бюджет (USD)",
+    dataforseoRequests: "Максимум платных запросов в день",
+    dataforseoTtl: "Время кеширования (секунды)",
+    dataforseoConsent: "Разрешаю платные запросы DataForSEO для этого проекта",
+    dataforseoSync: "Запустить платную синхронизацию",
+    dataforseoPaidConfirm: "Будет отправлен платный запрос DataForSEO. Точная стоимость может отличаться. Продолжить?",
     saveIntegration: "Сохранить интеграцию",
     integrationList: "Список интеграций",
     cmsTitle: "CMS connectors и writeback-gates",
@@ -535,6 +573,10 @@ function applyTranslations() {
       node.textContent = dict[key];
     }
   });
+  const dataForSeoDocs = $("#dataforseo-docs");
+  if (dataForSeoDocs) {
+    dataForSeoDocs.href = `https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/${state.language === "ru" ? "ru" : "en"}/dataforseo-integration.md`;
+  }
 }
 
 function splitCsv(value) {
@@ -1131,6 +1173,7 @@ function projectCard(project) {
     setStatus();
     log(`Project #${project.id} selected.`);
     await Promise.all([
+      refreshProjectResearchContext(),
       refreshReportsAndArtifacts(),
       refreshIntegrations(),
       refreshCmsConnectors(),
@@ -1176,7 +1219,30 @@ async function refreshProjects() {
   }
   state.projects = await apiRequest(`/projects?workspace_id=${state.selectedWorkspaceId}`);
   renderCards("#project-list", state.projects, projectCard);
+  if (state.selectedProjectId && state.projects.some((project) => String(project.id) === state.selectedProjectId)) {
+    await refreshProjectResearchContext();
+  }
   renderOverview();
+}
+
+async function refreshProjectResearchContext() {
+  const form = $("#project-context-form");
+  const status = $("#project-context-status");
+  const fields = ["competitors", "goals", "key_pages", "seed_keywords"];
+  if (!state.token || !state.selectedProjectId) {
+    form.reset();
+    fields.forEach((name) => { form.elements[name].disabled = true; });
+    form.querySelector("button[type='submit']").disabled = true;
+    status.textContent = currentDictionary().selectProjectForContext;
+    return;
+  }
+  fields.forEach((name) => { form.elements[name].disabled = false; });
+  form.querySelector("button[type='submit']").disabled = false;
+  const context = await apiRequest(`/projects/${state.selectedProjectId}/research-context`);
+  fields.forEach((name) => {
+    form.elements[name].value = (context[name] || []).join("\n");
+  });
+  status.textContent = `${state.language === "ru" ? "Выбран проект" : "Selected project"} #${context.project_id} · ${context.market} · ${context.language}`;
 }
 
 async function refreshFacts() {
@@ -1242,14 +1308,23 @@ async function refreshIntegrations() {
   state.integrationContracts = contracts.contracts || [];
   state.integrationRuntimeCenter = runtimeCenter || {};
   state.integrationHealthCenter = healthCenter || {};
-  renderCards("#integration-list", state.integrationConnections, (row) =>
-    simpleCard(row.label, [
+  renderCards("#integration-list", state.integrationConnections, (row) => {
+    const card = simpleCard(row.label, [
       `${row.source_type} · #${row.id}`,
       row.property_identifier || "starter property",
       row.last_sync_status || "not synced yet",
       `${row.readiness_tier} · ${row.credential_status}`,
-    ]),
-  );
+    ]);
+    if (["keyword_research", "rank_tracking", "competitor_intelligence", "backlink_intelligence"].includes(row.source_type)) {
+      const syncButton = document.createElement("button");
+      syncButton.type = "button";
+      syncButton.className = "ghost-button";
+      syncButton.dataset.integrationSync = String(row.id);
+      syncButton.textContent = currentDictionary().dataforseoSync;
+      card.append(syncButton);
+    }
+    return card;
+  });
   $("#integration-contracts").textContent = JSON.stringify(
     state.integrationContracts,
     null,
@@ -1679,6 +1754,26 @@ async function handleProjectCreate(event) {
   setStatus();
 }
 
+async function handleProjectResearchContextSave(event) {
+  event.preventDefault();
+  if (!state.selectedProjectId) {
+    throw new Error(currentDictionary().selectProjectForContext);
+  }
+  const payload = {};
+  ["competitors", "goals", "key_pages", "seed_keywords"].forEach((name) => {
+    payload[name] = event.currentTarget.elements[name].value
+      .split(/\r?\n/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+  });
+  await apiRequest(`/projects/${state.selectedProjectId}/research-context`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+  log(`Research context saved for project #${state.selectedProjectId}.`);
+  await refreshProjectResearchContext();
+}
+
 async function handleOrganizationCreate(event) {
   event.preventDefault();
   const payload = formPayload(event.currentTarget);
@@ -1752,18 +1847,105 @@ async function handlePromptSetCreate(event) {
 
 async function handleIntegrationCreate(event) {
   event.preventDefault();
-  const payload = formPayload(event.currentTarget);
+  const form = event.currentTarget;
+  const payload = formPayload(form);
   payload.workspace_id = Number(payload.workspace_id);
   payload.project_id = Number(payload.project_id);
   payload.config = {};
+  const dataForSeoFlows = new Set([
+    "keyword_research",
+    "rank_tracking",
+    "competitor_intelligence",
+    "backlink_intelligence",
+  ]);
+  const usesDataForSeo = dataForSeoFlows.has(payload.source_type);
+  if (usesDataForSeo) {
+    const values = new FormData(form);
+    if (!values.has("dataforseo_consent")) {
+      throw new Error("Explicit approval is required before saving a billable DataForSEO integration.");
+    }
+    const budget = Number(payload.dataforseo_budget);
+    const maxRequests = Number(payload.dataforseo_max_requests);
+    const cacheTtl = Number(payload.dataforseo_cache_ttl);
+    if (!Number.isFinite(budget) || budget <= 0 || !Number.isInteger(maxRequests) || maxRequests < 1 || maxRequests > 100) {
+      throw new Error("Enter a positive daily budget and a request limit from 1 to 100.");
+    }
+    if (!Number.isInteger(cacheTtl) || cacheTtl < 60 || cacheTtl > 86400) {
+      throw new Error("Cache lifetime must be between 60 and 86400 seconds.");
+    }
+    payload.credentials_env_var = "DATAFORSEO_LOGIN,DATAFORSEO_PASSWORD";
+    payload.config = {
+      allow_billable_requests: true,
+      approved_daily_budget_usd: budget,
+      max_requests_per_day: maxRequests,
+      cache_ttl_seconds: cacheTtl,
+      location_name: payload.dataforseo_location.trim(),
+      language_code: payload.dataforseo_language.trim(),
+    };
+    if (
+      ["keyword_research", "rank_tracking", "competitor_intelligence"].includes(payload.source_type)
+      && !payload.config.location_name
+    ) {
+      throw new Error("Select a search location before enabling this DataForSEO flow.");
+    }
+    if (payload.source_type === "keyword_research") {
+      payload.config.keywords = splitCsv(payload.dataforseo_keywords);
+      if (payload.config.keywords.length > 30) {
+        throw new Error("Keyword research is limited to 30 keywords per request.");
+      }
+      if (!payload.config.keywords.length) {
+        throw new Error("Enter at least one keyword for keyword research.");
+      }
+    }
+    if (["competitor_intelligence", "backlink_intelligence"].includes(payload.source_type)) {
+      if (!payload.property_identifier.trim()) {
+        const project = state.projects.find((item) => item.id === payload.project_id);
+        try {
+          payload.property_identifier = new URL(project?.website_url).hostname.replace(/^www\./, "");
+        } catch {
+          throw new Error("Enter the target domain in Property / counter ID.");
+        }
+      }
+    }
+    if (payload.source_type === "rank_tracking") {
+      payload.config.keyword = payload.dataforseo_query.trim();
+      if (!payload.config.keyword) {
+        throw new Error("Enter a query for the live SERP snapshot.");
+      }
+    }
+  }
+  ["dataforseo_location", "dataforseo_language", "dataforseo_keywords", "dataforseo_query", "dataforseo_budget", "dataforseo_max_requests", "dataforseo_cache_ttl", "dataforseo_consent"].forEach((key) => delete payload[key]);
   const row = await apiRequest("/integrations", {
     method: "POST",
     body: JSON.stringify(payload),
   });
-  await apiRequest(`/integrations/${row.id}/sync`, { method: "POST" });
-  log(`Integration ${payload.label} created and synced.`);
-  event.currentTarget.reset();
-  await refreshIntegrations();
+  try {
+    await apiRequest(`/integrations/${row.id}/sync`, { method: "POST" });
+    log(`Integration ${payload.label} created and synced.`);
+  } catch (error) {
+    log(`Integration ${payload.label} was saved, but sync failed: ${error.message}`, "warning");
+  } finally {
+    form.reset();
+    toggleDataForSeoOptions();
+    await refreshIntegrations();
+  }
+}
+
+function toggleDataForSeoOptions() {
+  const select = $("#integration-form [name='source_type']");
+  const options = $("#dataforseo-options");
+  if (select && options) {
+    const flows = new Set([
+      "keyword_research",
+      "rank_tracking",
+      "competitor_intelligence",
+      "backlink_intelligence",
+    ]);
+    options.hidden = !flows.has(select.value);
+    options.querySelectorAll("[data-dataforseo-flow]").forEach((field) => {
+      field.hidden = field.dataset.dataforseoFlow !== select.value;
+    });
+  }
 }
 
 async function handleCmsCreate(event) {
@@ -1920,6 +2102,7 @@ async function bootstrapAuthedState() {
   if (state.selectedProjectId) {
     await Promise.all([
       refreshFacts(),
+      refreshProjectResearchContext(),
       refreshProviders(),
       refreshIntegrations(),
       refreshCmsConnectors(),
@@ -1948,6 +2131,9 @@ function installEventListeners() {
   $("#login-form").addEventListener("submit", handleLogin);
   $("#workspace-form").addEventListener("submit", handleWorkspaceCreate);
   $("#project-form").addEventListener("submit", handleProjectCreate);
+  $("#project-context-form").addEventListener("submit", (event) =>
+    handleProjectResearchContextSave(event).catch((error) => log(error.message, "warning")),
+  );
   $("#organization-form").addEventListener("submit", handleOrganizationCreate);
   $("#tenant-profile-form-v52").addEventListener(
     "submit",
@@ -1955,7 +2141,25 @@ function installEventListeners() {
   );
   $("#facts-form").addEventListener("submit", handleFactsCreate);
   $("#provider-form").addEventListener("submit", handleProviderCreate);
-  $("#integration-form").addEventListener("submit", handleIntegrationCreate);
+  $("#integration-form").addEventListener("submit", (event) =>
+    handleIntegrationCreate(event).catch((error) => log(error.message, "warning")),
+  );
+  $("#integration-form [name='source_type']").addEventListener("change", toggleDataForSeoOptions);
+  toggleDataForSeoOptions();
+  $("#integration-list").addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-integration-sync]");
+    if (!button) return;
+    if (!window.confirm(currentDictionary().dataforseoPaidConfirm)) return;
+    button.disabled = true;
+    try {
+      await apiRequest(`/integrations/${button.dataset.integrationSync}/sync`, { method: "POST" });
+      log("DataForSEO paid sync completed.");
+      await refreshIntegrations();
+    } catch (error) {
+      log(`DataForSEO sync failed: ${error.message}`, "warning");
+      await refreshIntegrations();
+    }
+  });
   $("#cms-form").addEventListener("submit", handleCmsCreate);
   $("#prompt-set-form").addEventListener("submit", handlePromptSetCreate);
   $("#audit-form").addEventListener("submit", handleAuditCreate);

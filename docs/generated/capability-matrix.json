@@ -18,8 +18,8 @@
     "by_level": {
       "production_ready": 3,
       "connected": 1,
-      "foundation": 6,
-      "stub": 28
+      "foundation": 10,
+      "stub": 24
     }
   },
   "rows": [
@@ -51,21 +51,21 @@
     },
     {
       "id": "integration:backlink_intelligence",
-      "label": "Backlink and Authority Intelligence",
-      "level": "stub",
+      "label": "Backlink and Authority Intelligence (DataForSEO)",
+      "level": "foundation",
       "surface": "integration",
       "source_type": "backlink_intelligence",
       "required_env_vars": [
-        "BACKLINK_INTELLIGENCE_TOKEN"
+        "DATAFORSEO_LOGIN",
+        "DATAFORSEO_PASSWORD"
       ],
       "capabilities": [
-        "referring domain baseline",
-        "authority trend tracking",
-        "lost-link review",
-        "entity citation support"
+        "dated aggregate backlink summary",
+        "referring domain and backlink totals",
+        "provider index provenance"
       ],
-      "evidence": "Starter payload or operator-guided import path is shipped.",
-      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+      "evidence": "Runtime connector exists; provider credentials and operator-owned E2E proof are still required.",
+      "boundary": "Do not claim a connected or production-ready integration without an operator-owned E2E proof record."
     },
     {
       "id": "integration:crux",
@@ -82,26 +82,26 @@
         "executive dashboard support",
         "release regression context"
       ],
-      "evidence": "Runtime connector and credential-gated path exist.",
+      "evidence": "Runtime connector exists; provider credentials and operator-owned E2E proof are still required.",
       "boundary": "Do not claim a connected or production-ready integration without an operator-owned E2E proof record."
     },
     {
       "id": "integration:competitor_intelligence",
-      "label": "Competitor Intelligence",
-      "level": "stub",
+      "label": "Competitor Intelligence (DataForSEO)",
+      "level": "foundation",
       "surface": "integration",
       "source_type": "competitor_intelligence",
       "required_env_vars": [
-        "COMPETITOR_INTELLIGENCE_TOKEN"
+        "DATAFORSEO_LOGIN",
+        "DATAFORSEO_PASSWORD"
       ],
       "capabilities": [
-        "content gap import",
-        "trust and proof gap detection",
-        "GEO surface gap detection",
-        "authority overlap support"
+        "provider-returned competitor domains",
+        "shared ranking keyword and domain metrics when returned",
+        "market and language provenance"
       ],
-      "evidence": "Starter payload or operator-guided import path is shipped.",
-      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+      "evidence": "Runtime connector exists; provider credentials and operator-owned E2E proof are still required.",
+      "boundary": "Do not claim a connected or production-ready integration without an operator-owned E2E proof record."
     },
     {
       "id": "integration:dzen",
@@ -206,7 +206,7 @@
         "search visibility baseline",
         "report attachment"
       ],
-      "evidence": "Runtime connector and credential-gated path exist.",
+      "evidence": "Runtime connector exists; provider credentials and operator-owned E2E proof are still required.",
       "boundary": "Do not claim a connected or production-ready integration without an operator-owned E2E proof record."
     },
     {
@@ -223,7 +223,7 @@
         "batch diagnostics",
         "indexation acceleration support"
       ],
-      "evidence": "Runtime connector and credential-gated path exist.",
+      "evidence": "Runtime connector exists; provider credentials and operator-owned E2E proof are still required.",
       "boundary": "Do not claim a connected or production-ready integration without an operator-owned E2E proof record."
     },
     {
@@ -245,21 +245,21 @@
     },
     {
       "id": "integration:keyword_research",
-      "label": "Keyword Research Intelligence",
-      "level": "stub",
+      "label": "Keyword Research Intelligence (DataForSEO)",
+      "level": "foundation",
       "surface": "integration",
       "source_type": "keyword_research",
       "required_env_vars": [
-        "KEYWORD_RESEARCH_TOKEN"
+        "DATAFORSEO_LOGIN",
+        "DATAFORSEO_PASSWORD"
       ],
       "capabilities": [
-        "keyword snapshot import",
-        "intent cluster coverage",
-        "brand vs non-brand demand baseline",
-        "opportunity keyword review"
+        "keyword search-volume snapshot",
+        "Google Ads competition estimate",
+        "market and language provenance"
       ],
-      "evidence": "Starter payload or operator-guided import path is shipped.",
-      "boundary": "No live provider data is returned by this repository without a future connector implementation."
+      "evidence": "Runtime connector exists; provider credentials and operator-owned E2E proof are still required.",
+      "boundary": "Do not claim a connected or production-ready integration without an operator-owned E2E proof record."
     },
     {
       "id": "integration:linkedin_ads",
@@ -279,6 +279,24 @@
       "boundary": "No live provider data is returned by this repository without a future connector implementation."
     },
     {
+      "id": "integration:rank_tracking",
+      "label": "Live SERP Snapshot (DataForSEO)",
+      "level": "foundation",
+      "surface": "integration",
+      "source_type": "rank_tracking",
+      "required_env_vars": [
+        "DATAFORSEO_LOGIN",
+        "DATAFORSEO_PASSWORD"
+      ],
+      "capabilities": [
+        "one-query dated SERP result snapshot",
+        "rank and result-domain observations",
+        "SERP feature observations when returned"
+      ],
+      "evidence": "Runtime connector exists; provider credentials and operator-owned E2E proof are still required.",
+      "boundary": "Do not claim a connected or production-ready integration without an operator-owned E2E proof record."
+    },
+    {
       "id": "integration:meta_ads",
       "label": "Meta Ads",
       "level": "stub",
@@ -291,24 +309,6 @@
         "campaign spend import",
         "lead and CPL tracking",
         "retargeting context"
-      ],
-      "evidence": "Starter payload or operator-guided import path is shipped.",
-      "boundary": "No live provider data is returned by this repository without a future connector implementation."
-    },
-    {
-      "id": "integration:rank_tracking",
-      "label": "Rank Tracking and SERP Visibility",
-      "level": "stub",
-      "surface": "integration",
-      "source_type": "rank_tracking",
-      "required_env_vars": [
-        "RANK_TRACKING_TOKEN"
-      ],
-      "capabilities": [
-        "tracked-query import",
-        "rank movement review",
-        "SERP feature coverage",
-        "weekly visibility trend support"
       ],
       "evidence": "Starter payload or operator-guided import path is shipped.",
       "boundary": "No live provider data is returned by this repository without a future connector implementation."
@@ -572,7 +572,7 @@
         "regional discoverability baseline",
         "RU deliverable support"
       ],
-      "evidence": "Runtime connector and credential-gated path exist.",
+      "evidence": "Runtime connector exists; provider credentials and operator-owned E2E proof are still required.",
       "boundary": "Do not claim a connected or production-ready integration without an operator-owned E2E proof record."
     },
     {

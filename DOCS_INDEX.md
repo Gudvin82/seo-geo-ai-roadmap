@@ -1,6 +1,6 @@
 # Documentation Index
 
-This is the shortest path through the repository after `v6.14.1`.
+This is the shortest path through the repository after `v6.15.0`.
 
 ## Start in this order
 
@@ -42,11 +42,12 @@ This is the shortest path through the repository after `v6.14.1`.
 - [Content Operations Engine](./docs/en/content-operations-engine.md)
 - [Privacy-First Measurement](./docs/en/privacy-first-measurement.md)
 - [Scoring Calibration](./docs/en/scoring-calibration.md)
+- [DataForSEO Integration and MCP](./docs/en/dataforseo-integration.md)
 - [Generated EN/RU Parity Manifest](./docs/generated/canonical-docs-parity.json)
 - [Independent Case Submission](./docs/en/independent-case-submission.md)
 - [Canonical Documentation Map](./DOCS_CANONICAL.md)
 - [GEO and AI Operations Playbook](./docs/en/geo-ai-operations-playbook.md)
-- [v6.14.1 Release Summary](./docs/en/v6141-release.md)
+- [v6.15.0 Release Summary](./docs/en/v6150-release.md)
 - [v6.9.6 Release Summary](./docs/en/v696-release.md)
 
 ## Core proof and boundaries

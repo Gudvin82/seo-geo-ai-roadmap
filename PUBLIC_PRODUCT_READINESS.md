@@ -22,9 +22,9 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 
 Latest release context:
 
-- `v6.14.1` is the current public release. It adds a generated capability
-  matrix, stricter evidence-bound score calibration, and checked canonical
-  EN/RU documentation routing.
+- `v6.15.0` adds four optional, paid DataForSEO read-only flows, reusable
+  project research context, and an authenticated project-scoped read-only MCP
+  endpoint over saved reports, tasks, evidence, and integrations.
 
 ## What is production-ready today
 
@@ -32,9 +32,9 @@ Latest release context:
 - human-readable docs plus machine-readable contracts
 - self-hosted FastAPI app with frontend, auth, workspaces, projects, reports,
   artifacts, and exports
-- classic SEO workflow and data contracts; use the generated capability matrix
-  to see which keyword, competitor, backlink, and rank sources are live versus
-  starter-only
+- classic SEO workbench
+- stateless MCP read tools for saved project reports, tasks, evidence, context,
+  integrations, and AI visibility history
 - scanner intake flow with passive, ownership-gated active, and full-scan modes
 - governed CMS workflow with preview, approval, apply, verify, and rollback
 - provider-backed AI layer for cloud and local runtimes
@@ -47,9 +47,13 @@ Latest release context:
 - public scanner service for client-facing use
 - webhook and notification operations
 - higher-volume queue scaling beyond the bundled database-backed worker
+- DataForSEO keyword, live SERP, competitor, and backlink connectors remain at
+  foundation maturity until credentialed end-to-end provider proof is recorded.
+  Calls are paid and explicit-opt-in; the local budget guard is best-effort.
 - managed cloud rollout packs
 - GA4, Ads, Metrica, Direct, business, social, and CMS integrations as repeatable operator flows
-- external keyword and authority providers as repeatable operator-owned flows
+- external keyword and authority providers beyond the implemented DataForSEO
+  paths as repeatable operator-owned flows
 - extension and automation entrypoints
 
 These paths are already inside the repo and can be deployed under your own

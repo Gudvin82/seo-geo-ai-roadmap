@@ -13,6 +13,9 @@ What it adds:
 - reports and artifacts
 - demo seed mode
 - self-hosted hardening and security guidance
+- project research context (competitors, goals, key pages, and seed keywords)
+- authenticated project-scoped MCP read tools over saved reports, tasks, evidence, and integration snapshots
+- optional credential-gated DataForSEO read-only flows; see [cost and scope boundaries](dataforseo-mcp.md)
 
 Core paths:
 

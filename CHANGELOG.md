@@ -1,5 +1,21 @@
 # Changelog
 
+## v6.15.0
+
+- Added four credential-gated DataForSEO read-only connectors for keyword
+  metrics, live SERP, domain competitors, and backlink summaries.
+- Added UI-level paid-call opt-in, best-effort per-connection budget and request
+  guards, persistent TTL caching, actual provider cost, and canonical
+  provider-derived evidence records. Billable POST requests are never retried
+  automatically.
+- Added project research context storage for competitors, goals, key pages, and
+  seed keywords, reusing the existing project market and language fields.
+- Added an authenticated project-scoped Streamable HTTP MCP endpoint exposing
+  saved unified reports, task bundles, evidence, integration snapshots, project
+  context, and AI visibility history. MCP tools are read-only and never trigger
+  provider calls.
+- Added RU/EN DataForSEO and MCP operator documentation.
+
 ## v6.14.1
 
 - Fixed capability-matrix generation in dependency-light CI environments by

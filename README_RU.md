@@ -250,21 +250,25 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.14.1
+## На чем сфокусирован v6.15.0
 
-`v6.14.1` завершает релиз integrity для capability и документации: он убирает
-двусмысленность между возможностями продукта и планами на
-будущее: одна сгенерированная matrix показывает зрелость, calibration требует
-реальные evidence, а актуальный EN/RU-путь по документации проверяется в CI.
+`v6.15.0` добавляет данные классического SEO через DataForSEO с явным
+разрешением оператора, сохраняемый контекст проекта и защищенный read-only MCP
+доступ к уже сохраненным данным платформы.
 
-Он добавляет:
+В релиз вошли:
 
-- generated capability artifacts для API, docs и release CI
-- строгое разделение `production_ready`, `connected`, `foundation` и `stub`
-- protocol calibration dataset с case identity, датами, outcome definition,
-  observation window и evidence reference
-- канонические EN/RU-пары документации, проверяемые на каждом релизе
-- [Сводка релиза v6.14.1](./docs/ru/v6141-release.md)
+- четыре платных read-only потока DataForSEO: метрики запросов, live SERP,
+  конкуренты домена и сводка обратных ссылок
+- первая версия DataForSEO использует данные Google и не предоставляет частотность
+  или SERP Яндекса
+- явное согласие на платные запросы, best-effort дневной предохранитель на
+  подключение, лимит вызовов, TTL-кеш, стоимость и provenance в canonical evidence
+- сохраняемый контекст проекта: конкуренты, цели, ключевые страницы и seed keywords
+- project-scoped MCP-инструменты для unified report, задач, evidence,
+  интеграций, контекста и истории AI-видимости; вызовы MCP не запускают платные запросы
+- [Настройка DataForSEO и MCP](./docs/ru/dataforseo-integration.md)
+- [Сводка релиза v6.15.0](./docs/ru/v6150-release.md)
 
 ## Границы Capability И Score
 

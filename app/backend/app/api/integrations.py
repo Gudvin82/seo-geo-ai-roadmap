@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
+import math
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -9,7 +10,14 @@ from sqlalchemy.orm import Session
 from ..access import record_audit_log, require_project_access
 from ..database import get_db
 from ..deps import get_current_user
-from ..models import CmsConnector, IntegrationConnection, IntegrationSyncEvent, User
+from ..models import (
+    CmsConnector,
+    EvidenceRecord,
+    IntegrationConnection,
+    IntegrationSyncEvent,
+    ProjectResearchContext,
+    User,
+)
 from ..schemas import (
     IntegrationConnectionCreate,
     IntegrationConnectionRead,
@@ -26,6 +34,7 @@ from ..services.integrations import (
     all_integration_contracts,
     build_integration_verification_row,
     compact_integration_summary,
+    DATAFORSEO_SOURCES,
     integration_capability_matrix,
     integration_contract,
     integration_env_status,
@@ -59,7 +68,13 @@ def _serialize(row: IntegrationConnection) -> IntegrationConnectionRead:
         sync_mode=contract["sync_mode"],
         required_env_vars=contract["required_env_vars"],
         credential_status="configured"
-        if row.credentials_env_var or env_status["live_credentials_ready"]
+        if (
+            env_status["live_credentials_ready"]
+            if env_status["required_env_vars"]
+            else bool(row.credentials_env_var)
+        )
+        else "partial"
+        if row.credentials_env_var
         else "missing",
         recommended_ci_workflow=contract["recommended_ci_workflow"],
         ci_gates=contract["ci_gates"],
@@ -266,23 +281,114 @@ def sync_integration(
     if not row:
         raise HTTPException(status_code=404, detail="Integration not found.")
     require_project_access(db, row.project_id, current_user, minimum_role="editor")
+    if row.source_type in DATAFORSEO_SOURCES:
+        row = (
+            db.query(IntegrationConnection)
+            .filter(IntegrationConnection.id == integration_id)
+            .with_for_update()
+            .populate_existing()
+            .first()
+        )
+        if not row:
+            raise HTTPException(status_code=404, detail="Integration not found.")
     contract = integration_contract(row.source_type)
+    config = json.loads(row.config_json or "{}")
+    context_row = (
+        db.query(ProjectResearchContext)
+        .filter(ProjectResearchContext.project_id == row.project_id)
+        .first()
+    )
+    project = row.project
+    project_context = context_row.model_values() if context_row else {}
+    provider_spend = 0.0
+    provider_calls = 0
+    provider_charge_uncertain = False
+    cached_snapshot: dict | None = None
+    now_utc = datetime.now(timezone.utc)
+    if row.source_type in DATAFORSEO_SOURCES:
+        try:
+            parsed_snapshot = json.loads(row.latest_snapshot_json or "{}")
+            existing_snapshot = parsed_snapshot if isinstance(parsed_snapshot, dict) else {}
+        except json.JSONDecodeError:
+            existing_snapshot = {}
+        observed_raw = existing_snapshot.get("observed_at")
+        try:
+            observed_at = datetime.fromisoformat(str(observed_raw).replace("Z", "+00:00"))
+            ttl_seconds = min(max(int(config.get("cache_ttl_seconds", 21600)), 60), 86400)
+            if (
+                existing_snapshot.get("provider") == "dataforseo"
+                and now_utc - observed_at < timedelta(seconds=ttl_seconds)
+            ):
+                cached_snapshot = existing_snapshot
+        except (TypeError, ValueError):
+            pass
+        today = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+        events = (
+            db.query(IntegrationSyncEvent)
+            .filter(
+                IntegrationSyncEvent.integration_connection_id == row.id,
+                IntegrationSyncEvent.started_at >= today,
+            )
+            .all()
+        )
+        for previous_event in events:
+            try:
+                metadata = json.loads(previous_event.metadata_json or "{}")
+            except json.JSONDecodeError:
+                continue
+            if metadata.get("provider") == "dataforseo":
+                try:
+                    provider_calls += max(0, int(metadata.get("provider_call_count", 0)))
+                except (TypeError, ValueError):
+                    provider_charge_uncertain = True
+                try:
+                    event_cost = float(metadata.get("cost_usd") or 0.0)
+                    if not math.isfinite(event_cost) or event_cost < 0:
+                        raise ValueError("invalid cost")
+                    provider_spend += event_cost
+                except (TypeError, ValueError):
+                    provider_charge_uncertain = True
+                provider_charge_uncertain = provider_charge_uncertain or bool(
+                    metadata.get("cost_unknown") or previous_event.status == "running"
+                )
+        if provider_charge_uncertain and cached_snapshot is None:
+            raise HTTPException(
+                status_code=424,
+                detail="A previous DataForSEO request has unknown billing outcome. Check the provider account before retrying today.",
+            )
+    env_status = integration_env_status(contract)
+    credentials_ready = (
+        env_status["live_credentials_ready"]
+        if row.source_type in DATAFORSEO_SOURCES
+        else bool(row.credentials_env_var or env_status["live_credentials_ready"])
+    )
     event = IntegrationSyncEvent(
         integration_connection_id=row.id,
         status="running",
         attempt_number=1,
         retry_count=0,
         scope_status="starter_scope",
-        credential_status="configured" if row.credentials_env_var else "missing",
+        credential_status="configured" if credentials_ready else "missing",
         dataset_status="sync_started",
         provenance_level="starter_sync",
         freshness_label="sync_in_progress",
         metadata_json=json.dumps(
             {
                 "source_type": row.source_type,
+                **(
+                    {
+                        "provider": "dataforseo",
+                        "flow": row.source_type,
+                        "provider_call_count": int(cached_snapshot is None),
+                        "request_reserved": cached_snapshot is None,
+                        "cost_usd": 0.0,
+                    }
+                    if row.source_type in DATAFORSEO_SOURCES
+                    else {}
+                ),
                 "sync_policy": integration_runtime_profile(
                     row.source_type,
-                    config=json.loads(row.config_json or "{}"),
+                    config=config,
                     credentials_env_var=row.credentials_env_var,
                 ),
             },
@@ -291,21 +397,36 @@ def sync_integration(
     )
     db.add(event)
     db.flush()
+    if row.source_type in DATAFORSEO_SOURCES and cached_snapshot is None:
+        # Persist intent before the paid HTTP call. If the worker dies afterward,
+        # the running event prevents an automatic duplicate charge.
+        db.commit()
+        db.refresh(event)
     try:
-        snapshot = sync_integration_source(
-            row.source_type,
-            property_identifier=row.property_identifier,
-            config=json.loads(row.config_json or "{}"),
-        )
+        if cached_snapshot is not None:
+            snapshot = dict(cached_snapshot)
+            snapshot["cache_hit"] = True
+            snapshot["cache_age_seconds"] = max(
+                0, int((now_utc - observed_at).total_seconds())
+            )
+        else:
+            snapshot = sync_integration_source(
+                row.source_type,
+                property_identifier=row.property_identifier,
+                config=config,
+                project_context=project_context,
+                project_market=project.market,
+                project_language=project.language,
+                spent_today_usd=provider_spend,
+                requests_today=provider_calls,
+            )
         snapshot["summary"] = compact_integration_summary(snapshot)
         row.latest_snapshot_json = json.dumps(snapshot, ensure_ascii=False)
         row.last_sync_status = "completed"
         row.last_sync_at = datetime.utcnow()
         event.status = "completed"
         event.scope_status = "verified_contract_scope"
-        event.credential_status = (
-            "configured" if row.credentials_env_var else "missing_but_starter_allowed"
-        )
+        event.credential_status = "configured" if credentials_ready else "missing_but_starter_allowed"
         event.dataset_status = "available"
         event.provenance_level = (
             "managed_runtime"
@@ -316,13 +437,48 @@ def sync_integration(
         )
         event.freshness_label = "fresh"
         event.finished_at = datetime.utcnow()
+        provider_cost = float(snapshot.get("cost_usd") or 0.0)
+        cache_hit = bool(snapshot.get("cache_hit"))
+        if snapshot.get("provider") == "dataforseo" and not cache_hit:
+            evidence_summary = json.dumps(
+                {
+                    "provider": "dataforseo",
+                    "flow": row.source_type,
+                    "market": snapshot.get("market"),
+                    "language": snapshot.get("language"),
+                    "observed_at": snapshot.get("observed_at"),
+                    "cost_usd": provider_cost,
+                    "cache_ttl_seconds": snapshot.get("cache_ttl_seconds"),
+                    "findings": snapshot.get("findings", []),
+                    "rows": snapshot.get("rows", [])[:30],
+                },
+                ensure_ascii=False,
+            )
+            db.add(
+                EvidenceRecord(
+                    workspace_id=row.workspace_id,
+                    project_id=row.project_id,
+                    label_type="internal_evidence",
+                    title=f"DataForSEO {row.source_type} snapshot",
+                    summary=evidence_summary,
+                    source_ref=str(snapshot.get("provider_task_id") or "DataForSEO API"),
+                    links_json="[]",
+                )
+            )
         event.metadata_json = json.dumps(
             {
                 "source_type": row.source_type,
+                "provider": snapshot.get("provider"),
+                "flow": snapshot.get("flow"),
+                "cost_usd": 0.0 if cache_hit else provider_cost,
+                "snapshot_cost_usd": provider_cost,
+                "cache_hit": cache_hit,
+                "provider_call_count": 0 if cache_hit else int(snapshot.get("provider") == "dataforseo"),
+                "budget_overrun": snapshot.get("budget_overrun", False),
                 "recommended_ci_workflow": contract["recommended_ci_workflow"],
                 "sync_policy": integration_runtime_profile(
                     row.source_type,
-                    config=json.loads(row.config_json or "{}"),
+                    config=config,
                     credentials_env_var=row.credentials_env_var,
                     latest_snapshot=snapshot,
                 ),
@@ -338,14 +494,33 @@ def sync_integration(
     except Exception as exc:
         row.last_sync_status = "failed"
         event.status = "failed"
-        event.retry_count = 1
+        event.retry_count = 0
         event.dataset_status = "unavailable"
         event.error_summary = str(exc)
         event.freshness_label = "stale"
         event.finished_at = datetime.utcnow()
+        if row.source_type in DATAFORSEO_SOURCES:
+            request_started = bool(
+                getattr(exc, "request_started", cached_snapshot is None)
+            )
+            event.metadata_json = json.dumps(
+                {
+                    "provider": "dataforseo",
+                    "flow": row.source_type,
+                    "provider_call_count": int(request_started),
+                    "cost_usd": 0.0,
+                    "cost_unknown": request_started,
+                    "cache_hit": False,
+                    "request_started": request_started,
+                    "error_kind": exc.__class__.__name__,
+                },
+                ensure_ascii=False,
+            )
         db.add(row)
         db.add(event)
         db.commit()
+        if row.source_type in DATAFORSEO_SOURCES:
+            raise HTTPException(status_code=424, detail=str(exc)) from exc
         raise
     db.add(row)
     db.add(event)

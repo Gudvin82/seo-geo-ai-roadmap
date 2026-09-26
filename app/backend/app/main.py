@@ -22,6 +22,7 @@ from .api import (
     geo_intelligence,
     graph_runtime,
     integrations,
+    mcp,
     notifications,
     projects,
     prompt_sets,
@@ -116,6 +117,7 @@ def create_app(custom_settings: Optional[Settings] = None) -> FastAPI:
     app.include_router(projects.router, prefix=settings_obj.api_prefix)
     app.include_router(brand_facts.router, prefix=settings_obj.api_prefix)
     app.include_router(integrations.router, prefix=settings_obj.api_prefix)
+    app.include_router(mcp.router, prefix=settings_obj.api_prefix)
     app.include_router(cms.router, prefix=settings_obj.api_prefix)
     app.include_router(providers.router, prefix=settings_obj.api_prefix)
     app.include_router(prompt_sets.router, prefix=settings_obj.api_prefix)

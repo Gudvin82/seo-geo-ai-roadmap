@@ -76,7 +76,7 @@
       <main class="main">
         <header class="hero">
           <div>
-            <p class="eyebrow" data-i18n="releaseBadge">v6.14.1 evidence-bound capability matrix</p>
+            <p class="eyebrow" data-i18n="releaseBadge">v6.15.0 DataForSEO + project-scoped MCP</p>
             <h2 data-i18n="heroTitle">Self-hosted daily operating system for SEO, GEO, and AI discoverability</h2>
             <p class="hero-copy" data-i18n="heroCopy">
               Give the repo to a human operator or an AI coding agent, deploy it,
@@ -685,6 +685,21 @@
               <div id="project-list" class="stack"></div>
             </div>
           </div>
+          <form id="project-context-form" class="card form-card project-context-form">
+            <div class="pane-header">
+              <div>
+                <h4 data-i18n="researchContextTitle">Reusable research context</h4>
+                <p id="project-context-status" class="project-meta" data-i18n="selectProjectForContext">Select a project to edit its research context.</p>
+              </div>
+              <button type="submit" data-i18n="saveResearchContext">Save research context</button>
+            </div>
+            <div class="split">
+              <label class="field"><span data-i18n="contextCompetitors">Competitor domains, one per line</span><textarea name="competitors" rows="3"></textarea></label>
+              <label class="field"><span data-i18n="contextGoals">Research goals, one per line</span><textarea name="goals" rows="3"></textarea></label>
+              <label class="field"><span data-i18n="contextKeyPages">Key pages, one URL per line</span><textarea name="key_pages" rows="3"></textarea></label>
+              <label class="field"><span data-i18n="contextKeywords">Seed keywords, one per line</span><textarea name="seed_keywords" rows="3"></textarea></label>
+            </div>
+          </form>
         </section>
 
         <section class="pane" id="facts-pane">
@@ -862,6 +877,10 @@
                   <option value="youtube">YouTube Analytics</option>
                   <option value="linkedin_ads">LinkedIn Ads</option>
                   <option value="instagram_facebook_organic">Instagram / Facebook Organic</option>
+                  <option value="keyword_research">Keyword metrics (DataForSEO)</option>
+                  <option value="rank_tracking">Live SERP snapshot (DataForSEO)</option>
+                  <option value="competitor_intelligence">Domain competitors (DataForSEO)</option>
+                  <option value="backlink_intelligence">Backlink overview (DataForSEO)</option>
                 </select>
               </label>
               <label class="field">
@@ -876,6 +895,42 @@
                 <span data-i18n="apiEnv">Credentials env var</span>
                 <input name="credentials_env_var" placeholder="GSC_SERVICE_ACCOUNT_JSON" />
               </label>
+              <div id="dataforseo-options" class="form-section" hidden>
+                <p data-i18n="dataforseoNotice">DataForSEO live requests are paid. Credentials must be configured in the backend environment.</p>
+                <a id="dataforseo-docs" href="https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/dataforseo-integration.md" target="_blank" rel="noopener noreferrer" data-i18n="dataforseoDocs">Setup and billing boundaries</a>
+                <label class="field">
+                  <span data-i18n="dataforseoLocation">Search location</span>
+                  <input name="dataforseo_location" value="Russia" />
+                </label>
+                <label class="field">
+                  <span data-i18n="dataforseoLanguage">Language code</span>
+                  <input name="dataforseo_language" value="ru" maxlength="16" />
+                </label>
+                <label class="field" data-dataforseo-flow="keyword_research">
+                  <span data-i18n="dataforseoKeywords">Keywords, comma-separated</span>
+                  <input name="dataforseo_keywords" placeholder="seo audit, geo optimization" />
+                </label>
+                <label class="field" data-dataforseo-flow="rank_tracking">
+                  <span data-i18n="dataforseoQuery">SERP query</span>
+                  <input name="dataforseo_query" />
+                </label>
+                <label class="field">
+                  <span data-i18n="dataforseoBudget">Approved daily budget (USD)</span>
+                  <input name="dataforseo_budget" type="number" min="0.01" step="0.01" value="2" />
+                </label>
+                <label class="field">
+                  <span data-i18n="dataforseoRequests">Maximum paid requests per day</span>
+                  <input name="dataforseo_max_requests" type="number" min="1" max="100" value="5" />
+                </label>
+                <label class="field">
+                  <span data-i18n="dataforseoTtl">Cache lifetime (seconds)</span>
+                  <input name="dataforseo_cache_ttl" type="number" min="60" max="86400" value="21600" />
+                </label>
+                <label class="field">
+                  <span data-i18n="dataforseoConsent">I approve billable DataForSEO requests for this project</span>
+                  <input name="dataforseo_consent" type="checkbox" />
+                </label>
+              </div>
               <button type="submit" data-i18n="saveIntegration">Save integration</button>
             </form>
 

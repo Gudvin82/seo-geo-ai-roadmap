@@ -103,6 +103,24 @@ pre,
   background: #fffdf9;
 }
 
+.form-section {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  background: var(--panel-strong);
+}
+
+.form-section[hidden] {
+  display: none;
+}
+
+.form-section input[type="checkbox"] {
+  width: auto;
+  justify-self: start;
+}
+
 .nav {
   display: grid;
   gap: 8px;

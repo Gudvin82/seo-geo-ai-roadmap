@@ -5,6 +5,7 @@ Main API groups in the product layer:
 - auth
 - workspaces
 - projects
+- project research context
 - brand facts
 - providers
 - prompt sets
@@ -14,6 +15,8 @@ Main API groups in the product layer:
 - artifacts
 - settings
 - sov
+- integrations and provider sync
+- authenticated read-only MCP tools (`POST /api/v1/mcp`)
 
 Principles:
 

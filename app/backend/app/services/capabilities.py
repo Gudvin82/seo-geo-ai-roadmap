@@ -76,7 +76,16 @@ CORE_CAPABILITIES = (
     },
 )
 
-LIVE_FOUNDATION_SOURCES = {"gsc", "yandex_webmaster", "crux", "indexnow"}
+LIVE_FOUNDATION_SOURCES = {
+    "gsc",
+    "yandex_webmaster",
+    "crux",
+    "indexnow",
+    "keyword_research",
+    "competitor_intelligence",
+    "backlink_intelligence",
+    "rank_tracking",
+}
 
 
 def _integration_row(contract: dict[str, Any]) -> dict[str, Any]:
@@ -92,7 +101,7 @@ def _integration_row(contract: dict[str, Any]) -> dict[str, Any]:
         "required_env_vars": contract["required_env_vars"],
         "capabilities": contract["capabilities"],
         "evidence": (
-            "Runtime connector and credential-gated path exist."
+            "Runtime connector exists; provider credentials and operator-owned E2E proof are still required."
             if is_foundation
             else "Starter payload or operator-guided import path is shipped."
         ),

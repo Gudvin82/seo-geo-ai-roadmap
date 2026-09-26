@@ -1,5 +1,7 @@
 # SEO + GEO + AI Discoverability OS
 
+Current release: `v6.15.0`.
+
 ![Project badge](assets/screenshots/project-badge-v530.png)
 
 This docs site is a public delivery layer for the repository. The repository
@@ -31,6 +33,10 @@ validation, and release discipline.
 - graph explainability, reporting packs, and GTM packaging
 - integration contracts, executive dashboard, and clearer product modes
 - AI Agent Mode, one-click URL audit results, task bundles, dynamic graph runtime, and extension scaffolds
+- optional paid DataForSEO flows for Google keyword metrics, live SERP, domain competitors, and backlink summaries
+- reusable project research context and authenticated, project-scoped read-only MCP tools
+
+DataForSEO requires the operator's own credentials and explicit paid-call approval. Its local daily budget is best-effort, not a provider-enforced spending cap; these flows do not provide Yandex SERP or keyword-volume data.
 
 ## Proof and implementation
 

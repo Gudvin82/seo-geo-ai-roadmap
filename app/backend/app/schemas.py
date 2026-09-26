@@ -285,6 +285,28 @@ class ProjectRead(BaseModel):
     created_at: datetime
 
 
+class ProjectResearchContextUpdate(BaseModel):
+    competitors: list[str] = Field(default_factory=list, max_length=50)
+    goals: list[str] = Field(default_factory=list, max_length=50)
+    key_pages: list[str] = Field(default_factory=list, max_length=100)
+    seed_keywords: list[str] = Field(default_factory=list, max_length=100)
+
+    @field_validator("competitors", "goals", "key_pages", "seed_keywords")
+    @classmethod
+    def normalize_context_values(cls, values: list[str]) -> list[str]:
+        normalized = [str(value).strip()[:500] for value in values if str(value).strip()]
+        if len(normalized) != len(set(normalized)):
+            normalized = list(dict.fromkeys(normalized))
+        return normalized
+
+
+class ProjectResearchContextRead(ProjectResearchContextUpdate):
+    project_id: int
+    market: str
+    language: str
+    updated_at: Optional[datetime] = None
+
+
 class SiteCreate(BaseModel):
     project_id: int
     canonical_url: str

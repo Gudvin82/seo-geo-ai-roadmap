@@ -7,7 +7,13 @@ from typing import Any
 
 from .script_runner import run_script
 
-CONTRACT_VERSION = "v6.9.6"
+CONTRACT_VERSION = "v6.15.0"
+DATAFORSEO_SOURCES = {
+    "keyword_research",
+    "competitor_intelligence",
+    "backlink_intelligence",
+    "rank_tracking",
+}
 
 INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     "gsc": {
@@ -273,107 +279,111 @@ INTEGRATION_CONTRACTS: dict[str, dict[str, Any]] = {
     },
     "keyword_research": {
         "source_type": "keyword_research",
-        "label": "Keyword Research Intelligence",
-        "readiness_tier": "seo_intelligence_ready",
-        "sync_mode": "manual_or_scheduled_pull",
-        "required_env_vars": ["KEYWORD_RESEARCH_TOKEN"],
+        "label": "Keyword Research Intelligence (DataForSEO)",
+        "readiness_tier": "foundation",
+        "sync_mode": "manual_pull",
+        "required_env_vars": ["DATAFORSEO_LOGIN", "DATAFORSEO_PASSWORD"],
         "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
         "ci_gates": [
             "demand snapshot refresh",
-            "brand vs non-brand split review",
-            "query-cluster coverage review",
+            "market and language scope review",
+            "provider cost review",
         ],
         "production_flow": [
-            "connect keyword research export or provider token",
-            "group demand by brand, non-brand, and high-intent clusters",
-            "compare market demand with content and landing coverage",
-            "feed gaps into roadmap, generation, and executive reporting",
+            "configure operator-owned DataForSEO credentials and approve billable use",
+            "request Google Ads search volume for up to 30 supplied or saved seed keywords",
+            "review provider-reported search volume, competition, and monthly history",
+            "compare the dated provider estimate with first-party search analytics",
         ],
         "capabilities": [
-            "keyword snapshot import",
-            "intent cluster coverage",
-            "brand vs non-brand demand baseline",
-            "opportunity keyword review",
+            "keyword search-volume snapshot",
+            "Google Ads competition estimate",
+            "market and language provenance",
         ],
-        "next_step": "Use keyword research as the demand map that drives landing priorities, content briefs, and executive opportunity framing.",
+        "next_step": "Treat provider metrics as estimates; validate demand and intent against first-party data before prioritizing pages.",
+        "provider": "dataforseo",
+        "billing_notice": "Live requests are billable. Explicit opt-in is required; the local daily budget is best-effort, not a provider-enforced cap.",
     },
     "competitor_intelligence": {
         "source_type": "competitor_intelligence",
-        "label": "Competitor Intelligence",
-        "readiness_tier": "seo_intelligence_ready",
-        "sync_mode": "manual_or_scheduled_pull",
-        "required_env_vars": ["COMPETITOR_INTELLIGENCE_TOKEN"],
+        "label": "Competitor Intelligence (DataForSEO)",
+        "readiness_tier": "foundation",
+        "sync_mode": "manual_pull",
+        "required_env_vars": ["DATAFORSEO_LOGIN", "DATAFORSEO_PASSWORD"],
         "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
         "ci_gates": [
-            "competitor gap refresh",
-            "trust and proof gap review",
-            "GEO content gap review",
+            "competitor snapshot refresh",
+            "market and language scope review",
+            "provider cost review",
         ],
         "production_flow": [
-            "connect competitor export or provider token",
-            "map content, trust, and GEO gaps by competitor",
-            "separate gaps that affect rankings from gaps that affect citations and conversion trust",
-            "attach top competitor gaps to the operating queue",
+            "configure operator-owned DataForSEO credentials and approve billable use",
+            "request domain competitors for the project's explicit market and language",
+            "review overlapping keyword and estimated domain metrics returned by the provider",
+            "manually validate business relevance before using the list as a competitor benchmark",
         ],
         "capabilities": [
-            "content gap import",
-            "trust and proof gap detection",
-            "GEO surface gap detection",
-            "authority overlap support",
+            "provider-returned competitor domains",
+            "shared ranking keyword and domain metrics when returned",
+            "market and language provenance",
         ],
-        "next_step": "Use competitor intelligence to decide where to build proof, answer-ready pages, and comparison assets first.",
+        "next_step": "Use this as a candidate-domain list, not proof of business equivalence or a complete content-gap analysis.",
+        "provider": "dataforseo",
+        "billing_notice": "Live requests are billable. Explicit opt-in is required; the local daily budget is best-effort, not a provider-enforced cap.",
     },
     "backlink_intelligence": {
         "source_type": "backlink_intelligence",
-        "label": "Backlink and Authority Intelligence",
-        "readiness_tier": "seo_intelligence_ready",
-        "sync_mode": "manual_or_scheduled_pull",
-        "required_env_vars": ["BACKLINK_INTELLIGENCE_TOKEN"],
+        "label": "Backlink and Authority Intelligence (DataForSEO)",
+        "readiness_tier": "foundation",
+        "sync_mode": "manual_pull",
+        "required_env_vars": ["DATAFORSEO_LOGIN", "DATAFORSEO_PASSWORD"],
         "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
         "ci_gates": [
             "referring-domain refresh",
-            "lost-link recovery review",
-            "authority trend review",
+            "domain summary review",
+            "provider index coverage review",
         ],
         "production_flow": [
-            "connect backlink export or provider token",
-            "review new, lost, and high-trust referring domains",
-            "separate entity citations, editorial mentions, and partner proof",
-            "route recoverable authority losses into weekly ops",
+            "configure operator-owned DataForSEO credentials and approve billable use",
+            "request a current aggregate backlink summary for the project domain",
+            "review referring-domain, backlink, and related summary metrics",
+            "verify important links independently before planning recovery work",
         ],
         "capabilities": [
-            "referring domain baseline",
-            "authority trend tracking",
-            "lost-link review",
-            "entity citation support",
+            "dated aggregate backlink summary",
+            "referring domain and backlink totals",
+            "provider index provenance",
         ],
-        "next_step": "Use backlink intelligence to recover trust, authority, and entity signals that support both SEO and GEO performance.",
+        "next_step": "Treat this as a third-party index snapshot; it does not include a historical lost-link trend or prove link quality.",
+        "provider": "dataforseo",
+        "billing_notice": "Live requests are billable. Explicit opt-in is required; the local daily budget is best-effort, not a provider-enforced cap.",
     },
     "rank_tracking": {
         "source_type": "rank_tracking",
-        "label": "Rank Tracking and SERP Visibility",
-        "readiness_tier": "seo_intelligence_ready",
-        "sync_mode": "manual_or_scheduled_pull",
-        "required_env_vars": ["RANK_TRACKING_TOKEN"],
+        "label": "Live SERP Snapshot (DataForSEO)",
+        "readiness_tier": "foundation",
+        "sync_mode": "manual_pull",
+        "required_env_vars": ["DATAFORSEO_LOGIN", "DATAFORSEO_PASSWORD"],
         "recommended_ci_workflow": ".github/workflows/ai-visibility-check.yml",
         "ci_gates": [
-            "tracked-query refresh",
-            "movement review",
-            "SERP feature capture review",
+            "dated SERP snapshot refresh",
+            "location and language scope review",
+            "provider cost review",
         ],
         "production_flow": [
-            "connect rank export or provider token",
-            "sync tracked queries and SERP feature coverage",
-            "prioritize positions 4 through 12 first",
-            "separate rank gains from answer-surface gains in the weekly narrative",
+            "configure operator-owned DataForSEO credentials and approve billable use",
+            "request one live Google organic SERP for the configured query and location",
+            "review dated result positions, domains, and returned SERP features",
+            "repeat manually when a comparable measurement is needed",
         ],
         "capabilities": [
-            "tracked-query import",
-            "rank movement review",
-            "SERP feature coverage",
-            "weekly visibility trend support",
+            "one-query dated SERP result snapshot",
+            "rank and result-domain observations",
+            "SERP feature observations when returned",
         ],
-        "next_step": "Use rank tracking to validate whether content, technical, and proof changes are moving important queries into stronger positions.",
+        "next_step": "This is a dated one-query SERP observation; trend analysis requires repeated comparable snapshots and is not inferred from one call.",
+        "provider": "dataforseo",
+        "billing_notice": "Live requests are billable. Explicit opt-in is required; the local daily budget is best-effort, not a provider-enforced cap.",
     },
     "crux": {
         "source_type": "crux",
@@ -1191,6 +1201,11 @@ def sync_integration_source(
     *,
     property_identifier: str | None = None,
     config: dict[str, Any] | None = None,
+    project_context: dict[str, Any] | None = None,
+    project_market: str = "",
+    project_language: str = "",
+    spent_today_usd: float = 0.0,
+    requests_today: int = 0,
 ) -> dict[str, Any]:
     source = source_type.strip().lower()
     contract = integration_contract(source)
@@ -1270,22 +1285,56 @@ def sync_integration_source(
             "merchant_center_stub.py", "Merchant Center starter import failed."
         )
     elif source == "keyword_research":
-        payload = _run_json_script(
-            "keyword_research_stub.py", "Keyword research starter import failed."
+        from .dataforseo import fetch_dataforseo_snapshot
+
+        payload = fetch_dataforseo_snapshot(
+            source,
+            target=property_identifier or "",
+            config=config,
+            market=project_market,
+            language=project_language,
+            project_context=project_context,
+            spent_today_usd=spent_today_usd,
+            requests_today=requests_today,
         )
     elif source == "competitor_intelligence":
-        payload = _run_json_script(
-            "competitor_intelligence_stub.py",
-            "Competitor intelligence starter import failed.",
+        from .dataforseo import fetch_dataforseo_snapshot
+
+        payload = fetch_dataforseo_snapshot(
+            source,
+            target=property_identifier or "",
+            config=config,
+            market=project_market,
+            language=project_language,
+            project_context=project_context,
+            spent_today_usd=spent_today_usd,
+            requests_today=requests_today,
         )
     elif source == "backlink_intelligence":
-        payload = _run_json_script(
-            "backlink_intelligence_stub.py",
-            "Backlink intelligence starter import failed.",
+        from .dataforseo import fetch_dataforseo_snapshot
+
+        payload = fetch_dataforseo_snapshot(
+            source,
+            target=property_identifier or "",
+            config=config,
+            market=project_market,
+            language=project_language,
+            project_context=project_context,
+            spent_today_usd=spent_today_usd,
+            requests_today=requests_today,
         )
     elif source == "rank_tracking":
-        payload = _run_json_script(
-            "rank_tracking_stub.py", "Rank tracking starter import failed."
+        from .dataforseo import fetch_dataforseo_snapshot
+
+        payload = fetch_dataforseo_snapshot(
+            source,
+            target=property_identifier or "",
+            config=config,
+            market=project_market,
+            language=project_language,
+            project_context=project_context,
+            spent_today_usd=spent_today_usd,
+            requests_today=requests_today,
         )
     elif source == "crux":
         target_url = (

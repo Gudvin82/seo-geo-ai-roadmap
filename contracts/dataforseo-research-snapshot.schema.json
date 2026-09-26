@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DataForSEO Research Snapshot",
+  "type": "object",
+  "required": [
+    "source",
+    "provider",
+    "flow",
+    "market",
+    "language",
+    "observed_at",
+    "cost_usd",
+    "cache_ttl_seconds",
+    "cache_hit",
+    "findings",
+    "provenance",
+    "read_only",
+    "billable"
+  ],
+  "properties": {
+    "source": {"const": "dataforseo-live-api"},
+    "provider": {"const": "dataforseo"},
+    "flow": {
+      "enum": [
+        "keyword_research",
+        "rank_tracking",
+        "competitor_intelligence",
+        "backlink_intelligence"
+      ]
+    },
+    "market": {"type": "string"},
+    "language": {"type": "string"},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "cost_usd": {"type": "number", "minimum": 0},
+    "spend_today_usd": {"type": "number", "minimum": 0},
+    "approved_daily_budget_usd": {"type": "number", "exclusiveMinimum": 0},
+    "budget_overrun": {"type": "boolean"},
+    "requests_today": {"type": "integer", "minimum": 1},
+    "daily_request_limit": {"type": "integer", "minimum": 1, "maximum": 100},
+    "cache_ttl_seconds": {"type": "integer", "minimum": 60, "maximum": 86400},
+    "cache_hit": {"type": "boolean"},
+    "rows": {"type": "array", "items": {"type": "object"}},
+    "findings": {
+      "type": "array",
+      "items": {"$ref": "./finding-evidence.schema.json"}
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["provider", "evidence_type", "verification_method", "request_endpoint"],
+      "properties": {
+        "provider": {"const": "DataForSEO"},
+        "evidence_type": {"const": "provider-derived"},
+        "verification_method": {"type": "string"},
+        "request_endpoint": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "read_only": {"const": true},
+    "billable": {"const": true},
+    "cache_age_seconds": {"type": "integer", "minimum": 0},
+    "provider_task_id": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}

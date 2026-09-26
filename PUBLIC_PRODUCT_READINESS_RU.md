@@ -22,9 +22,9 @@ enterprise SSO и SLA от автора репозитория.
 
 Контекст последнего релиза:
 
-- `v6.14.1` — текущий публичный релиз. Он добавляет generated capability matrix,
-  более строгую evidence-bound калибровку score и проверяемый канонический
-  EN/RU-путь по документации.
+- `v6.15.0` добавляет четыре необязательных платных read-only потока
+  DataForSEO, сохраняемый контекст проекта и защищенный project-scoped MCP
+  endpoint для уже сохраненных reports, tasks, evidence и integrations.
 
 ## Что production-ready уже сегодня
 
@@ -32,8 +32,9 @@ enterprise SSO и SLA от автора репозитория.
 - человекочитаемые docs и machine-readable contracts
 - self-hosted FastAPI app с frontend, auth, workspaces, projects, reports,
   artifacts и exports
-- classic SEO workflow и data contracts; смотрите generated capability matrix,
-  чтобы отличать live и starter-only источники keyword, competitor, backlink и rank
+- classic SEO workbench
+- stateless MCP read tools для сохраненных project reports, tasks, evidence,
+  контекста, интеграций и истории AI-видимости
 - scanner intake flow с passive, ownership-gated active и full scan modes
 - governed CMS workflow с preview, approval, apply, verify и rollback
 - provider-backed AI layer для cloud и local runtimes
@@ -45,10 +46,14 @@ enterprise SSO и SLA от автора репозитория.
 
 - публичный scanner service для client-facing сценария
 - webhook и notification operations
+- DataForSEO keyword, live SERP, competitor и backlink connectors остаются на
+  уровне foundation до появления credentialed E2E proof. Вызовы платные и
+  требуют явного согласия; локальный бюджетный предохранитель best-effort.
 - масштабирование очереди выше bundled database-backed worker для high volume
 - managed cloud rollout packs
 - GA4, Ads, Метрика, Директ, business, social и CMS integrations как repeatable operator flows
-- внешние keyword и authority providers как повторяемые operator-owned flows
+- прочие внешние keyword и authority providers помимо реализованных сценариев
+  DataForSEO как повторяемые operator-owned flows
 - extension и automation entrypoints
 
 Эти направления уже лежат внутри репозитория и могут быть развернуты под вашим

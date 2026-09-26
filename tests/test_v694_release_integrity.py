@@ -32,10 +32,10 @@ def test_generated_capability_and_docs_parity_artifacts_are_current() -> None:
 
 def test_version_check_accepts_explicit_active_version() -> None:
     result = run_script_main(
-        "scripts/version_consistency_check.py", "--expected", "6.14.1"
+        "scripts/version_consistency_check.py", "--expected", "6.15.0"
     )
     assert result.returncode == 0
-    assert "version-consistency-ok:6.14.1" in result.stdout
+    assert "version-consistency-ok:6.15.0" in result.stdout
 
 
 def test_scoring_calibration_marks_small_samples_as_insufficient(
