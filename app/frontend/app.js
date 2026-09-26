@@ -128,7 +128,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.15.0 DataForSEO + project-scoped MCP",
+      "v6.15.1 DataForSEO + project-scoped MCP reliability patch",
     heroTitle:
       "Self-hosted daily operating system for SEO, GEO, and AI discoverability",
     heroCopy:
@@ -338,7 +338,7 @@ const translations = {
     quickChecks: "Audit presets",
     demoAccess: "Demo access",
     releaseBadge:
-      "v6.15.0 DataForSEO + project-scoped MCP",
+      "v6.15.1 DataForSEO + project-scoped MCP reliability patch",
     heroTitle:
       "Self-hosted операционная система для ежедневной работы с SEO, GEO и AI discoverability",
     heroCopy:

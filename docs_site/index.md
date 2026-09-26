@@ -1,6 +1,6 @@
 # SEO + GEO + AI Discoverability OS
 
-Current release: `v6.15.0`.
+Current release: `v6.15.1`.
 
 ![Project badge](assets/screenshots/project-badge-v530.png)
 

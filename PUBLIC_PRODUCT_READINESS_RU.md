@@ -22,6 +22,8 @@ enterprise SSO и SLA от автора репозитория.
 
 Контекст последнего релиза:
 
+- `v6.15.1` — patch надежности для runtime DataForSEO и MCP из v6.15.0; новых
+  интеграционных возможностей он не добавляет.
 - `v6.15.0` добавляет четыре необязательных платных read-only потока
   DataForSEO, сохраняемый контекст проекта и защищенный project-scoped MCP
   endpoint для уже сохраненных reports, tasks, evidence и integrations.

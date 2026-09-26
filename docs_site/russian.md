@@ -2,7 +2,8 @@
 
 Ключевые русскоязычные документы:
 
-- [Текущий релиз v6.15.0: DataForSEO и project-scoped MCP](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/ru/v6150-release.md)
+- [Текущий patch-релиз v6.15.1](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/ru/v6151-release.md)
+- [Feature-релиз v6.15.0: DataForSEO и project-scoped MCP](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/ru/v6150-release.md)
 - [Настройка DataForSEO, расходы и MCP-инструменты](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/ru/dataforseo-integration.md)
 - [Карта docs](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/DOCS_INDEX_RU.md)
 - [Онбординг за 15 минут](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/ru/15-minute-onboarding-v450.md)

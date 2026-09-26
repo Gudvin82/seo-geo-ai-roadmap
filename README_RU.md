@@ -250,11 +250,17 @@ semantic coverage, authority, trust и conversion clarity.
 Нет. Часть integrations уже сильнее и operational-ready, часть еще остается
 guided или starter-first. Используйте runtime, readiness и proof layers честно.
 
-## На чем сфокусирован v6.15.0
+## На чем сфокусирован v6.15.1
 
-`v6.15.0` добавляет данные классического SEO через DataForSEO с явным
-разрешением оператора, сохраняемый контекст проекта и защищенный read-only MCP
-доступ к уже сохраненным данным платформы.
+`v6.15.1` — патч надежности для релиза v6.15.0 с DataForSEO и project-scoped
+MCP. Он исправляет импорт версии, который ломал корневые тесты в CI, и
+синхронизирует smoke-тесты с безопасным поведением платных коннекторов:
+без credentials и явного разрешения оператора они не возвращают фиктивные
+стартовые данные. Новых возможностей интеграции в этом patch-релизе нет.
+
+Возможности v6.15.0 включают данные классического SEO через DataForSEO,
+сохраняемый контекст проекта и защищенный read-only MCP-доступ к уже
+сохраненным данным платформы.
 
 В релиз вошли:
 
@@ -268,7 +274,8 @@ guided или starter-first. Используйте runtime, readiness и proof 
 - project-scoped MCP-инструменты для unified report, задач, evidence,
   интеграций, контекста и истории AI-видимости; вызовы MCP не запускают платные запросы
 - [Настройка DataForSEO и MCP](./docs/ru/dataforseo-integration.md)
-- [Сводка релиза v6.15.0](./docs/ru/v6150-release.md)
+- [Сводка patch-релиза v6.15.1](./docs/ru/v6151-release.md)
+- [Сводка feature-релиза v6.15.0](./docs/ru/v6150-release.md)
 
 ## Границы Capability И Score
 

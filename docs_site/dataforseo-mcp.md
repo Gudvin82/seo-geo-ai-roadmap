@@ -1,6 +1,6 @@
-# DataForSEO and MCP (v6.15.0)
+# DataForSEO and MCP (introduced in v6.15.0; current patch v6.15.1)
 
-v6.15.0 adds four optional, read-only Google search data flows using the
+v6.15.0 introduced four optional, read-only Google search data flows using the
 operator's DataForSEO account: keyword metrics, a one-query live SERP snapshot,
 domain competitor candidates, and an aggregate backlink summary. These are
 provider-derived observations, not Yandex data, ranking guarantees, or proof of

@@ -2,7 +2,8 @@
 
 Key English docs:
 
-- [Current release v6.15.0: DataForSEO and project-scoped MCP](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/v6150-release.md)
+- [Current patch release v6.15.1](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/v6151-release.md)
+- [Feature release v6.15.0: DataForSEO and project-scoped MCP](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/v6150-release.md)
 - [DataForSEO setup, cost controls, and MCP tools](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/dataforseo-integration.md)
 - [Docs Index](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/DOCS_INDEX.md)
 - [15-Minute Onboarding](https://github.com/Gudvin82/seo-geo-ai-roadmap/blob/main/docs/en/15-minute-onboarding-v450.md)

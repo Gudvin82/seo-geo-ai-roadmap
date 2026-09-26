@@ -22,6 +22,8 @@ enterprise SSO, or maintainer-operated uptime guarantees.
 
 Latest release context:
 
+- `v6.15.1` is a reliability patch for the v6.15.0 DataForSEO and MCP runtime;
+  it does not add new integration capabilities.
 - `v6.15.0` adds four optional, paid DataForSEO read-only flows, reusable
   project research context, and an authenticated project-scoped read-only MCP
   endpoint over saved reports, tasks, evidence, and integrations.

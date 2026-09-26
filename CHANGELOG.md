@@ -1,5 +1,16 @@
 # Changelog
 
+## v6.15.1
+
+- Fixed a package-relative version import that caused repository-level script
+  tests to fail in CI despite passing formatting checks.
+- Updated API smoke expectations for credential-gated DataForSEO flows: paid
+  connectors now fail closed without configured credentials and explicit
+  operator approval instead of appearing to return starter data.
+- Removed assertions that treated absent keyword and competitor provider data as
+  real measurements; empty provider-backed metrics remain empty until synced.
+- No integration contract or database schema changes.
+
 ## v6.15.0
 
 - Added four credential-gated DataForSEO read-only connectors for keyword

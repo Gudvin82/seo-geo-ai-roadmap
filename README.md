@@ -248,11 +248,16 @@ semantic coverage, authority, trust, and conversion clarity.
 No. Some integrations are already stronger and more operational than others.
 Use the repo's runtime, readiness, and proof layers honestly.
 
-## v6.15.0 focus
+## v6.15.1 focus
 
-`v6.15.0` adds credential-gated classic SEO data from DataForSEO, reusable
-project research context, and an authenticated read-only MCP surface over saved
-platform data.
+`v6.15.1` is a reliability patch for the v6.15.0 DataForSEO and project-scoped
+MCP release. It fixes a package import used by repository-level tests and
+aligns smoke coverage with the credential- and approval-gated behavior of paid
+connectors. It does not add new integration capabilities.
+
+The v6.15.0 feature set includes credential-gated classic SEO data from
+DataForSEO, reusable project research context, and an authenticated read-only
+MCP surface over saved platform data.
 
 It adds:
 
@@ -267,7 +272,8 @@ It adds:
   project context, and AI visibility history; MCP calls never trigger provider
   requests
 - [DataForSEO and MCP Setup](./docs/en/dataforseo-integration.md)
-- [v6.15.0 Release Summary](./docs/en/v6150-release.md)
+- [v6.15.1 Release Summary](./docs/en/v6151-release.md)
+- [v6.15.0 Feature Release Summary](./docs/en/v6150-release.md)
 
 ## Capability And Score Boundaries
 

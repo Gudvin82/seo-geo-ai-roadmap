@@ -1,6 +1,6 @@
 # Карта документации
 
-Это самый короткий путь по репозиторию после `v6.15.0`.
+Это самый короткий путь по репозиторию после `v6.15.1`.
 
 ## Идите в таком порядке
 
@@ -47,7 +47,8 @@
 - [Подача независимого кейса](./docs/ru/independent-case-submission.md)
 - [Каноническая карта документации](./DOCS_CANONICAL.md)
 - [GEO and AI Operations Playbook](./docs/ru/geo-ai-operations-playbook.md)
-- [Сводка релиза v6.15.0](./docs/ru/v6150-release.md)
+- [Текущий patch-релиз v6.15.1](./docs/ru/v6151-release.md)
+- [Сводка feature-релиза v6.15.0](./docs/ru/v6150-release.md)
 - [Сводка релиза v6.9.6](./docs/ru/v696-release.md)
 
 ## Основа доказательств и границ
