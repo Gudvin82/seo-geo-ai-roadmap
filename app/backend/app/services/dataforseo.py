@@ -45,11 +45,15 @@ def _domain_target(value: str) -> str:
     parsed = urlsplit(candidate if "://" in candidate else f"//{candidate}")
     hostname = (parsed.hostname or "").lower().rstrip(".")
     if not hostname:
-        raise DataForSEOUnavailable("Set a valid project domain in the integration property identifier.")
+        raise DataForSEOUnavailable(
+            "Set a valid project domain in the integration property identifier."
+        )
     return hostname.removeprefix("www.")
 
 
-def _int_setting(config: dict[str, Any], key: str, default: int, low: int, high: int) -> int:
+def _int_setting(
+    config: dict[str, Any], key: str, default: int, low: int, high: int
+) -> int:
     try:
         value = int(config.get(key, default))
     except (TypeError, ValueError) as exc:
@@ -78,7 +82,9 @@ def _bounded_config(config: dict[str, Any]) -> dict[str, Any]:
         budget = float(config.get("approved_daily_budget_usd", 0))
         max_requests = int(config.get("max_requests_per_day", 5))
     except (TypeError, ValueError) as exc:
-        raise DataForSEOUnavailable("Invalid DataForSEO budget or request limit.") from exc
+        raise DataForSEOUnavailable(
+            "Invalid DataForSEO budget or request limit."
+        ) from exc
     if not math.isfinite(budget) or budget <= 0 or max_requests < 1:
         raise DataForSEOUnavailable(
             "Set a positive approved_daily_budget_usd and max_requests_per_day."
@@ -210,7 +216,9 @@ def _canonical_finding(
         evidence.append(
             {
                 "id": f"dataforseo:{flow}:{index}",
-                "observation": json.dumps(row, ensure_ascii=False, sort_keys=True)[:4000],
+                "observation": json.dumps(row, ensure_ascii=False, sort_keys=True)[
+                    :4000
+                ],
                 "source": "DataForSEO API",
                 "evidence_type": "provider-derived",
                 "confidence": 0.95,
@@ -270,7 +278,9 @@ def fetch_dataforseo_snapshot(
     if requests_today >= policy["max_requests_per_day"]:
         raise DataForSEOUnavailable("DataForSEO daily request limit has been reached.")
     if spent_today_usd >= policy["approved_daily_budget_usd"]:
-        raise DataForSEOUnavailable("DataForSEO approved daily budget has been reached.")
+        raise DataForSEOUnavailable(
+            "DataForSEO approved daily budget has been reached."
+        )
 
     body: dict[str, Any] = {}
     location_code = config.get("location_code")
@@ -307,30 +317,49 @@ def fetch_dataforseo_snapshot(
         if any(len(keyword.split()) > 10 for keyword in keywords):
             raise DataForSEOUnavailable("Each keyword can contain at most 10 words.")
         if not location_code and not location_name:
-            raise DataForSEOUnavailable("Keyword metrics require an explicit location_code or location_name.")
+            raise DataForSEOUnavailable(
+                "Keyword metrics require an explicit location_code or location_name."
+            )
         body["keywords"] = keywords
         body["tag"] = "seo-geo-ai-roadmap:keyword_research"
     elif flow == "rank_tracking":
         keyword = str(config.get("keyword") or "").strip()
         if not keyword:
-            raise DataForSEOUnavailable("Set a query in the integration config as 'keyword'.")
+            raise DataForSEOUnavailable(
+                "Set a query in the integration config as 'keyword'."
+            )
         if not location_code and not location_name:
-            raise DataForSEOUnavailable("SERP tracking requires an explicit location_code or location_name.")
-        body.update({"keyword": keyword[:160], "depth": _int_setting(config, "depth", 10, 10, 30)})
+            raise DataForSEOUnavailable(
+                "SERP tracking requires an explicit location_code or location_name."
+            )
+        body.update(
+            {
+                "keyword": keyword[:160],
+                "depth": _int_setting(config, "depth", 10, 10, 30),
+            }
+        )
         body["tag"] = "seo-geo-ai-roadmap:rank_tracking"
         if target_value:
             body["target"] = _domain_target(target_value)
     elif flow == "competitor_intelligence":
         if not target_value:
-            raise DataForSEOUnavailable("Set the project domain as the integration property identifier.")
+            raise DataForSEOUnavailable(
+                "Set the project domain as the integration property identifier."
+            )
         target_value = _domain_target(target_value)
-        body.update({"target": target_value, "limit": _int_setting(config, "limit", 20, 1, 100)})
+        body.update(
+            {"target": target_value, "limit": _int_setting(config, "limit", 20, 1, 100)}
+        )
         body["tag"] = "seo-geo-ai-roadmap:competitor_intelligence"
         if not location_code and not location_name:
-            raise DataForSEOUnavailable("Competitor analysis requires an explicit location_code or location_name.")
+            raise DataForSEOUnavailable(
+                "Competitor analysis requires an explicit location_code or location_name."
+            )
     elif flow == "backlink_intelligence":
         if not target_value:
-            raise DataForSEOUnavailable("Set the project domain as the integration property identifier.")
+            raise DataForSEOUnavailable(
+                "Set the project domain as the integration property identifier."
+            )
         target_value = _domain_target(target_value)
         body["target"] = target_value
         body["tag"] = "seo-geo-ai-roadmap:backlink_intelligence"

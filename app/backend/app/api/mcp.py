@@ -84,7 +84,9 @@ TOOLS = [
 ]
 
 
-def _jsonrpc(request_id: Any, result: dict[str, Any], status_code: int = 200) -> JSONResponse:
+def _jsonrpc(
+    request_id: Any, result: dict[str, Any], status_code: int = 200
+) -> JSONResponse:
     return JSONResponse(
         {"jsonrpc": "2.0", "id": request_id, "result": result},
         status_code=status_code,
@@ -94,7 +96,11 @@ def _jsonrpc(request_id: Any, result: dict[str, Any], status_code: int = 200) ->
 
 def _error(request_id: Any, code: int, message: str) -> JSONResponse:
     return JSONResponse(
-        {"jsonrpc": "2.0", "id": request_id, "error": {"code": code, "message": message}},
+        {
+            "jsonrpc": "2.0",
+            "id": request_id,
+            "error": {"code": code, "message": message},
+        },
         headers={"MCP-Protocol-Version": MCP_PROTOCOL_VERSION},
     )
 
@@ -104,7 +110,9 @@ def _project(db: Session, project_id: int, user: User) -> Project:
     return project
 
 
-def _tool_data(name: str, arguments: dict[str, Any], db: Session, user: User) -> dict[str, Any]:
+def _tool_data(
+    name: str, arguments: dict[str, Any], db: Session, user: User
+) -> dict[str, Any]:
     project_id = int(arguments.get("project_id", 0))
     if project_id <= 0:
         raise ValueError("project_id must be a positive integer.")
@@ -122,9 +130,16 @@ def _tool_data(name: str, arguments: dict[str, Any], db: Session, user: User) ->
             "website_url": project.website_url,
             "market": project.market,
             "language": project.language,
-            **(context.model_values() if context else {
-                "competitors": [], "goals": [], "key_pages": [], "seed_keywords": []
-            }),
+            **(
+                context.model_values()
+                if context
+                else {
+                    "competitors": [],
+                    "goals": [],
+                    "key_pages": [],
+                    "seed_keywords": [],
+                }
+            ),
             "updated_at": context.updated_at.isoformat() if context else None,
         }
 
@@ -136,11 +151,21 @@ def _tool_data(name: str, arguments: dict[str, Any], db: Session, user: User) ->
             .first()
         )
         if not audit_run:
-            return {"project_id": project.id, "status": "insufficient_data", "report": None}
+            return {
+                "project_id": project.id,
+                "status": "insufficient_data",
+                "report": None,
+            }
         findings = json.loads(audit_run.finding_groups_json or "[]")
-        report = build_unified_report(target_url=audit_run.target_url or "", findings=findings)
-        report["tasks"] = build_task_bundle_from_audit_run(audit_run, report["findings"])
-        report["graph"] = build_graph_from_audit_findings(audit_run.id, report["findings"])
+        report = build_unified_report(
+            target_url=audit_run.target_url or "", findings=findings
+        )
+        report["tasks"] = build_task_bundle_from_audit_run(
+            audit_run, report["findings"]
+        )
+        report["graph"] = build_graph_from_audit_findings(
+            audit_run.id, report["findings"]
+        )
         report["source"] = {"type": "audit_run", "id": audit_run.id}
         return report
 
@@ -188,7 +213,9 @@ def _tool_data(name: str, arguments: dict[str, Any], db: Session, user: User) ->
                     "source_type": row.source_type,
                     "label": row.label,
                     "last_sync_status": row.last_sync_status,
-                    "last_sync_at": row.last_sync_at.isoformat() if row.last_sync_at else None,
+                    "last_sync_at": row.last_sync_at.isoformat()
+                    if row.last_sync_at
+                    else None,
                     "snapshot": snapshot,
                 }
             )
@@ -271,14 +298,22 @@ def streamable_http_mcp(
             from fastapi import HTTPException
 
             if isinstance(exc, HTTPException):
-                result = {"isError": True, "content": [{"type": "text", "text": exc.detail}]}
+                result = {
+                    "isError": True,
+                    "content": [{"type": "text", "text": exc.detail}],
+                }
                 return _jsonrpc(request_id, result)
             raise
         return _jsonrpc(
             request_id,
             {
                 "isError": False,
-                "content": [{"type": "text", "text": json.dumps(data, ensure_ascii=False, default=str)}],
+                "content": [
+                    {
+                        "type": "text",
+                        "text": json.dumps(data, ensure_ascii=False, default=str),
+                    }
+                ],
                 "structuredContent": data,
             },
         )

@@ -74,7 +74,9 @@ def get_project_research_context(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> ProjectResearchContextRead:
-    project, _ = require_project_access(db, project_id, current_user, minimum_role="viewer")
+    project, _ = require_project_access(
+        db, project_id, current_user, minimum_role="viewer"
+    )
     context = (
         db.query(ProjectResearchContext)
         .filter(ProjectResearchContext.project_id == project_id)
@@ -97,7 +99,9 @@ def update_project_research_context(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> ProjectResearchContextRead:
-    project, _ = require_project_access(db, project_id, current_user, minimum_role="editor")
+    project, _ = require_project_access(
+        db, project_id, current_user, minimum_role="editor"
+    )
     context = (
         db.query(ProjectResearchContext)
         .filter(ProjectResearchContext.project_id == project_id)

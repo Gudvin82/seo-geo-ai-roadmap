@@ -4,7 +4,16 @@ import json
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Integer, String, Text, UniqueConstraint
+from sqlalchemy import (
+    Boolean,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .database import Base
@@ -166,7 +175,9 @@ class Project(Base):
 
 class ProjectResearchContext(Base):
     __tablename__ = "project_research_contexts"
-    __table_args__ = (UniqueConstraint("project_id", name="uq_project_research_context_project"),)
+    __table_args__ = (
+        UniqueConstraint("project_id", name="uq_project_research_context_project"),
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     project_id: Mapped[int] = mapped_column(ForeignKey("projects.id"), index=True)
@@ -175,7 +186,9 @@ class ProjectResearchContext(Base):
     key_pages_json: Mapped[str] = mapped_column(Text, default="[]")
     seed_keywords_json: Mapped[str] = mapped_column(Text, default="[]")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc)
-    updated_at: Mapped[datetime] = mapped_column(DateTime, default=now_utc, onupdate=now_utc)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=now_utc, onupdate=now_utc
+    )
 
     project: Mapped[Project] = relationship(back_populates="research_context")
 

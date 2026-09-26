@@ -294,7 +294,9 @@ class ProjectResearchContextUpdate(BaseModel):
     @field_validator("competitors", "goals", "key_pages", "seed_keywords")
     @classmethod
     def normalize_context_values(cls, values: list[str]) -> list[str]:
-        normalized = [str(value).strip()[:500] for value in values if str(value).strip()]
+        normalized = [
+            str(value).strip()[:500] for value in values if str(value).strip()
+        ]
         if len(normalized) != len(set(normalized)):
             normalized = list(dict.fromkeys(normalized))
         return normalized

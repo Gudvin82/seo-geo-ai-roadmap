@@ -31,10 +31,10 @@ from ..schemas import (
 )
 from ..services.cms import cms_contract
 from ..services.integrations import (
+    DATAFORSEO_SOURCES,
     all_integration_contracts,
     build_integration_verification_row,
     compact_integration_summary,
-    DATAFORSEO_SOURCES,
     integration_capability_matrix,
     integration_contract,
     integration_env_status,
@@ -308,16 +308,23 @@ def sync_integration(
     if row.source_type in DATAFORSEO_SOURCES:
         try:
             parsed_snapshot = json.loads(row.latest_snapshot_json or "{}")
-            existing_snapshot = parsed_snapshot if isinstance(parsed_snapshot, dict) else {}
+            existing_snapshot = (
+                parsed_snapshot if isinstance(parsed_snapshot, dict) else {}
+            )
         except json.JSONDecodeError:
             existing_snapshot = {}
         observed_raw = existing_snapshot.get("observed_at")
         try:
-            observed_at = datetime.fromisoformat(str(observed_raw).replace("Z", "+00:00"))
-            ttl_seconds = min(max(int(config.get("cache_ttl_seconds", 21600)), 60), 86400)
-            if (
-                existing_snapshot.get("provider") == "dataforseo"
-                and now_utc - observed_at < timedelta(seconds=ttl_seconds)
+            observed_at = datetime.fromisoformat(
+                str(observed_raw).replace("Z", "+00:00")
+            )
+            ttl_seconds = min(
+                max(int(config.get("cache_ttl_seconds", 21600)), 60), 86400
+            )
+            if existing_snapshot.get(
+                "provider"
+            ) == "dataforseo" and now_utc - observed_at < timedelta(
+                seconds=ttl_seconds
             ):
                 cached_snapshot = existing_snapshot
         except (TypeError, ValueError):
@@ -338,7 +345,9 @@ def sync_integration(
                 continue
             if metadata.get("provider") == "dataforseo":
                 try:
-                    provider_calls += max(0, int(metadata.get("provider_call_count", 0)))
+                    provider_calls += max(
+                        0, int(metadata.get("provider_call_count", 0))
+                    )
                 except (TypeError, ValueError):
                     provider_charge_uncertain = True
                 try:
@@ -426,7 +435,9 @@ def sync_integration(
         row.last_sync_at = datetime.utcnow()
         event.status = "completed"
         event.scope_status = "verified_contract_scope"
-        event.credential_status = "configured" if credentials_ready else "missing_but_starter_allowed"
+        event.credential_status = (
+            "configured" if credentials_ready else "missing_but_starter_allowed"
+        )
         event.dataset_status = "available"
         event.provenance_level = (
             "managed_runtime"
@@ -461,7 +472,9 @@ def sync_integration(
                     label_type="internal_evidence",
                     title=f"DataForSEO {row.source_type} snapshot",
                     summary=evidence_summary,
-                    source_ref=str(snapshot.get("provider_task_id") or "DataForSEO API"),
+                    source_ref=str(
+                        snapshot.get("provider_task_id") or "DataForSEO API"
+                    ),
                     links_json="[]",
                 )
             )
@@ -473,7 +486,9 @@ def sync_integration(
                 "cost_usd": 0.0 if cache_hit else provider_cost,
                 "snapshot_cost_usd": provider_cost,
                 "cache_hit": cache_hit,
-                "provider_call_count": 0 if cache_hit else int(snapshot.get("provider") == "dataforseo"),
+                "provider_call_count": 0
+                if cache_hit
+                else int(snapshot.get("provider") == "dataforseo"),
                 "budget_overrun": snapshot.get("budget_overrun", False),
                 "recommended_ci_workflow": contract["recommended_ci_workflow"],
                 "sync_policy": integration_runtime_profile(
